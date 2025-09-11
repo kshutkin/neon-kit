@@ -1,0 +1,23 @@
+.btn {
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark shadow-[inset_0_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_var(--color-shadow-surface-dark),0_1px_2px_var(--color-shadow-strong-dark)] border-border dark:border-border-dark relative inline-block overflow-hidden rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap [text-shadow:0_1px_var(--color-ink-shadow)] dark:[text-shadow:0_1px_var(--color-ink-shadow-dark)] disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark disabled:text-ink-muted dark:disabled:text-ink-muted-dark disabled:border-border-disabled dark:disabled:border-border-disabled-dark disabled:pointer-events-none disabled:cursor-default disabled:opacity-30 hover:bg-surface-hover dark:hover:bg-surface-hover-dark active:bg-surface-active dark:active:bg-surface-active-dark active:shadow-[inset_0_1px_2px_var(--color-shadow)] dark:active:shadow-[inset_0_1px_2px_var(--color-shadow-dark)] focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus),inset_0_1px_rgba(255,255,255,0.3)] dark:focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus-dark),inset_0_1px_var(--color-shadow-surface-dark)] focus-visible:outline-none;
+}
+
+.btn.quiet {
+    @apply border-transparent bg-transparent shadow-none active:text-ink-primary dark:active:text-ink-primary-dark active:bg-surface-active dark:active:bg-surface-active-dark active:border-border dark:active:border-border-dark active:border active:shadow-[inset_0_1px_2px_var(--color-shadow)] active:[text-shadow:0_1px_var(--color-ink-shadow)] dark:active:shadow-[inset_0_1px_2px_var(--color-shadow-dark)] dark:active:[text-shadow:0_1px_var(--color-ink-shadow-dark)] hover:border-border dark:hover:border-border-dark hover:shadow-[inset_0_1px_rgba(255,255,255,0.2),0_1px_1px_rgba(0,0,0,0.05)] dark:hover:shadow-[inset_0_1px_var(--color-shadow-surface-dark),0_1px_1px_var(--color-shadow)] hover:border hover:[text-shadow:0_1px_var(--color-ink-shadow)] dark:hover:[text-shadow:0_1px_var(--color-ink-shadow-dark)] focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus)] focus-visible:outline-none dark:focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus-dark)];
+}
+
+.btn.large {
+    @apply px-5 py-2 text-lg font-semibold;
+}
+
+.btn.cta {
+    @apply border-border-primary bg-primary text-ink-inverse border font-medium shadow-[inset_0_1px_var(--color-shadow-surface)] [text-shadow:0_-1px_var(--color-ink-shadow-inverse)] hover:bg-primary-hover active:bg-primary-active active:shadow-[inset_0_1px_var(--color-shadow-primary)] disabled:bg-primary-disabled disabled:border-border-disabled focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus),inset_0_1px_var(--color-shadow-surface)] dark:focus-visible:shadow-[0_0_0_2px_var(--color-shadow-focus-dark),inset_0_1px_var(--color-shadow-surface)] focus-visible:outline-none;
+}
+
+.btn.left {
+    @apply rounded-tr-none rounded-br-none;
+}
+
+.btn.right {
+    @apply rounded-tl-none rounded-bl-none;
+}

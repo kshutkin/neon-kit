@@ -1,0 +1,3 @@
+.panel {
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark shadow-[inset_0_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_var(--color-shadow-surface-dark),0_1px_2px_var(--color-shadow-strong-dark)] border-border dark:border-border-dark relative inline-block overflow-hidden rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap [text-shadow:0_1px_var(--color-ink-shadow)] dark:[text-shadow:0_1px_var(--color-ink-shadow-dark)];
+}

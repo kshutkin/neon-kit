@@ -1,0 +1,32 @@
+{
+  "name": "@neon-kit/theme",
+  "version": "0.0.1",
+  "description": "@neon-kit/theme is a simple, lightweight, CSS theme for Tailwind CSS with optional neon-like colors / effects.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kshutkin/neon-kit.git"
+  },
+  "keywords": [
+    "theme",
+    "css",
+    "neon"
+  ],
+  "author": "Konstantin Shutkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kshutkin/neon-kit/issues"
+  },
+  "homepage": "https://github.com/kshutkin/neon-kit",
+  "scripts": {
+    "start": "npx npm-run-all -p tw http",
+    "tw": "npx @tailwindcss/cli -i ./index.css -o ./output.css --watch",
+    "http": "npx http-server ."
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "npm-run-all": "4.1.5",
+    "http-server": "14.1.1"
+  }
+}

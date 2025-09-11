@@ -1,0 +1,3 @@
+.link {
+    @apply inline-block no-underline motion-safe:transition-all motion-safe:duration-(--transition-duration) text-ink-primary dark:text-ink-primary-dark bg-size-[calc(100%_-_0.5rem)_calc(200%_-_0.5rem)] bg-[linear-gradient(to_top,var(--color-primary)_50%,transparent_50%)] hover:text-ink-inverse dark:hover:text-ink-inverse-dark hover:bg-size-[100%_200%] hover:bg-position-[0_100%];
+}

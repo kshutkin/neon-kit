@@ -1,0 +1,138 @@
+@theme {
+    --font-sans: "Hanken Grotesk", sans-serif;
+    --default-font-family: var(--font-sans);
+    --transition-duration: --theme(--default-transition-duration);
+
+    /* Neon accent colors */
+    --color-neon-white: oklch(100% 0 0);
+    --color-neon-blue: oklch(88% 0.15 202);
+    --color-neon-green: oklch(88% 0.25 148);
+    --color-neon-pink: oklch(70% 0.32 328);
+    --color-neon-yellow: oklch(97% 0.21 110);
+    --color-neon-orange: oklch(70% 0.2 43);
+    --color-neon-red: oklch(70% 0.3 15);
+
+    /* Light mode base colors */
+    --color-neutral: oklch(90% 0.02 200);
+
+    /* Dark mode base colors */
+    --color-neutral-dark: oklch(25% 0.02 200);
+
+    /* Semantic colors derived from base colors */
+
+    /* Ink colors */
+    --color-ink-primary: oklch(25% 0.02 200);
+    --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l + 0.27) c h);
+    --color-ink-muted: oklch(from var(--color-ink-primary) calc(l + 0.37) c h);
+    --color-ink-inverse: oklch(from var(--color-ink-primary) calc(l + 0.75) c h);
+    --color-ink-shadow: oklch(from var(--color-ink-primary) calc(l + 0.55) c h / 0.2);
+    --color-ink-shadow-inverse: oklch(from var(--color-ink-primary) l c h / 0.2);
+
+    /* Surface colors */
+    --color-surface: oklch(98% 0.005 200);
+    --color-surface-secondary: oklch(from var(--color-surface) calc(l - 0.03) c h);
+    --color-surface-hover: oklch(from var(--color-surface) calc(l - 0.05) c h);
+    --color-surface-active: oklch(from var(--color-surface) calc(l - 0.1) c h);
+    --color-surface-disabled: oklch(from var(--color-surface) calc(l - 0.2) c h);
+
+    /* Primary colors */
+    --color-primary: oklch(60% 0.15 220);
+    --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.06) calc(c * 0.85) h);
+    --color-primary-active: oklch(from var(--color-primary) calc(l - 0.05) calc(c * 0.87) h);
+    --color-primary-disabled: oklch(from var(--color-primary) calc(l + 0.15) calc(c * 0.57) h);
+
+    /* Border colors */
+    --color-border: oklch(from var(--color-neutral) calc(l - 0.13) c h);
+    --color-border-secondary: oklch(from var(--color-neutral) l c h / 0.6);
+    --color-border-primary: oklch(from var(--color-primary) calc(l - 0.035) calc(c * 0.91) h);
+    --color-border-focus: var(--color-primary);
+    --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
+
+    /* Shadow colors */
+    --color-shadow: oklch(from var(--color-ink-primary) l c h / 0.1);
+    --color-shadow-primary: oklch(from var(--color-primary) l c h / 0.15);
+    --color-shadow-surface: oklch(from var(--color-neon-white) l c h / 0.6);
+    --color-shadow-focus: oklch(from var(--color-primary) l c h / 0.3);
+    --color-shadow-strong: oklch(from var(--color-ink-primary) l c h / 0.2);
+
+    /* State colors */
+    --color-success: oklch(from var(--color-neon-green) calc(l - 0.13) calc(c * 0.82) h);
+    --color-warning: oklch(from var(--color-neon-orange) calc(l - 0.09) calc(c * 0.82) h);
+    --color-error: oklch(from var(--color-neon-red) calc(l - 0.09) calc(c * 0.82) h);
+    --color-info: oklch(from var(--color-neon-blue) calc(l - 0.13) calc(c * 0.83) h);
+
+    /* Additional semantic colors for theming flexibility */
+    --color-accent: var(--color-neon-blue);
+    --color-accent-hover: oklch(from var(--color-neon-blue) calc(l + 0.02) calc(c * 0.85) h);
+    --color-accent-active: oklch(from var(--color-neon-blue) calc(l - 0.16) calc(c * 0.78) h);
+
+    --color-muted: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.78) h);
+    --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.85) h);
+    --color-muted-active: oklch(from var(--color-neutral) calc(l - 0.26) c h);
+
+    /* Dark mode semantic colors for Tailwind utilities */
+
+    /* Dark ink colors */
+    --color-ink-primary-dark: oklch(92% 0.01 200);
+    --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
+    --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
+    --color-ink-inverse-dark: var(--color-ink-primary);
+    --color-ink-shadow-dark: oklch(from var(--color-ink-primary) calc(l + 0.15) c h / 0.2);
+    --color-ink-shadow-inverse-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.62) c h / 0.2);
+
+    /* Dark surface colors */
+    --color-surface-dark: oklch(15% 0.005 200);
+    --color-surface-secondary-dark: oklch(from var(--color-surface-dark) calc(l + 0.03) c h);
+    --color-surface-hover-dark: oklch(from var(--color-surface-dark) calc(l + 0.05) c h);
+    --color-surface-active-dark: oklch(from var(--color-surface-dark) calc(l + 0.1) c h);
+    --color-surface-disabled-dark: oklch(from var(--color-surface-dark) calc(l + 0.2) c h);
+
+    /* Dark primary colors */
+    --color-primary-dark: oklch(70% 0.15 220);
+    --color-primary-hover-dark: oklch(from var(--color-primary-dark) calc(l + 0.03) calc(c * 0.9) h);
+    --color-primary-active-dark: oklch(from var(--color-primary-dark) calc(l - 0.11) calc(c * 0.8) h);
+    --color-primary-disabled-dark: oklch(from var(--color-primary-dark) calc(l - 0.27) calc(c * 0.48) h);
+
+    /* Dark border colors */
+    --color-border-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.54) calc(c * 0.65) h);
+    --color-border-secondary-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.2);
+    --color-border-primary-dark: oklch(from var(--color-primary-dark) calc(l + 0.04) calc(c * 0.81) h);
+    --color-border-focus-dark: var(--color-primary-dark);
+    --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
+
+    /* Dark shadow colors */
+    --color-shadow-dark: oklch(from var(--color-ink-primary) l c h / 0.3);
+    --color-shadow-primary-dark: oklch(from var(--color-primary-dark) l c h / 0.25);
+    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.2);
+    --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
+    --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c h / 0.4);
+
+    /* Dark state colors */
+    --color-success-dark: oklch(from var(--color-neon-green) l calc(c * 0.86) h);
+    --color-warning-dark: oklch(from var(--color-neon-orange) calc(l + 0.03) calc(c * 0.86) h);
+    --color-error-dark: oklch(from var(--color-neon-red) calc(l + 0.03) calc(c * 0.86) h);
+    --color-info-dark: oklch(from var(--color-neon-blue) l calc(c * 0.86) h);
+
+    /* Dark additional semantic colors for theming flexibility */
+    --color-accent-dark: oklch(from var(--color-neon-blue) l calc(c * 0.91) h);
+    --color-accent-hover-dark: oklch(from var(--color-neon-blue) l calc(c * 0.95) h);
+    --color-accent-active-dark: oklch(from var(--color-neon-blue) calc(l - 0.15) calc(c * 0.8) h);
+
+    --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.7) h);
+    --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.2) calc(c * 0.85) h);
+    --color-muted-active-dark: oklch(from var(--color-neutral-dark) calc(l + 0.34) calc(c * 0.75) h);
+}
+
+:host,
+html {
+    font-family: --theme(--default-font-family);
+}
+
+body {
+    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}

@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color System Demo</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="theme-switcher.js" type="module"></script>
+  </head>
+  <body class="p-8">
+    <a href="index.html" class="mb-4 block text-blue-500 hover:underline">&larr; Back to Home</a>
+    <theme-switcher></theme-switcher>
+    <main>
+      <h1 class="mb-6">Color System Demo</h1>
+      <p class="mb-8 text-gray-600 dark:text-gray-400">
+        This page demonstrates all the colors defined in the theme.css file. Use
+        the theme switcher above to see how colors adapt between light and dark
+        modes.
+      </p>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Neon Accent Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-white flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:border-gray-600"
+            >
+              White
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon White
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-white
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-blue flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Blue
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Blue
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-blue
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-green flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Green
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Green
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-green
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-pink flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Pink
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Pink
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-pink
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-yellow flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:border-gray-600"
+            >
+              Yellow
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Yellow
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-yellow
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-orange flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Orange
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Orange
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-orange
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-neon-red flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Red
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Neon Red
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-neon-red
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Base Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-base-neutral dark:bg-base-neutral-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white dark:border-gray-600"
+            >
+              Neutral
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Base Neutral
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-base-neutral dark:bg-base-neutral-dark
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Text Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-ink-primary dark:bg-ink-primary-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Primary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Text Primary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                text-ink-primary dark:text-ink-primary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-ink-secondary dark:bg-ink-secondary-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Secondary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Text Secondary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                text-ink-secondary dark:text-ink-secondary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-ink-muted dark:bg-ink-muted-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white dark:border-gray-600"
+            >
+              Muted
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Text Muted
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                text-ink-muted dark:text-ink-muted-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-ink-inverse dark:bg-ink-inverse-dark text-ink-inverse dark:text-ink-inverse-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium dark:border-gray-600"
+            >
+              Inverse
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Text Inverse
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                text-ink-inverse dark:text-ink-inverse-dark
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 rounded-lg bg-gray-100 p-4 dark:bg-gray-900">
+          <h3 class="text-ink-primary dark:text-ink-primary-dark mb-2 text-lg font-semibold">
+            Primary Text Example
+          </h3>
+          <p class="text-ink-secondary dark:text-ink-secondary-dark">
+            This is secondary text - perfect for descriptions and supporting
+            content.
+          </p>
+          <p class="text-ink-muted dark:text-ink-muted-dark mt-2">
+            This is muted text - ideal for subtle information or disabled
+            states.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Surface Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark border-border dark:border-border-dark flex h-16 w-24 items-center justify-center rounded-lg border-2 text-xs font-medium text-black dark:text-white"
+            >
+              Surface
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Surface
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-surface dark:bg-surface-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface-secondary dark:bg-surface-secondary-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Secondary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Surface Secondary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-surface-secondary dark:bg-surface-secondary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface-hover dark:bg-surface-hover-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Hover
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Surface Hover
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-surface-hover dark:bg-surface-hover-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface-active dark:bg-surface-active-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Active
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Surface Active
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-surface-active dark:bg-surface-active-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface-disabled dark:bg-surface-disabled-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Disabled
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Surface Disabled
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-surface-disabled dark:bg-surface-disabled-dark
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Primary Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-primary dark:bg-primary-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Primary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Primary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-primary dark:bg-primary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-primary-hover dark:bg-primary-hover-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Hover
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Primary Hover
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-primary-hover dark:bg-primary-hover-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-primary-active dark:bg-primary-active-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Active
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Primary Active
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-primary-active dark:bg-primary-active-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-primary-disabled dark:bg-primary-disabled-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Disabled
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Primary Disabled
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-primary-disabled dark:bg-primary-disabled-dark
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 space-x-2 rounded-lg bg-gray-100 p-4 dark:bg-gray-900">
+          <button class="bg-primary dark:bg-primary-dark rounded px-4 py-2 text-white">
+            Primary Button
+          </button>
+          <button class="bg-primary-hover dark:bg-primary-hover-dark rounded px-4 py-2 text-white">
+            Hover State
+          </button>
+          <button class="bg-primary-active dark:bg-primary-active-dark rounded px-4 py-2 text-white">
+            Active State
+          </button>
+          <button
+            class="bg-primary-disabled dark:bg-primary-disabled-dark rounded px-4 py-2 text-white opacity-50"
+            disabled
+          >
+            Disabled
+          </button>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Border Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark flex h-16 w-24 items-center justify-center rounded-lg border-4 text-xs font-medium"
+            >
+              Border
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Border
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                border-border dark:border-border-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border-secondary dark:border-border-secondary-dark flex h-16 w-24 items-center justify-center rounded-lg border-4 text-xs font-medium"
+            >
+              Secondary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Border Secondary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                border-border-secondary dark:border-border-secondary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border-primary dark:border-border-primary-dark flex h-16 w-24 items-center justify-center rounded-lg border-4 text-xs font-medium"
+            >
+              Primary
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Border Primary
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                border-border-primary dark:border-border-primary-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border-focus dark:border-border-focus-dark flex h-16 w-24 items-center justify-center rounded-lg border-4 text-xs font-medium"
+            >
+              Focus
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Border Focus
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                border-border-focus dark:border-border-focus-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border-disabled dark:border-border-disabled-dark flex h-16 w-24 items-center justify-center rounded-lg border-4 text-xs font-medium"
+            >
+              Disabled
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Border Disabled
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                border-border-disabled dark:border-border-disabled-dark
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">State Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-success dark:bg-success-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Success
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Success
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-success dark:bg-success-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-warning dark:bg-warning-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Warning
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Warning
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-warning dark:bg-warning-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-error dark:bg-error-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Error
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Error
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-error dark:bg-error-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-info dark:bg-info-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Info
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Info
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-info dark:bg-info-dark
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 space-y-4">
+          <div
+            class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark"
+          >
+            <strong class="text-success dark:text-success-dark">✓ Success:</strong> Your changes have
+            been saved successfully.
+          </div>
+          <div
+            class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark"
+          >
+            <strong class="text-warning dark:text-warning-dark">⚠ Warning:</strong> This action cannot
+            be undone.
+          </div>
+          <div
+            class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark"
+          >
+            <strong class="text-error dark:text-error-dark">✗ Error:</strong> Please check your input
+            and try again.
+          </div>
+          <div
+            class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark"
+          >
+            <strong class="text-info dark:text-info-dark">ℹ Info:</strong> You have 3 unsaved
+            changes.
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Accent Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-accent dark:bg-accent-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Accent
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Accent
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-accent dark:bg-accent-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-accent-hover dark:bg-accent-hover-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Hover
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Accent Hover
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-accent-hover dark:bg-accent-hover-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-accent-active dark:bg-accent-active-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Active
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Accent Active
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-accent-active dark:bg-accent-active-dark
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Muted Colors</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-muted dark:bg-muted-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Muted
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Muted
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-muted dark:bg-muted-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-muted-hover dark:bg-muted-hover-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Hover
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Muted Hover
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-muted-hover dark:bg-muted-hover-dark
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class="bg-muted-active dark:bg-muted-active-dark flex h-16 w-24 items-center justify-center rounded-lg border border-gray-300 text-xs font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.5)] dark:border-gray-600"
+            >
+              Active
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-900 dark:text-white">
+                Muted Active
+              </div>
+              <div
+                class="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400"
+              >
+                bg-muted-active dark:bg-muted-active-dark
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold">Usage Notes</h2>
+        <div class="rounded-lg bg-gray-100 p-6 dark:bg-gray-900">
+          <h3 class="mb-3 text-lg font-semibold">About This Color System</h3>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <strong>Adaptive Design:</strong> All colors automatically adapt
+              between light and dark modes using CSS custom properties.
+            </li>
+            <li>
+              <strong>Semantic Naming:</strong> Colors are named by their
+              purpose (primary, secondary, success) rather than their appearance
+              (blue, red).
+            </li>
+            <li>
+              <strong>Color-mix Technology:</strong> Most colors are derived
+              from base colors using the CSS color-mix() function for
+              consistency.
+            </li>
+            <li>
+              <strong>OKLCH Color Space:</strong> Colors use OKLCH for better
+              perceptual uniformity and color manipulation.
+            </li>
+            <li>
+              <strong>Neon Accent System:</strong> Vibrant neon colors provide
+              the foundation for bright color palette.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Neon Theme Showcase</title>
+        <link rel="stylesheet" href="./output.css">
+        <script src="theme-switcher.js" type="module"></script>
+    </head>
+
+    <body>
+        <a href="index.html" class="mb-4 block text-blue-500 hover:underline">&larr; Back to Home</a>
+        <theme-switcher></theme-switcher>
+
+        <select>
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+        </select>
+
+        <hr />
+
+        <button type="button" hidden>Test</button>
+
+
+        Test <b>bold</b> and <i>italic</i> text.
+
+        <strong>Strong</strong> and <em>emphasis</em> text.
+
+        <small>Small</small> and <sup>superscript</sup> text.
+
+        <sub>Subscript</sub> and <small>small</small> text.
+
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <h5>Heading 5</h5>
+        <h6>Heading 6</h6>
+
+        <article>
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <h5>Heading 5</h5>
+            <h6>Heading 6</h6>
+        </article>
+
+
+        <code>Code</code>
+
+        <br>
+
+        <samp>Sample output</samp>
+
+        <br>
+
+        <kbd>Ctrl + S</kbd>
+
+        <br>
+
+        <pre>Preformatted
+
+            text</pre>
+
+
+        <p>Paragraph <samp>Sample output</samp> continued here</p>
+
+        <fieldset>
+            <legend>Fieldset</legend>
+            <p>Fieldset paragraph</p>
+            <input type="text" placeholder="Fieldset input">
+            <p>Progress</p>
+            Test: <progress value="50" max="100"></progress>
+            <p>Range</p>
+            <input type="range" min="0" max="100" value="50">
+            <p>Meter</p>
+            <meter value="50" min="0" max="100"></meter>
+            <p>Number</p>
+            <input type="number" min="0" max="100" value="50">
+            <p>Search</p>
+            <input type="search" placeholder="Search">
+            <p>File</p>
+            <input type="file">
+        </fieldset>
+
+        <picture>
+            <source srcset="https://placehold.co/600x400" type="image/png">
+            <img src="https://placehold.co/600x400" alt="Image Alt Text">
+        </picture>
+
+        <ul>
+            <li>List item 1 <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.8008 11.7834L8.07502 11.9256C9.09772 12.0398 9.90506 12.8507 10.0187 13.8779C10.1062 14.6689 10.6104 15.3515 11.3387 15.665L13 16.3547M13 16.3547L9.48838 19.8818C8.00407 21.3727 5.59754 21.3727 4.11323 19.8818C2.62892 18.391 2.62892 15.9738 4.11323 14.4829L14.8635 3.68504L20.2387 9.08398L18.429 10.9017M13 16.3547L16 13.3414M21 9.84867L14.1815 3" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+</svg></li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ul>
+
+        <ol>
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ol>
+
+        <dl>
+            <dt>Definition list</dt>
+            <dd>Definition list item 1</dd>
+            <dd>Definition list item 2</dd>
+            <dd>Definition list item 3</dd>
+        </dl>
+
+        <blockquote>
+            <p>Blockquote</p>
+        </blockquote>
+
+        <img src="https://placehold.co/600x400" alt="Image Alt Text" />
+
+        <hr />
+
+        <dialog id="testDialog">
+            Test
+        </dialog>
+
+        <button type="button" click="javascript:testDialog.showModal()">Open Dialog</button>
+
+        <audio controls src="https://storage.googleapis.com/kagglesdsdata/datasets/829978/1417968/harvard.wav?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250606%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250606T160428Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=633a759c767706763f420ca43f9a8f7ecd631bdb095f9100328c7a58edc6487d82fc8879015ac99680573d1f3b6f552057c99bcd8439456fbc3087f9547c91f2a1860c124ceeb32ab301603755cb52fa51618a05b8a446cfcecb19321907870202cafaefd8f69a70a7405dfa6f0be1076fbed404b39f6d16eb164a241852cb82da5e0fc8be1bba6f724514e14437d46d4cf1e0ee884b5fc19c2951638a156559c515a0064ff0f10f621ee12c3122813240f5f29d3769f47ea7348198e9f2fe3c42aaa1053a2b56503bbe5e6f2470ee33b4da96c3f42c7033cadcb0bee7879f7fb7744c186b4f574fc7488bbef28f219e26561f85551061f9de9e768378b117d6" alt="Audio Alt Text"></audio>
+        <audio src="https://storage.googleapis.com/kagglesdsdata/datasets/829978/1417968/harvard.wav?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250606%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250606T160428Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=633a759c767706763f420ca43f9a8f7ecd631bdb095f9100328c7a58edc6487d82fc8879015ac99680573d1f3b6f552057c99bcd8439456fbc3087f9547c91f2a1860c124ceeb32ab301603755cb52fa51618a05b8a446cfcecb19321907870202cafaefd8f69a70a7405dfa6f0be1076fbed404b39f6d16eb164a241852cb82da5e0fc8be1bba6f724514e14437d46d4cf1e0ee884b5fc19c2951638a156559c515a0064ff0f10f621ee12c3122813240f5f29d3769f47ea7348198e9f2fe3c42aaa1053a2b56503bbe5e6f2470ee33b4da96c3f42c7033cadcb0bee7879f7fb7744c186b4f574fc7488bbef28f219e26561f85551061f9de9e768378b117d6" alt="Audio Alt Text"></audio>
+
+        <table border="1" bordercolor="green">
+            <caption>Table Caption</caption>
+            <thead>
+                <tr>
+                    <th>Table Heading 1</th>
+                    <th>Table Heading 2</th>
+                    <th>Table Heading 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Table Data 1</td>
+                    <td>Table Data 2</td>
+                    <td>Table Data 3</td>
+                </tr>
+                <tr>
+                    <td>Table Data 1</td>
+                    <td>Table Data 2</td>
+                    <td>Table Data 3</td>
+                </tr>
+                <tr>
+                    <td>Table Data 1</td>
+                    <td>Table Data 2</td>
+                    <td>Table Data 3</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <details>
+            <summary>
+                I have keys but no doors. I have space but no room. You can enter but can’t
+                leave. What am I?
+            </summary>
+            A keyboard.
+        </details>
+
+        <abbr title="Abbreviation">Abbr</abbr>
+
+        <div style="color: green;">
+            <svg width="100" height="100">
+                <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+                <line x1="50" y1="50" x2="100" y2="100" stroke="red" stroke-width="4" />
+                <polygon points="60,25 100,100 40,100" stroke="blue" stroke-width="4" />
+            </svg>
+        </div>
+
+        <svg width="100" height="100" fill="red">
+            <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+            <line x1="50" y1="50" x2="100" y2="100" stroke="red" stroke-width="4" />
+            <polygon points="60,25 100,100 40,100" stroke="blue" stroke-width="4" />
+        </svg>
+    </body>
+</html>
