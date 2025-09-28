@@ -1,2 +1,6 @@
 packages:
-    - "theme"
+  - theme
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@tailwindcss/oxide'
