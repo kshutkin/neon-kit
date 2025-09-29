@@ -103,7 +103,7 @@
     /* Dark shadow colors */
     --color-shadow-dark: oklch(from var(--color-ink-primary) l c h / 0.3);
     --color-shadow-primary-dark: oklch(from var(--color-primary-dark) l c h / 0.25);
-    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.2);
+    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.3);
     --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
     --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c h / 0.4);
 

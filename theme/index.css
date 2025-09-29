@@ -4,9 +4,7 @@
 @import "tailwindcss/theme" layer(theme);
 @import "./theme.css" layer(theme);
 @import "./reset-normalize.css" layer(base);
-@import "./button.css" layer(components);
-@import "./panel.css" layer(components);
-@import "./links.css" layer(components);
+@import "./components.css" layer(components);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

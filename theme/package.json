@@ -13,7 +13,8 @@
     "neon"
   ],
   "files": [
-    "./*.css"
+    "./*.css",
+    "components"
   ],
   "author": "Konstantin Shutkin",
   "license": "MIT",
@@ -22,12 +23,12 @@
     "./package.json": "./package.json",
     "./index.css": "./index.css",
     "./index": "./index.css",
-    "./preflight.css": "./preflight.css",
-    "./preflight": "./preflight.css",
+    "./reset-normilize.css": "./reset-normilize.css",
+    "./reset-normilize": "./preflight.css",
     "./theme.css": "./theme.css",
     "./theme": "./theme.css",
-    "./utilities.css": "./utilities.css",
-    "./utilities": "./utilities.css"
+    "./components.css": "./components.css",
+    "./components": "./components.css"
   },
   "bugs": {
     "url": "https://github.com/kshutkin/neon-kit/issues"
@@ -35,8 +36,8 @@
   "homepage": "https://github.com/kshutkin/neon-kit",
   "scripts": {
     "start": "npx npm-run-all -p tw http",
-    "tw": "npx @tailwindcss/cli -i ./index.css -o ./output.css --watch",
-    "http": "npx http-server .",
+    "tw": "npx @tailwindcss/cli -i ./index.css -o ./docs/output.css --watch",
+    "http": "npx http-server ./docs/",
     "prepack": "npx pkgprn"
   },
   "devDependencies": {
