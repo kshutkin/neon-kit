@@ -107,6 +107,28 @@
     --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
     --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c h / 0.4);
 
+    /* Shadow tokens - Box shadows */
+    --shadow-elevated: inset 0 1px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.1);
+    --shadow-elevated-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 2px var(--color-shadow-strong-dark);
+    --shadow-inset: inset 0 1px 2px var(--color-shadow);
+    --shadow-inset-dark: inset 0 1px 2px var(--color-shadow-dark);
+    --shadow-highlight: inset 0 1px var(--color-shadow-surface);
+    --shadow-highlight-dark: inset 0 1px var(--color-shadow-surface-dark);
+    --shadow-highlight-pressed: inset 0 1px var(--color-shadow-primary);
+    --shadow-highlight-pressed-dark: inset 0 1px var(--color-shadow-primary-dark);
+    --shadow-focus-ring: 0 0 0 2px var(--color-shadow-focus);
+    --shadow-focus-ring-dark: 0 0 0 2px var(--color-shadow-focus-dark);
+    --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px rgba(255,255,255,0.3);
+    --shadow-focus-elevated-dark: 0 0 0 2px var(--color-shadow-focus-dark), inset 0 1px var(--color-shadow-surface-dark);
+    --shadow-subtle: inset 0 1px rgba(255,255,255,0.2), 0 1px 1px rgba(0,0,0,0.05);
+    --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow);
+
+    /* Text shadow tokens */
+    --text-shadow-embossed: 0 1px var(--color-ink-shadow);
+    --text-shadow-embossed-dark: 0 1px var(--color-ink-shadow-dark);
+    --text-shadow-debossed: 0 -1px var(--color-ink-shadow-inverse);
+    --text-shadow-debossed-dark: 0 -1px var(--color-ink-shadow-inverse-dark);
+
     /* Dark state colors */
     --color-success-dark: oklch(from var(--color-neon-green) l calc(c * 0.86) h);
     --color-warning-dark: oklch(from var(--color-neon-orange) calc(l + 0.03) calc(c * 0.86) h);
