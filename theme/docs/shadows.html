@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shadow Tokens Showcase - Tailwind 4</title>
-    <link rel="stylesheet" href="./output.css">
-    <script src="./theme-switcher.js"></script>
+    <link rel="stylesheet" href="output.css">
+    <script src="theme-switcher.js" type="module"></script>
 </head>
-<body class="bg-surface text-ink-primary dark:bg-surface-dark dark:text-ink-primary-dark p-8 transition-colors duration-300">
+<body class="p-8">
+    <theme-switcher style="display: none;"></theme-switcher>
 
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
@@ -15,22 +16,19 @@
                 <h1 class="text-3xl font-bold mb-2">Shadow Tokens Showcase</h1>
                 <p class="text-ink-secondary dark:text-ink-secondary-dark">Tailwind 4 automatic token-to-class mapping: <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">--shadow-* → shadow-*</code></p>
             </div>
-            <button id="theme-toggle" class="px-4 py-2 rounded-lg border border-border dark:border-border-dark bg-surface dark:bg-surface-dark hover:bg-surface-hover dark:hover:bg-surface-hover-dark">
-                Toggle Theme
-            </button>
         </div>
 
         <!-- ===================================================================== -->
         <!-- BOX SHADOWS - LIGHT MODE                                              -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Box Shadow Tokens (Light Mode)</h2>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Box Shadow Tokens</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 <!-- shadow-elevated -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-elevated flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Elevated</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-elevated dark:shadow-elevated-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Elevated</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-elevated</p>
@@ -40,9 +38,9 @@
                 </div>
 
                 <!-- shadow-subtle -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-subtle flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Subtle</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-subtle dark:shadow-subtle-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Subtle</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-subtle</p>
@@ -52,9 +50,9 @@
                 </div>
 
                 <!-- shadow-inset -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-inset flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Pressed</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-inset dark:shadow-inset-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Pressed</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-inset</p>
@@ -64,9 +62,9 @@
                 </div>
 
                 <!-- shadow-highlight -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-highlight flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Highlight</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-highlight dark:shadow-highlight-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Highlight</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-highlight</p>
@@ -76,9 +74,9 @@
                 </div>
 
                 <!-- shadow-highlight-pressed -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-primary rounded-lg shadow-highlight-pressed flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-inverse">Primary</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-primary dark:bg-primary-dark rounded-lg shadow-highlight-pressed dark:shadow-highlight-pressed-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-inverse dark:text-ink-inverse-dark">Primary</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-highlight-pressed</p>
@@ -88,9 +86,9 @@
                 </div>
 
                 <!-- shadow-focus-ring -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-focus-ring flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Focus</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-focus-ring dark:shadow-focus-ring-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Focus</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-focus-ring</p>
@@ -100,9 +98,9 @@
                 </div>
 
                 <!-- shadow-focus-elevated -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg shadow-focus-elevated flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary">Focus + Elevated</span>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-focus-elevated dark:shadow-focus-elevated-dark flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Focus + Elevated</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-focus-elevated</p>
@@ -118,234 +116,33 @@
         <!-- TEXT SHADOWS - LIGHT MODE                                             -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Text Shadow Tokens (Light Mode)</h2>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Text Shadow Tokens</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 <!-- text-shadow-embossed -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <div class="w-full h-32 bg-surface rounded-lg flex items-center justify-center">
-                        <p class="text-5xl font-bold text-ink-primary text-shadow-embossed">Aa</p>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
+                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg flex items-center justify-center">
+                        <p class="text-5xl font-bold text-ink-primary dark:text-ink-primary-dark text-shadow-embossed dark:text-shadow-embossed-dark">Aa</p>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">text-shadow-embossed</p>
-                        <code class="text-xs text-ink-muted break-all">--text-shadow-embossed</code>
-                        <p class="text-xs text-ink-secondary mt-2">Embossed/raised text effect</p>
+                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--text-shadow-embossed</code>
+                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Embossed/raised text effect</p>
                     </div>
                 </div>
 
                 <!-- text-shadow-debossed -->
-                <div class="p-6 border border-border rounded-lg bg-primary">
-                    <div class="w-full h-32 bg-primary rounded-lg flex items-center justify-center">
-                        <p class="text-5xl font-bold text-ink-inverse text-shadow-debossed">Aa</p>
+                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-primary dark:bg-primary-dark">
+                    <div class="w-full h-32 bg-primary dark:bg-primary-dark rounded-lg flex items-center justify-center">
+                        <p class="text-5xl font-bold text-ink-inverse dark:text-ink-inverse-dark text-shadow-debossed dark:text-shadow-debossed-dark">Aa</p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-sm mb-1 text-ink-inverse">text-shadow-debossed</p>
-                        <code class="text-xs text-ink-inverse/70 break-all">--text-shadow-debossed</code>
-                        <p class="text-xs text-ink-inverse/80 mt-2">Debossed/pressed text effect</p>
+                        <p class="font-bold text-sm mb-1 text-ink-inverse dark:text-ink-inverse-dark">text-shadow-debossed</p>
+                        <code class="text-xs text-ink-inverse/70 dark:text-ink-inverse-dark/70 break-all">--text-shadow-debossed</code>
+                        <p class="text-xs text-ink-inverse/80 dark:text-ink-inverse-dark/80 mt-2">Debossed/pressed text effect</p>
                     </div>
                 </div>
 
-            </div>
-        </section>
-
-        <!-- ===================================================================== -->
-        <!-- USAGE EXAMPLES                                                        -->
-        <!-- ===================================================================== -->
-        <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Usage Examples</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                <!-- Button Examples -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <h3 class="font-bold mb-4">Button States</h3>
-                    <div class="space-y-4">
-                        <button class="w-full px-6 py-3 rounded-lg bg-surface shadow-elevated hover:shadow-subtle active:shadow-inset transition-shadow">
-                            <span class="text-shadow-embossed">Default Button</span>
-                        </button>
-                        <button class="w-full px-6 py-3 rounded-lg bg-primary text-ink-inverse shadow-highlight-pressed hover:shadow-elevated active:shadow-inset transition-shadow">
-                            <span class="text-shadow-debossed">Primary Button</span>
-                        </button>
-                        <button class="w-full px-6 py-3 rounded-lg bg-surface shadow-focus-ring">
-                            <span class="text-shadow-embossed">Focused Button</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card Examples -->
-                <div class="p-6 border border-border rounded-lg bg-surface">
-                    <h3 class="font-bold mb-4">Card Variations</h3>
-                    <div class="space-y-4">
-                        <div class="p-4 rounded-lg bg-surface shadow-elevated">
-                            <p class="font-medium text-shadow-embossed">Elevated Card</p>
-                            <p class="text-sm text-ink-secondary mt-1">Uses shadow-elevated</p>
-                        </div>
-                        <div class="p-4 rounded-lg bg-surface shadow-subtle">
-                            <p class="font-medium text-shadow-embossed">Subtle Card</p>
-                            <p class="text-sm text-ink-secondary mt-1">Uses shadow-subtle</p>
-                        </div>
-                        <div class="p-4 rounded-lg bg-surface shadow-inset">
-                            <p class="font-medium text-ink-secondary">Inset Card</p>
-                            <p class="text-sm text-ink-secondary mt-1">Uses shadow-inset</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- ===================================================================== -->
-        <!-- DARK MODE SHADOWS                                                     -->
-        <!-- ===================================================================== -->
-        <section class="mb-16">
-            <div class="p-8 rounded-xl bg-surface-dark border border-border-dark">
-                <h2 class="text-2xl font-semibold mb-6 border-b border-border-dark pb-2 text-ink-primary-dark">Box Shadow Tokens (Dark Mode)</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                    <!-- shadow-elevated (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-elevated-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Elevated</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-elevated-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-elevated-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-subtle (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-subtle-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Subtle</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-subtle-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-subtle-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-inset (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-inset-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Pressed</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-inset-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-inset-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-highlight (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-highlight-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Highlight</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-highlight-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-highlight-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-highlight-pressed (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-primary-dark rounded-lg dark:shadow-highlight-pressed-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-inverse-dark">Primary</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-highlight-pressed-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-highlight-pressed-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-focus-ring (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-focus-ring-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Focus</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-focus-ring-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-focus-ring-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- shadow-focus-elevated (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg dark:shadow-focus-elevated-dark flex items-center justify-center">
-                            <span class="text-sm font-medium text-ink-secondary-dark">Focus + Elevated</span>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:shadow-focus-elevated-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--shadow-focus-elevated-dark</code>
-                        </div>
-                    </div>
-
-                </div>
-
-                <h2 class="text-2xl font-semibold mt-12 mb-6 border-b border-border-dark pb-2 text-ink-primary-dark">Text Shadow Tokens (Dark Mode)</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                    <!-- text-shadow-embossed (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <div class="w-full h-32 bg-surface-dark rounded-lg flex items-center justify-center">
-                            <p class="text-5xl font-bold text-ink-primary-dark dark:text-shadow-embossed-dark">Aa</p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-primary-dark">dark:text-shadow-embossed-dark</p>
-                            <code class="text-xs text-ink-muted-dark break-all">--text-shadow-embossed-dark</code>
-                        </div>
-                    </div>
-
-                    <!-- text-shadow-debossed (dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-primary-dark">
-                        <div class="w-full h-32 bg-primary-dark rounded-lg flex items-center justify-center">
-                            <p class="text-5xl font-bold text-ink-inverse-dark dark:text-shadow-debossed-dark">Aa</p>
-                        </div>
-                        <div class="mt-4">
-                            <p class="font-bold text-sm mb-1 text-ink-inverse-dark">dark:text-shadow-debossed-dark</p>
-                            <code class="text-xs text-ink-inverse-dark/70 break-all">--text-shadow-debossed-dark</code>
-                        </div>
-                    </div>
-
-                </div>
-
-                <h2 class="text-2xl font-semibold mt-12 mb-6 border-b border-border-dark pb-2 text-ink-primary-dark">Dark Mode Usage Examples</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                    <!-- Button Examples (Dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <h3 class="font-bold mb-4 text-ink-primary-dark">Button States</h3>
-                        <div class="space-y-4">
-                            <button class="w-full px-6 py-3 rounded-lg bg-surface-dark dark:shadow-elevated-dark hover:dark:shadow-subtle-dark active:dark:shadow-inset-dark transition-shadow">
-                                <span class="dark:text-shadow-embossed-dark text-ink-primary-dark">Default Button</span>
-                            </button>
-                            <button class="w-full px-6 py-3 rounded-lg bg-primary-dark text-ink-inverse-dark dark:shadow-highlight-pressed-dark hover:dark:shadow-elevated-dark active:dark:shadow-inset-dark transition-shadow">
-                                <span class="dark:text-shadow-debossed-dark">Primary Button</span>
-                            </button>
-                            <button class="w-full px-6 py-3 rounded-lg bg-surface-dark dark:shadow-focus-ring-dark">
-                                <span class="dark:text-shadow-embossed-dark text-ink-primary-dark">Focused Button</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Card Examples (Dark) -->
-                    <div class="p-6 border border-border-dark rounded-lg bg-surface-dark">
-                        <h3 class="font-bold mb-4 text-ink-primary-dark">Card Variations</h3>
-                        <div class="space-y-4">
-                            <div class="p-4 rounded-lg bg-surface-dark dark:shadow-elevated-dark">
-                                <p class="font-medium dark:text-shadow-embossed-dark text-ink-primary-dark">Elevated Card</p>
-                                <p class="text-sm text-ink-secondary-dark mt-1">Uses shadow-elevated-dark</p>
-                            </div>
-                            <div class="p-4 rounded-lg bg-surface-dark dark:shadow-subtle-dark">
-                                <p class="font-medium dark:text-shadow-embossed-dark text-ink-primary-dark">Subtle Card</p>
-                                <p class="text-sm text-ink-secondary-dark mt-1">Uses shadow-subtle-dark</p>
-                            </div>
-                            <div class="p-4 rounded-lg bg-surface-dark dark:shadow-inset-dark">
-                                <p class="font-medium text-ink-secondary-dark">Inset Card</p>
-                                <p class="text-sm text-ink-secondary-dark mt-1">Uses shadow-inset-dark</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </section>
 

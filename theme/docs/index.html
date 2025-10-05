@@ -1,27 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-screen bg-gray-100 dark:bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Project TOC</title>
+    <title>Neon Project</title>
     <link rel="stylesheet" href="output.css">
 </head>
-<body class="p-8">
-    <header>
-        <h1>Project Neon</h1>
-    </header>
-    <main>
-        <nav>
-            <ul>
-                <li><a href="buttons.html">Buttons</a></li>
-                <li><a href="panels.html">Panels</a></li>
-                <li><a href="typography.html">Typography</a></li>
-                <li><a href="colors.html">Colors</a></li>
-                <li><a href="links.html">Links</a></li>
+<body class="flex min-h-screen">
+    <aside class="w-64 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+        <header class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h1 class="text-2xl font-bold">Project Neon</h1>
+        </header>
+        <nav class="flex-1 p-4 space-y-2">
+            <ul class="list-none">
+                <li><a href="#/buttons" class="block hover:text-blue-500">Buttons</a></li>
+                <li><a href="#/panels" class="block hover:text-blue-500">Panels</a></li>
+                <li><a href="#/typography" class="block hover:text-blue-500">Typography</a></li>
+                <li><a href="#/colors" class="block hover:text-blue-500">Colors</a></li>
+                <li><a href="#/links" class="block hover:text-blue-500">Links</a></li>
+                <li><a href="#/shadows" class="block hover:text-blue-500">Shadows</a></li>
             </ul>
         </nav>
+        <footer class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <theme-switcher></theme-switcher>
+        </footer>
+    </aside>
+    <main class="flex-1">
+        <iframe name="content-frame" src="" class="w-full h-full border-0"></iframe>
     </main>
-    <theme-switcher></theme-switcher>
     <script src="theme-switcher.js" type="module"></script>
+    <script type="module">
+        const listen = (cb) => {
+            const hashChangeListener = () => {
+                cb(pathname());
+            };
+            addEventListener("hashchange", hashChangeListener, false);
+            hashChangeListener();
+            return () => {
+                removeEventListener("hashchange", hashChangeListener);
+            };
+        };
+
+        const pathname = () => location.hash.slice(1) || "/";
+
+        const links = document.querySelectorAll('nav a');
+        const iframe = document.querySelector('iframe[name="content-frame"]');
+
+        const setActiveLink = (currentPath) => {
+            for (const link of links) {
+                const linkHash = link.getAttribute('href').slice(1); // Remove the # prefix
+                if (linkHash === currentPath) {
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'font-bold');
+                    link.classList.remove('hover:text-blue-500');
+                } else {
+                    link.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-bold');
+                    link.classList.add('hover:text-blue-500');
+                }
+            }
+        };
+
+        const loadSection = (path) => {
+            // Remove leading slash and add .html extension
+            const section = path.slice(1) || 'buttons';
+            iframe.src = `${section}.html`;
+            setActiveLink(path);
+        };
+
+        // Listen for hash changes
+        listen((path) => {
+            loadSection(path);
+        });
+    </script>
 </body>
 </html>
