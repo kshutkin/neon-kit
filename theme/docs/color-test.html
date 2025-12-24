@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color System Test - Primary Color Changer</title>
+    <link rel="stylesheet" href="output.css">
+    <script src="theme-switcher.js" type="module"></script>
+    <style>
+        .color-picker-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+        }
+        .color-picker-wrapper input[type="color"] {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--color-border);
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .color-info {
+            flex: 1;
+        }
+        .color-info code {
+            font-size: 0.9rem;
+            background: var(--color-surface-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .color-swatch {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+        }
+        .color-swatch-color {
+            width: 100%;
+            height: 80px;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--color-border);
+        }
+        .color-swatch-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .color-swatch-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--color-ink-secondary);
+            word-break: break-all;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section h2 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--color-surface-secondary);
+            border-left: 4px solid var(--color-primary);
+        }
+        .alert-warning {
+            border-left-color: var(--color-warning);
+        }
+    </style>
+</head>
+<body class="p-8">
+    <theme-switcher style="display: none;"></theme-switcher>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold mb-2">Color System Test</h1>
+            <p class="text-ink-secondary dark:text-ink-secondary-dark">
+                Interactive test page to preview how changing <code>--color-primary</code> affects all derived colors.
+            </p>
+        </div>
+
+        <div class="alert">
+            <strong>Note:</strong> This page dynamically updates <code>--color-primary</code> and the helper variables 
+            <code>--_primary-hue</code> and <code>--_primary-chroma</code> for testing. To permanently change the primary 
+            color, update these values in <code>theme.css</code>. State colors (success, warning, error, info) are 
+            independent of the primary color and will not change.
+        </div>
+
+        <div class="section">
+            <h2>Primary Color Control</h2>
+            <div class="color-picker-wrapper">
+                <input type="color" id="primary-color-picker" value="#4a90e2">
+                <div class="color-info">
+                    <div class="font-semibold mb-2">Primary Color</div>
+                    <div class="mb-2">
+                        <label for="primary-l">Lightness: </label>
+                        <input type="range" id="primary-l" min="0" max="100" value="60" step="1">
+                        <span id="primary-l-value">60</span>%
+                    </div>
+                    <div class="mb-2">
+                        <label for="primary-c">Chroma: </label>
+                        <input type="range" id="primary-c" min="0" max="0.5" value="0.15" step="0.01">
+                        <span id="primary-c-value">0.15</span>
+                    </div>
+                    <div class="mb-2">
+                        <label for="primary-h">Hue: </label>
+                        <input type="range" id="primary-h" min="0" max="360" value="220" step="1">
+                        <span id="primary-h-value">220</span>°
+                    </div>
+                    <div class="mt-2">
+                        <code id="primary-oklch">oklch(60% 0.15 220)</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Primary Colors</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-primary);"></div>
+                    <div class="color-swatch-name">Primary</div>
+                    <div class="color-swatch-value">--color-primary</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-primary-hover);"></div>
+                    <div class="color-swatch-name">Primary Hover</div>
+                    <div class="color-swatch-value">--color-primary-hover</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-primary-active);"></div>
+                    <div class="color-swatch-name">Primary Active</div>
+                    <div class="color-swatch-value">--color-primary-active</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-primary-disabled);"></div>
+                    <div class="color-swatch-name">Primary Disabled</div>
+                    <div class="color-swatch-value">--color-primary-disabled</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>State Colors <span style="font-size: 0.8em; font-weight: normal; color: var(--color-ink-secondary);">(independent of primary)</span></h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-success);"></div>
+                    <div class="color-swatch-name">Success</div>
+                    <div class="color-swatch-value">--color-success</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-warning);"></div>
+                    <div class="color-swatch-name">Warning</div>
+                    <div class="color-swatch-value">--color-warning</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-error);"></div>
+                    <div class="color-swatch-name">Error</div>
+                    <div class="color-swatch-value">--color-error</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-info);"></div>
+                    <div class="color-swatch-name">Info</div>
+                    <div class="color-swatch-value">--color-info</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Accent Colors</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-accent);"></div>
+                    <div class="color-swatch-name">Accent</div>
+                    <div class="color-swatch-value">--color-accent</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-accent-hover);"></div>
+                    <div class="color-swatch-name">Accent Hover</div>
+                    <div class="color-swatch-value">--color-accent-hover</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-accent-active);"></div>
+                    <div class="color-swatch-name">Accent Active</div>
+                    <div class="color-swatch-value">--color-accent-active</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Shadow Colors</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-shadow);"></div>
+                    <div class="color-swatch-name">Shadow</div>
+                    <div class="color-swatch-value">--color-shadow</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-shadow-primary);"></div>
+                    <div class="color-swatch-name">Shadow Primary</div>
+                    <div class="color-swatch-value">--color-shadow-primary</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-shadow-surface);"></div>
+                    <div class="color-swatch-name">Shadow Surface</div>
+                    <div class="color-swatch-value">--color-shadow-surface</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-shadow-focus);"></div>
+                    <div class="color-swatch-name">Shadow Focus</div>
+                    <div class="color-swatch-value">--color-shadow-focus</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-shadow-strong);"></div>
+                    <div class="color-swatch-name">Shadow Strong</div>
+                    <div class="color-swatch-value">--color-shadow-strong</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Border Colors</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-border-primary);"></div>
+                    <div class="color-swatch-name">Border Primary</div>
+                    <div class="color-swatch-value">--color-border-primary</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-color" style="background: var(--color-border-focus);"></div>
+                    <div class="color-swatch-name">Border Focus</div>
+                    <div class="color-swatch-value">--color-border-focus</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Live Preview</h2>
+            <div class="p-6 rounded-lg border border-border" style="background: var(--color-surface);">
+                <h3 class="text-xl font-semibold mb-4" style="color: var(--color-primary);">Sample Heading with Primary Color</h3>
+                <p class="mb-4" style="color: var(--color-ink-primary);">
+                    This is regular text. The primary color is used for interactive elements.
+                </p>
+                <div class="flex gap-2 mb-4">
+                    <button class="px-4 py-2 rounded" style="background: var(--color-primary); color: var(--color-ink-inverse);">
+                        Primary Button
+                    </button>
+                    <button class="px-4 py-2 rounded border" style="background: var(--color-accent); color: var(--color-ink-inverse);">
+                        Accent Button
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <div class="p-3 rounded" style="background: var(--color-success); color: white;">
+                        ✓ Success message
+                    </div>
+                    <div class="p-3 rounded" style="background: var(--color-warning); color: white;">
+                        ⚠ Warning message
+                    </div>
+                    <div class="p-3 rounded" style="background: var(--color-error); color: white;">
+                        ✗ Error message
+                    </div>
+                    <div class="p-3 rounded" style="background: var(--color-info); color: white;">
+                        ℹ Info message
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Convert OKLCH to RGB for color picker
+        function oklchToRgb(l, c, h) {
+            // Simplified conversion - in production, use a proper color library
+            // This is a basic approximation
+            const L = l / 100;
+            const a = c * Math.cos((h * Math.PI) / 180);
+            const b = c * Math.sin((h * Math.PI) / 180);
+            
+            // Convert Lab to XYZ (simplified)
+            const fy = (L + 16) / 116;
+            const fx = a / 500 + fy;
+            const fz = fy - b / 200;
+            
+            const xr = fx > 0.206897 ? fx * fx * fx : (fx - 16/116) / 7.787;
+            const yr = fy > 0.206897 ? fy * fy * fy : (fy - 16/116) / 7.787;
+            const zr = fz > 0.206897 ? fz * fz * fz : (fz - 16/116) / 7.787;
+            
+            // D65 white point
+            const X = xr * 0.95047;
+            const Y = yr * 1.00000;
+            const Z = zr * 1.08883;
+            
+            // XYZ to RGB
+            let r = X *  3.2404542 + Y * -1.5371385 + Z * -0.4985314;
+            let g = X * -0.9692660 + Y *  1.8760108 + Z *  0.0415560;
+            let bl = X *  0.0556434 + Y * -0.2040259 + Z *  1.0572252;
+            
+            r = r > 0.0031308 ? 1.055 * Math.pow(r, 1/2.4) - 0.055 : 12.92 * r;
+            g = g > 0.0031308 ? 1.055 * Math.pow(g, 1/2.4) - 0.055 : 12.92 * g;
+            bl = bl > 0.0031308 ? 1.055 * Math.pow(bl, 1/2.4) - 0.055 : 12.92 * bl;
+            
+            return [
+                Math.max(0, Math.min(255, Math.round(r * 255))),
+                Math.max(0, Math.min(255, Math.round(g * 255))),
+                Math.max(0, Math.min(255, Math.round(bl * 255)))
+            ];
+        }
+        
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        // Get current primary color from CSS
+        function getCurrentPrimaryColor() {
+            const root = document.documentElement;
+            const computed = getComputedStyle(root).getPropertyValue('--color-primary').trim();
+            // Parse oklch(60% 0.15 220)
+            const match = computed.match(/oklch\(([\d.]+)%\s+([\d.]+)\s+([\d.]+)\)/);
+            if (match) {
+                return {
+                    l: parseFloat(match[1]),
+                    c: parseFloat(match[2]),
+                    h: parseFloat(match[3])
+                };
+            }
+            return { l: 60, c: 0.15, h: 220 };
+        }
+
+        function updatePrimaryColor(l, c, h) {
+            // Use theme-switcher's public API if available
+            const themeSwitcher = document.querySelector('theme-switcher');
+            if (themeSwitcher && typeof themeSwitcher.setPrimaryColor === 'function') {
+                themeSwitcher.setPrimaryColor(l, c, h);
+            } else {
+                // Fallback: update directly
+                const root = document.documentElement;
+                const oklch = `oklch(${l}% ${c} ${h})`;
+                root.style.setProperty('--color-primary', oklch);
+                root.style.setProperty('--_primary-hue', h);
+                root.style.setProperty('--_primary-chroma', c);
+            }
+            
+            // Update display
+            const oklch = `oklch(${l}% ${c} ${h})`;
+            document.getElementById('primary-oklch').textContent = oklch;
+            document.getElementById('primary-l-value').textContent = l;
+            document.getElementById('primary-c-value').textContent = c;
+            document.getElementById('primary-h-value').textContent = h;
+            
+            // Update color picker (approximate)
+            const [r, g, b] = oklchToRgb(l, c, h);
+            document.getElementById('primary-color-picker').value = rgbToHex(r, g, b);
+        }
+
+        // Initialize
+        const themeSwitcher = document.querySelector('theme-switcher');
+        let current;
+        if (themeSwitcher && typeof themeSwitcher.getPrimaryColor === 'function') {
+            current = themeSwitcher.getPrimaryColor();
+        } else {
+            current = getCurrentPrimaryColor();
+        }
+        document.getElementById('primary-l').value = current.l;
+        document.getElementById('primary-c').value = current.c;
+        document.getElementById('primary-h').value = current.h;
+        updatePrimaryColor(current.l, current.c, current.h);
+
+        // Event listeners
+        document.getElementById('primary-l').addEventListener('input', (e) => {
+            const l = parseFloat(e.target.value);
+            const c = parseFloat(document.getElementById('primary-c').value);
+            const h = parseFloat(document.getElementById('primary-h').value);
+            updatePrimaryColor(l, c, h);
+        });
+
+        document.getElementById('primary-c').addEventListener('input', (e) => {
+            const l = parseFloat(document.getElementById('primary-l').value);
+            const c = parseFloat(e.target.value);
+            const h = parseFloat(document.getElementById('primary-h').value);
+            updatePrimaryColor(l, c, h);
+        });
+
+        document.getElementById('primary-h').addEventListener('input', (e) => {
+            const l = parseFloat(document.getElementById('primary-l').value);
+            const c = parseFloat(document.getElementById('primary-c').value);
+            const h = parseFloat(e.target.value);
+            updatePrimaryColor(l, c, h);
+        });
+    </script>
+</body>
+</html>

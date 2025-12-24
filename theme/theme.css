@@ -35,8 +35,13 @@
     --color-surface-active: oklch(from var(--color-surface) calc(l - 0.1) c h);
     --color-surface-disabled: oklch(from var(--color-surface) calc(l - 0.2) c h);
 
-    /* Primary colors */
-    --color-primary: oklch(60% 0.15 220);
+    /* Primary color components */
+    --primary-lightness: 60;
+    --primary-chroma: 0.15;
+    --primary-hue: 220;
+
+    /* Primary colors - constructed from components */
+    --color-primary: oklch(calc(var(--primary-lightness) * 1%) var(--primary-chroma) var(--primary-hue));
     --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.06) calc(c * 0.85) h);
     --color-primary-active: oklch(from var(--color-primary) calc(l - 0.05) calc(c * 0.87) h);
     --color-primary-disabled: oklch(from var(--color-primary) calc(l + 0.15) calc(c * 0.57) h);
@@ -48,23 +53,27 @@
     --color-border-focus: var(--color-primary);
     --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
 
-    /* Shadow colors */
-    --color-shadow: oklch(from var(--color-ink-primary) l c h / 0.1);
+    /* Shadow colors - neutral shadows get slight primary accent */
+    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue 200, 10% primary hue) */
+    --color-shadow: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.1);
     --color-shadow-primary: oklch(from var(--color-primary) l c h / 0.15);
-    --color-shadow-surface: oklch(from var(--color-neon-white) l c h / 0.6);
+    /* Shadow surface: white with very slight primary tint (5% chroma from primary) */
+    --color-shadow-surface: oklch(100% calc(var(--primary-chroma) * 0.05) var(--primary-hue) / 0.6);
     --color-shadow-focus: oklch(from var(--color-primary) l c h / 0.3);
-    --color-shadow-strong: oklch(from var(--color-ink-primary) l c h / 0.2);
+    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue 200, 10% primary hue) */
+    --color-shadow-strong: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.2);
 
-    /* State colors */
+    /* State colors - independent of primary color, using neon accent colors */
     --color-success: oklch(from var(--color-neon-green) calc(l - 0.13) calc(c * 0.82) h);
     --color-warning: oklch(from var(--color-neon-orange) calc(l - 0.09) calc(c * 0.82) h);
     --color-error: oklch(from var(--color-neon-red) calc(l - 0.09) calc(c * 0.82) h);
     --color-info: oklch(from var(--color-neon-blue) calc(l - 0.13) calc(c * 0.83) h);
 
-    /* Additional semantic colors for theming flexibility */
-    --color-accent: var(--color-neon-blue);
-    --color-accent-hover: oklch(from var(--color-neon-blue) calc(l + 0.02) calc(c * 0.85) h);
-    --color-accent-active: oklch(from var(--color-neon-blue) calc(l - 0.16) calc(c * 0.78) h);
+    /* Additional semantic colors for theming flexibility - derived from primary */
+    /* Accent uses primary with higher lightness to match original neon-blue (88% 0.15 202) */
+    --color-accent: oklch(from var(--color-primary) calc(l + 0.28) c calc(h - 18));
+    --color-accent-hover: oklch(from var(--color-accent) calc(l + 0.02) calc(c * 0.85) h);
+    --color-accent-active: oklch(from var(--color-accent) calc(l - 0.16) calc(c * 0.78) h);
 
     --color-muted: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.78) h);
     --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.85) h);
@@ -87,8 +96,8 @@
     --color-surface-active-dark: oklch(from var(--color-surface-dark) calc(l + 0.1) c h);
     --color-surface-disabled-dark: oklch(from var(--color-surface-dark) calc(l + 0.2) c h);
 
-    /* Dark primary colors */
-    --color-primary-dark: oklch(70% 0.15 220);
+    /* Dark primary colors - derived from primary */
+    --color-primary-dark: oklch(from var(--color-primary) calc(l + 0.1) c h);
     --color-primary-hover-dark: oklch(from var(--color-primary-dark) calc(l + 0.03) calc(c * 0.9) h);
     --color-primary-active-dark: oklch(from var(--color-primary-dark) calc(l - 0.11) calc(c * 0.8) h);
     --color-primary-disabled-dark: oklch(from var(--color-primary-dark) calc(l - 0.27) calc(c * 0.48) h);
@@ -100,12 +109,15 @@
     --color-border-focus-dark: var(--color-primary-dark);
     --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
 
-    /* Dark shadow colors */
-    --color-shadow-dark: oklch(from var(--color-ink-primary) l c h / 0.3);
+    /* Dark shadow colors - neutral shadows get slight primary accent */
+    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral, 10% primary hue) */
+    --color-shadow-dark: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.3);
     --color-shadow-primary-dark: oklch(from var(--color-primary-dark) l c h / 0.25);
-    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.3);
+    /* Shadow surface: neutral with slight primary tint */
+    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.3);
     --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
-    --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c h / 0.4);
+    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral, 10% primary hue) */
+    --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.4);
 
     /* Shadow tokens - Box shadows */
     --shadow-elevated: inset 0 1px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.1);
@@ -129,16 +141,16 @@
     --text-shadow-debossed: 0 -1px var(--color-ink-shadow-inverse);
     --text-shadow-debossed-dark: 0 -1px var(--color-ink-shadow-inverse-dark);
 
-    /* Dark state colors */
+    /* Dark state colors - independent of primary color, using neon accent colors */
     --color-success-dark: oklch(from var(--color-neon-green) l calc(c * 0.86) h);
     --color-warning-dark: oklch(from var(--color-neon-orange) calc(l + 0.03) calc(c * 0.86) h);
     --color-error-dark: oklch(from var(--color-neon-red) calc(l + 0.03) calc(c * 0.86) h);
     --color-info-dark: oklch(from var(--color-neon-blue) l calc(c * 0.86) h);
 
-    /* Dark additional semantic colors for theming flexibility */
-    --color-accent-dark: oklch(from var(--color-neon-blue) l calc(c * 0.91) h);
-    --color-accent-hover-dark: oklch(from var(--color-neon-blue) l calc(c * 0.95) h);
-    --color-accent-active-dark: oklch(from var(--color-neon-blue) calc(l - 0.15) calc(c * 0.8) h);
+    /* Dark additional semantic colors for theming flexibility - derived from primary */
+    --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - 18));
+    --color-accent-hover-dark: oklch(from var(--color-accent-dark) l calc(c * 0.95) h);
+    --color-accent-active-dark: oklch(from var(--color-accent-dark) calc(l - 0.15) calc(c * 0.8) h);
 
     --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.7) h);
     --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.2) calc(c * 0.85) h);

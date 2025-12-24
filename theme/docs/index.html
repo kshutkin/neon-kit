@@ -59,12 +59,40 @@
             }
         };
 
+        const syncPrimaryColorToIframe = () => {
+            const themeSwitcher = document.querySelector('theme-switcher');
+            if (themeSwitcher && typeof themeSwitcher.getPrimaryColor === 'function') {
+                const primaryColor = themeSwitcher.getPrimaryColor();
+                try {
+                    if (iframe.contentWindow) {
+                        // Wait a bit for iframe to be ready
+                        setTimeout(() => {
+                            iframe.contentWindow.postMessage(
+                                { type: "primary-color-sync", primaryColor },
+                                "*"
+                            );
+                        }, 100);
+                    }
+                } catch (e) {
+                    console.warn("Could not sync primary color to iframe:", e);
+                }
+            }
+        };
+
         const loadSection = (path) => {
             // Remove leading slash and add .html extension
             const section = path.slice(1) || 'buttons';
             iframe.src = `${section}.html`;
             setActiveLink(path);
+            
+            // Notify iframe of current primary color after it loads
+            iframe.addEventListener('load', syncPrimaryColorToIframe, { once: true });
         };
+        
+        // Also sync when iframe is already loaded (for initial page load)
+        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+            syncPrimaryColorToIframe();
+        }
 
         // Listen for hash changes
         listen((path) => {
