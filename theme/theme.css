@@ -41,9 +41,9 @@
     --color-surface-disabled: oklch(from var(--color-surface) calc(l - 0.2) c h);
 
     /* Primary color components */
-    --primary-lightness: 60;
-    --primary-chroma: 0.15;
-    --primary-hue: 220;
+    --primary-lightness: 38; /* oklch(38% 0.2 245) */
+    --primary-chroma: 0.2;
+    --primary-hue: 245;
 
     /* Accent hue offset — shifts accent away from primary toward cyan/blue */
     --accent-hue-offset: 18;
