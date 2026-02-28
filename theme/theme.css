@@ -12,16 +12,21 @@
     --color-neon-orange: oklch(70% 0.2 43);
     --color-neon-red: oklch(70% 0.3 15);
 
+    /* Neutral color components — change these to shift the entire neutral temperature */
+    --neutral-hue: 200;
+    --neutral-chroma: 0.02;
+    --surface-chroma: 0.005;
+
     /* Light mode base colors */
-    --color-neutral: oklch(90% 0.02 200);
+    --color-neutral: oklch(90% var(--neutral-chroma) var(--neutral-hue));
 
     /* Dark mode base colors */
-    --color-neutral-dark: oklch(25% 0.02 200);
+    --color-neutral-dark: oklch(25% var(--neutral-chroma) var(--neutral-hue));
 
     /* Semantic colors derived from base colors */
 
-    /* Ink colors */
-    --color-ink-primary: oklch(25% 0.02 200);
+    /* Ink colors — ink-primary derives from neutral-dark to stay in sync */
+    --color-ink-primary: var(--color-neutral-dark);
     --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l + 0.27) c h);
     --color-ink-muted: oklch(from var(--color-ink-primary) calc(l + 0.37) c h);
     --color-ink-inverse: oklch(from var(--color-ink-primary) calc(l + 0.75) c h);
@@ -29,7 +34,7 @@
     --color-ink-shadow-inverse: oklch(from var(--color-ink-primary) l c h / 0.2);
 
     /* Surface colors */
-    --color-surface: oklch(98% 0.005 200);
+    --color-surface: oklch(98% var(--surface-chroma) var(--neutral-hue));
     --color-surface-secondary: oklch(from var(--color-surface) calc(l - 0.03) c h);
     --color-surface-hover: oklch(from var(--color-surface) calc(l - 0.05) c h);
     --color-surface-active: oklch(from var(--color-surface) calc(l - 0.1) c h);
@@ -39,6 +44,13 @@
     --primary-lightness: 60;
     --primary-chroma: 0.15;
     --primary-hue: 220;
+
+    /* Accent hue offset — shifts accent away from primary toward cyan/blue */
+    --accent-hue-offset: 18;
+
+    /* State color target lightness — normalizes all state colors to the same perceptual weight */
+    --state-lightness-offset: 0.20;
+    --state-chroma-scale: 0.82;
 
     /* Primary colors - constructed from components */
     --color-primary: oklch(calc(var(--primary-lightness) * 1%) var(--primary-chroma) var(--primary-hue));
@@ -54,35 +66,37 @@
     --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
 
     /* Shadow colors - neutral shadows get slight primary accent */
-    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue 200, 10% primary hue) */
+    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
     --color-shadow: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.1);
     --color-shadow-primary: oklch(from var(--color-primary) l c h / 0.15);
-    /* Shadow surface: white with very slight primary tint (5% chroma from primary) */
-    --color-shadow-surface: oklch(100% calc(var(--primary-chroma) * 0.05) var(--primary-hue) / 0.6);
+    /* Shadow surface: derived from ink-inverse with very slight primary tint (5% chroma from primary) */
+    --color-shadow-surface: oklch(from var(--color-ink-inverse) l calc(var(--primary-chroma) * 0.05) var(--primary-hue) / 0.6);
     --color-shadow-focus: oklch(from var(--color-primary) l c h / 0.3);
-    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue 200, 10% primary hue) */
+    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
     --color-shadow-strong: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.2);
 
-    /* State colors - independent of primary color, using neon accent colors */
-    --color-success: oklch(from var(--color-neon-green) calc(l - 0.13) calc(c * 0.82) h);
-    --color-warning: oklch(from var(--color-neon-orange) calc(l - 0.09) calc(c * 0.82) h);
-    --color-error: oklch(from var(--color-neon-red) calc(l - 0.09) calc(c * 0.82) h);
-    --color-info: oklch(from var(--color-neon-blue) calc(l - 0.13) calc(c * 0.83) h);
+    /* State colors - independent of primary color, using neon accent colors
+       All normalized to ~68% lightness for consistent perceptual weight */
+    --color-success: oklch(from var(--color-neon-green) calc(l - var(--state-lightness-offset)) calc(c * var(--state-chroma-scale)) h);
+    --color-warning: oklch(from var(--color-neon-orange) calc(l - var(--state-lightness-offset) + 0.18) calc(c * var(--state-chroma-scale)) h);
+    --color-error: oklch(from var(--color-neon-red) calc(l - var(--state-lightness-offset) + 0.18) calc(c * var(--state-chroma-scale)) h);
+    --color-info: oklch(from var(--color-neon-blue) calc(l - var(--state-lightness-offset)) calc(c * var(--state-chroma-scale)) h);
 
     /* Additional semantic colors for theming flexibility - derived from primary */
-    /* Accent uses primary with higher lightness to match original neon-blue (88% 0.15 202) */
-    --color-accent: oklch(from var(--color-primary) calc(l + 0.28) c calc(h - 18));
+    /* Accent uses primary with higher lightness, hue shifted by --accent-hue-offset toward original neon-blue territory */
+    --color-accent: oklch(from var(--color-primary) calc(l + 0.28) c calc(h - var(--accent-hue-offset)));
     --color-accent-hover: oklch(from var(--color-accent) calc(l + 0.02) calc(c * 0.85) h);
     --color-accent-active: oklch(from var(--color-accent) calc(l - 0.16) calc(c * 0.78) h);
 
+    /* Muted colors — hover desaturates (consistent with primary/accent pattern), active darkens + desaturates */
     --color-muted: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.78) h);
-    --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.85) h);
-    --color-muted-active: oklch(from var(--color-neutral) calc(l - 0.26) c h);
+    --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.04) calc(c * 0.70) h);
+    --color-muted-active: oklch(from var(--color-neutral) calc(l - 0.26) calc(c * 0.85) h);
 
     /* Dark mode semantic colors for Tailwind utilities */
 
-    /* Dark ink colors */
-    --color-ink-primary-dark: oklch(92% 0.01 200);
+    /* Dark ink colors — reduced chroma (0.01) for comfortable reading on dark backgrounds */
+    --color-ink-primary-dark: oklch(92% 0.01 var(--neutral-hue));
     --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
     --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
     --color-ink-inverse-dark: var(--color-ink-primary);
@@ -90,7 +104,7 @@
     --color-ink-shadow-inverse-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.62) c h / 0.2);
 
     /* Dark surface colors */
-    --color-surface-dark: oklch(15% 0.005 200);
+    --color-surface-dark: oklch(15% var(--surface-chroma) var(--neutral-hue));
     --color-surface-secondary-dark: oklch(from var(--color-surface-dark) calc(l + 0.03) c h);
     --color-surface-hover-dark: oklch(from var(--color-surface-dark) calc(l + 0.05) c h);
     --color-surface-active-dark: oklch(from var(--color-surface-dark) calc(l + 0.1) c h);
@@ -119,8 +133,8 @@
     /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral, 10% primary hue) */
     --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.4);
 
-    /* Shadow tokens - Box shadows */
-    --shadow-elevated: inset 0 1px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.1);
+    /* Shadow tokens - Box shadows (all use color tokens, no hardcoded rgba) */
+    --shadow-elevated: inset 0 1px var(--color-shadow-surface), 0 1px 2px var(--color-shadow-strong);
     --shadow-elevated-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 2px var(--color-shadow-strong-dark);
     --shadow-inset: inset 0 1px 2px var(--color-shadow);
     --shadow-inset-dark: inset 0 1px 2px var(--color-shadow-dark);
@@ -130,9 +144,9 @@
     --shadow-highlight-pressed-dark: inset 0 1px var(--color-shadow-primary-dark);
     --shadow-focus-ring: 0 0 0 2px var(--color-shadow-focus);
     --shadow-focus-ring-dark: 0 0 0 2px var(--color-shadow-focus-dark);
-    --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px rgba(255,255,255,0.3);
+    --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px var(--color-shadow-surface);
     --shadow-focus-elevated-dark: 0 0 0 2px var(--color-shadow-focus-dark), inset 0 1px var(--color-shadow-surface-dark);
-    --shadow-subtle: inset 0 1px rgba(255,255,255,0.2), 0 1px 1px rgba(0,0,0,0.05);
+    --shadow-subtle: inset 0 1px var(--color-shadow-surface), 0 1px 1px var(--color-shadow);
     --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow);
 
     /* Text shadow tokens */
@@ -141,20 +155,22 @@
     --text-shadow-debossed: 0 -1px var(--color-ink-shadow-inverse);
     --text-shadow-debossed-dark: 0 -1px var(--color-ink-shadow-inverse-dark);
 
-    /* Dark state colors - independent of primary color, using neon accent colors */
+    /* Dark state colors - independent of primary color, using neon accent colors
+       Slightly lighter than light-mode counterparts for visibility on dark backgrounds */
     --color-success-dark: oklch(from var(--color-neon-green) l calc(c * 0.86) h);
     --color-warning-dark: oklch(from var(--color-neon-orange) calc(l + 0.03) calc(c * 0.86) h);
     --color-error-dark: oklch(from var(--color-neon-red) calc(l + 0.03) calc(c * 0.86) h);
     --color-info-dark: oklch(from var(--color-neon-blue) l calc(c * 0.86) h);
 
     /* Dark additional semantic colors for theming flexibility - derived from primary */
-    --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - 18));
+    --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
     --color-accent-hover-dark: oklch(from var(--color-accent-dark) l calc(c * 0.95) h);
     --color-accent-active-dark: oklch(from var(--color-accent-dark) calc(l - 0.15) calc(c * 0.8) h);
 
-    --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.7) h);
-    --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.2) calc(c * 0.85) h);
-    --color-muted-active-dark: oklch(from var(--color-neutral-dark) calc(l + 0.34) calc(c * 0.75) h);
+    /* Muted dark — symmetric with light mode: hover desaturates, active darkens + desaturates */
+    --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.70) h);
+    --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.04) calc(c * 0.62) h);
+    --color-muted-active-dark: oklch(from var(--color-neutral-dark) calc(l + 0.34) calc(c * 0.78) h);
 }
 
 :host,
