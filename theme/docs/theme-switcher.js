@@ -17,13 +17,13 @@ class ThemeSwitcher extends HTMLElement {
     const currentPrimary = this.#getCurrentPrimaryColor();
     this.innerHTML = `
       <div class="fixed top-6 right-6 z-[1000]">
-        <button class="theme-toggle-btn px-4 py-2 rounded-lg shadow-md cursor-pointer text-sm font-medium transition-colors" style="background: var(--color-surface); color: var(--color-ink-primary); border: 1px solid var(--color-border);">
+        <button class="btn theme-toggle-btn cursor-pointer text-sm">
           Theme & Colors
         </button>
         <div class="theme-panel hidden absolute top-full right-0 mt-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px]" style="background: var(--color-surface); border: 1px solid var(--color-border);">
           <div class="mb-6">
             <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Theme</h3>
-            <button class="theme-toggle w-full px-4 py-2 rounded-md border-none cursor-pointer font-medium transition-colors" style="background: var(--color-primary); color: var(--color-ink-inverse);">
+            <button class="btn cta theme-toggle w-full cursor-pointer">
               Toggle Light/Dark
             </button>
           </div>
@@ -76,7 +76,7 @@ class ThemeSwitcher extends HTMLElement {
                 step="1"
               >
             </div>
-            <button class="reset-primary-btn w-full px-4 py-2 mt-2 rounded-md cursor-pointer font-medium transition-colors" style="background: var(--color-surface-secondary); color: var(--color-ink-primary); border: 1px solid var(--color-border);">
+            <button class="btn reset-primary-btn w-full mt-2 cursor-pointer">
               Reset to Default
             </button>
           </div>
@@ -108,9 +108,6 @@ class ThemeSwitcher extends HTMLElement {
       localStorage.setItem("theme", newTheme);
       this.#notifyIframes(newTheme);
     });
-
-    // Update styles initially
-    this.#updateThemeStyles();
 
     // Primary color sliders
     const lSlider = this.querySelector(".primary-l-slider");
@@ -278,21 +275,14 @@ class ThemeSwitcher extends HTMLElement {
   }
 
   #updateThemeStyles() {
+    // .btn and .btn.cta handle dark mode automatically via CSS dark: variants.
+    // Only update non-button elements that still use inline styles.
     const isDark = document.documentElement.dataset.theme === "dark";
     const surface = isDark ? "var(--color-surface-dark)" : "var(--color-surface)";
     const inkPrimary = isDark ? "var(--color-ink-primary-dark)" : "var(--color-ink-primary)";
     const inkSecondary = isDark ? "var(--color-ink-secondary-dark)" : "var(--color-ink-secondary)";
-    const inkInverse = isDark ? "var(--color-ink-inverse-dark)" : "var(--color-ink-inverse)";
     const border = isDark ? "var(--color-border-dark)" : "var(--color-border)";
     const primary = isDark ? "var(--color-primary-dark)" : "var(--color-primary)";
-
-    // Update button background
-    const btn = this.querySelector(".theme-toggle-btn");
-    if (btn) {
-      btn.style.background = surface;
-      btn.style.color = inkPrimary;
-      btn.style.borderColor = border;
-    }
 
     // Update panel background
     const panel = this.querySelector(".theme-panel");
@@ -310,13 +300,6 @@ class ThemeSwitcher extends HTMLElement {
         el.style.color = inkPrimary;
       }
     });
-
-    // Update theme toggle button
-    const themeToggle = this.querySelector(".theme-toggle");
-    if (themeToggle) {
-      themeToggle.style.background = primary;
-      themeToggle.style.color = inkInverse;
-    }
 
     // Update borders
     const borders = this.querySelectorAll(".theme-panel > div[class*='pt-6']");
