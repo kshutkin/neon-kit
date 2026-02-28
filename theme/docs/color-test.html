@@ -94,9 +94,9 @@
         </div>
 
         <div class="alert">
-            <strong>Note:</strong> This page dynamically updates <code>--color-primary</code> and the helper variables 
-            <code>--_primary-hue</code> and <code>--_primary-chroma</code> for testing. To permanently change the primary 
-            color, update these values in <code>theme.css</code>. State colors (success, warning, error, info) are 
+            <strong>Note:</strong> This page dynamically updates <code>--color-primary</code> and the helper variables
+            <code>--_primary-hue</code> and <code>--_primary-chroma</code> for testing. To permanently change the primary
+            color, update these values in <code>theme.css</code>. State colors (success, warning, error, info) are
             independent of the primary color and will not change.
         </div>
 
@@ -259,21 +259,21 @@
                     <button class="px-4 py-2 rounded" style="background: var(--color-primary); color: var(--color-ink-inverse);">
                         Primary Button
                     </button>
-                    <button class="px-4 py-2 rounded border" style="background: var(--color-accent); color: var(--color-ink-inverse);">
+                    <button class="px-4 py-2 rounded border" style="background: var(--color-accent); color: var(--color-ink-primary);">
                         Accent Button
                     </button>
                 </div>
                 <div class="space-y-2">
-                    <div class="p-3 rounded" style="background: var(--color-success); color: white;">
+                    <div class="p-3 rounded" style="background: var(--color-success); color: black;">
                         ✓ Success message
                     </div>
-                    <div class="p-3 rounded" style="background: var(--color-warning); color: white;">
+                    <div class="p-3 rounded" style="background: var(--color-warning); color: black;">
                         ⚠ Warning message
                     </div>
-                    <div class="p-3 rounded" style="background: var(--color-error); color: white;">
+                    <div class="p-3 rounded" style="background: var(--color-error); color: black;">
                         ✗ Error message
                     </div>
-                    <div class="p-3 rounded" style="background: var(--color-info); color: white;">
+                    <div class="p-3 rounded" style="background: var(--color-info); color: black;">
                         ℹ Info message
                     </div>
                 </div>
@@ -289,37 +289,37 @@
             const L = l / 100;
             const a = c * Math.cos((h * Math.PI) / 180);
             const b = c * Math.sin((h * Math.PI) / 180);
-            
+
             // Convert Lab to XYZ (simplified)
             const fy = (L + 16) / 116;
             const fx = a / 500 + fy;
             const fz = fy - b / 200;
-            
+
             const xr = fx > 0.206897 ? fx * fx * fx : (fx - 16/116) / 7.787;
             const yr = fy > 0.206897 ? fy * fy * fy : (fy - 16/116) / 7.787;
             const zr = fz > 0.206897 ? fz * fz * fz : (fz - 16/116) / 7.787;
-            
+
             // D65 white point
             const X = xr * 0.95047;
             const Y = yr * 1.00000;
             const Z = zr * 1.08883;
-            
+
             // XYZ to RGB
             let r = X *  3.2404542 + Y * -1.5371385 + Z * -0.4985314;
             let g = X * -0.9692660 + Y *  1.8760108 + Z *  0.0415560;
             let bl = X *  0.0556434 + Y * -0.2040259 + Z *  1.0572252;
-            
+
             r = r > 0.0031308 ? 1.055 * Math.pow(r, 1/2.4) - 0.055 : 12.92 * r;
             g = g > 0.0031308 ? 1.055 * Math.pow(g, 1/2.4) - 0.055 : 12.92 * g;
             bl = bl > 0.0031308 ? 1.055 * Math.pow(bl, 1/2.4) - 0.055 : 12.92 * bl;
-            
+
             return [
                 Math.max(0, Math.min(255, Math.round(r * 255))),
                 Math.max(0, Math.min(255, Math.round(g * 255))),
                 Math.max(0, Math.min(255, Math.round(bl * 255)))
             ];
         }
-        
+
         function rgbToHex(r, g, b) {
             return '#' + [r, g, b].map(x => {
                 const hex = x.toString(16);
@@ -356,14 +356,14 @@
                 root.style.setProperty('--_primary-hue', h);
                 root.style.setProperty('--_primary-chroma', c);
             }
-            
+
             // Update display
             const oklch = `oklch(${l}% ${c} ${h})`;
             document.getElementById('primary-oklch').textContent = oklch;
             document.getElementById('primary-l-value').textContent = l;
             document.getElementById('primary-c-value').textContent = c;
             document.getElementById('primary-h-value').textContent = h;
-            
+
             // Update color picker (approximate)
             const [r, g, b] = oklchToRgb(l, c, h);
             document.getElementById('primary-color-picker').value = rgbToHex(r, g, b);
