@@ -27,76 +27,79 @@ class ThemeSwitcher extends HTMLElement {
               Toggle Light/Dark
             </button>
           </div>
-          
+
           <div class="pt-6" style="border-top: 1px solid var(--color-border);">
             <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Primary Color</h3>
-            
+
             <div class="mb-4">
               <div class="primary-color-preview w-full h-16 rounded-md mb-3 border-2" style="background: var(--color-primary); border-color: var(--color-border);"></div>
               <div class="font-mono text-xs text-center mb-4 primary-oklch-display" style="color: var(--color-ink-secondary);">
                 oklch(${currentPrimary.l}% ${currentPrimary.c} ${currentPrimary.h})
               </div>
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm mb-2" style="color: var(--color-ink-primary);">
                 Lightness: <span class="primary-l-value">${currentPrimary.l}</span>%
               </label>
-              <input type="range" 
-                class="primary-l-slider w-full" 
-                min="0" 
-                max="100" 
-                value="${currentPrimary.l}" 
+              <input type="range"
+                class="primary-l-slider w-full"
+                min="0"
+                max="100"
+                value="${currentPrimary.l}"
                 step="1"
               >
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm mb-2" style="color: var(--color-ink-primary);">
                 Chroma: <span class="primary-c-value">${currentPrimary.c}</span>
               </label>
-              <input type="range" 
-                class="primary-c-slider w-full" 
-                min="0" 
-                max="0.5" 
-                value="${currentPrimary.c}" 
+              <input type="range"
+                class="primary-c-slider w-full"
+                min="0"
+                max="0.5"
+                value="${currentPrimary.c}"
                 step="0.01"
               >
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm mb-2" style="color: var(--color-ink-primary);">
                 Hue: <span class="primary-h-value">${currentPrimary.h}</span>°
               </label>
-              <input type="range" 
-                class="primary-h-slider w-full" 
-                min="0" 
-                max="360" 
-                value="${currentPrimary.h}" 
+              <input type="range"
+                class="primary-h-slider w-full"
+                min="0"
+                max="360"
+                value="${currentPrimary.h}"
                 step="1"
               >
             </div>
+            <button class="reset-primary-btn w-full px-4 py-2 mt-2 rounded-md cursor-pointer font-medium transition-colors" style="background: var(--color-surface-secondary); color: var(--color-ink-primary); border: 1px solid var(--color-border);">
+              Reset to Default
+            </button>
           </div>
         </div>
       </div>
     `;
-    
+
     // Toggle panel visibility
     const toggleBtn = this.querySelector(".theme-toggle-btn");
     const panel = this.querySelector(".theme-panel");
-    
+
     toggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       panel.classList.toggle("hidden");
     });
-    
+
     // Close panel when clicking outside
     document.addEventListener("click", (e) => {
       if (!this.contains(e.target)) {
         panel.classList.add("hidden");
       }
     });
-    
+
     // Theme toggle
     this.querySelector(".theme-toggle").addEventListener("click", () => {
       const currentTheme = document.documentElement.dataset.theme;
@@ -105,10 +108,10 @@ class ThemeSwitcher extends HTMLElement {
       localStorage.setItem("theme", newTheme);
       this.#notifyIframes(newTheme);
     });
-    
+
     // Update styles initially
     this.#updateThemeStyles();
-    
+
     // Primary color sliders
     const lSlider = this.querySelector(".primary-l-slider");
     const cSlider = this.querySelector(".primary-c-slider");
@@ -118,33 +121,38 @@ class ThemeSwitcher extends HTMLElement {
     const hValue = this.querySelector(".primary-h-value");
     const oklchDisplay = this.querySelector(".primary-oklch-display");
     const colorPreview = this.querySelector(".primary-color-preview");
-    
+
     const updatePrimaryColor = () => {
       const l = parseFloat(lSlider.value);
       const c = parseFloat(cSlider.value);
       const h = parseFloat(hSlider.value);
-      
+
       lValue.textContent = l;
       cValue.textContent = c;
       hValue.textContent = h;
       oklchDisplay.textContent = `oklch(${l}% ${c} ${h})`;
-      
+
       this.setPrimaryColor(l, c, h);
-      
+
       // Update color preview (using CSS variable so it updates automatically)
       if (colorPreview) {
         colorPreview.style.background = `var(--color-primary)`;
       }
     };
-    
+
     lSlider.addEventListener("input", updatePrimaryColor);
     cSlider.addEventListener("input", updatePrimaryColor);
     hSlider.addEventListener("input", updatePrimaryColor);
-    
+
+    // Reset to default
+    this.querySelector(".reset-primary-btn").addEventListener("click", () => {
+      this.resetPrimaryColor();
+    });
+
     // Update panel when primary color changes externally
     this.#updatePanelDisplay();
   }
-  
+
   #updatePanelDisplay() {
     const primary = this.#getCurrentPrimaryColor();
     const lSlider = this.querySelector(".primary-l-slider");
@@ -155,12 +163,12 @@ class ThemeSwitcher extends HTMLElement {
     const hValue = this.querySelector(".primary-h-value");
     const oklchDisplay = this.querySelector(".primary-oklch-display");
     const colorPreview = this.querySelector(".primary-color-preview");
-    
+
     if (lSlider && cSlider && hSlider) {
       lSlider.value = primary.l;
       cSlider.value = primary.c;
       hSlider.value = primary.h;
-      
+
       if (lValue) lValue.textContent = primary.l;
       if (cValue) cValue.textContent = primary.c;
       if (hValue) hValue.textContent = primary.h;
@@ -264,11 +272,11 @@ class ThemeSwitcher extends HTMLElement {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    
+
     // Update theme switcher styles to match new theme
     this.#updateThemeStyles();
   }
-  
+
   #updateThemeStyles() {
     const isDark = document.documentElement.dataset.theme === "dark";
     const surface = isDark ? "var(--color-surface-dark)" : "var(--color-surface)";
@@ -277,7 +285,7 @@ class ThemeSwitcher extends HTMLElement {
     const inkInverse = isDark ? "var(--color-ink-inverse-dark)" : "var(--color-ink-inverse)";
     const border = isDark ? "var(--color-border-dark)" : "var(--color-border)";
     const primary = isDark ? "var(--color-primary-dark)" : "var(--color-primary)";
-    
+
     // Update button background
     const btn = this.querySelector(".theme-toggle-btn");
     if (btn) {
@@ -285,14 +293,14 @@ class ThemeSwitcher extends HTMLElement {
       btn.style.color = inkPrimary;
       btn.style.borderColor = border;
     }
-    
+
     // Update panel background
     const panel = this.querySelector(".theme-panel");
     if (panel) {
       panel.style.background = surface;
       panel.style.borderColor = border;
     }
-    
+
     // Update all text elements
     const textElements = this.querySelectorAll("h3, label, .primary-oklch-display");
     textElements.forEach(el => {
@@ -302,20 +310,20 @@ class ThemeSwitcher extends HTMLElement {
         el.style.color = inkPrimary;
       }
     });
-    
+
     // Update theme toggle button
     const themeToggle = this.querySelector(".theme-toggle");
     if (themeToggle) {
       themeToggle.style.background = primary;
       themeToggle.style.color = inkInverse;
     }
-    
+
     // Update borders
     const borders = this.querySelectorAll(".theme-panel > div[class*='pt-6']");
     borders.forEach(el => {
       el.style.borderTopColor = border;
     });
-    
+
     // Update color preview
     const colorPreview = this.querySelector(".primary-color-preview");
     if (colorPreview) {
@@ -336,7 +344,7 @@ class ThemeSwitcher extends HTMLElement {
     const hue = getComputedStyle(root)
       .getPropertyValue("--primary-hue")
       .trim();
-    
+
     return {
       l: parseFloat(lightness) || 60,
       c: parseFloat(chroma) || 0.15,
@@ -344,15 +352,39 @@ class ThemeSwitcher extends HTMLElement {
     };
   }
 
+  #getDefaultPrimaryColor() {
+    const root = document.documentElement;
+    // Save current inline overrides
+    const savedL = root.style.getPropertyValue("--primary-lightness");
+    const savedC = root.style.getPropertyValue("--primary-chroma");
+    const savedH = root.style.getPropertyValue("--primary-hue");
+    // Temporarily remove inline overrides to read stylesheet defaults
+    root.style.removeProperty("--primary-lightness");
+    root.style.removeProperty("--primary-chroma");
+    root.style.removeProperty("--primary-hue");
+    // Read the defaults from the stylesheet
+    const computed = getComputedStyle(root);
+    const defaults = {
+      l: parseFloat(computed.getPropertyValue("--primary-lightness")) || 60,
+      c: parseFloat(computed.getPropertyValue("--primary-chroma")) || 0.15,
+      h: parseFloat(computed.getPropertyValue("--primary-hue")) || 220,
+    };
+    // Restore inline overrides
+    if (savedL) root.style.setProperty("--primary-lightness", savedL);
+    if (savedC) root.style.setProperty("--primary-chroma", savedC);
+    if (savedH) root.style.setProperty("--primary-hue", savedH);
+    return defaults;
+  }
+
   #setPrimaryColor(primaryColor) {
     const { l, c, h } = primaryColor;
     const root = document.documentElement;
-    
+
     // Update primary color components - --color-primary will update automatically via CSS
     root.style.setProperty("--primary-lightness", l);
     root.style.setProperty("--primary-chroma", c);
     root.style.setProperty("--primary-hue", h);
-    
+
     // Update panel display if it exists
     this.#updatePanelDisplay();
   }
@@ -383,6 +415,15 @@ class ThemeSwitcher extends HTMLElement {
 
   getPrimaryColor() {
     return this.#getCurrentPrimaryColor();
+  }
+
+  getDefaultPrimaryColor() {
+    return this.#getDefaultPrimaryColor();
+  }
+
+  resetPrimaryColor() {
+    const defaults = this.#getDefaultPrimaryColor();
+    this.setPrimaryColor(defaults.l, defaults.c, defaults.h);
   }
 }
 
