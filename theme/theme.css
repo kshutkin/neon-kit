@@ -65,15 +65,11 @@
     --color-border-focus: var(--color-primary);
     --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
 
-    /* Shadow colors - neutral shadows get slight primary accent */
+    /* Shadow base pigments - neutral shadows get slight primary accent */
     /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
-    --color-shadow: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.1);
-    --color-shadow-primary: oklch(from var(--color-primary) l c h / 0.15);
+    --color-shadow-base: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
     /* Shadow surface: derived from ink-inverse with very slight primary tint (5% chroma from primary) */
-    --color-shadow-surface: oklch(from var(--color-ink-inverse) l calc(var(--primary-chroma) * 0.05) var(--primary-hue) / 0.6);
-    --color-shadow-focus: oklch(from var(--color-primary) l c h / 0.3);
-    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
-    --color-shadow-strong: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.2);
+    --color-shadow-surface-base: oklch(from var(--color-ink-inverse) l calc(var(--primary-chroma) * 0.05) var(--primary-hue));
 
     /* State colors - independent of primary color, using neon accent colors
        All normalized to ~68% lightness for consistent perceptual weight */
@@ -96,7 +92,7 @@
     /* Dark mode semantic colors for Tailwind utilities */
 
     /* Dark ink colors — reduced chroma (0.01) for comfortable reading on dark backgrounds */
-    --color-ink-primary-dark: oklch(92% 0.01 var(--neutral-hue));
+    --color-ink-primary-dark: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.5) h);
     --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
     --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
     --color-ink-inverse-dark: var(--color-ink-primary);
@@ -123,31 +119,25 @@
     --color-border-focus-dark: var(--color-primary-dark);
     --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
 
-    /* Dark shadow colors - neutral shadows get slight primary accent */
-    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral, 10% primary hue) */
-    --color-shadow-dark: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.3);
-    --color-shadow-primary-dark: oklch(from var(--color-primary-dark) l c h / 0.25);
+    /* Dark shadow base pigments - neutral shadows get slight primary accent */
     /* Shadow surface: neutral with slight primary tint */
-    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.3);
-    --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
-    /* Shadow strong: neutral ink-primary with slight primary hue tint (blend: 90% neutral, 10% primary hue) */
-    --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1) / 0.4);
+    --color-shadow-surface-base-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
 
     /* Shadow tokens - Box shadows (all use color tokens, no hardcoded rgba) */
-    --shadow-elevated: inset 0 1px var(--color-shadow-surface), 0 1px 2px var(--color-shadow-strong);
-    --shadow-elevated-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 2px var(--color-shadow-strong-dark);
-    --shadow-inset: inset 0 1px 2px var(--color-shadow);
-    --shadow-inset-dark: inset 0 1px 2px var(--color-shadow-dark);
-    --shadow-highlight: inset 0 1px var(--color-shadow-surface);
-    --shadow-highlight-dark: inset 0 1px var(--color-shadow-surface-dark);
-    --shadow-highlight-pressed: inset 0 1px var(--color-shadow-primary);
-    --shadow-highlight-pressed-dark: inset 0 1px var(--color-shadow-primary-dark);
-    --shadow-focus-ring: 0 0 0 2px var(--color-shadow-focus);
-    --shadow-focus-ring-dark: 0 0 0 2px var(--color-shadow-focus-dark);
-    --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px var(--color-shadow-surface);
-    --shadow-focus-elevated-dark: 0 0 0 2px var(--color-shadow-focus-dark), inset 0 1px var(--color-shadow-surface-dark);
-    --shadow-subtle: inset 0 1px var(--color-shadow-surface), 0 1px 1px var(--color-shadow);
-    --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow-dark);
+    --shadow-elevated: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6), 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
+    --shadow-elevated-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3), 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
+    --shadow-inset: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --shadow-inset-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
+    --shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
+    --shadow-highlight-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
+    --shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.15);
+    --shadow-highlight-pressed-dark: inset 0 1px oklch(from var(--color-primary-dark) l c h / 0.25);
+    --shadow-focus-ring: 0 0 0 2px oklch(from var(--color-primary) l c h / 0.3);
+    --shadow-focus-ring-dark: 0 0 0 2px oklch(from var(--color-primary-dark) l c h / 0.4);
+    --shadow-focus-elevated: 0 0 0 2px oklch(from var(--color-primary) l c h / 0.3), inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
+    --shadow-focus-elevated-dark: 0 0 0 2px oklch(from var(--color-primary-dark) l c h / 0.4), inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
+    --shadow-subtle: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6), 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --shadow-subtle-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3), 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Text shadow tokens */
     --text-shadow-embossed: 0 1px var(--color-ink-shadow);
