@@ -49,7 +49,7 @@
     --accent-hue-offset: 18;
 
     /* State color target lightness — normalizes all state colors to the same perceptual weight */
-    --state-lightness-offset: 0.20;
+    --state-target-lightness: 0.68;
     --state-chroma-scale: 0.82;
 
     /* Primary colors - constructed from components */
@@ -77,10 +77,10 @@
 
     /* State colors - independent of primary color, using neon accent colors
        All normalized to ~68% lightness for consistent perceptual weight */
-    --color-success: oklch(from var(--color-neon-green) calc(l - var(--state-lightness-offset)) calc(c * var(--state-chroma-scale)) h);
-    --color-warning: oklch(from var(--color-neon-orange) calc(l - var(--state-lightness-offset) + 0.18) calc(c * var(--state-chroma-scale)) h);
-    --color-error: oklch(from var(--color-neon-red) calc(l - var(--state-lightness-offset) + 0.18) calc(c * var(--state-chroma-scale)) h);
-    --color-info: oklch(from var(--color-neon-blue) calc(l - var(--state-lightness-offset)) calc(c * var(--state-chroma-scale)) h);
+    --color-success: oklch(from var(--color-neon-green) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-warning: oklch(from var(--color-neon-orange) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-error: oklch(from var(--color-neon-red) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-info: oklch(from var(--color-neon-blue) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
 
     /* Additional semantic colors for theming flexibility - derived from primary */
     /* Accent uses primary with higher lightness, hue shifted by --accent-hue-offset toward original neon-blue territory */
