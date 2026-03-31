@@ -15,7 +15,7 @@
     /* Neutral color components — change these to shift the entire neutral temperature */
     --neutral-hue: 200;
     --neutral-chroma: 0.02;
-    --surface-chroma: 0.005;
+    --surface-chroma: calc(var(--neutral-chroma) * 0.25);
 
     /* Light mode base colors */
     --color-neutral: oklch(90% var(--neutral-chroma) var(--neutral-hue));
