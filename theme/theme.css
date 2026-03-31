@@ -30,8 +30,6 @@
     --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l + 0.27) c h);
     --color-ink-muted: oklch(from var(--color-ink-primary) calc(l + 0.37) c h);
     --color-ink-inverse: oklch(from var(--color-ink-primary) calc(l + 0.75) c h);
-    --color-ink-shadow: oklch(from var(--color-ink-primary) calc(l + 0.55) c h / 0.2);
-    --color-ink-shadow-inverse: oklch(from var(--color-ink-primary) l c h / 0.2);
 
     /* Surface colors */
     --color-surface: oklch(98% var(--surface-chroma) var(--neutral-hue));
@@ -96,8 +94,6 @@
     --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
     --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
     --color-ink-inverse-dark: var(--color-ink-primary);
-    --color-ink-shadow-dark: oklch(from var(--color-ink-primary) calc(l + 0.15) c h / 0.2);
-    --color-ink-shadow-inverse-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.62) c h / 0.2);
 
     /* Dark surface colors */
     --color-surface-dark: oklch(15% var(--surface-chroma) var(--neutral-hue));
@@ -140,10 +136,10 @@
     --shadow-subtle-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3), 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Text shadow tokens */
-    --text-shadow-embossed: 0 1px var(--color-ink-shadow);
-    --text-shadow-embossed-dark: 0 1px var(--color-ink-shadow-dark);
-    --text-shadow-debossed: 0 -1px var(--color-ink-shadow-inverse);
-    --text-shadow-debossed-dark: 0 -1px var(--color-ink-shadow-inverse-dark);
+    --text-shadow-embossed: 0 1px oklch(from var(--color-ink-primary) l c h / 0.2);
+    --text-shadow-embossed-dark: 0 1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6);
+    --text-shadow-debossed: 0 -1px oklch(from var(--color-ink-primary) l c h / 0.2), 0 1px oklch(from var(--color-surface) calc(l + 0.1) c h / 0.8);
+    --text-shadow-debossed-dark: 0 -1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6), 0 1px oklch(from var(--color-surface-dark) calc(l + 0.15) c h / 0.5);
 
     /* Dark state colors - independent of primary color, using neon accent colors
        Slightly lighter than light-mode counterparts for visibility on dark backgrounds */
