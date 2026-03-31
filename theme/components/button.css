@@ -11,7 +11,7 @@
 }
 
 .btn.cta {
-    @apply border-border-primary bg-primary text-ink-inverse border font-medium shadow-highlight-pressed text-shadow-debossed hover:bg-primary-hover active:bg-primary-active active:shadow-highlight-pressed disabled:bg-primary-disabled disabled:border-border-disabled focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark focus-visible:shadow-focus-elevated dark:focus-visible:shadow-focus-elevated-dark focus-visible:outline-none;
+    @apply border-border-primary dark:border-border-primary-dark bg-primary text-ink-inverse border font-medium shadow-highlight-pressed dark:shadow-highlight-pressed-dark text-shadow-debossed dark:text-shadow-debossed-dark hover:bg-primary-hover active:bg-primary-active active:shadow-highlight-pressed dark:active:shadow-highlight-pressed-dark disabled:bg-primary-disabled disabled:border-border-disabled dark:disabled:border-border-disabled-dark focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark focus-visible:shadow-focus-elevated dark:focus-visible:shadow-focus-elevated-dark focus-visible:outline-none;
 }
 
 .btn.left {
