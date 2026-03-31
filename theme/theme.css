@@ -147,7 +147,7 @@
     --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px var(--color-shadow-surface);
     --shadow-focus-elevated-dark: 0 0 0 2px var(--color-shadow-focus-dark), inset 0 1px var(--color-shadow-surface-dark);
     --shadow-subtle: inset 0 1px var(--color-shadow-surface), 0 1px 1px var(--color-shadow);
-    --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow);
+    --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow-dark);
 
     /* Text shadow tokens */
     --text-shadow-embossed: 0 1px var(--color-ink-shadow);
@@ -179,7 +179,7 @@ html {
 }
 
 body {
-    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white;
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark;
 }
 
 a {
