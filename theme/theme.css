@@ -115,21 +115,25 @@
     /* Shadow surface: neutral with slight primary tint */
     --color-shadow-surface-base-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
 
-    /* Shadow tokens - Box shadows (all use color tokens, no hardcoded rgba) */
-    --shadow-elevated: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6), 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
-    --shadow-elevated-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3), 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
-    --shadow-inset: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
-    --shadow-inset-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
-    --shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
-    --shadow-highlight-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
-    --shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.15);
-    --shadow-highlight-pressed-dark: inset 0 1px oklch(from var(--color-primary-dark) l c h / 0.25);
+    /* Shadow tokens — composable across Tailwind's inset-shadow-* and shadow-* slots.
+       Combine one inset-shadow token with one shadow token on the same element;
+       Tailwind v4 merges them into a single box-shadow declaration automatically. */
+
+    /* Inset shadow slot (inset-shadow-* utilities) — top-edge highlights and pressed effects */
+    --inset-shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
+    --inset-shadow-highlight-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
+    --inset-shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.15);
+    --inset-shadow-highlight-pressed-dark: inset 0 1px oklch(from var(--color-primary-dark) l c h / 0.25);
+    --inset-shadow-pressed: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --inset-shadow-pressed-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
+
+    /* Outer shadow slot (shadow-* utilities) — drop shadows and focus rings */
+    --shadow-drop: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
+    --shadow-drop-dark: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
+    --shadow-drop-subtle: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --shadow-drop-subtle-dark: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
     --shadow-focus-ring: 0 0 0 2px oklch(from var(--color-primary) l c h / 0.3);
     --shadow-focus-ring-dark: 0 0 0 2px oklch(from var(--color-primary-dark) l c h / 0.4);
-    --shadow-focus-elevated: 0 0 0 2px oklch(from var(--color-primary) l c h / 0.3), inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
-    --shadow-focus-elevated-dark: 0 0 0 2px oklch(from var(--color-primary-dark) l c h / 0.4), inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
-    --shadow-subtle: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6), 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
-    --shadow-subtle-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3), 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Text shadow tokens */
     --text-shadow-embossed: 0 1px oklch(from var(--color-ink-primary) l c h / 0.2);

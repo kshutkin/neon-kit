@@ -52,10 +52,10 @@
             for (const link of links) {
                 const linkHash = link.getAttribute('href').slice(1); // Remove the # prefix
                 if (linkHash === currentPath) {
-                    link.classList.add('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'dark:text-ink-inverse-dark', 'font-semibold', 'shadow-subtle', 'dark:shadow-subtle-dark');
+                    link.classList.add('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'dark:text-ink-inverse-dark', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
                     link.classList.remove('text-ink-primary', 'dark:text-ink-primary-dark');
                 } else {
-                    link.classList.remove('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'dark:text-ink-inverse-dark', 'font-semibold', 'shadow-subtle', 'dark:shadow-subtle-dark');
+                    link.classList.remove('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'dark:text-ink-inverse-dark', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
                     link.classList.add('text-ink-primary', 'dark:text-ink-primary-dark');
                 }
             }
