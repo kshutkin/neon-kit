@@ -83,11 +83,6 @@
     --color-accent-hover: oklch(from var(--color-accent) calc(l + 0.02) calc(c * 0.85) h);
     --color-accent-active: oklch(from var(--color-accent) calc(l - 0.16) calc(c * 0.78) h);
 
-    /* Muted colors — hover desaturates (consistent with primary/accent pattern), active darkens + desaturates */
-    --color-muted: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.78) h);
-    --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.04) calc(c * 0.70) h);
-    --color-muted-active: oklch(from var(--color-neutral) calc(l - 0.26) calc(c * 0.85) h);
-
     /* Dark mode semantic colors for Tailwind utilities */
 
     /* Dark ink colors — reduced chroma (0.01) for comfortable reading on dark backgrounds */
@@ -153,11 +148,6 @@
     --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
     --color-accent-hover-dark: oklch(from var(--color-accent-dark) l calc(c * 0.95) h);
     --color-accent-active-dark: oklch(from var(--color-accent-dark) calc(l - 0.15) calc(c * 0.8) h);
-
-    /* Muted dark — symmetric with light mode: hover desaturates, active darkens + desaturates */
-    --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.70) h);
-    --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.04) calc(c * 0.62) h);
-    --color-muted-active-dark: oklch(from var(--color-neutral-dark) calc(l + 0.34) calc(c * 0.78) h);
 }
 
 :host,
