@@ -167,3 +167,12 @@ a {
     color: inherit;
     text-decoration: inherit;
 }
+
+:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+}
+
+[data-theme=dark] :focus-visible {
+    outline-color: var(--color-border-focus-dark);
+}
