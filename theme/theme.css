@@ -127,13 +127,11 @@
     --inset-shadow-pressed: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
     --inset-shadow-pressed-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
 
-    /* Outer shadow slot (shadow-* utilities) — drop shadows and focus rings */
+    /* Outer shadow slot (shadow-* utilities) — drop shadows */
     --shadow-drop: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
     --shadow-drop-dark: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
     --shadow-drop-subtle: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
     --shadow-drop-subtle-dark: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
-    --shadow-focus-ring: 0 0 0 2px oklch(from var(--color-primary) l c h / 0.3);
-    --shadow-focus-ring-dark: 0 0 0 2px oklch(from var(--color-primary-dark) l c h / 0.4);
 
     /* Text shadow tokens */
     --text-shadow-embossed: 0 1px oklch(from var(--color-ink-primary) l c h / 0.2);
