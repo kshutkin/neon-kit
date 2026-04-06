@@ -1,7 +1,5 @@
-@theme {
+@theme default {
     --font-sans: "Hanken Grotesk", sans-serif;
-    --default-font-family: var(--font-sans);
-    --transition-duration: --theme(--default-transition-duration);
 
     /* Neon accent colors */
     --color-neon-white: oklch(100% 0 0);
@@ -170,7 +168,7 @@
 
 :host,
 html {
-    font-family: --theme(--default-font-family);
+    font-family: --theme(--font-sans);
 }
 
 body {
@@ -185,10 +183,10 @@ a {
 /* Focus ring — WCAG 2.4.11 (AA) against all five light-mode and all five dark-mode surfaces.
    See --color-border-focus and --color-border-focus-dark for per-surface contrast ratios. */
 :focus-visible {
-    outline: 2px solid var(--color-border-focus);
+    outline: 2px solid --theme(--color-border-focus);
     outline-offset: 2px;
 }
 
 [data-theme=dark] :focus-visible {
-    outline-color: var(--color-border-focus-dark);
+    outline-color: --theme(--color-border-focus-dark);
 }
