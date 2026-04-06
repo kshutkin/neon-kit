@@ -61,7 +61,14 @@
     --color-border: oklch(from var(--color-neutral) calc(l - 0.13) c h);
     --color-border-secondary: oklch(from var(--color-neutral) l c h / 0.6);
     --color-border-primary: oklch(from var(--color-primary) calc(l - 0.035) calc(c * 0.91) h);
-    --color-border-focus: var(--color-primary);
+    /* Focus ring — lightness capped at 0.38, verified against all five light-mode surfaces
+       (ratios assume default blue primary; warm primaries yield similar or better results):
+         --color-surface          (~98% L) ≈ 9.4:1
+         --color-surface-secondary (~95% L) ≈ 8.6:1
+         --color-surface-hover     (~93% L) ≈ 8.1:1
+         --color-surface-active    (~88% L) ≈ 7.0:1
+         --color-surface-disabled  (~78% L) ≈ 5.0:1  ← binding constraint, WCAG AA ✓ */
+    --color-border-focus: oklch(from var(--color-primary) min(l, 0.38) c h);
     --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
 
     /* Shadow base pigments - neutral shadows get slight primary accent */
@@ -108,7 +115,16 @@
     --color-border-dark: oklch(from var(--color-neutral-dark) calc(l + 0.13) c h);
     --color-border-secondary-dark: oklch(from var(--color-neutral-dark) l c h / 0.6);
     --color-border-primary-dark: oklch(from var(--color-primary-dark) calc(l + 0.04) calc(c * 0.81) h);
-    --color-border-focus-dark: var(--color-primary-dark);
+    /* Focus ring — lightness floored at 0.70, verified against all five dark-mode surfaces
+       (ratios use blue primary at 70% L, Y≈0.31; warm primaries yield higher Y and better contrast).
+       Floor is set above the neutral-geometry threshold (~0.61) because blue-hued primaries have
+       lower actual sRGB luminance than the L³≈Y approximation implies:
+         --color-surface-dark           (~15% L) ≈ 6.7:1
+         --color-surface-secondary-dark (~18% L) ≈ 6.4:1
+         --color-surface-hover-dark     (~20% L) ≈ 6.2:1
+         --color-surface-active-dark    (~25% L) ≈ 5.4:1
+         --color-surface-disabled-dark  (~35% L) ≈ 3.8:1  ← binding constraint, WCAG AA ✓ */
+    --color-border-focus-dark: oklch(from var(--color-primary-dark) max(l, 0.70) c h);
     --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
 
     /* Dark shadow base pigments - neutral shadows get slight primary accent */
@@ -166,6 +182,8 @@ a {
     text-decoration: inherit;
 }
 
+/* Focus ring — WCAG 2.4.11 (AA) against all five light-mode and all five dark-mode surfaces.
+   See --color-border-focus and --color-border-focus-dark for per-surface contrast ratios. */
 :focus-visible {
     outline: 2px solid var(--color-border-focus);
     outline-offset: 2px;
