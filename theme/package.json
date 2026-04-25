@@ -28,15 +28,18 @@
     "./theme.css": "./theme.css",
     "./theme": "./theme.css",
     "./components.css": "./components.css",
-    "./components": "./components.css"
+    "./components": "./components.css",
+    "./neon.css": "./neon.css",
+    "./neon": "./neon.css"
   },
   "bugs": {
     "url": "https://github.com/kshutkin/neon-kit/issues"
   },
   "homepage": "https://github.com/kshutkin/neon-kit",
   "scripts": {
-    "start": "npx npm-run-all -p tw http",
+    "start": "npx npm-run-all -p tw tw-neon http",
     "tw": "npx @tailwindcss/cli -i ./index.css -o ./docs/output.css --watch",
+    "tw-neon": "npx @tailwindcss/cli -i ./docs/_index-neon.css -o ./docs/output-neon.css --watch",
     "http": "npx http-server ./docs/",
     "prepack": "npx pkgprn"
   },

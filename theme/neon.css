@@ -1,0 +1,331 @@
+/* ============================================================================
+   @neon-kit/theme — Neon effects layer
+   ----------------------------------------------------------------------------
+   Pluggable effects layer that re-skins themed components as neon signs.
+   Import AFTER the base index.css. No other configuration needed:
+
+       @import "@neon-kit/theme";
+       @import "@neon-kit/theme/neon";
+
+   Selectors live in @layer neon, declared after the base layers, so they win
+   over components/utilities without touching base files.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+@layer neon;
+
+/* --------------------------------------------------------------------------
+   Glow color tokens.
+   The base theme keeps --color-primary at oklch(38% 0.2 245) — too dark for
+   glow. We derive a brighter, higher-chroma neon sibling per mode without
+   mutating the original token. State colors are already in neon territory
+   (~68% L), so we only nudge their chroma upward.
+   -------------------------------------------------------------------------- */
+:root {
+    --color-primary-neon:  oklch(from var(--color-primary) max(l, 0.78) min(c * 1.4, 0.3) h);
+    --color-success-neon:  oklch(from var(--color-success) max(l, 0.78) min(c * 1.3, 0.3) h);
+    --color-warning-neon:  oklch(from var(--color-warning) max(l, 0.80) min(c * 1.3, 0.3) h);
+    --color-error-neon:    oklch(from var(--color-error)   max(l, 0.78) min(c * 1.3, 0.3) h);
+    --color-info-neon:     oklch(from var(--color-info)    max(l, 0.78) min(c * 1.3, 0.3) h);
+
+    /* Single indirection token: any element can locally swap its glow color. */
+    --neon-glow-color: var(--color-primary-neon);
+
+    /* Per-mode tuning — light mode keeps glow tight to maintain readability
+       against bright surfaces. */
+    --neon-blur-near: 6px;
+    --neon-blur-far: 14px;
+    --neon-blur-text: 10px;
+    --neon-spread: 0px;
+    --neon-glow-alpha: 0.7;
+}
+
+[data-theme=dark] {
+    --color-primary-neon:  oklch(from var(--color-primary) max(l, 0.85) min(c * 1.5, 0.32) h);
+    --color-success-neon:  oklch(from var(--color-success-dark) max(l, 0.85) min(c * 1.4, 0.3) h);
+    --color-warning-neon:  oklch(from var(--color-warning-dark) max(l, 0.86) min(c * 1.4, 0.3) h);
+    --color-error-neon:    oklch(from var(--color-error-dark)   max(l, 0.85) min(c * 1.4, 0.3) h);
+    --color-info-neon:     oklch(from var(--color-info-dark)    max(l, 0.85) min(c * 1.4, 0.3) h);
+
+    /* Stronger glow against dark surfaces. */
+    --neon-blur-near: 8px;
+    --neon-blur-far: 22px;
+    --neon-blur-text: 14px;
+    --neon-spread: 1px;
+    --neon-glow-alpha: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   State sign modifiers — opt-in classes that swap --neon-glow-color.
+   Add to .btn, .panel, or any element with neon styling.
+   Example: <button class="btn neon-error">Stop</button>
+   -------------------------------------------------------------------------- */
+@layer neon {
+    .neon-primary { --neon-glow-color: var(--color-primary-neon); }
+    .neon-success { --neon-glow-color: var(--color-success-neon); }
+    .neon-warning { --neon-glow-color: var(--color-warning-neon); }
+    .neon-error   { --neon-glow-color: var(--color-error-neon); }
+    .neon-info    { --neon-glow-color: var(--color-info-neon); }
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — hollow-tube look by default.
+   - Transparent fill, glowing border + inner glow.
+   - Audiowide display font, uppercase, tracked-out.
+   - Halo grows on hover; dims on active; "off tube" when disabled.
+   -------------------------------------------------------------------------- */
+@layer neon {
+    .btn {
+        background: transparent;
+        background-color: transparent;
+        border-color: var(--neon-glow-color);
+        color: var(--neon-glow-color);
+        font-family: "Audiowide", var(--font-sans);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+
+        /* Compose: outer halo + outer glow + inner tube glow. */
+        box-shadow:
+            0 0 var(--neon-blur-near) var(--neon-spread) var(--neon-glow-color),
+            0 0 var(--neon-blur-far) oklch(from var(--neon-glow-color) l c h / var(--neon-glow-alpha)),
+            inset 0 0 calc(var(--neon-blur-near) * 1.2) oklch(from var(--neon-glow-color) l c h / 0.55);
+
+        text-shadow:
+            0 0 4px var(--neon-glow-color),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.85);
+    }
+
+    .btn:hover {
+        background-color: oklch(from var(--neon-glow-color) l c h / 0.08);
+        box-shadow:
+            0 0 calc(var(--neon-blur-near) * 1.4) var(--neon-spread) var(--neon-glow-color),
+            0 0 calc(var(--neon-blur-far) * 1.5) oklch(from var(--neon-glow-color) l c h / var(--neon-glow-alpha)),
+            inset 0 0 calc(var(--neon-blur-near) * 1.6) oklch(from var(--neon-glow-color) l c h / 0.7);
+    }
+
+    .btn:active {
+        background-color: oklch(from var(--neon-glow-color) l c h / 0.16);
+        box-shadow:
+            0 0 calc(var(--neon-blur-near) * 0.6) var(--neon-glow-color),
+            inset 0 0 calc(var(--neon-blur-near) * 1.4) oklch(from var(--neon-glow-color) l c h / 0.8);
+    }
+
+    /* "Off tube": disabled neon elements lose glow and dim like an unlit sign. */
+    .btn:disabled,
+    .btn[disabled] {
+        background: transparent;
+        border-color: oklch(from var(--neon-glow-color) calc(l - 0.4) calc(c * 0.2) h / 0.5);
+        color: oklch(from var(--neon-glow-color) calc(l - 0.4) calc(c * 0.2) h / 0.6);
+        box-shadow: none;
+        text-shadow: none;
+        animation: none;
+    }
+
+    /* CTA: keep solid primary fill but make it BLOOM outward. */
+    .btn.cta {
+        --neon-glow-color: var(--color-primary-neon);
+        background-color: var(--color-primary);
+        color: var(--color-ink-inverse);
+        border-color: var(--neon-glow-color);
+        text-shadow: none;
+        box-shadow:
+            0 0 var(--neon-blur-near) var(--neon-glow-color),
+            0 0 calc(var(--neon-blur-far) * 1.3) oklch(from var(--neon-glow-color) l c h / var(--neon-glow-alpha)),
+            inset 0 0 calc(var(--neon-blur-near) * 0.8) oklch(from var(--color-ink-inverse) l c h / 0.4);
+    }
+
+    [data-theme=dark] .btn.cta {
+        background-color: var(--color-primary-dark);
+    }
+
+    .btn.cta:hover {
+        background-color: var(--color-primary-hover);
+        box-shadow:
+            0 0 calc(var(--neon-blur-near) * 1.5) var(--neon-glow-color),
+            0 0 calc(var(--neon-blur-far) * 1.8) oklch(from var(--neon-glow-color) l c h / var(--neon-glow-alpha)),
+            inset 0 0 calc(var(--neon-blur-near) * 1.2) oklch(from var(--color-ink-inverse) l c h / 0.5);
+    }
+
+    [data-theme=dark] .btn.cta:hover {
+        background-color: var(--color-primary-hover-dark);
+    }
+
+    .btn.cta:active {
+        background-color: var(--color-primary-active);
+    }
+
+    [data-theme=dark] .btn.cta:active {
+        background-color: var(--color-primary-active-dark);
+    }
+
+    .btn.cta:disabled,
+    .btn.cta[disabled] {
+        background-color: var(--color-primary-disabled);
+        color: var(--color-ink-inverse);
+        border-color: oklch(from var(--neon-glow-color) calc(l - 0.4) calc(c * 0.2) h / 0.5);
+        box-shadow: none;
+    }
+
+    [data-theme=dark] .btn.cta:disabled,
+    [data-theme=dark] .btn.cta[disabled] {
+        background-color: var(--color-primary-disabled-dark);
+    }
+
+    /* Quiet: dark tube — no border, glow only on hover. */
+    .btn.quiet {
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        text-shadow:
+            0 0 4px oklch(from var(--neon-glow-color) l c h / 0.4),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.5);
+    }
+
+    .btn.quiet:hover {
+        border-color: var(--neon-glow-color);
+        background-color: oklch(from var(--neon-glow-color) l c h / 0.06);
+        box-shadow:
+            0 0 var(--neon-blur-near) var(--neon-glow-color),
+            inset 0 0 calc(var(--neon-blur-near) * 1.2) oklch(from var(--neon-glow-color) l c h / 0.4);
+        text-shadow:
+            0 0 4px var(--neon-glow-color),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.85);
+    }
+
+    .btn.large {
+        letter-spacing: 0.08em;
+    }
+
+    .btn.quiet:disabled,
+    .btn.quiet[disabled] {
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        text-shadow: none;
+        color: oklch(from var(--neon-glow-color) calc(l - 0.4) calc(c * 0.2) h / 0.6);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Panels — glowing border + soft outer halo.
+   Background stays from base theme so panels remain readable surfaces.
+   -------------------------------------------------------------------------- */
+@layer neon {
+    .panel {
+        border-color: var(--neon-glow-color);
+        color: var(--neon-glow-color);
+        box-shadow:
+            0 0 var(--neon-blur-near) oklch(from var(--neon-glow-color) l c h / 0.7),
+            0 0 calc(var(--neon-blur-far) * 1.2) oklch(from var(--neon-glow-color) l c h / calc(var(--neon-glow-alpha) * 0.7)),
+            inset 0 0 calc(var(--neon-blur-near) * 1.5) oklch(from var(--neon-glow-color) l c h / 0.25);
+        text-shadow:
+            0 0 4px var(--neon-glow-color),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.7);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Links — underline-only glowing tube on hover.
+   Replaces the base gradient-fill effect with a glowing underline bar.
+   -------------------------------------------------------------------------- */
+@layer neon {
+    .link {
+        background: none;
+        text-decoration: none;
+        position: relative;
+        color: inherit;
+    }
+
+    .link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: var(--neon-glow-color);
+        box-shadow:
+            0 0 4px var(--neon-glow-color),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.85);
+        opacity: 0;
+        transform: scaleX(0.4);
+        transform-origin: left center;
+        transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .link:hover {
+        color: var(--neon-glow-color);
+        text-shadow:
+            0 0 4px var(--neon-glow-color),
+            0 0 var(--neon-blur-text) oklch(from var(--neon-glow-color) l c h / 0.85);
+        background: none;
+    }
+
+    .link:hover::after {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Focus halo — layered ON TOP of the existing 2px outline (kept for WCAG).
+   Outline-offset: 2px in base; we add a soft halo via box-shadow on the
+   focus ring's offset region.
+   -------------------------------------------------------------------------- */
+@layer neon {
+    :focus-visible {
+        box-shadow:
+            0 0 0 4px oklch(from var(--neon-glow-color) l c h / 0.35),
+            0 0 calc(var(--neon-blur-far) * 1.2) oklch(from var(--neon-glow-color) l c h / 0.5);
+    }
+
+    /* Buttons already define box-shadow for the tube glow — combine both. */
+    .btn:focus-visible {
+        box-shadow:
+            0 0 var(--neon-blur-near) var(--neon-spread) var(--neon-glow-color),
+            0 0 var(--neon-blur-far) oklch(from var(--neon-glow-color) l c h / var(--neon-glow-alpha)),
+            inset 0 0 calc(var(--neon-blur-near) * 1.2) oklch(from var(--neon-glow-color) l c h / 0.55),
+            0 0 0 4px oklch(from var(--neon-glow-color) l c h / 0.35);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Animation — subtle idle pulse on glowing elements.
+   Uses filter: brightness() so we don't have to fight box-shadow composition.
+   Reduced-motion: animation is suppressed.
+   -------------------------------------------------------------------------- */
+@keyframes neon-pulse {
+    0%, 100% { filter: brightness(1); }
+    50%      { filter: brightness(0.88); }
+}
+
+@keyframes neon-flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        filter: brightness(1);
+    }
+    20%, 24%, 55% {
+        filter: brightness(0.35);
+    }
+    22% {
+        filter: brightness(0.6);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    @layer neon {
+        .btn,
+        .panel {
+            animation: neon-pulse 3.4s ease-in-out infinite;
+        }
+
+        .btn:disabled,
+        .btn[disabled] {
+            animation: none;
+        }
+
+        .neon-flicker {
+            animation: neon-flicker 4s linear infinite !important;
+        }
+    }
+}

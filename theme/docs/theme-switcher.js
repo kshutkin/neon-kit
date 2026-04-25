@@ -5,10 +5,12 @@ class ThemeSwitcher extends HTMLElement {
     if (isMainWindow) {
       this.#initMainWindowTheme();
       this.#initPrimaryColor();
+      this.#initNeon();
       this.#renderButton();
     } else {
       this.#loadThemeFromStorage();
       this.#loadPrimaryColorFromStorage();
+      this.#loadNeonFromStorage();
       this.#setupIframeListener();
     }
   }
@@ -25,6 +27,13 @@ class ThemeSwitcher extends HTMLElement {
             <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Theme</h3>
             <button class="btn cta theme-toggle w-full cursor-pointer">
               Toggle Light/Dark
+            </button>
+          </div>
+
+          <div class="mb-6 pt-6" style="border-top: 1px solid var(--color-border);">
+            <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Effects</h3>
+            <button class="btn neon-toggle w-full cursor-pointer">
+              Neon: <span class="neon-state">Off</span>
             </button>
           </div>
 
@@ -109,6 +118,16 @@ class ThemeSwitcher extends HTMLElement {
       this.#notifyIframes(newTheme);
     });
 
+    // Neon toggle
+    this.querySelector(".neon-toggle").addEventListener("click", () => {
+      const enabled = localStorage.getItem("neon") === "on";
+      const next = enabled ? "off" : "on";
+      this.#setNeon(next);
+      localStorage.setItem("neon", next);
+      this.#notifyIframesNeon(next);
+      this.#updateNeonLabel();
+    });
+
     // Primary color sliders
     const lSlider = this.querySelector(".primary-l-slider");
     const cSlider = this.querySelector(".primary-c-slider");
@@ -148,6 +167,7 @@ class ThemeSwitcher extends HTMLElement {
 
     // Update panel when primary color changes externally
     this.#updatePanelDisplay();
+    this.#updateNeonLabel();
   }
 
   #updatePanelDisplay() {
@@ -185,6 +205,9 @@ class ThemeSwitcher extends HTMLElement {
       if (e.data && e.data.type === "primary-color-sync") {
         this.#setPrimaryColor(e.data.primaryColor);
       }
+      if (e.data && e.data.type === "neon-sync") {
+        this.#setNeon(e.data.neon);
+      }
     });
   }
 
@@ -214,6 +237,19 @@ class ThemeSwitcher extends HTMLElement {
         }
       } catch (e) {
         // Cross-origin iframe, skip
+        console.warn("Could not notify iframe:", e);
+      }
+    }
+  }
+
+  #notifyIframesNeon(neon, excludeSource = null) {
+    const iframes = document.querySelectorAll("iframe");
+    for (const iframe of iframes) {
+      try {
+        if (iframe.contentWindow && iframe.contentWindow !== excludeSource) {
+          iframe.contentWindow.postMessage({ type: "neon-sync", neon }, "*");
+        }
+      } catch (e) {
         console.warn("Could not notify iframe:", e);
       }
     }
@@ -253,6 +289,15 @@ class ThemeSwitcher extends HTMLElement {
     }
   }
 
+  #initNeon() {
+    const saved = this.#loadNeonFromStorage();
+    if (!saved) {
+      // Default off
+      localStorage.setItem("neon", "off");
+    }
+    this.#notifyIframesNeon(localStorage.getItem("neon") || "off");
+  }
+
   #loadThemeFromStorage() {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
@@ -260,6 +305,31 @@ class ThemeSwitcher extends HTMLElement {
       return savedTheme;
     }
     return null;
+  }
+
+  #loadNeonFromStorage() {
+    const saved = localStorage.getItem("neon");
+    if (saved) {
+      this.#setNeon(saved);
+      return saved;
+    }
+    return null;
+  }
+
+  #setNeon(state) {
+    const enable = state === "on";
+    // Find the existing main stylesheet link and swap its href.
+    const links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (const link of links) {
+      const href = link.getAttribute("href") || "";
+      if (/output(-neon)?\.css(\?|$)/.test(href)) {
+        const next = enable ? "output-neon.css" : "output.css";
+        // Preserve any query string used for cache busting.
+        const qs = href.includes("?") ? href.slice(href.indexOf("?")) : "";
+        link.setAttribute("href", next + qs);
+      }
+    }
+    document.documentElement.dataset.neon = enable ? "on" : "off";
   }
 
   #setTheme(theme) {
@@ -407,6 +477,13 @@ class ThemeSwitcher extends HTMLElement {
   resetPrimaryColor() {
     const defaults = this.#getDefaultPrimaryColor();
     this.setPrimaryColor(defaults.l, defaults.c, defaults.h);
+  }
+
+  #updateNeonLabel() {
+    const stateEl = this.querySelector(".neon-state");
+    if (stateEl) {
+      stateEl.textContent = localStorage.getItem("neon") === "on" ? "On" : "Off";
+    }
   }
 }
 
