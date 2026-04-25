@@ -1,7 +1,5 @@
-@theme {
+@theme default {
     --font-sans: "Hanken Grotesk", sans-serif;
-    --default-font-family: var(--font-sans);
-    --transition-duration: --theme(--default-transition-duration);
 
     /* Neon accent colors */
     --color-neon-white: oklch(100% 0 0);
@@ -12,31 +10,47 @@
     --color-neon-orange: oklch(70% 0.2 43);
     --color-neon-red: oklch(70% 0.3 15);
 
+    /* Neutral color components — change these to shift the entire neutral temperature */
+    --neutral-hue: 200;
+    --neutral-chroma: 0.02;
+    --surface-chroma: calc(var(--neutral-chroma) * 0.25);
+
     /* Light mode base colors */
-    --color-neutral: oklch(90% 0.02 200);
+    --color-neutral: oklch(90% var(--neutral-chroma) var(--neutral-hue));
 
     /* Dark mode base colors */
-    --color-neutral-dark: oklch(25% 0.02 200);
+    --color-neutral-dark: oklch(25% var(--neutral-chroma) var(--neutral-hue));
 
     /* Semantic colors derived from base colors */
 
-    /* Ink colors */
-    --color-ink-primary: oklch(25% 0.02 200);
+    /* Ink colors — ink-primary derives from neutral-dark to stay in sync */
+    --color-ink-primary: var(--color-neutral-dark);
     --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l + 0.27) c h);
     --color-ink-muted: oklch(from var(--color-ink-primary) calc(l + 0.37) c h);
     --color-ink-inverse: oklch(from var(--color-ink-primary) calc(l + 0.75) c h);
-    --color-ink-shadow: oklch(from var(--color-ink-primary) calc(l + 0.55) c h / 0.2);
-    --color-ink-shadow-inverse: oklch(from var(--color-ink-primary) l c h / 0.2);
 
     /* Surface colors */
-    --color-surface: oklch(98% 0.005 200);
+    --color-surface: oklch(from var(--color-neutral) calc(l + 0.08) var(--surface-chroma) h);
     --color-surface-secondary: oklch(from var(--color-surface) calc(l - 0.03) c h);
     --color-surface-hover: oklch(from var(--color-surface) calc(l - 0.05) c h);
     --color-surface-active: oklch(from var(--color-surface) calc(l - 0.1) c h);
     --color-surface-disabled: oklch(from var(--color-surface) calc(l - 0.2) c h);
 
-    /* Primary colors */
-    --color-primary: oklch(60% 0.15 220);
+    /* Primary color components */
+    --primary-lightness: 38; /* oklch(38% 0.2 245) */
+    --primary-chroma: 0.2;
+    --primary-hue: 245;
+
+    /* Accent hue offset — shifts accent away from primary toward cyan/blue */
+    --accent-hue-offset: 18;
+
+    /* State color target lightness — normalizes all state colors to the same perceptual weight */
+    --state-target-lightness: 0.68;
+    --state-target-lightness-dark: 0.78;
+    --state-chroma-scale: 0.82;
+
+    /* Primary colors - constructed from components */
+    --color-primary: oklch(calc(var(--primary-lightness) * 1%) var(--primary-chroma) var(--primary-hue));
     --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.06) calc(c * 0.85) h);
     --color-primary-active: oklch(from var(--color-primary) calc(l - 0.05) calc(c * 0.87) h);
     --color-primary-disabled: oklch(from var(--color-primary) calc(l + 0.15) calc(c * 0.57) h);
@@ -45,116 +59,134 @@
     --color-border: oklch(from var(--color-neutral) calc(l - 0.13) c h);
     --color-border-secondary: oklch(from var(--color-neutral) l c h / 0.6);
     --color-border-primary: oklch(from var(--color-primary) calc(l - 0.035) calc(c * 0.91) h);
-    --color-border-focus: var(--color-primary);
+    /* Focus ring — lightness capped at 0.38, verified against all five light-mode surfaces
+       (ratios assume default blue primary; warm primaries yield similar or better results):
+         --color-surface          (~98% L) ≈ 9.4:1
+         --color-surface-secondary (~95% L) ≈ 8.6:1
+         --color-surface-hover     (~93% L) ≈ 8.1:1
+         --color-surface-active    (~88% L) ≈ 7.0:1
+         --color-surface-disabled  (~78% L) ≈ 5.0:1  ← binding constraint, WCAG AA ✓ */
+    --color-border-focus: oklch(from var(--color-primary) min(l, 0.38) c h);
     --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
 
-    /* Shadow colors */
-    --color-shadow: oklch(from var(--color-ink-primary) l c h / 0.1);
-    --color-shadow-primary: oklch(from var(--color-primary) l c h / 0.15);
-    --color-shadow-surface: oklch(from var(--color-neon-white) l c h / 0.6);
-    --color-shadow-focus: oklch(from var(--color-primary) l c h / 0.3);
-    --color-shadow-strong: oklch(from var(--color-ink-primary) l c h / 0.2);
+    /* Shadow base pigments - neutral shadows get slight primary accent */
+    /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
+    --color-shadow-base: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
+    /* Shadow surface: derived from ink-inverse with very slight primary tint (5% chroma from primary) */
+    --color-shadow-surface-base: oklch(from var(--color-ink-inverse) l calc(var(--primary-chroma) * 0.05) var(--primary-hue));
 
-    /* State colors */
-    --color-success: oklch(from var(--color-neon-green) calc(l - 0.13) calc(c * 0.82) h);
-    --color-warning: oklch(from var(--color-neon-orange) calc(l - 0.09) calc(c * 0.82) h);
-    --color-error: oklch(from var(--color-neon-red) calc(l - 0.09) calc(c * 0.82) h);
-    --color-info: oklch(from var(--color-neon-blue) calc(l - 0.13) calc(c * 0.83) h);
+    /* State colors - independent of primary color, using neon accent colors
+       All normalized to ~68% lightness for consistent perceptual weight */
+    --color-success: oklch(from var(--color-neon-green) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-warning: oklch(from var(--color-neon-orange) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-error: oklch(from var(--color-neon-red) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-info: oklch(from var(--color-neon-blue) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
 
-    /* Additional semantic colors for theming flexibility */
-    --color-accent: var(--color-neon-blue);
-    --color-accent-hover: oklch(from var(--color-neon-blue) calc(l + 0.02) calc(c * 0.85) h);
-    --color-accent-active: oklch(from var(--color-neon-blue) calc(l - 0.16) calc(c * 0.78) h);
-
-    --color-muted: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.78) h);
-    --color-muted-hover: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.85) h);
-    --color-muted-active: oklch(from var(--color-neutral) calc(l - 0.26) c h);
+    /* Additional semantic colors for theming flexibility - derived from primary */
+    /* Accent uses primary with higher lightness, hue shifted by --accent-hue-offset toward original neon-blue territory */
+    --color-accent: oklch(from var(--color-primary) calc(l + 0.28) c calc(h - var(--accent-hue-offset)));
+    --color-accent-hover: oklch(from var(--color-accent) calc(l + 0.02) calc(c * 0.85) h);
+    --color-accent-active: oklch(from var(--color-accent) calc(l - 0.16) calc(c * 0.78) h);
 
     /* Dark mode semantic colors for Tailwind utilities */
 
-    /* Dark ink colors */
-    --color-ink-primary-dark: oklch(92% 0.01 200);
+    /* Dark ink colors — reduced chroma (0.01) for comfortable reading on dark backgrounds */
+    --color-ink-primary-dark: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.5) h);
     --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
     --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
     --color-ink-inverse-dark: var(--color-ink-primary);
-    --color-ink-shadow-dark: oklch(from var(--color-ink-primary) calc(l + 0.15) c h / 0.2);
-    --color-ink-shadow-inverse-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.62) c h / 0.2);
 
     /* Dark surface colors */
-    --color-surface-dark: oklch(15% 0.005 200);
+    --color-surface-dark: oklch(from var(--color-neutral-dark) calc(l - 0.1) var(--surface-chroma) h);
     --color-surface-secondary-dark: oklch(from var(--color-surface-dark) calc(l + 0.03) c h);
     --color-surface-hover-dark: oklch(from var(--color-surface-dark) calc(l + 0.05) c h);
     --color-surface-active-dark: oklch(from var(--color-surface-dark) calc(l + 0.1) c h);
     --color-surface-disabled-dark: oklch(from var(--color-surface-dark) calc(l + 0.2) c h);
 
-    /* Dark primary colors */
-    --color-primary-dark: oklch(70% 0.15 220);
+    /* Dark primary colors - derived from primary */
+    --color-primary-dark: oklch(from var(--color-primary) calc(l + 0.1) c h);
     --color-primary-hover-dark: oklch(from var(--color-primary-dark) calc(l + 0.03) calc(c * 0.9) h);
     --color-primary-active-dark: oklch(from var(--color-primary-dark) calc(l - 0.11) calc(c * 0.8) h);
     --color-primary-disabled-dark: oklch(from var(--color-primary-dark) calc(l - 0.27) calc(c * 0.48) h);
 
     /* Dark border colors */
-    --color-border-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.54) calc(c * 0.65) h);
-    --color-border-secondary-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.2);
+    --color-border-dark: oklch(from var(--color-neutral-dark) calc(l + 0.13) c h);
+    --color-border-secondary-dark: oklch(from var(--color-neutral-dark) l c h / 0.6);
     --color-border-primary-dark: oklch(from var(--color-primary-dark) calc(l + 0.04) calc(c * 0.81) h);
-    --color-border-focus-dark: var(--color-primary-dark);
+    /* Focus ring — lightness floored at 0.70, verified against all five dark-mode surfaces
+       (ratios use blue primary at 70% L, Y≈0.31; warm primaries yield higher Y and better contrast).
+       Floor is set above the neutral-geometry threshold (~0.61) because blue-hued primaries have
+       lower actual sRGB luminance than the L³≈Y approximation implies:
+         --color-surface-dark           (~15% L) ≈ 6.7:1
+         --color-surface-secondary-dark (~18% L) ≈ 6.4:1
+         --color-surface-hover-dark     (~20% L) ≈ 6.2:1
+         --color-surface-active-dark    (~25% L) ≈ 5.4:1
+         --color-surface-disabled-dark  (~35% L) ≈ 3.8:1  ← binding constraint, WCAG AA ✓ */
+    --color-border-focus-dark: oklch(from var(--color-primary-dark) max(l, 0.70) c h);
     --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
 
-    /* Dark shadow colors */
-    --color-shadow-dark: oklch(from var(--color-ink-primary) l c h / 0.3);
-    --color-shadow-primary-dark: oklch(from var(--color-primary-dark) l c h / 0.25);
-    --color-shadow-surface-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.3);
-    --color-shadow-focus-dark: oklch(from var(--color-primary-dark) l c h / 0.4);
-    --color-shadow-strong-dark: oklch(from var(--color-ink-primary) l c h / 0.4);
+    /* Dark shadow base pigments - neutral shadows get slight primary accent */
+    /* Shadow surface: neutral with slight primary tint */
+    --color-shadow-surface-base-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
 
-    /* Shadow tokens - Box shadows */
-    --shadow-elevated: inset 0 1px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.1);
-    --shadow-elevated-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 2px var(--color-shadow-strong-dark);
-    --shadow-inset: inset 0 1px 2px var(--color-shadow);
-    --shadow-inset-dark: inset 0 1px 2px var(--color-shadow-dark);
-    --shadow-highlight: inset 0 1px var(--color-shadow-surface);
-    --shadow-highlight-dark: inset 0 1px var(--color-shadow-surface-dark);
-    --shadow-highlight-pressed: inset 0 1px var(--color-shadow-primary);
-    --shadow-highlight-pressed-dark: inset 0 1px var(--color-shadow-primary-dark);
-    --shadow-focus-ring: 0 0 0 2px var(--color-shadow-focus);
-    --shadow-focus-ring-dark: 0 0 0 2px var(--color-shadow-focus-dark);
-    --shadow-focus-elevated: 0 0 0 2px var(--color-shadow-focus), inset 0 1px rgba(255,255,255,0.3);
-    --shadow-focus-elevated-dark: 0 0 0 2px var(--color-shadow-focus-dark), inset 0 1px var(--color-shadow-surface-dark);
-    --shadow-subtle: inset 0 1px rgba(255,255,255,0.2), 0 1px 1px rgba(0,0,0,0.05);
-    --shadow-subtle-dark: inset 0 1px var(--color-shadow-surface-dark), 0 1px 1px var(--color-shadow);
+    /* Shadow tokens — composable across Tailwind's inset-shadow-* and shadow-* slots.
+       Combine one inset-shadow token with one shadow token on the same element;
+       Tailwind v4 merges them into a single box-shadow declaration automatically. */
+
+    /* Inset shadow slot (inset-shadow-* utilities) — top-edge highlights and pressed effects */
+    --inset-shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
+    --inset-shadow-highlight-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
+    --inset-shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.15);
+    --inset-shadow-highlight-pressed-dark: inset 0 1px oklch(from var(--color-primary-dark) l c h / 0.25);
+    --inset-shadow-pressed: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --inset-shadow-pressed-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
+
+    /* Outer shadow slot (shadow-* utilities) — drop shadows */
+    --shadow-drop: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
+    --shadow-drop-dark: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
+    --shadow-drop-subtle: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
+    --shadow-drop-subtle-dark: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Text shadow tokens */
-    --text-shadow-embossed: 0 1px var(--color-ink-shadow);
-    --text-shadow-embossed-dark: 0 1px var(--color-ink-shadow-dark);
-    --text-shadow-debossed: 0 -1px var(--color-ink-shadow-inverse);
-    --text-shadow-debossed-dark: 0 -1px var(--color-ink-shadow-inverse-dark);
+    --text-shadow-embossed: 0 1px oklch(from var(--color-ink-primary) l c h / 0.2);
+    --text-shadow-embossed-dark: 0 1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6);
+    --text-shadow-debossed: 0 -1px oklch(from var(--color-ink-primary) l c h / 0.2), 0 1px oklch(from var(--color-surface) calc(l + 0.1) c h / 0.8);
+    --text-shadow-debossed-dark: 0 -1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6), 0 1px oklch(from var(--color-surface-dark) calc(l + 0.15) c h / 0.5);
 
-    /* Dark state colors */
-    --color-success-dark: oklch(from var(--color-neon-green) l calc(c * 0.86) h);
-    --color-warning-dark: oklch(from var(--color-neon-orange) calc(l + 0.03) calc(c * 0.86) h);
-    --color-error-dark: oklch(from var(--color-neon-red) calc(l + 0.03) calc(c * 0.86) h);
-    --color-info-dark: oklch(from var(--color-neon-blue) l calc(c * 0.86) h);
+    /* Dark state colors - independent of primary color, using neon accent colors
+       Slightly lighter than light-mode counterparts for visibility on dark backgrounds */
+    --color-success-dark: oklch(from var(--color-neon-green) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
+    --color-warning-dark: oklch(from var(--color-neon-orange) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
+    --color-error-dark: oklch(from var(--color-neon-red) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
+    --color-info-dark: oklch(from var(--color-neon-blue) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
 
-    /* Dark additional semantic colors for theming flexibility */
-    --color-accent-dark: oklch(from var(--color-neon-blue) l calc(c * 0.91) h);
-    --color-accent-hover-dark: oklch(from var(--color-neon-blue) l calc(c * 0.95) h);
-    --color-accent-active-dark: oklch(from var(--color-neon-blue) calc(l - 0.15) calc(c * 0.8) h);
-
-    --color-muted-dark: oklch(from var(--color-neutral-dark) calc(l - 0.04) calc(c * 0.7) h);
-    --color-muted-hover-dark: oklch(from var(--color-neutral-dark) calc(l + 0.2) calc(c * 0.85) h);
-    --color-muted-active-dark: oklch(from var(--color-neutral-dark) calc(l + 0.34) calc(c * 0.75) h);
+    /* Dark additional semantic colors for theming flexibility - derived from primary */
+    --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
+    --color-accent-hover-dark: oklch(from var(--color-accent-dark) l calc(c * 0.95) h);
+    --color-accent-active-dark: oklch(from var(--color-accent-dark) calc(l - 0.15) calc(c * 0.8) h);
 }
 
 :host,
 html {
-    font-family: --theme(--default-font-family);
+    font-family: --theme(--font-sans);
 }
 
 body {
-    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white;
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark;
 }
 
 a {
     color: inherit;
     text-decoration: inherit;
+}
+
+/* Focus ring — WCAG 2.4.11 (AA) against all five light-mode and all five dark-mode surfaces.
+   See --color-border-focus and --color-border-focus-dark for per-surface contrast ratios. */
+:focus-visible {
+    outline: 2px solid --theme(--color-border-focus);
+    outline-offset: 2px;
+}
+
+[data-theme=dark] :focus-visible {
+    outline-color: --theme(--color-border-focus-dark);
 }

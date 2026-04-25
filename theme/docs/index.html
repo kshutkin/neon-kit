@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" class="h-screen bg-gray-100 dark:bg-gray-900">
+<html lang="en" class="h-screen bg-surface dark:bg-surface-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neon Project</title>
     <link rel="stylesheet" href="output.css">
 </head>
-<body class="flex min-h-screen">
-    <aside class="w-64 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-        <header class="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h1 class="text-2xl font-bold">Project Neon</h1>
+<body class="flex min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+    <aside class="flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
+        <header class="border-b border-border p-6 dark:border-border-dark">
+            <div class="text-xs font-medium uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Theme Docs</div>
+            <h1 class="mt-2 text-2xl font-bold">Project Neon</h1>
+            <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
         </header>
-        <nav class="flex-1 p-4 space-y-2">
-            <ul class="list-none">
-                <li><a href="#/buttons" class="block hover:text-blue-500">Buttons</a></li>
-                <li><a href="#/panels" class="block hover:text-blue-500">Panels</a></li>
-                <li><a href="#/typography" class="block hover:text-blue-500">Typography</a></li>
-                <li><a href="#/colors" class="block hover:text-blue-500">Colors</a></li>
-                <li><a href="#/links" class="block hover:text-blue-500">Links</a></li>
-                <li><a href="#/shadows" class="block hover:text-blue-500">Shadows</a></li>
+        <nav class="flex-1 p-4">
+            <ul class="list-none space-y-1 pl-0">
+                <li><a href="#/buttons" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Buttons</a></li>
+                <li><a href="#/panels" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Panels</a></li>
+                <li><a href="#/typography" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Typography</a></li>
+                <li><a href="#/colors" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Colors</a></li>
+                <li><a href="#/links" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Links</a></li>
+                <li><a href="#/shadows" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Shadows</a></li>
             </ul>
         </nav>
-        <footer class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <footer class="border-t border-border p-4 dark:border-border-dark">
             <theme-switcher></theme-switcher>
         </footer>
     </aside>
-    <main class="flex-1">
-        <iframe name="content-frame" src="" class="w-full h-full border-0"></iframe>
+    <main class="min-w-0 flex-1 bg-surface dark:bg-surface-dark">
+        <iframe name="content-frame" src="" class="block h-full min-h-screen w-full border-0 bg-surface dark:bg-surface-dark"></iframe>
     </main>
     <script src="theme-switcher.js" type="module"></script>
     <script type="module">
@@ -50,11 +52,31 @@
             for (const link of links) {
                 const linkHash = link.getAttribute('href').slice(1); // Remove the # prefix
                 if (linkHash === currentPath) {
-                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'font-bold');
-                    link.classList.remove('hover:text-blue-500');
+                    link.classList.add('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
+                    link.classList.remove('text-ink-primary', 'dark:text-ink-primary-dark');
                 } else {
-                    link.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-bold');
-                    link.classList.add('hover:text-blue-500');
+                    link.classList.remove('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
+                    link.classList.add('text-ink-primary', 'dark:text-ink-primary-dark');
+                }
+            }
+        };
+
+        const syncPrimaryColorToIframe = () => {
+            const themeSwitcher = document.querySelector('theme-switcher');
+            if (themeSwitcher && typeof themeSwitcher.getPrimaryColor === 'function') {
+                const primaryColor = themeSwitcher.getPrimaryColor();
+                try {
+                    if (iframe.contentWindow) {
+                        // Wait a bit for iframe to be ready
+                        setTimeout(() => {
+                            iframe.contentWindow.postMessage(
+                                { type: "primary-color-sync", primaryColor },
+                                "*"
+                            );
+                        }, 100);
+                    }
+                } catch (e) {
+                    console.warn("Could not sync primary color to iframe:", e);
                 }
             }
         };
@@ -64,7 +86,15 @@
             const section = path.slice(1) || 'buttons';
             iframe.src = `${section}.html`;
             setActiveLink(path);
+
+            // Notify iframe of current primary color after it loads
+            iframe.addEventListener('load', syncPrimaryColorToIframe, { once: true });
         };
+
+        // Also sync when iframe is already loaded (for initial page load)
+        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+            syncPrimaryColorToIframe();
+        }
 
         // Listen for hash changes
         listen((path) => {

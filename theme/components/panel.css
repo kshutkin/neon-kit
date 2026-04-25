@@ -1,3 +1,3 @@
 .panel {
-    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark shadow-elevated dark:shadow-elevated-dark border-border dark:border-border-dark relative inline-block overflow-hidden rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block overflow-hidden rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
 }
