@@ -96,37 +96,43 @@
     }
 }
 
-/* Neon text effect.
-   Generates a luminous glow that tints based on the element's current text color. */
-@utility text-neon {
+/* Text shadow neon — applies luminous neon underglow based on shadow or text color */
+@utility text-shadow-neon {
+    --neon-text-color: var(--tw-shadow-color, currentColor);
     text-shadow:
         0 0 0.1em oklch(100% 0 0 / 0.8),
-        0 0 0.2em currentColor,
-        0 0 0.4em currentColor,
-        0 0 0.8em currentColor,
-        0 0 1.6em currentColor;
-    
+        0 0 0.2em var(--neon-text-color),
+        0 0 0.4em var(--neon-text-color),
+        0 0 0.8em var(--neon-text-color),
+        0 0 1.6em var(--neon-text-color);
+        
     @media (prefers-reduced-motion: no-preference) {
         animation: text-neon-pulse 2s ease-in-out infinite alternate;
     }
+}
+
+/* Neon text effect.
+   Combines the text-shadow-neon glow for convenience. */
+@utility text-neon {
+    @apply text-shadow-neon;
 }
 
 @keyframes text-neon-pulse {
     from {
         text-shadow:
             0 0 0.05em oklch(100% 0 0 / 0.8),
-            0 0 0.1em currentColor,
-            0 0 0.2em currentColor,
-            0 0 0.4em currentColor,
-            0 0 0.8em currentColor;
+            0 0 0.1em var(--neon-text-color),
+            0 0 0.2em var(--neon-text-color),
+            0 0 0.4em var(--neon-text-color),
+            0 0 0.8em var(--neon-text-color);
     }
     to {
         text-shadow:
             0 0 0.15em oklch(100% 0 0 / 0.9),
-            0 0 0.3em currentColor,
-            0 0 0.6em currentColor,
-            0 0 1.2em currentColor,
-            0 0 2.4em currentColor;
+            0 0 0.3em var(--neon-text-color),
+            0 0 0.6em var(--neon-text-color),
+            0 0 1.2em var(--neon-text-color),
+            0 0 2.4em var(--neon-text-color);
     }
 }
 
