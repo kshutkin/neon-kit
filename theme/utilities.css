@@ -183,3 +183,19 @@
             3px 6px 20px var(--neon-color);
     }
 }
+
+/* Neon border effect.
+   Makes the element's border look like a glowing neon tube.
+   Uses the border color for the tube's glow. */
+@utility border-neon {
+    /* Capture the border color so we can use it for the shell */
+    --neon-border-color: var(--tw-border-color, currentColor);
+    
+    /* The bright, hot core of the neon tube */
+    border-color: color-mix(in srgb, var(--neon-border-color) 60%, white);
+    
+    /* The subtle glass shell encasing the core (no diffuse glow) */
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent);
+}
