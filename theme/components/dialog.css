@@ -11,7 +11,7 @@
 */
 
 .dialog {
-    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark rounded border bg-clip-padding p-0 m-auto;
+    @apply panel p-0 m-auto whitespace-normal;
 
     /* Layout: header / body / footer with body taking remaining space */
     display: grid;
