@@ -1,3 +1,8 @@
+/* Core structural block for elevated box items like panels and buttons */
+@utility panel {
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
+}
+
 /* Tinted metal — shiny but slightly worn finish.
    Tints from the element's own background-color: keep a solid background-color
    on the element and the gradient/noise layers blend on top of it. */
