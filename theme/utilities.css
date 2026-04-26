@@ -96,8 +96,10 @@
     }
 }
 
-/* Text shadow neon — applies luminous neon underglow based on shadow or text color */
-@utility text-shadow-neon {
+/* Neon text effect.
+   Glow color follows text color by default (text-neon text-neon-blue).
+   Override with a shadow-* utility to decouple glow from text color (text-neon shadow-neon-blue text-white). */
+@utility text-neon {
     --neon-text-color: var(--tw-shadow-color, currentColor);
     text-shadow:
         0 0 0.1em oklch(100% 0 0 / 0.8),
@@ -105,16 +107,10 @@
         0 0 0.4em var(--neon-text-color),
         0 0 0.8em var(--neon-text-color),
         0 0 1.6em var(--neon-text-color);
-        
+
     @media (prefers-reduced-motion: no-preference) {
         animation: text-neon-pulse 2s ease-in-out infinite alternate;
     }
-}
-
-/* Neon text effect.
-   Combines the text-shadow-neon glow for convenience. */
-@utility text-neon {
-    @apply text-shadow-neon;
 }
 
 @keyframes text-neon-pulse {

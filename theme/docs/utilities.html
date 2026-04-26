@@ -94,43 +94,17 @@
             </div>
         </section>
 
-        <!-- text-shadow-neon -->
-        <section class="mb-12">
-            <h2 class="mb-2">text-shadow-neon</h2>
-            <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
-                Applies a luminous neon glow to text. Pair with any <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">shadow-*</code> color utility to set the glow color independently, leaving the main text color untouched. Falls back to <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">currentColor</code> otherwise.
-            </p>
-
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-                <!-- Neon blue -->
-                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
-                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
-                        <span class="text-shadow-neon shadow-neon-blue text-2xl font-bold">Blue Underglow</span>
-                    </div>
-                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">text-shadow-neon shadow-neon-blue</p>
-                </div>
-
-                <!-- Neon pink pulsing demo -->
-                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
-                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
-                        <span class="text-neon shadow-neon-pink text-2xl font-bold">Pink Underglow</span>
-                    </div>
-                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">text-neon shadow-neon-pink</p>
-                </div>
-
-            </div>
-        </section>
-
         <!-- text-neon -->
         <section class="mb-12">
             <h2 class="mb-2">text-neon</h2>
             <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
-                Applies a luminous neon glow to text. Pair with any
-                <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">text-*</code> color utility — the glow tints to match. Works best on dark backgrounds.
+                Applies a pulsating luminous neon glow to text. By default the glow color follows the
+                <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">text-*</code> color. Add a
+                <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">shadow-*</code> utility to decouple the glow color from the text color.
             </p>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <h3 class="mb-3 mt-2 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Glow follows text color</h3>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
 
                 <!-- Neon blue -->
                 <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
@@ -182,21 +156,41 @@
 
             </div>
 
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Glow decoupled from text color</h3>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <!-- Blue glow, default text -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="text-neon shadow-neon-blue text-2xl font-bold">Blue glow</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">text-neon shadow-neon-blue</p>
+                </div>
+
+                <!-- Pink glow, green text -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="text-neon shadow-neon-pink text-neon-green text-2xl font-bold">Pink glow, green text</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">text-neon shadow-neon-pink text-neon-green</p>
+                </div>
+
+            </div>
+
             <!-- Usage note -->
             <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
                 <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>
-                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Pair text-neon with any text color utility --&gt;
-&lt;h1 class="text-neon text-neon-blue"&gt;
-  Glowing Blue
-&lt;/h1&gt;
+                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Glow follows text color --&gt;
+&lt;span class="text-neon text-neon-blue"&gt;Glowing Blue&lt;/span&gt;
 
-&lt;span class="text-neon text-neon-pink"&gt;
-  Pink neon sign
+&lt;!-- Decouple glow from text color with shadow-* --&gt;
+&lt;span class="text-neon shadow-neon-pink text-neon-green"&gt;
+  Pink glow, green text
 &lt;/span&gt;</code></pre>
                 <p class="mt-4 text-sm text-ink-secondary dark:text-ink-secondary-dark">
-                    The glow layers use <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">currentColor</code> so any
-                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">text-*</code> utility drives the tint automatically.
-                    A faint white core sharpens the inner edge.
+                    Without a <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">shadow-*</code> utility the glow uses
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">currentColor</code>, so text and glow are always the same hue.
+                    Add a <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">shadow-neon-*</code> utility to paint the glow independently.
                     The pulsing animation respects <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">prefers-reduced-motion</code>.
                 </p>
             </div>
