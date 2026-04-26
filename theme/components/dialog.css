@@ -1,0 +1,86 @@
+/* Dialog component — built on the native <dialog> element.
+   Structure:
+     <dialog class="dialog">
+       <header class="dialog-header">…</header>
+       <div class="dialog-body">…</div>
+       <footer class="dialog-footer">…</footer>
+     </dialog>
+
+   Sizes (modifiers on .dialog): .small, .medium (default), .large, .xlarge.
+   Mobile (<= 640px): always full-screen regardless of size.
+*/
+
+.dialog {
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark rounded border bg-clip-padding p-0 m-auto;
+
+    /* Layout: header / body / footer with body taking remaining space */
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    /* Default (medium) size */
+    width: min(90vw, 32rem);
+    max-height: min(85vh, 40rem);
+}
+
+.dialog.small {
+    width: min(90vw, 24rem);
+    max-height: min(85vh, 28rem);
+}
+
+.dialog.large {
+    width: min(90vw, 48rem);
+    max-height: min(85vh, 48rem);
+}
+
+.dialog.xlarge {
+    width: min(95vw, 64rem);
+    max-height: min(90vh, 56rem);
+}
+
+.dialog:not([open]) {
+    display: none;
+}
+
+.dialog::backdrop {
+    background-color: oklch(from var(--color-ink-primary) l c h / 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.dialog-header {
+    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark text-ink-primary dark:text-ink-primary-dark border-b px-5 py-3 text-shadow-embossed dark:text-shadow-embossed-dark;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-weight: 600;
+}
+
+.dialog-body {
+    @apply px-5 py-4;
+    overflow: auto;
+    min-height: 0;
+}
+
+.dialog-footer {
+    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark border-t px-5 py-3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Mobile: full screen */
+@media (max-width: 640px) {
+    .dialog,
+    .dialog.small,
+    .dialog.large,
+    .dialog.xlarge {
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+    }
+}

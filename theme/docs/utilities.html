@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Classes</title>
+    <link rel="stylesheet" href="output.css">
+    <script src="theme-switcher.js" type="module"></script>
+</head>
+<body class="p-8 bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+    <theme-switcher style="display: none;"></theme-switcher>
+    <main>
+        <h1 class="mb-6">Utility Classes</h1>
+        <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+            Custom utility classes that extend the design system.
+        </p>
+
+        <!-- metal-tinted -->
+        <section class="mb-12">
+            <h2 class="mb-2">metal-tinted</h2>
+            <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+                Applies a shiny, slightly worn brushed-metal finish on top of the element's
+                own background color. Set any <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">bg-*</code> color — the metal sheen tints to match.
+            </p>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                <!-- Surface (neutral) -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-neutral rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary dark:text-ink-primary-dark drop-shadow-sm">Neutral metal</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-neutral</p>
+                </div>
+
+                <!-- Primary -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-primary rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Primary metal</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-primary</p>
+                </div>
+
+                <!-- Neon blue -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-neon-blue rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary drop-shadow-sm">Neon blue</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-neon-blue</p>
+                </div>
+
+                <!-- Neon pink -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-neon-pink rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Neon pink</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-neon-pink</p>
+                </div>
+
+                <!-- Neon green -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-neon-green rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary drop-shadow-sm">Neon green</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-neon-green</p>
+                </div>
+
+                <!-- Dark (gunmetal) -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="metal-tinted bg-neutral-dark rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Gunmetal dark</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">metal-tinted bg-neutral-dark</p>
+                </div>
+
+            </div>
+
+            <!-- Usage note -->
+            <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
+                <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>
+                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Any bg-* color works as the tint base --&gt;
+&lt;div class="metal-tinted bg-primary rounded-lg p-6"&gt;
+  Primary chrome
+&lt;/div&gt;
+
+&lt;div class="metal-tinted bg-neon-pink rounded-lg p-6"&gt;
+  Pink chrome
+&lt;/div&gt;</code></pre>
+                <p class="mt-4 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    The gradient and noise layers are applied via <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">background-image</code> and
+                    blend over the <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">background-color</code>, so any color utility sets the tint automatically.
+                    Bevelled inset shadows complete the metal-plate look.
+                </p>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

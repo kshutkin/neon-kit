@@ -6,5 +6,6 @@
 @import "./reset-normalize.css" layer(base);
 @import "./components.css" layer(components);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "./utilities.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
