@@ -44,15 +44,15 @@
     </main>
 
     <!-- Small -->
-    <dialog class="dialog small" id="dlg-small">
-        <header class="dialog-header">
+    <dialog class="dialog -small" id="dlg-small">
+        <header class="dialog__header">
             Small dialog
             <button class="btn quiet px-3" data-close aria-label="Close">✕</button>
         </header>
-        <div class="dialog-body">
+        <div class="dialog__body">
             <p>Compact size — good for short prompts and quick confirmations.</p>
         </div>
-        <footer class="dialog-footer">
+        <footer class="dialog__footer">
             <button class="btn quiet" data-close>Cancel</button>
             <button class="btn cta" data-close>OK</button>
         </footer>
@@ -60,59 +60,59 @@
 
     <!-- Medium (default) -->
     <dialog class="dialog" id="dlg-medium">
-        <header class="dialog-header">
+        <header class="dialog__header">
             Medium dialog
             <button class="btn quiet px-3" data-close aria-label="Close">✕</button>
         </header>
-        <div class="dialog-body">
+        <div class="dialog__body">
             <p class="mb-3">The default size. Suits most form-style content and standard messaging.</p>
             <p class="text-ink-secondary dark:text-ink-secondary-dark">Press <kbd>Esc</kbd> to dismiss.</p>
         </div>
-        <footer class="dialog-footer">
+        <footer class="dialog__footer">
             <button class="btn quiet" data-close>Cancel</button>
             <button class="btn cta" data-close>Save</button>
         </footer>
     </dialog>
 
     <!-- Large -->
-    <dialog class="dialog large" id="dlg-large">
-        <header class="dialog-header">
+    <dialog class="dialog -large" id="dlg-large">
+        <header class="dialog__header">
             Large dialog
             <button class="btn quiet px-3" data-close aria-label="Close">✕</button>
         </header>
-        <div class="dialog-body">
+        <div class="dialog__body">
             <p class="mb-3">More room for richer layouts — multi-column forms, detail panels, or media.</p>
             <div class="grid grid-cols-2 gap-4">
                 <div style="white-space: normal;">Left column</div>
                 <div style="white-space: normal;">Right column</div>
             </div>
         </div>
-        <footer class="dialog-footer">
+        <footer class="dialog__footer">
             <button class="btn quiet" data-close>Close</button>
         </footer>
     </dialog>
 
     <!-- X-Large -->
-    <dialog class="dialog xlarge" id="dlg-xlarge">
-        <header class="dialog-header">
+    <dialog class="dialog -xlarge" id="dlg-xlarge">
+        <header class="dialog__header">
             <span>Extra-large dialog</span>
             <button class="btn quiet px-3" data-close aria-label="Close">✕</button>
         </header>
-        <div class="dialog-body">
+        <div class="dialog__body">
             <p>For dense workflows, side-by-side editors, or data tables.</p>
         </div>
-        <footer class="dialog-footer">
+        <footer class="dialog__footer">
             <button class="btn quiet" data-close>Close</button>
         </footer>
     </dialog>
 
     <!-- Scrolling body -->
     <dialog class="dialog" id="dlg-scroll">
-        <header class="dialog-header">
+        <header class="dialog__header">
             <span>Terms &amp; Conditions</span>
             <button class="btn quiet px-3" data-close aria-label="Close">✕</button>
         </header>
-        <div class="dialog-body">
+        <div class="dialog__body">
             <p class="mb-3">Scroll inside the body — the header and footer stay pinned.</p>
             <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
             <p class="mb-3">Maecenas faucibus mollis interdum. Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
@@ -124,23 +124,23 @@
             <p class="mb-3">Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Etiam porta sem malesuada magna mollis euismod.</p>
             <p>End of content.</p>
         </div>
-        <footer class="dialog-footer">
+        <footer class="dialog__footer">
             <button class="btn quiet" data-close>Decline</button>
             <button class="btn cta" data-close>Accept</button>
         </footer>
     </dialog>
 
     <!-- Confirmation (uses form method="dialog" with returnValue) -->
-    <dialog class="dialog small" id="dlg-confirm">
+    <dialog class="dialog -small" id="dlg-confirm">
         <form method="dialog" style="display: contents;">
-            <header class="dialog-header">
+            <header class="dialog__header">
                 <span>Delete item?</span>
                 <button class="btn quiet px-3" value="cancel" aria-label="Close">✕</button>
             </header>
-            <div class="dialog-body">
+            <div class="dialog__body">
                 <p>This action cannot be undone.</p>
             </div>
-            <footer class="dialog-footer">
+            <footer class="dialog__footer">
                 <button class="btn quiet" value="cancel">Cancel</button>
                 <button class="btn cta" value="confirm">Delete</button>
             </footer>

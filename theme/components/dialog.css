@@ -1,12 +1,12 @@
 /* Dialog component — built on the native <dialog> element.
    Structure:
      <dialog class="dialog">
-       <header class="dialog-header">…</header>
-       <div class="dialog-body">…</div>
-       <footer class="dialog-footer">…</footer>
+       <header class="dialog__header">…</header>
+       <div class="dialog__body">…</div>
+       <footer class="dialog__footer">…</footer>
      </dialog>
 
-   Sizes (modifiers on .dialog): .small, .medium (default), .large, .xlarge.
+   Sizes (modifiers on .dialog): .dialog.-small, .dialog.-medium (default), .dialog.-large, .dialog.-xlarge.
    Mobile (<= 640px): always full-screen regardless of size.
 */
 
@@ -22,17 +22,17 @@
     max-height: min(85vh, 40rem);
 }
 
-.dialog.small {
+.dialog.-small {
     width: min(90vw, 24rem);
     max-height: min(85vh, 28rem);
 }
 
-.dialog.large {
+.dialog.-large {
     width: min(90vw, 48rem);
     max-height: min(85vh, 48rem);
 }
 
-.dialog.xlarge {
+.dialog.-xlarge {
     width: min(95vw, 64rem);
     max-height: min(90vh, 56rem);
 }
@@ -46,7 +46,7 @@
     backdrop-filter: blur(2px);
 }
 
-.dialog-header {
+.dialog__header {
     @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark text-ink-primary dark:text-ink-primary-dark border-b px-5 py-3 text-shadow-embossed dark:text-shadow-embossed-dark;
     display: flex;
     align-items: center;
@@ -55,13 +55,13 @@
     font-weight: 600;
 }
 
-.dialog-body {
+.dialog__body {
     @apply px-5 py-4;
     overflow: auto;
     min-height: 0;
 }
 
-.dialog-footer {
+.dialog__footer {
     @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark border-t px-5 py-3;
     display: flex;
     align-items: center;
@@ -72,9 +72,9 @@
 /* Mobile: full screen */
 @media (max-width: 640px) {
     .dialog,
-    .dialog.small,
-    .dialog.large,
-    .dialog.xlarge {
+    .dialog.-small,
+    .dialog.-large,
+    .dialog.-xlarge {
         width: 100vw;
         height: 100vh;
         max-width: 100vw;
