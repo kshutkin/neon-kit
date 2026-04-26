@@ -82,7 +82,10 @@
         inset 1px 0 0 oklch(100% 0 0 / 0.35),
         inset -1px 0 0 oklch(0% 0 0 / 0.25),
         inset 0 0 24px oklch(100% 0 0 / 0.15);
-    animation: metal-shimmer 6s infinite linear;
+    
+    @media (prefers-reduced-motion: no-preference) {
+        animation: metal-shimmer 6s infinite linear;
+    }
 }
 
 @keyframes metal-shimmer {
