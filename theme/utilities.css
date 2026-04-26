@@ -124,3 +124,55 @@
             0 0 2.4em currentColor;
     }
 }
+
+/* Neon box shadow effect.
+   Casts an asymmetric, pulsating light underneath an element.
+   More prominent on one side (bottom-right) to give directional glow.
+   Uses a ::before pseudo-element to avoid overriding existing shadows. */
+@utility shadow-neon {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays behind the parent's background
+       but doesn't fall behind the rest of the page */
+    z-index: 0;
+
+    /* Capture the shadow color on the parent so the pseudo-element can inherit it, 
+       since Tailwind v4 sets --tw-shadow-color to inherits: false */
+    --neon-color: var(--tw-shadow-color, currentColor);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+        box-shadow:
+            -1px -1px 3px var(--neon-color),
+            0 0 6px var(--neon-color),
+            2px 4px 12px var(--neon-color),
+            4px 8px 24px var(--neon-color);
+    }
+    
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: shadow-neon-pulse 2.5s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes shadow-neon-pulse {
+    from {
+        box-shadow:
+            -1px -1px 2px var(--neon-color),
+            0 0 4px var(--neon-color),
+            1px 2px 8px var(--neon-color),
+            2px 4px 16px var(--neon-color);
+    }
+    to {
+        box-shadow:
+            -2px -2px 4px var(--neon-color),
+            0 0 8px var(--neon-color),
+            3px 6px 16px var(--neon-color),
+            6px 12px 32px var(--neon-color);
+    }
+}
