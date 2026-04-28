@@ -109,7 +109,7 @@
         0 0 1.6em var(--neon-text-color);
 
     @media (prefers-reduced-motion: no-preference) {
-        animation: text-neon-pulse 2s ease-in-out infinite alternate;
+        animation: text-neon-pulse 4s ease-in-out infinite alternate;
     }
 }
 
@@ -164,7 +164,7 @@
     
     @media (prefers-reduced-motion: no-preference) {
         &::before {
-            animation: shadow-neon-pulse 2.5s ease-in-out infinite alternate;
+            animation: shadow-neon-pulse 5s ease-in-out infinite alternate;
         }
     }
 }
@@ -240,7 +240,7 @@
 
     @media (prefers-reduced-motion: no-preference) {
         &::before {
-            animation: glow-neon-pulse 2.5s ease-in-out infinite alternate;
+            animation: glow-neon-pulse 5s ease-in-out infinite alternate;
         }
     }
 }
