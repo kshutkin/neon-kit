@@ -266,6 +266,86 @@
             </div>
         </section>
 
+        <!-- inset-shadow-neon -->
+        <section class="mb-12">
+            <h2 class="mb-2">inset-shadow-neon</h2>
+            <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+                Mirror of <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">shadow-neon</code>, but the glow points inward — pooling along the inside edges of the element.
+                Designed for form fields, inset panels, and any concave surface that should look lit from within.
+                Pair with any <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">shadow-*</code> color utility to set the glow color independently.
+            </p>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                <!-- Inset blue -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <input type="text" placeholder="Focus me" class="inset-shadow-neon shadow-neon-blue rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-3 py-2 outline-none w-full" />
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-blue</p>
+                </div>
+
+                <!-- Inset pink -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <input type="text" placeholder="Pink glow" class="inset-shadow-neon shadow-neon-pink rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-3 py-2 outline-none w-full" />
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-pink</p>
+                </div>
+
+                <!-- Inset green -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <input type="text" placeholder="Green glow" class="inset-shadow-neon shadow-neon-green rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-3 py-2 outline-none w-full" />
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-green</p>
+                </div>
+
+                <!-- Inset yellow -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <textarea placeholder="Yellow glow" rows="2" class="inset-shadow-neon shadow-neon-yellow rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-3 py-2 outline-none w-full resize-none"></textarea>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-yellow</p>
+                </div>
+
+                <!-- Inset orange -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="inset-shadow-neon shadow-neon-orange rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-4 py-3 w-full text-sm text-ink-secondary dark:text-ink-secondary-dark">Inset panel</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-orange</p>
+                </div>
+
+                <!-- Inset red -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <input type="text" placeholder="Red glow" class="inset-shadow-neon shadow-neon-red rounded-md bg-surface dark:bg-surface-dark border border-border dark:border-border-dark px-3 py-2 outline-none w-full" />
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">inset-shadow-neon shadow-neon-red</p>
+                </div>
+
+            </div>
+
+            <!-- Usage note -->
+            <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
+                <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>
+                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Glowing form field --&gt;
+&lt;input class="inset-shadow-neon shadow-neon-blue rounded-md border px-3 py-2" /&gt;
+
+&lt;!-- Combine with shadow-neon for a bidirectional glow effect --&gt;
+&lt;div class="inset-shadow-neon shadow-neon shadow-neon-pink"&gt;
+  Glows inside and outside
+&lt;/div&gt;</code></pre>
+                <p class="mt-4 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    Same color contract as <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">shadow-neon</code> — glow follows
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">--tw-shadow-color</code> with a
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">currentColor</code> fallback.
+                    The pulsing animation respects <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">prefers-reduced-motion</code>.
+                </p>
+            </div>
+        </section>
+
         <!-- border-neon -->
         <section class="mb-12">
             <h2 class="mb-2">border-neon</h2>

@@ -216,6 +216,50 @@
     }
 }
 
+/* Inset neon glow effect.
+   Mirrors `shadow-neon`, but the light pools inward along the inside
+   edges instead of casting outward. Useful for form fields, inset
+   panels, and any concave-feeling surface that should glow from within.
+   Uses --tw-shadow-color so any shadow-* color utility sets the glow color.
+
+   Implementation note: applies box-shadow directly to the element rather
+   than via ::before, because replaced elements like <input> don't render
+   pseudo-elements. */
+@utility inset-shadow-neon {
+    /* Capture the shadow color so we can use it after Tailwind v4 resets
+       --tw-shadow-color (it's declared with inherits: false). */
+    --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
+
+    box-shadow:
+        inset -0.7px -0.7px 1.4px var(--neon-glow),
+        inset 0 0 2.8px var(--neon-glow),
+        inset 0.7px 1.4px 5.6px var(--neon-glow),
+        inset 1.4px 2.8px 11.2px var(--neon-glow);
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: inset-shadow-neon-pulse 5s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes inset-shadow-neon-pulse {
+    from {
+        box-shadow:
+            inset 0 0 0.7px var(--neon-glow),
+            inset 0 0 1.4px var(--neon-glow),
+            inset 0.7px 0.7px 2.8px var(--neon-glow),
+            inset 0.7px 1.4px 5.6px var(--neon-glow);
+    }
+    to {
+        box-shadow:
+            inset -0.7px -0.7px 2.1px var(--neon-glow),
+            inset 0 0 4.2px var(--neon-glow),
+            inset 1.4px 2.8px 8.4px var(--neon-glow),
+            inset 2.1px 4.2px 14px var(--neon-glow);
+    }
+}
+
 /* Neon border effect.
    Makes the element's border look like a glowing neon tube.
    Uses the border color for the tube's glow. */
