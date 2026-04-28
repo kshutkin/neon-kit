@@ -503,4 +503,84 @@
             </div>
         </section>
 
+        <!-- foil -->
+        <section class="mb-12">
+            <h2 class="mb-2">foil</h2>
+            <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+                Applies a holographic foil finish reminiscent of shiny trading cards — an iridescent rainbow spectrum
+                and a sweeping metallic glare that shift as the animation plays. Works best over a solid
+                <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">bg-*</code> color.
+            </p>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                <!-- Neutral -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-neutral rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary dark:text-ink-primary-dark drop-shadow-sm">Neutral foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-neutral</p>
+                </div>
+
+                <!-- Primary -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-primary rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Primary foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-primary</p>
+                </div>
+
+                <!-- Neon blue -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-neon-blue rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary drop-shadow-sm">Neon blue foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-neon-blue</p>
+                </div>
+
+                <!-- Neon pink -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-neon-pink rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Neon pink foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-neon-pink</p>
+                </div>
+
+                <!-- Neon green -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-neon-green rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-primary drop-shadow-sm">Neon green foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-neon-green</p>
+                </div>
+
+                <!-- Dark (gunmetal) -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="foil bg-neutral-dark rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <span class="font-semibold text-ink-inverse drop-shadow-sm">Dark foil</span>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">foil bg-neutral-dark</p>
+                </div>
+
+            </div>
+
+            <!-- Usage note -->
+            <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
+                <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>
+                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Any bg-* color works as the tint base --&gt;
+&lt;div class="foil bg-primary rounded-lg p-6"&gt;
+  Primary foil
+&lt;/div&gt;
+
+&lt;div class="foil bg-neon-pink rounded-lg p-6"&gt;
+  Pink foil
+&lt;/div&gt;</code></pre>
+                <p class="mt-4 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    The rainbow spectrum and glare layers are applied via <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">background-image</code> and
+                    blend over the <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">background-color</code>, so any color utility sets the underlying tint automatically.
+                    The shimmer animation respects <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">prefers-reduced-motion</code>.
+                </p>
+            </div>
+        </section>
+
     </main>
