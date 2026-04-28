@@ -318,3 +318,91 @@
         background-position: 100% 50%, 100% 50%, 0 0;
     }
 }
+
+/* Holographic foil border.
+   Renders the element's border as a shifting iridescent rainbow ring
+   with a sweeping metallic glare — same vibe as the `foil` utility,
+   but applied to the border only.
+
+   Implementation note: Tailwind sets a single border-color, so a true
+   gradient border can't be done via the native border alone (and
+   border-image squares off rounded corners). Instead we draw the ring on
+   a ::before pseudo-element using the mask-composite "donut" technique
+   (subtract the inner padding-box from the full box). This preserves
+   border-radius, the host's background, and any existing box-shadow.
+
+   Thickness is controlled by --foil-border-width (default 2px). Override
+   with the Tailwind arbitrary property syntax, e.g.:
+       <div class="border-foil [--foil-border-width:3px]">…</div>
+   The host element does NOT need a Tailwind `border-*` utility — the ring
+   is painted entirely by the pseudo-element. */
+@utility border-foil {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays on top of
+       the host's background but doesn't escape its bounds. */
+    isolation: isolate;
+    --foil-border-width: 2px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: var(--foil-border-width);
+        pointer-events: none;
+        background-image:
+            /* Sharp bright glare sweep — same recipe as `foil`. */
+            linear-gradient(
+                115deg,
+                transparent 15%,
+                oklch(100% 0 0 / 0.6) 23%,
+                oklch(100% 0 0 / 0.95) 25%,
+                oklch(100% 0 0 / 0.6) 27%,
+                transparent 35%
+            ),
+            /* Iridescent rainbow spectrum — opaque so the ring reads as a
+               solid colored border rather than a wash. */
+            linear-gradient(
+                115deg,
+                oklch(75% 0.2 20) 0%,    /* Pinkish Red */
+                oklch(85% 0.2 80) 25%,   /* Yellow */
+                oklch(80% 0.2 150) 45%,  /* Green */
+                oklch(80% 0.2 240) 65%,  /* Blue */
+                oklch(75% 0.2 300) 85%,  /* Purple/Magenta */
+                oklch(75% 0.2 20) 100%   /* loop back to red for seamless travel */
+            );
+        background-size:
+            300% 100%,
+            300% 100%;
+        background-position:
+            0% 50%,
+            0% 50%;
+        background-blend-mode: screen;
+        /* Mask-composite donut: keep only the area between the outer box
+           and the inner padding-box, leaving a clean ring of the desired
+           thickness with rounded corners intact. */
+        -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        mask-composite: exclude;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: border-foil-shimmer 7s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes border-foil-shimmer {
+    0% {
+        background-position: 0% 50%, 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%, 100% 50%;
+    }
+}

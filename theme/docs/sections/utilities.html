@@ -583,4 +583,128 @@
             </div>
         </section>
 
+        <!-- border-foil -->
+        <section class="mb-12">
+            <h2 class="mb-2">border-foil</h2>
+            <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+                Renders the element's border as a shifting iridescent foil ring with a sweeping glare —
+                the <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">foil</code> effect applied to a border instead of a fill.
+                Thickness is controlled by <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">--foil-border-width</code> (defaults to 2px).
+                The host does <strong>not</strong> need a Tailwind <code class="font-mono text-sm bg-surface-secondary dark:bg-surface-secondary-dark px-1 rounded">border-*</code> utility — the ring is drawn by a pseudo-element.
+            </p>
+
+            <h3 class="mb-3 mt-2 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Default thickness (2px)</h3>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <!-- Transparent host -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil rounded-lg px-6 py-3">Foil ring</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil</p>
+                </div>
+
+                <!-- Over surface bg -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil bg-surface dark:bg-surface-dark rounded-lg px-6 py-3">On surface</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil bg-surface</p>
+                </div>
+
+                <!-- Over neon-pink bg -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil bg-neon-pink text-ink-inverse rounded-lg px-6 py-3">On neon pink</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil bg-neon-pink</p>
+                </div>
+
+            </div>
+
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Custom thickness</h3>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil [--foil-border-width:1px] rounded-lg px-6 py-3">1px hairline</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil [--foil-border-width:1px]</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil [--foil-border-width:4px] rounded-lg px-6 py-3">4px ring</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil [--foil-border-width:4px]</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil [--foil-border-width:8px] rounded-xl px-6 py-3">8px chunky</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil [--foil-border-width:8px]</p>
+                </div>
+
+            </div>
+
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Composed with other effects</h3>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <!-- + shadow-neon (glow) -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil shadow-neon shadow-neon-pink rounded-lg px-6 py-3">Foil + neon glow</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil shadow-neon shadow-neon-pink</p>
+                </div>
+
+                <!-- + foil fill -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-foil foil bg-neutral [--foil-border-width:3px] rounded-lg px-6 py-3">Full foil card</div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-foil foil bg-neutral</p>
+                </div>
+
+                <!-- Button -->
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <button type="button" class="btn border-foil [--foil-border-width:2px]">Foil button</button>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">btn border-foil</p>
+                </div>
+
+            </div>
+
+            <!-- Usage note -->
+            <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
+                <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>
+                <pre class="overflow-x-auto font-mono text-sm text-ink-primary dark:text-ink-primary-dark"><code>&lt;!-- Default 2px iridescent foil border --&gt;
+&lt;div class="border-foil rounded-lg p-4"&gt;
+  Foil ring
+&lt;/div&gt;
+
+&lt;!-- Custom thickness via arbitrary property --&gt;
+&lt;div class="border-foil [--foil-border-width:4px] rounded-lg p-4"&gt;
+  Thicker ring
+&lt;/div&gt;
+
+&lt;!-- Compose with bg-* and other effects --&gt;
+&lt;div class="border-foil shadow-neon shadow-neon-pink bg-neutral rounded-lg p-4"&gt;
+  Foil border + pink glow
+&lt;/div&gt;</code></pre>
+                <p class="mt-4 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    The ring is painted by a <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">::before</code> pseudo-element using the mask-composite
+                    "donut" technique — the inner <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">content-box</code> is subtracted from the full box, leaving a clean
+                    rounded ring (something <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">border-image</code> can't do without squaring the corners).
+                    The host's <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">background-color</code> and any
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">box-shadow</code> remain untouched, so it composes cleanly with
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">shadow-neon</code>, <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">foil</code>, and
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">bg-*</code> utilities. The shimmer animation respects
+                    <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">prefers-reduced-motion</code>.
+                </p>
+            </div>
+        </section>
+
     </main>
