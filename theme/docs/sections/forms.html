@@ -1,0 +1,240 @@
+<main>
+    <h1 class="mb-6">Form Controls</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        Inputs, checkboxes, radios, and fieldsets share the visual family of
+        <code>.btn</code>: same border, same focus ring, same disabled
+        treatment. Inputs read as an <em>inset well</em> (you type into them)
+        while checkboxes and radios re-use the raised <code>.btn</code> shape
+        and fill with <code>--color-primary</code> when checked. Fieldsets
+        are flat frames — no drop shadow — that group related fields under a
+        small-caps legend.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Text Inputs</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Apply <code>.input</code> to any single-line form control. Layout
+            (width, stretch) is owned by the surrounding container — the
+            component sets only the chrome.
+        </p>
+        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <label class="field-stack w-72">
+                <span class="field-label">Email</span>
+                <input class="input" type="email" placeholder="you@example.com">
+            </label>
+            <label class="field-stack w-72">
+                <span class="field-label">Password</span>
+                <input class="input" type="password" value="hunter2">
+            </label>
+            <label class="field-stack w-72">
+                <span class="field-label">Disabled</span>
+                <input class="input" type="text" value="Locked value" disabled>
+            </label>
+            <label class="field-stack w-72">
+                <span class="field-label">Read-only</span>
+                <input class="input" type="text" value="Read-only value" readonly>
+            </label>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Input Types</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>.input</code> works on every native text-like control —
+            <code>email</code>, <code>number</code>, <code>search</code>,
+            <code>date</code>, <code>file</code>, plus <code>&lt;textarea&gt;</code>
+            and <code>&lt;select&gt;</code>. The chevron on a styled
+            <code>&lt;select&gt;</code> is rendered via <code>background-image</code>
+            so it's consistent across browsers.
+        </p>
+        <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-3">
+            <label class="field-stack">
+                <span class="field-label">Number</span>
+                <input class="input" type="number" value="42">
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Search</span>
+                <input class="input" type="search" placeholder="Search…">
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Date</span>
+                <input class="input" type="date" value="2025-01-15">
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Select</span>
+                <select class="input">
+                    <option>One</option>
+                    <option selected>Two</option>
+                    <option>Three</option>
+                </select>
+            </label>
+            <label class="field-stack col-span-2">
+                <span class="field-label">File</span>
+                <input class="input" type="file">
+            </label>
+            <label class="field-stack col-span-2 md:col-span-3">
+                <span class="field-label">Textarea</span>
+                <textarea class="input" rows="3" placeholder="Multi-line content…"></textarea>
+            </label>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Checkboxes</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Native <code>&lt;input type="checkbox"&gt;</code> with the UA
+            chrome stripped and re-rendered as a small <code>.btn</code>-shaped
+            square. Sized in <code>em</code> so the box tracks its label's
+            font-size automatically.
+        </p>
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <label class="field">
+                <input class="checkbox" type="checkbox">
+                <span>Unchecked</span>
+            </label>
+            <label class="field">
+                <input class="checkbox" type="checkbox" checked>
+                <span>Checked</span>
+            </label>
+            <label class="field">
+                <input class="checkbox" type="checkbox" id="indet-demo" checked>
+                <span>Indeterminate</span>
+            </label>
+            <label class="field">
+                <input class="checkbox" type="checkbox" disabled>
+                <span>Disabled</span>
+            </label>
+            <label class="field">
+                <input class="checkbox" type="checkbox" checked disabled>
+                <span>Disabled, checked</span>
+            </label>
+            <p class="mt-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                Checkboxes also scale with surrounding text:
+            </p>
+            <label class="field text-lg">
+                <input class="checkbox" type="checkbox" checked>
+                <span>Larger label</span>
+            </label>
+            <label class="field text-2xl">
+                <input class="checkbox" type="checkbox" checked>
+                <span>Even larger</span>
+            </label>
+        </div>
+        <script>
+            // Mark the demo checkbox as indeterminate after the fragment is injected.
+            (function () {
+                const el = document.getElementById('indet-demo');
+                if (el) el.indeterminate = true;
+            })();
+        </script>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Radio Buttons</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Same shape as <code>.checkbox</code> but circular and with a dot
+            instead of a tick. Group radios with a shared <code>name</code> in
+            the usual native way.
+        </p>
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <label class="field">
+                <input class="radio" type="radio" name="size-demo">
+                <span>Small</span>
+            </label>
+            <label class="field">
+                <input class="radio" type="radio" name="size-demo" checked>
+                <span>Medium</span>
+            </label>
+            <label class="field">
+                <input class="radio" type="radio" name="size-demo">
+                <span>Large</span>
+            </label>
+            <label class="field">
+                <input class="radio" type="radio" name="size-demo" disabled>
+                <span>Extra large (disabled)</span>
+            </label>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Fieldset</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>.fieldset</code> is a flat frame for grouping related
+            fields. Pair it with native <code>&lt;legend&gt;</code> for an
+            accessible group label that browsers expose to assistive tech.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <fieldset class="fieldset w-full max-w-md">
+                <legend>Notification preferences</legend>
+                <div class="flex flex-col gap-2">
+                    <label class="field">
+                        <input class="checkbox" type="checkbox" checked>
+                        <span>Email me about product updates</span>
+                    </label>
+                    <label class="field">
+                        <input class="checkbox" type="checkbox">
+                        <span>Send weekly digest</span>
+                    </label>
+                    <label class="field">
+                        <input class="checkbox" type="checkbox" checked>
+                        <span>Alert on security events</span>
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Composed Form</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Inputs, checkboxes, radios, fieldsets, and buttons composed
+            together — everything shares the same border, focus ring, and
+            disabled treatment.
+        </p>
+        <form class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark" onsubmit="event.preventDefault();">
+            <div class="grid gap-3 md:grid-cols-2">
+                <label class="field-stack">
+                    <span class="field-label">First name</span>
+                    <input class="input" type="text" value="Ada">
+                </label>
+                <label class="field-stack">
+                    <span class="field-label">Last name</span>
+                    <input class="input" type="text" value="Lovelace">
+                </label>
+            </div>
+
+            <label class="field-stack">
+                <span class="field-label">Email</span>
+                <input class="input" type="email" placeholder="ada@example.com">
+            </label>
+
+            <fieldset class="fieldset">
+                <legend>Plan</legend>
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                    <label class="field">
+                        <input class="radio" type="radio" name="plan" value="free" checked>
+                        <span>Free</span>
+                    </label>
+                    <label class="field">
+                        <input class="radio" type="radio" name="plan" value="pro">
+                        <span>Pro</span>
+                    </label>
+                    <label class="field">
+                        <input class="radio" type="radio" name="plan" value="team">
+                        <span>Team</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <label class="field">
+                <input class="checkbox" type="checkbox" required>
+                <span>I agree to the terms of service</span>
+            </label>
+
+            <div class="flex justify-end gap-2">
+                <button type="reset" class="btn quiet">Reset</button>
+                <button type="submit" class="btn cta">Create account</button>
+            </div>
+        </form>
+    </section>
+</main>

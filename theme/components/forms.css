@@ -1,0 +1,230 @@
+/* Form components — `.input`, `.checkbox`, `.radio`, `.fieldset`.
+
+   All four sit in the same visual family as `.btn` and `.kbd`:
+   - bordered, rounded, with the top-edge highlight from `--inset-shadow-highlight`
+   - the same focus ring (handled globally via `:focus-visible`) and the same
+     `border-border-focus` border swap on focus, so a focused field reads the
+     same as a focused button
+   - the same disabled treatment (`bg-surface-disabled`, `text-ink-muted`,
+     `border-border-disabled`)
+
+   Where they differ:
+   - `.input` reads as an inset "well": the raised drop-shadow of `.btn` is
+     replaced with `inset-shadow-pressed` so the field looks like something
+     you type *into*, not something you press.
+   - `.checkbox` / `.radio` strip the native UA control and re-render it as a
+     small `.btn`-shaped square / circle. Unchecked state matches the btn's
+     idle look; `:checked` fills with `--color-primary` and reuses the
+     `inset-shadow-highlight-pressed` token from CTA buttons so the checked
+     state reads as "pressed in".
+   - `.fieldset` is a flat panel — no drop shadow, no top highlight — that
+     groups related fields under a small-caps legend.
+*/
+
+/* ---------- Input ---------------------------------------------------------- */
+
+.input {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark
+        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
+        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
+        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
+        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
+        disabled:pointer-events-none disabled:cursor-default
+        read-only:bg-surface-secondary dark:read-only:bg-surface-secondary-dark
+        placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+
+    /* Native control reset — text fields are not inline-block-with-ellipsis. */
+    appearance: none;
+    font: inherit;
+    line-height: 1.25;
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+/* Multi-line variant. Allow vertical resize but not horizontal — the field's
+   inline size is owned by the layout, not by the user. */
+textarea.input {
+    white-space: pre-wrap;
+    min-block-size: 4rem;
+    resize: vertical;
+    vertical-align: top;
+}
+
+/* Native <select> — render the chevron ourselves so the control matches the
+   `.btn`-with-trailing-icon look across browsers. */
+select.input {
+    padding-inline-end: 2rem;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23808080'><path stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    background-size: 1em;
+    cursor: default;
+}
+
+/* File input — strip the OS-rendered button on the inside; consumers can pair
+   the input with a sibling `.btn` if they want a styled trigger. */
+.input[type="file"] {
+    padding: 0.375rem 0.75rem;
+    cursor: default;
+}
+
+/* ---------- Checkbox & Radio ---------------------------------------------- */
+
+/* Shared shape: a small `.btn`-styled box. Sized in `em` so the control
+   tracks the surrounding text size — placing one inline with a label keeps
+   the optical alignment correct at any font-size. */
+.checkbox,
+.radio {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface dark:bg-surface-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        shadow-drop-subtle dark:shadow-drop-subtle-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark
+        active:shadow-none
+        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
+        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
+        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
+        disabled:pointer-events-none disabled:cursor-default;
+
+    /* Strip the native control. */
+    appearance: none;
+    -webkit-appearance: none;
+
+    display: inline-grid;
+    place-content: center;
+    flex-shrink: 0;
+
+    inline-size: 1.125em;
+    block-size: 1.125em;
+    padding: 0;
+    margin: 0;
+
+    /* Sit on the surrounding text baseline (matches `.kbd`'s alignment). */
+    vertical-align: -0.2em;
+    cursor: pointer;
+
+    /* Allow the checked-state indicator to use a pseudo-element. */
+    position: relative;
+}
+
+.checkbox {
+    border-radius: 0.25rem;
+}
+
+.radio {
+    border-radius: 9999px;
+}
+
+/* Checked: fill with primary, reuse the CTA "pressed-in" highlight token so
+   the checked state reads as committed rather than just hovered. */
+.checkbox:checked,
+.radio:checked {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        shadow-none
+        hover:bg-primary-hover dark:hover:bg-primary-hover
+        active:bg-primary-active dark:active:bg-primary-active
+        disabled:bg-primary-disabled dark:disabled:bg-primary-disabled
+        disabled:border-border-disabled dark:disabled:border-border-disabled-dark;
+}
+
+/* Checkmark — drawn as a CSS-only glyph using two borders, so it inherits
+   `currentColor` and stays crisp at any size. */
+.checkbox:checked::after {
+    content: "";
+    inline-size: 0.3em;
+    block-size: 0.6em;
+    border: solid var(--color-ink-inverse);
+    border-width: 0 0.15em 0.15em 0;
+    transform: translateY(-0.05em) rotate(45deg);
+}
+
+/* Indeterminate state — horizontal bar instead of a checkmark. */
+.checkbox:indeterminate {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        shadow-none;
+}
+
+.checkbox:indeterminate::after {
+    content: "";
+    inline-size: 0.6em;
+    block-size: 0.15em;
+    background: var(--color-ink-inverse);
+    border-radius: 0.05em;
+}
+
+/* Radio dot. */
+.radio:checked::after {
+    content: "";
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-radius: 9999px;
+    background: var(--color-ink-inverse);
+}
+
+/* Field row — convenience wrapper for "<label> <control> <text>" layouts.
+   Aligns the control and label text on a shared baseline and gives them a
+   click-friendly target. */
+.field {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.field:has(:disabled) {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+    cursor: default;
+}
+
+/* Stacked label above an input. */
+.field-stack {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.field-stack > .field-label {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    user-select: none;
+}
+
+/* ---------- Fieldset ------------------------------------------------------- */
+
+/* Flat panel grouping for related fields. No drop shadow (the contained
+   inputs already carry their own elevation), no top highlight — a fieldset is
+   a frame, not a surface you press. */
+.fieldset {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark
+        border border-border dark:border-border-dark
+        rounded
+        block;
+
+    /* Override panel's whitespace/ellipsis defaults — fieldsets contain
+       wrapping content, not a single line of label text. */
+    white-space: normal;
+    text-overflow: clip;
+
+    padding: 0.75rem 1rem 1rem;
+    min-inline-size: 0;
+}
+
+/* Native <legend> sits inside the top border. Use small-caps to match the
+   `.menu__group-header` and `.field-label` typography family. */
+.fieldset > legend {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    padding-inline: 0.375rem;
+    margin-inline-start: -0.375rem;
+    user-select: none;
+}

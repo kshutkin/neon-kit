@@ -14,6 +14,7 @@ const ROUTES = {
   dialogs:    { title: 'Dialogs',    desc: 'Modal dialog component built on the native <dialog> element with Neon theme styling.' },
   menus:      { title: 'Menus',      desc: 'Dropdown menu component — focusable items with icons, shortcuts, chevrons, and groups, built on the native popover API.' },
   kbd:        { title: 'Keyboard',   desc: 'Keyboard-shortcut nameplates — flat, non-interactive keycaps that align across single keys and multi-key combos.' },
+  forms:      { title: 'Forms',      desc: 'Form controls — text inputs, checkboxes, radios, and fieldsets styled to match the Neon button family.' },
   typography: { title: 'Typography', desc: 'Typography scale, headings, and body text styles in the Neon theme.' },
   colors:     { title: 'Colors',     desc: 'Color tokens — primary, surface, ink, and border roles across light and dark themes.' },
   links:      { title: 'Links',      desc: 'Link styles and states in the Neon theme — default, hover, visited, and active.' },
