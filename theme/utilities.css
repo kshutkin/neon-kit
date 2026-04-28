@@ -145,6 +145,8 @@
     /* Capture the shadow color on the parent so the pseudo-element can inherit it, 
        since Tailwind v4 sets --tw-shadow-color to inherits: false */
     --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
 
     &::before {
         content: "";
@@ -154,10 +156,10 @@
         z-index: -1;
         pointer-events: none;
         box-shadow:
-            -1px -1px 2px var(--neon-color),
-            0 0 4px var(--neon-color),
-            1px 2px 8px var(--neon-color),
-            2px 4px 16px var(--neon-color);
+            -0.7px -0.7px 1.4px var(--neon-glow),
+            0 0 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            1.4px 2.8px 11.2px var(--neon-glow);
     }
     
     @media (prefers-reduced-motion: no-preference) {
@@ -170,17 +172,17 @@
 @keyframes shadow-neon-pulse {
     from {
         box-shadow:
-            0 0 1px var(--neon-color),
-            0 0 2px var(--neon-color),
-            1px 1px 4px var(--neon-color),
-            1px 2px 8px var(--neon-color);
+            0 0 0.7px var(--neon-glow),
+            0 0 1.4px var(--neon-glow),
+            0.7px 0.7px 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow);
     }
     to {
         box-shadow:
-            -1px -1px 3px var(--neon-color),
-            0 0 6px var(--neon-color),
-            2px 4px 12px var(--neon-color),
-            3px 6px 20px var(--neon-color);
+            -0.7px -0.7px 2.1px var(--neon-glow),
+            0 0 4.2px var(--neon-glow),
+            1.4px 2.8px 8.4px var(--neon-glow),
+            2.1px 4.2px 14px var(--neon-glow);
     }
 }
 
@@ -214,6 +216,8 @@
     /* Capture the shadow color on the parent so the pseudo-element can inherit it,
        since Tailwind v4 sets --tw-shadow-color to inherits: false */
     --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
 
     &::before {
         content: "";
@@ -224,14 +228,14 @@
         pointer-events: none;
         box-shadow:
             /* outward asymmetric glow */
-            -1px -1px 2px var(--neon-color),
-            0 0 4px var(--neon-color),
-            1px 2px 8px var(--neon-color),
-            2px 4px 16px var(--neon-color),
+            -0.7px -0.7px 1.4px var(--neon-glow),
+            0 0 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            1.4px 2.8px 11.2px var(--neon-glow),
             /* inward glow along the inside edges */
-            inset 0 0 4px var(--neon-color),
-            inset 0 0 8px var(--neon-color),
-            inset 0 0 16px var(--neon-color);
+            inset 0 0 2.8px var(--neon-glow),
+            inset 0 0 5.6px var(--neon-glow),
+            inset 0 0 11.2px var(--neon-glow);
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -244,22 +248,22 @@
 @keyframes glow-neon-pulse {
     from {
         box-shadow:
-            0 0 1px var(--neon-color),
-            0 0 2px var(--neon-color),
-            1px 1px 4px var(--neon-color),
-            1px 2px 8px var(--neon-color),
-            inset 0 0 2px var(--neon-color),
-            inset 0 0 4px var(--neon-color),
-            inset 0 0 8px var(--neon-color);
+            0 0 0.7px var(--neon-glow),
+            0 0 1.4px var(--neon-glow),
+            0.7px 0.7px 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            inset 0 0 1.4px var(--neon-glow),
+            inset 0 0 2.8px var(--neon-glow),
+            inset 0 0 5.6px var(--neon-glow);
     }
     to {
         box-shadow:
-            -1px -1px 3px var(--neon-color),
-            0 0 6px var(--neon-color),
-            2px 4px 12px var(--neon-color),
-            3px 6px 20px var(--neon-color),
-            inset 0 0 6px var(--neon-color),
-            inset 0 0 12px var(--neon-color),
-            inset 0 0 24px var(--neon-color);
+            -0.7px -0.7px 2.1px var(--neon-glow),
+            0 0 4.2px var(--neon-glow),
+            1.4px 2.8px 8.4px var(--neon-glow),
+            2.1px 4.2px 14px var(--neon-glow),
+            inset 0 0 4.2px var(--neon-glow),
+            inset 0 0 8.4px var(--neon-glow),
+            inset 0 0 16.8px var(--neon-glow);
     }
 }
