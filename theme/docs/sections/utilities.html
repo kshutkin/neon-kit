@@ -350,6 +350,133 @@
 
             </div>
 
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Neon border + neon text, no background</h3>
+            <p class="mb-6 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                Composed without a background fill so any inner shine cast by the tube or text glow is visible through the container.
+            </p>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-blue border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-blue text-xl font-bold">Blue</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-blue + text-neon text-neon-blue</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-pink border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-pink text-xl font-bold">Pink</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-pink + text-neon text-neon-pink</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-green border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-green text-xl font-bold">Green</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-green + text-neon text-neon-green</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-yellow border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-yellow text-xl font-bold">Yellow</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-yellow + text-neon text-neon-yellow</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-orange border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-orange text-xl font-bold">Orange</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-orange + text-neon text-neon-orange</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon border-neon-red border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-red text-xl font-bold">Red</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon border-neon-red + text-neon text-neon-red</p>
+                </div>
+
+            </div>
+
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Max neon — border + text + bidirectional glow, no background</h3>
+            <p class="mb-6 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">border-neon</code>,
+                <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">text-neon</code> and
+                <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">glow-neon</code> composed together with no background fill — the
+                <code class="font-mono text-xs bg-surface-hover dark:bg-surface-hover-dark px-1 rounded">glow-neon</code> utility shines both outward around the element and inward along the inside edges.
+            </p>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-blue shadow-neon-blue border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-blue text-xl font-bold">Blue</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-blue shadow-neon-blue + text-neon text-neon-blue</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-pink shadow-neon-pink border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-pink text-xl font-bold">Pink</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-pink shadow-neon-pink + text-neon text-neon-pink</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-green shadow-neon-green border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-green text-xl font-bold">Green</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-green shadow-neon-green + text-neon text-neon-green</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-yellow shadow-neon-yellow border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-yellow text-xl font-bold">Yellow</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-yellow shadow-neon-yellow + text-neon text-neon-yellow</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-orange shadow-neon-orange border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-orange text-xl font-bold">Orange</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-orange shadow-neon-orange + text-neon text-neon-orange</p>
+                </div>
+
+                <div class="rounded-xl border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-4">
+                    <div class="rounded-lg p-6 flex items-center justify-center min-h-24">
+                        <div class="border-neon glow-neon border-neon-red shadow-neon-red border-2 rounded-lg px-6 py-3">
+                            <span class="text-neon text-neon-red text-xl font-bold">Red</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 font-mono text-xs text-ink-secondary dark:text-ink-secondary-dark">border-neon glow-neon border-neon-red shadow-neon-red + text-neon text-neon-red</p>
+                </div>
+
+            </div>
+
             <!-- Usage note -->
             <div class="mt-8 rounded-lg border border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark p-5">
                 <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Usage</h3>

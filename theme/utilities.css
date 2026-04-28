@@ -199,3 +199,67 @@
         0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent),
         inset 0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent);
 }
+
+/* Bidirectional neon glow.
+   Casts a pulsating light both outward (around the element) and inward
+   (along the inside edges of the element), so transparent containers
+   visibly shine on the inside as well as the outside.
+   Uses --tw-shadow-color so any shadow-* color utility sets the glow color. */
+@utility glow-neon {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays behind the parent's content
+       but doesn't fall behind the rest of the page */
+    z-index: 0;
+
+    /* Capture the shadow color on the parent so the pseudo-element can inherit it,
+       since Tailwind v4 sets --tw-shadow-color to inherits: false */
+    --neon-color: var(--tw-shadow-color, currentColor);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+        box-shadow:
+            /* outward asymmetric glow */
+            -1px -1px 2px var(--neon-color),
+            0 0 4px var(--neon-color),
+            1px 2px 8px var(--neon-color),
+            2px 4px 16px var(--neon-color),
+            /* inward glow along the inside edges */
+            inset 0 0 4px var(--neon-color),
+            inset 0 0 8px var(--neon-color),
+            inset 0 0 16px var(--neon-color);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: glow-neon-pulse 2.5s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes glow-neon-pulse {
+    from {
+        box-shadow:
+            0 0 1px var(--neon-color),
+            0 0 2px var(--neon-color),
+            1px 1px 4px var(--neon-color),
+            1px 2px 8px var(--neon-color),
+            inset 0 0 2px var(--neon-color),
+            inset 0 0 4px var(--neon-color),
+            inset 0 0 8px var(--neon-color);
+    }
+    to {
+        box-shadow:
+            -1px -1px 3px var(--neon-color),
+            0 0 6px var(--neon-color),
+            2px 4px 12px var(--neon-color),
+            3px 6px 20px var(--neon-color),
+            inset 0 0 6px var(--neon-color),
+            inset 0 0 12px var(--neon-color),
+            inset 0 0 24px var(--neon-color);
+    }
+}
