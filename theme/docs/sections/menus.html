@@ -26,12 +26,18 @@
                     </button>
                     <button class="menu__item" type="button">
                         <span class="menu__label">With shortcut</span>
-                        <kbd class="menu__shortcut">⌘K</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">K</kbd>
+                        </span>
                     </button>
                     <button class="menu__item" type="button">
                         <svg class="menu__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
                         <span class="menu__label">Icon plus shortcut</span>
-                        <kbd class="menu__shortcut">⌘.</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">.</kbd>
+                        </span>
                     </button>
                 </div>
 
@@ -57,7 +63,7 @@
         <h2 class="mb-4">Dropdown (native popover)</h2>
         <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
             Uses the native HTML Popover API plus CSS anchor positioning — no JavaScript.
-            Click the trigger to open; press <kbd>Esc</kbd> or click outside to dismiss.
+            Click the trigger to open; press <kbd class="kbd">Esc</kbd> or click outside to dismiss.
         </p>
         <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
             <button class="btn" type="button" popovertarget="menu-popover" style="anchor-name: --menu-trigger;">
@@ -74,12 +80,18 @@
                     <button class="menu__item" type="button">
                         <svg class="menu__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                         <span class="menu__label">New file</span>
-                        <kbd class="menu__shortcut">⌘N</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">N</kbd>
+                        </span>
                     </button>
                     <button class="menu__item" type="button">
                         <svg class="menu__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" /></svg>
                         <span class="menu__label">Open…</span>
-                        <kbd class="menu__shortcut">⌘O</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">O</kbd>
+                        </span>
                     </button>
                 </div>
                 <div class="menu__group">
@@ -96,7 +108,9 @@
                     <button class="menu__item" type="button">
                         <svg class="menu__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m11.45-.397L15.7 4.77a2.42 2.42 0 0 0-2.292-1.643h-2.816a2.42 2.42 0 0 0-2.292 1.643L8.18 5.39m4.96 0c-1.04.044-2.07.146-3.082.305" /></svg>
                         <span class="menu__label">Delete</span>
-                        <kbd class="menu__shortcut">⌫</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌫</kbd>
+                        </span>
                     </button>
                 </div>
             </div>
@@ -116,11 +130,17 @@
                     <button class="menu__item" type="button">
                         <svg class="menu__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                         <span class="menu__label">عنصر جديد</span>
-                        <kbd class="menu__shortcut">⌘N</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">N</kbd>
+                        </span>
                     </button>
                     <button class="menu__item" type="button">
                         <span class="menu__label">فتح</span>
-                        <kbd class="menu__shortcut">⌘O</kbd>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">O</kbd>
+                        </span>
                     </button>
                 </div>
                 <div class="menu__group">

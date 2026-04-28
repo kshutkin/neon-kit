@@ -1,0 +1,157 @@
+<main>
+    <h1 class="mb-6">Keyboard Shortcuts</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        The <code>.kbd</code> component renders a keyboard shortcut as a small,
+        flat nameplate. It shares the visual family of <code>.btn</code>
+        (rounded, bordered, top-edge highlight) but is non-interactive and
+        intentionally flatter — no drop shadow, slightly muted surface,
+        tighter proportions, monospaced glyphs.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Single Keys</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Square-by-default sign proportions. Single-character keys —
+            letters, digits, and platform glyphs (⌘ ⌥ ⌃ ⇧ ⏎ ⌫ ⎋ ⇥) — render
+            as identical squares regardless of glyph width.
+        </p>
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <kbd class="kbd">A</kbd>
+            <kbd class="kbd">K</kbd>
+            <kbd class="kbd">7</kbd>
+            <kbd class="kbd">⌘</kbd>
+            <kbd class="kbd">⇧</kbd>
+            <kbd class="kbd">⌥</kbd>
+            <kbd class="kbd">⌃</kbd>
+            <kbd class="kbd">⏎</kbd>
+            <kbd class="kbd">⌫</kbd>
+            <kbd class="kbd">⎋</kbd>
+            <kbd class="kbd">⇥</kbd>
+            <kbd class="kbd">↑</kbd>
+            <kbd class="kbd">↓</kbd>
+            <kbd class="kbd">←</kbd>
+            <kbd class="kbd">→</kbd>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Multi-character Labels</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Word labels keep the same height and stretch horizontally with
+            even side padding.
+        </p>
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <kbd class="kbd">Esc</kbd>
+            <kbd class="kbd">Tab</kbd>
+            <kbd class="kbd">Ctrl</kbd>
+            <kbd class="kbd">Shift</kbd>
+            <kbd class="kbd">Alt</kbd>
+            <kbd class="kbd">Enter</kbd>
+            <kbd class="kbd">Space</kbd>
+            <kbd class="kbd">Backspace</kbd>
+            <kbd class="kbd">F12</kbd>
+            <kbd class="kbd">Page Up</kbd>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Combos</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Wrap individual keys in <code>.kbd-keys</code> for consistent
+            heights and equal visual gaps. Use <code>.kbd-keys__sep</code>
+            for an explicit textual separator (e.g. <code>+</code>) when the
+            convention calls for it.
+        </p>
+        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <span class="kbd-keys">
+                <kbd class="kbd">⌘</kbd>
+                <kbd class="kbd">K</kbd>
+            </span>
+            <span class="kbd-keys">
+                <kbd class="kbd">⌘</kbd>
+                <kbd class="kbd">⇧</kbd>
+                <kbd class="kbd">P</kbd>
+            </span>
+            <span class="kbd-keys">
+                <kbd class="kbd">⌃</kbd>
+                <kbd class="kbd">⌥</kbd>
+                <kbd class="kbd">⌫</kbd>
+            </span>
+            <span class="kbd-keys">
+                <kbd class="kbd">Ctrl</kbd>
+                <span class="kbd-keys__sep">+</span>
+                <kbd class="kbd">Shift</kbd>
+                <span class="kbd-keys__sep">+</span>
+                <kbd class="kbd">N</kbd>
+            </span>
+            <span class="kbd-keys">
+                <kbd class="kbd">Alt</kbd>
+                <span class="kbd-keys__sep">+</span>
+                <kbd class="kbd">F4</kbd>
+            </span>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Inline With Prose</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Keys sit on the surrounding text baseline and inherit
+            font-size, so they scale naturally inside paragraphs and
+            headings.
+        </p>
+        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <p>
+                Press <kbd class="kbd">⌘</kbd><kbd class="kbd">,</kbd> to open
+                preferences, or hit
+                <span class="kbd-keys"><kbd class="kbd">⌘</kbd><kbd class="kbd">⇧</kbd><kbd class="kbd">P</kbd></span>
+                for the command palette.
+            </p>
+            <p class="text-sm">
+                Smaller text — <kbd class="kbd">Esc</kbd> dismisses the
+                dialog. The keys scale with the line.
+            </p>
+            <p class="text-lg">
+                Larger text —
+                <span class="kbd-keys"><kbd class="kbd">⌘</kbd><kbd class="kbd">F</kbd></span>
+                opens find. Heights still match.
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">In a Menu</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Drop the <code>.kbd</code> nameplate into a menu row in place of
+            the default <code>.menu__shortcut</code> label when you want a
+            heavier, more legend-like trailing affordance.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="menu" style="position: static; min-width: 18rem;">
+                <div class="menu__group">
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">New File</span>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">N</kbd>
+                        </span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Open…</span>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">O</kbd>
+                        </span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Save All</span>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">⌥</kbd>
+                            <kbd class="kbd">S</kbd>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

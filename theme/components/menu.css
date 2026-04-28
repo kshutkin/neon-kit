@@ -155,9 +155,12 @@
 }
 
 /* Submenu affordance — flips horizontally in RTL so the arrow always points
-   toward the inline-end. */
+   toward the inline-end. Justified to the end of the trailing column so the
+   chevron hugs the menu's inline-end edge even when sibling rows widen
+   that column with a long keyboard-shortcut hint. */
 .menu__chevron {
     grid-column: 3;
+    justify-self: end;
     inline-size: 1em;
     block-size: 1em;
     align-self: center;
