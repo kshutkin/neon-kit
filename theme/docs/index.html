@@ -26,13 +26,11 @@
                 <li><a href="#/borders" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Borders</a></li>
             </ul>
         </nav>
-        <footer class="border-t border-border p-4 dark:border-border-dark">
-            <theme-switcher></theme-switcher>
-        </footer>
     </aside>
     <main id="content" class="min-w-0 flex-1 overflow-y-auto bg-surface dark:bg-surface-dark">
         <div id="content-inner" class="p-8"></div>
     </main>
+    <theme-switcher></theme-switcher>
     <script src="./theme-switcher.js" type="module"></script>
     <script type="module">
         const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
