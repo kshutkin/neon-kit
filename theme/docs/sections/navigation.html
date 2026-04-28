@@ -1,0 +1,175 @@
+<main>
+    <h1 class="mb-6">Navigation Component</h1>
+    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        Element-agnostic interactive rows for sidebar navigation, horizontal tabs, and
+        radio-input segmented controls. Selectors target <code>.nav__item</code>, so the
+        same styles work on <code>&lt;a&gt;</code>, <code>&lt;button&gt;</code>,
+        <code>&lt;label&gt;</code>, <code>&lt;li&gt;</code>, or <code>&lt;div&gt;</code> —
+        choose the most semantic element for each use-case. Active state is opt-in via the
+        <code>.-active</code> modifier; ARIA hooks like <code>aria-current</code> and
+        <code>aria-selected</code> are author concerns and are styled independently.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Sidebar (vertical)</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Flat surface — no panel elevation. Best as a section landmark with
+            <code>&lt;nav&gt;</code> wrapping a <code>&lt;ul&gt;</code> of links. The
+            active row carries both <code>.-active</code> (visuals) and
+            <code>aria-current="page"</code> (semantics).
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <nav aria-label="Primary" class="w-64">
+                <ul class="nav -vertical">
+                    <li><a href="#overview" class="nav__item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12 12 2.25 21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                        <span>Overview</span>
+                    </a></li>
+                    <li><a href="#components" class="nav__item -active" aria-current="page">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>
+                        <span>Components</span>
+                    </a></li>
+                    <li><a href="#tokens" class="nav__item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" /></svg>
+                        <span>Tokens</span>
+                    </a></li>
+                    <li><a href="#changelog" class="nav__item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        <span>Changelog</span>
+                    </a></li>
+                    <li><a href="#disabled" class="nav__item" aria-disabled="true">
+                        <span>Coming soon</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Sidebar on plain <code>&lt;div&gt;</code> rows</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Selectors don't depend on element type — but plain <code>&lt;div&gt;</code>s
+            aren't focusable or activatable. Prefer <code>&lt;a&gt;</code> or
+            <code>&lt;button&gt;</code> for any clickable nav. This is shown only to
+            illustrate the styles attach to the class.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="nav -vertical w-64">
+                <div class="nav__item">First</div>
+                <div class="nav__item -active">Second (active)</div>
+                <div class="nav__item">Third</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Tabs (horizontal, elevated active)</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            The tab bar sits on a recessed track; the active tab raises into a panel and
+            merges with the content below. Use <code>&lt;button role="tab"&gt;</code> for
+            in-page tab switching with <code>aria-selected</code>, paired with
+            <code>.-active</code> for visuals.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div role="tablist" aria-label="Settings sections" class="nav -tabs">
+                <button type="button" role="tab" aria-selected="true" class="nav__item -active">Profile</button>
+                <button type="button" role="tab" aria-selected="false" class="nav__item">Account</button>
+                <button type="button" role="tab" aria-selected="false" class="nav__item">Notifications</button>
+                <button type="button" role="tab" aria-selected="false" class="nav__item" aria-disabled="true" disabled>Billing</button>
+            </div>
+            <div role="tabpanel" class="rounded-b-lg border border-border bg-surface p-6 dark:border-border-dark dark:bg-surface-dark">
+                <p class="text-ink-secondary dark:text-ink-secondary-dark">
+                    Profile panel content. The active tab visually merges with this panel
+                    via a 1px overlap.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Tabs as router links</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Same visuals, different element. Use <code>&lt;a href&gt;</code> with
+            <code>aria-current="page"</code> when each tab is a distinct URL.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <nav aria-label="Sections" class="nav -tabs">
+                <a href="#docs" class="nav__item -active" aria-current="page">Docs</a>
+                <a href="#api" class="nav__item">API</a>
+                <a href="#examples" class="nav__item">Examples</a>
+            </nav>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Segmented control (radio-backed)</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            A recessed track with a raised "thumb" on the checked option. Backed by a
+            real <code>&lt;fieldset&gt;</code> of <code>&lt;input type="radio"&gt;</code>s
+            so it submits with forms and works without JavaScript. The checked input's
+            visual focus ring is mirrored onto the visible <code>&lt;label&gt;</code>.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <fieldset class="border-0 p-0 m-0">
+                <legend class="sr-only">View density</legend>
+                <div class="nav -segmented">
+                    <input type="radio" id="density-compact" name="density" value="compact" class="sr-only">
+                    <label for="density-compact" class="nav__item">Compact</label>
+
+                    <input type="radio" id="density-cozy" name="density" value="cozy" class="sr-only" checked>
+                    <label for="density-cozy" class="nav__item">Cozy</label>
+
+                    <input type="radio" id="density-comfy" name="density" value="comfy" class="sr-only">
+                    <label for="density-comfy" class="nav__item">Comfortable</label>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Segmented control (button-backed)</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            For client-only state (e.g. a chart-range picker) without a form, use
+            <code>&lt;button&gt;</code>s and toggle <code>.-active</code> /
+            <code>aria-pressed</code> in JavaScript.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div role="group" aria-label="Time range" class="nav -segmented">
+                <button type="button" class="nav__item">1D</button>
+                <button type="button" class="nav__item -active" aria-pressed="true">1W</button>
+                <button type="button" class="nav__item">1M</button>
+                <button type="button" class="nav__item">1Y</button>
+                <button type="button" class="nav__item">All</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">RTL</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            All variants flip naturally — flexbox honors the writing direction; padding
+            and gaps are logical. No additional rules required.
+        </p>
+        <div dir="rtl" class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark space-y-6">
+            <nav aria-label="القائمة" class="w-64">
+                <ul class="nav -vertical">
+                    <li><a href="#" class="nav__item -active" aria-current="page">نظرة عامة</a></li>
+                    <li><a href="#" class="nav__item">المكونات</a></li>
+                    <li><a href="#" class="nav__item">الرموز</a></li>
+                </ul>
+            </nav>
+
+            <div role="tablist" class="nav -tabs">
+                <button type="button" role="tab" aria-selected="true" class="nav__item -active">الملف</button>
+                <button type="button" role="tab" aria-selected="false" class="nav__item">الحساب</button>
+                <button type="button" role="tab" aria-selected="false" class="nav__item">الإشعارات</button>
+            </div>
+
+            <div role="group" class="nav -segmented">
+                <button type="button" class="nav__item -active">يوم</button>
+                <button type="button" class="nav__item">أسبوع</button>
+                <button type="button" class="nav__item">شهر</button>
+            </div>
+        </div>
+    </section>
+</main>

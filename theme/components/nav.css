@@ -1,0 +1,200 @@
+/* Navigation component — element-agnostic interactive rows for sidebar
+   navigation, horizontal tabs, and radio-input segmented controls.
+
+   Selectors target `.nav__item` (not specific elements), so consumers may
+   render items as <a>, <button>, <label>, <li>, or <div>. Use the most
+   semantic option for the use-case:
+     - Page navigation                → <a href>      (+ aria-current="page")
+     - In-page tabs                   → <button role="tab">  (+ aria-selected)
+     - Form-bound segmented control   → <input type="radio"> + <label>
+
+   Active state is opt-in via the `.-active` modifier class. ARIA hooks
+   (`aria-current`, `aria-selected`) are author concerns and are not styled
+   here so consumers can choose semantics independently of visuals.
+
+   Three layout variants:
+     .nav.-vertical   sidebar (flat, full-width rows)
+     .nav.-tabs       horizontal tabs (active item raises into a panel)
+     .nav.-segmented  segmented control (inset track, raised checked thumb)
+
+   The radio-segmented form uses the standard markup
+       <input type="radio" class="sr-only" id="x" name="seg">
+       <label class="nav__item" for="x">…</label>
+   The hidden input remains focusable; its :focus-visible ring is mirrored
+   onto the adjacent label via the sibling combinator below.
+*/
+
+.nav {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    /* Default to horizontal; -vertical overrides. */
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Element-agnostic interactive row. Picks up hover / :focus-visible /
+   active / disabled background swaps from the shared utility. Layout
+   (padding, radius, alignment) is set here so the same row reads well
+   inside any of the three nav variants. */
+.nav__item {
+    @apply interactive-row;
+
+    /* Reset native control styles so the same class works on
+       <button>, <a>, <label>, and <input>-paired labels. */
+    appearance: none;
+    border: 0;
+    font: inherit;
+    text-decoration: none;
+    text-align: start;
+    user-select: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding-block: 0.4rem;
+    padding-inline: 0.75rem;
+    border-radius: 0.375rem;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+/* Active state — opt-in modifier. ARIA hooks like aria-current / aria-selected
+   are intentionally NOT styled; pair them with `.-active` when relevant. */
+.nav__item.-active {
+    @apply bg-primary dark:bg-primary-dark text-ink-inverse font-semibold inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark;
+
+    /* Beat the utility's hover/focus-visible bg-swap so the active row
+       stays primary-colored when hovered. */
+    &:hover,
+    &:focus-visible {
+        @apply bg-primary dark:bg-primary-dark;
+    }
+}
+
+/* ───────────────────────── Variant: vertical / sidebar ──────────────────── */
+
+.nav.-vertical {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.125rem;
+}
+
+.nav.-vertical .nav__item {
+    /* Full-width, left-aligned rows. */
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+/* ───────────────────────── Variant: horizontal tabs ─────────────────────── */
+
+/* The tab bar sits on a recessed track with a bottom border. The active
+   tab raises out of the track using the panel treatment; a 1px band
+   painted under its bottom edge masks the track's border so the tab
+   appears to merge into the panel below. */
+.nav.-tabs {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark border-b border-border dark:border-border-dark;
+
+    gap: 0.25rem;
+    padding-block: 0.375rem 0;
+    padding-inline: 0.5rem;
+    /* Pull the bar down 1px so .-active items can sit flush on the
+       neighboring panel's top border. */
+    margin-block-end: -1px;
+    align-items: stretch;
+}
+
+.nav.-tabs .nav__item {
+    /* Same padding/border on every tab → identical heights and baselines.
+       The transparent border reserves space so .-active swapping in a
+       solid border doesn't shift layout. */
+    border-radius: 0.375rem 0.375rem 0 0;
+    padding-block: 0.5rem;
+    padding-inline: 0.875rem;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    position: relative;
+}
+
+.nav.-tabs .nav__item.-active {
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark;
+
+    text-shadow: none;
+    z-index: 1;
+    /* Clip the drop-shadow on the bottom edge so it doesn't cast a line
+       onto the panel below — the tab and panel should read as a single
+       continuous surface. Top/sides keep the elevation cue. */
+    clip-path: inset(-8px -8px 0 -8px);
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-surface dark:bg-surface-dark;
+    }
+
+    /* 1px band at the very bottom of the tab, painted in surface color, so
+       it sits on top of the track's `border-b` and the panel's top border
+       — making the tab and panel visually share a single surface. */
+    &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        block-size: 1px;
+        background: var(--color-surface);
+    }
+}
+
+:where([data-theme="dark"]) .nav.-tabs .nav__item.-active::after {
+    background: var(--color-surface-dark);
+}
+
+/* ───────────────────────── Variant: segmented control ───────────────────── */
+
+/* Recessed track with a raised "thumb" (the active or :checked item).
+   Designed to host either <button>s or <input type="radio"> + <label>
+   pairs. Use a tight gap so segments visually share the track. */
+.nav.-segmented {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark border-border dark:border-border-dark inset-shadow-pressed dark:inset-shadow-pressed-dark;
+
+    display: inline-flex;
+    gap: 0.125rem;
+    padding: 0.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+}
+
+.nav.-segmented .nav__item {
+    border-radius: 0.3125rem;
+    padding-block: 0.3125rem;
+    padding-inline: 0.75rem;
+}
+
+/* Active / radio-checked thumb. The `:has()`-free form keeps support
+   broad: we target the label that immediately follows a checked radio. */
+.nav.-segmented .nav__item.-active,
+.nav.-segmented input[type="radio"]:checked + .nav__item {
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark font-semibold;
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-surface dark:bg-surface-dark;
+    }
+}
+
+/* Mirror the hidden radio's :focus-visible state onto its visible label so
+   keyboard users see the focus indicator on the actual rendered control.
+   The radio itself uses the `.sr-only` utility to stay focusable but
+   visually hidden. */
+.nav.-segmented input[type="radio"]:focus-visible + .nav__item {
+    @apply bg-surface-hover dark:bg-surface-hover-dark;
+}
+
+.nav.-segmented input[type="radio"]:focus-visible:checked + .nav__item {
+    @apply bg-surface dark:bg-surface-dark;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}

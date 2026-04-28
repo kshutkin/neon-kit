@@ -87,8 +87,12 @@
 }
 
 /* The focusable row. Inherits the menu's column tracks via subgrid so
-   labels, shortcuts, and chevrons line up across rows. */
+   labels, shortcuts, and chevrons line up across rows. State styling
+   (hover/focus/active/disabled backgrounds) comes from the shared
+   `interactive-row` utility. */
 .menu__item {
+    @apply interactive-row;
+
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
@@ -97,35 +101,13 @@
 
     /* Reset native button styles. */
     appearance: none;
-    background: transparent;
     border: 0;
-    color: inherit;
     font: inherit;
     text-align: start;
-    cursor: default;
     width: 100%;
 
     padding-block: var(--menu-item-padding-block);
     padding-inline: var(--menu-item-padding-inline);
-
-    /* Component-level highlight is the focus indicator; the strong bg shift
-       reads clearly without an additional outline. */
-    outline: none;
-
-    &:hover,
-    &:focus-visible {
-        @apply bg-surface-hover dark:bg-surface-hover-dark;
-    }
-
-    &:active {
-        @apply bg-surface-active dark:bg-surface-active-dark;
-    }
-
-    &:disabled,
-    &[aria-disabled="true"] {
-        @apply text-ink-muted dark:text-ink-muted-dark;
-        pointer-events: none;
-    }
 }
 
 /* Decorative icon — sized in em so it scales with the row's font size. */

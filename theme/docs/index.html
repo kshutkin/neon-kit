@@ -15,18 +15,19 @@
             <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
         </header>
         <nav class="flex-1 p-4">
-            <ul class="list-none space-y-1 pl-0">
-                <li><a data-slug="buttons" href="buttons/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Buttons</a></li>
-                <li><a data-slug="panels" href="panels/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Panels</a></li>
-                <li><a data-slug="dialogs" href="dialogs/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Dialogs</a></li>
-                <li><a data-slug="menus" href="menus/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Menus</a></li>
-                <li><a data-slug="kbd" href="kbd/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Keyboard</a></li>
-                <li><a data-slug="forms" href="forms/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Forms</a></li>
-                <li><a data-slug="typography" href="typography/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Typography</a></li>
-                <li><a data-slug="colors" href="colors/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Colors</a></li>
-                <li><a data-slug="links" href="links/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Links</a></li>
-                <li><a data-slug="shadows" href="shadows/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Shadows</a></li>
-                <li><a data-slug="utilities" href="utilities/" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Utilities</a></li>
+            <ul class="nav -vertical">
+                <li><a data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
+                <li><a data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
+                <li><a data-slug="dialogs" href="dialogs/" class="nav__item">Dialogs</a></li>
+                <li><a data-slug="menus" href="menus/" class="nav__item">Menus</a></li>
+                <li><a data-slug="navigation" href="navigation/" class="nav__item">Navigation</a></li>
+                <li><a data-slug="kbd" href="kbd/" class="nav__item">Keyboard</a></li>
+                <li><a data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
+                <li><a data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
+                <li><a data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
+                <li><a data-slug="links" href="links/" class="nav__item">Links</a></li>
+                <li><a data-slug="shadows" href="shadows/" class="nav__item">Shadows</a></li>
+                <li><a data-slug="utilities" href="utilities/" class="nav__item">Utilities</a></li>
             </ul>
         </nav>
     </aside>
@@ -45,6 +46,7 @@
             panels: 'Panels',
             dialogs: 'Dialogs',
             menus: 'Menus',
+            navigation: 'Navigation',
             kbd: 'Keyboard',
             forms: 'Forms',
             typography: 'Typography',
@@ -81,17 +83,7 @@
 
         const setActiveLink = (slug) => {
             for (const link of links) {
-                const isActive = link.dataset.slug === slug;
-                link.classList.toggle('bg-primary', isActive);
-                link.classList.toggle('dark:bg-primary-dark', isActive);
-                link.classList.toggle('text-ink-inverse', isActive);
-                link.classList.toggle('font-semibold', isActive);
-                link.classList.toggle('inset-shadow-highlight', isActive);
-                link.classList.toggle('dark:inset-shadow-highlight-dark', isActive);
-                link.classList.toggle('shadow-drop-subtle', isActive);
-                link.classList.toggle('dark:shadow-drop-subtle-dark', isActive);
-                link.classList.toggle('text-ink-primary', !isActive);
-                link.classList.toggle('dark:text-ink-primary-dark', !isActive);
+                link.classList.toggle('-active', link.dataset.slug === slug);
             }
         };
 

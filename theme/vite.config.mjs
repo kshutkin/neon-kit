@@ -13,6 +13,7 @@ const ROUTES = {
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.' },
   dialogs:    { title: 'Dialogs',    desc: 'Modal dialog component built on the native <dialog> element with Neon theme styling.' },
   menus:      { title: 'Menus',      desc: 'Dropdown menu component — focusable items with icons, shortcuts, chevrons, and groups, built on the native popover API.' },
+  navigation: { title: 'Navigation', desc: 'Navigation component — element-agnostic interactive rows for sidebars, horizontal tabs, and radio-segmented controls.' },
   kbd:        { title: 'Keyboard',   desc: 'Keyboard-shortcut nameplates — flat, non-interactive keycaps that align across single keys and multi-key combos.' },
   forms:      { title: 'Forms',      desc: 'Form controls — text inputs, checkboxes, radios, and fieldsets styled to match the Neon button family.' },
   typography: { title: 'Typography', desc: 'Typography scale, headings, and body text styles in the Neon theme.' },
@@ -24,8 +25,7 @@ const ROUTES = {
 
 const DEFAULT_SLUG = 'buttons';
 
-const ACTIVE_CLASSES =
-  'nav-link block rounded px-3 py-2 bg-primary dark:bg-primary-dark text-ink-inverse font-semibold inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark';
+const ACTIVE_CLASSES = 'nav__item -active';
 
 const escapeAttr = (s) =>
   s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');

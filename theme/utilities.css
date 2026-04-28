@@ -3,6 +3,36 @@
     @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
 }
 
+/* Shared interactive-row state styles for menu items, nav items, and any
+   focusable list row that uses the surface-hover background as its
+   primary affordance. Layout (grid, flex, columns) is intentionally NOT
+   set here — consumers compose their own layout around the state styles.
+   Background is transparent by default so it can sit on any surface. */
+@utility interactive-row {
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    /* The strong background highlight on :focus-visible is the focus
+       indicator; suppress the UA outline. Components that need a visible
+       outline (e.g. tabs over a busy track) can re-enable it locally. */
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:active {
+        @apply bg-surface-active dark:bg-surface-active-dark;
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+        @apply text-ink-muted dark:text-ink-muted-dark;
+        pointer-events: none;
+    }
+}
+
 /* Tinted metal — shiny but slightly worn finish.
    Tints from the element's own background-color: keep a solid background-color
    on the element and the gradient/noise layers blend on top of it. */
