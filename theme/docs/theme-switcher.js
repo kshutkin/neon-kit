@@ -1,26 +1,18 @@
 class ThemeSwitcher extends HTMLElement {
   connectedCallback() {
-    const isMainWindow = window.top === window.self;
-
-    if (isMainWindow) {
-      this.#initMainWindowTheme();
-      this.#initPrimaryColor();
-      this.#renderButton();
-    } else {
-      this.#loadThemeFromStorage();
-      this.#loadPrimaryColorFromStorage();
-      this.#setupIframeListener();
-    }
+    this.#initTheme();
+    this.#initPrimaryColor();
+    this.#renderButton();
   }
 
   #renderButton() {
     const currentPrimary = this.#getCurrentPrimaryColor();
     this.innerHTML = `
-      <div class="fixed top-6 right-6 z-[1000]">
-        <button class="btn theme-toggle-btn cursor-pointer text-sm">
+      <div class="relative">
+        <button class="btn theme-toggle-btn cursor-pointer text-sm w-full">
           Theme & Colors
         </button>
-        <div class="theme-panel hidden absolute top-full right-0 mt-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px]" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+        <div class="theme-panel hidden absolute bottom-full right-0 mb-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px] z-[1000]" style="background: var(--color-surface); border: 1px solid var(--color-border);">
           <div class="mb-6">
             <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Theme</h3>
             <button class="btn cta theme-toggle w-full cursor-pointer">
@@ -106,7 +98,6 @@ class ThemeSwitcher extends HTMLElement {
       const newTheme = currentTheme === "dark" ? "light" : "dark";
       this.#setTheme(newTheme);
       localStorage.setItem("theme", newTheme);
-      this.#notifyIframes(newTheme);
     });
 
     // Primary color sliders
@@ -177,49 +168,7 @@ class ThemeSwitcher extends HTMLElement {
     }
   }
 
-  #setupIframeListener() {
-    window.addEventListener("message", (e) => {
-      if (e.data && e.data.type === "theme-sync") {
-        this.#setTheme(e.data.theme);
-      }
-      if (e.data && e.data.type === "primary-color-sync") {
-        this.#setPrimaryColor(e.data.primaryColor);
-      }
-    });
-  }
-
-  #notifyIframes(theme, excludeSource = null) {
-    const iframes = document.querySelectorAll("iframe");
-    for (const iframe of iframes) {
-      try {
-        if (iframe.contentWindow && iframe.contentWindow !== excludeSource) {
-          iframe.contentWindow.postMessage({ type: "theme-sync", theme }, "*");
-        }
-      } catch (e) {
-        // Cross-origin iframe, skip
-        console.warn("Could not notify iframe:", e);
-      }
-    }
-  }
-
-  #notifyIframesPrimaryColor(primaryColor, excludeSource = null) {
-    const iframes = document.querySelectorAll("iframe");
-    for (const iframe of iframes) {
-      try {
-        if (iframe.contentWindow && iframe.contentWindow !== excludeSource) {
-          iframe.contentWindow.postMessage(
-            { type: "primary-color-sync", primaryColor },
-            "*"
-          );
-        }
-      } catch (e) {
-        // Cross-origin iframe, skip
-        console.warn("Could not notify iframe:", e);
-      }
-    }
-  }
-
-  #initMainWindowTheme() {
+  #initTheme() {
     const savedTheme = this.#loadThemeFromStorage();
     if (!savedTheme) {
       const prefersDark = window.matchMedia(
@@ -229,27 +178,14 @@ class ThemeSwitcher extends HTMLElement {
       this.#setTheme(theme);
       localStorage.setItem("theme", theme);
     }
-
-    // Notify any iframes of initial theme
-    const currentTheme = document.documentElement.dataset.theme;
-    if (currentTheme) {
-      this.#notifyIframes(currentTheme);
-    }
   }
 
   #initPrimaryColor() {
     const savedPrimaryColor = this.#loadPrimaryColorFromStorage();
     if (!savedPrimaryColor) {
-      // Use default primary color from CSS
       const defaultPrimary = this.#getCurrentPrimaryColor();
       this.#setPrimaryColor(defaultPrimary);
       localStorage.setItem("primaryColor", JSON.stringify(defaultPrimary));
-    }
-
-    // Notify any iframes of initial primary color
-    const currentPrimaryColor = this.#getCurrentPrimaryColor();
-    if (currentPrimaryColor) {
-      this.#notifyIframesPrimaryColor(currentPrimaryColor);
     }
   }
 
@@ -391,9 +327,6 @@ class ThemeSwitcher extends HTMLElement {
     const primaryColor = { l, c, h };
     this.#setPrimaryColor(primaryColor);
     localStorage.setItem("primaryColor", JSON.stringify(primaryColor));
-    if (window.top === window.self) {
-      this.#notifyIframesPrimaryColor(primaryColor);
-    }
   }
 
   getPrimaryColor() {

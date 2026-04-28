@@ -35,17 +35,17 @@
   },
   "homepage": "https://github.com/kshutkin/neon-kit",
   "scripts": {
-    "start": "npx npm-run-all -p tw http",
-    "tw": "npx @tailwindcss/cli -i ./index.css -o ./docs/output.css --watch",
-    "http": "npx http-server ./docs/",
+    "dev": "vite",
+    "start": "vite",
+    "build:docs": "vite build",
+    "preview": "vite preview",
     "prepack": "npx pkgprn"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.13",
+    "@tailwindcss/vite": "^4.1.13",
     "heroicons": "^2.2.0",
-    "http-server": "14.1.1",
-    "npm-run-all": "4.1.5",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "tailwindcss": "^4.1.13"
+    "tailwindcss": "^4.1.13",
+    "vite": "^5.4.0"
   }
 }

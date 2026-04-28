@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neon Project</title>
-    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="./index-docs.css">
 </head>
-<body class="flex min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+<body class="flex h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
     <aside class="flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
         <header class="border-b border-border p-6 dark:border-border-dark">
             <div class="text-xs font-medium uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Theme Docs</div>
@@ -30,79 +30,68 @@
             <theme-switcher></theme-switcher>
         </footer>
     </aside>
-    <main class="min-w-0 flex-1 bg-surface dark:bg-surface-dark">
-        <iframe name="content-frame" src="" class="block h-full min-h-screen w-full border-0 bg-surface dark:bg-surface-dark"></iframe>
+    <main id="content" class="min-w-0 flex-1 overflow-y-auto bg-surface dark:bg-surface-dark">
+        <div id="content-inner" class="p-8"></div>
     </main>
-    <script src="theme-switcher.js" type="module"></script>
+    <script src="./theme-switcher.js" type="module"></script>
     <script type="module">
-        const listen = (cb) => {
-            const hashChangeListener = () => {
-                cb(pathname());
-            };
-            addEventListener("hashchange", hashChangeListener, false);
-            hashChangeListener();
-            return () => {
-                removeEventListener("hashchange", hashChangeListener);
-            };
-        };
+        const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
 
-        const pathname = () => location.hash.slice(1) || "/";
+        const fragmentFor = (slug) => fragments[`./sections/${slug}.html`];
+
+        const titles = {
+            buttons: 'Buttons',
+            panels: 'Panels',
+            dialogs: 'Dialogs',
+            typography: 'Typography',
+            colors: 'Colors',
+            links: 'Links',
+            shadows: 'Shadows',
+            utilities: 'Utilities',
+            borders: 'Borders',
+        };
 
         const links = document.querySelectorAll('nav a');
-        const iframe = document.querySelector('iframe[name="content-frame"]');
+        const content = document.getElementById('content');
+        const contentInner = document.getElementById('content-inner');
 
-        const setActiveLink = (currentPath) => {
+        const currentSlug = () => {
+            const hash = location.hash.slice(1) || '/';
+            const slug = hash.replace(/^\//, '') || 'buttons';
+            return slug in titles ? slug : 'buttons';
+        };
+
+        const setActiveLink = (slug) => {
+            const targetHash = `#/${slug}`;
             for (const link of links) {
-                const linkHash = link.getAttribute('href').slice(1); // Remove the # prefix
-                if (linkHash === currentPath) {
-                    link.classList.add('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
-                    link.classList.remove('text-ink-primary', 'dark:text-ink-primary-dark');
-                } else {
-                    link.classList.remove('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
-                    link.classList.add('text-ink-primary', 'dark:text-ink-primary-dark');
-                }
+                const isActive = link.getAttribute('href') === targetHash;
+                link.classList.toggle('bg-primary', isActive);
+                link.classList.toggle('dark:bg-primary-dark', isActive);
+                link.classList.toggle('text-ink-inverse', isActive);
+                link.classList.toggle('font-semibold', isActive);
+                link.classList.toggle('inset-shadow-highlight', isActive);
+                link.classList.toggle('dark:inset-shadow-highlight-dark', isActive);
+                link.classList.toggle('shadow-drop-subtle', isActive);
+                link.classList.toggle('dark:shadow-drop-subtle-dark', isActive);
+                link.classList.toggle('text-ink-primary', !isActive);
+                link.classList.toggle('dark:text-ink-primary-dark', !isActive);
             }
         };
 
-        const syncPrimaryColorToIframe = () => {
-            const themeSwitcher = document.querySelector('theme-switcher');
-            if (themeSwitcher && typeof themeSwitcher.getPrimaryColor === 'function') {
-                const primaryColor = themeSwitcher.getPrimaryColor();
-                try {
-                    if (iframe.contentWindow) {
-                        // Wait a bit for iframe to be ready
-                        setTimeout(() => {
-                            iframe.contentWindow.postMessage(
-                                { type: "primary-color-sync", primaryColor },
-                                "*"
-                            );
-                        }, 100);
-                    }
-                } catch (e) {
-                    console.warn("Could not sync primary color to iframe:", e);
-                }
-            }
+        const render = () => {
+            const slug = currentSlug();
+            contentInner.innerHTML = fragmentFor(slug) ?? '';
+            setActiveLink(slug);
+            document.title = `Project Neon — ${titles[slug]}`;
+            content.scrollTop = 0;
         };
 
-        const loadSection = (path) => {
-            // Remove leading slash and add .html extension
-            const section = path.slice(1) || 'buttons';
-            iframe.src = `${section}.html`;
-            setActiveLink(path);
+        addEventListener('hashchange', render);
+        render();
 
-            // Notify iframe of current primary color after it loads
-            iframe.addEventListener('load', syncPrimaryColorToIframe, { once: true });
-        };
-
-        // Also sync when iframe is already loaded (for initial page load)
-        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
-            syncPrimaryColorToIframe();
+        if (import.meta.hot) {
+            import.meta.hot.accept(() => render());
         }
-
-        // Listen for hash changes
-        listen((path) => {
-            loadSection(path);
-        });
     </script>
 </body>
 </html>

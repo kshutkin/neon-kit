@@ -1,0 +1,3 @@
+/* Docs entry — Vite/Tailwind compiles this to serve the docs site.
+   The published package still ships raw CSS via ../index.css and friends. */
+@import "../index.css";
