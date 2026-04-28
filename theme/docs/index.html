@@ -87,6 +87,43 @@
         addEventListener('hashchange', render);
         render();
 
+        // Delegated dialog handlers — fragments are injected via innerHTML
+        // so per-fragment <script> tags don't run; wire behavior here.
+        document.addEventListener('click', (e) => {
+            const opener = e.target.closest('[data-open]');
+            if (opener) {
+                const dlg = document.getElementById(opener.getAttribute('data-open'));
+                if (dlg && typeof dlg.showModal === 'function') dlg.showModal();
+                return;
+            }
+            const closer = e.target.closest('[data-close]');
+            if (closer) {
+                const dlg = closer.closest('dialog');
+                if (dlg) {
+                    e.preventDefault();
+                    dlg.close();
+                }
+                return;
+            }
+            // Backdrop click closes the dialog
+            if (e.target.matches('dialog.dialog')) {
+                e.target.close();
+            }
+        });
+
+        document.addEventListener('close', (e) => {
+            const dlg = e.target;
+            if (dlg.id !== 'dlg-confirm') return;
+            const out = document.getElementById('confirm-result');
+            if (!out) return;
+            out.textContent =
+                dlg.returnValue === 'confirm'
+                    ? 'Deleted.'
+                    : dlg.returnValue
+                        ? `Dismissed (${dlg.returnValue}).`
+                        : 'Dismissed.';
+        }, true);
+
         if (import.meta.hot) {
             import.meta.hot.accept(() => render());
         }
