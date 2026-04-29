@@ -125,20 +125,85 @@
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">Disabled</h2>
+        <h2 class="mb-4">Field States</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
-            Disabling the inner <code>&lt;input&gt;</code> applies the
-            standard muted-surface treatment to the whole field.
+            Same six-state vocabulary as the datepicker. State hooks
+            land on the inner <code>.timepicker__input</code>; the
+            <code>.timepicker__field</code> wrapper reacts via
+            <code>:has()</code>. Only the field appearance is shown —
+            the time-list popover is unchanged.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
-            <div class="timepicker">
-                <div class="timepicker__field">
-                    <input class="timepicker__input" type="text" value="14:30" disabled>
-                    <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
-                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-                    </button>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" placeholder="HH:MM" disabled>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" placeholder="HH:MM" readonly>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="14:30" disabled>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="14:30" readonly>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="25:00" aria-invalid="true" aria-describedby="tp-error">
+                        <button class="timepicker__trigger" type="button" aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <span class="field-error" id="tp-error">Use 24-hour HH:MM format.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Reminder time</span>
+                    <div class="timepicker">
+                        <div class="timepicker__field">
+                            <input class="timepicker__input" type="text" placeholder="HH:MM" name="remindAt">
+                            <button class="timepicker__trigger" type="button" aria-label="Open time list">
+                                <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <span class="field-hint">Sent in your local timezone.</span>
+                </label>
+            </form>
         </div>
     </section>
 

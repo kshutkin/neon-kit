@@ -44,6 +44,15 @@
     white-space: normal;
 }
 
+/* Invalid state — opt in via `aria-invalid="true"`, the same hook native
+   form validation toggles on submit. Border swaps to `--color-error`; the
+   focus ring re-uses the same border so the invalid affordance survives
+   focus. Disabled fields skip the treatment so a locked field doesn't shout. */
+.input[aria-invalid="true"]:not(:disabled) {
+    @apply border-error dark:border-error-dark
+        focus-visible:border-error dark:focus-visible:border-error-dark;
+}
+
 /* Multi-line variant. Allow vertical resize but not horizontal — the field's
    inline size is owned by the layout, not by the user. */
 textarea.input {
@@ -196,6 +205,20 @@ select.input {
 
 .field-stack > .field-label {
     @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    user-select: none;
+}
+
+/* Helper text under a field. `.field-hint` is the neutral form (e.g.
+   formatting tips); `.field-error` is the validation message a consumer
+   shows when the input flips to `aria-invalid="true"`. Both inherit
+   small-text sizing so they don't fight the field for visual weight. */
+.field-hint {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs;
+    user-select: none;
+}
+
+.field-error {
+    @apply text-error dark:text-error-dark text-xs;
     user-select: none;
 }
 

@@ -85,6 +85,32 @@
     padding-inline-end: 0.5rem;
 }
 
+/* Read-only — visually `:read-only` from `.input`: muted-surface fill so the
+   field reads as "displayed, not edited" while still focusable. Consumers
+   set `aria-readonly="true"` and prevent the popover from opening; CSS only
+   handles the appearance. */
+.combobox__field[aria-readonly="true"] {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+/* Disabled — for the multi-select variant the field is a `<div>`, not a
+   `<button>`, so the native `:disabled` pseudo never matches. Mirror the
+   button's disabled chrome on `[aria-disabled="true"]` so a multi field can
+   be locked the same way. */
+.combobox__field[aria-disabled="true"] {
+    @apply bg-surface-disabled dark:bg-surface-disabled-dark
+        text-ink-muted dark:text-ink-muted-dark
+        border-border-disabled dark:border-border-disabled-dark;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Invalid — same hook as `.input[aria-invalid="true"]`. */
+.combobox__field[aria-invalid="true"]:not(:disabled):not([aria-disabled="true"]) {
+    @apply border-error dark:border-error-dark
+        focus-visible:border-error dark:focus-visible:border-error-dark;
+}
+
 /* Selected value text — fills available space, truncates with ellipsis. */
 .combobox__value {
     flex: 1 1 auto;

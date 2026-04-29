@@ -80,6 +80,23 @@
     cursor: default;
 }
 
+/* Read-only — match `.input:read-only` (muted-surface fill). The input is
+   still focusable; consumers disable the trigger button via plain `disabled`
+   so the calendar popover can't open. CSS only handles the visual. */
+.datepicker:has(.datepicker__input:read-only) > .datepicker__field {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+/* Invalid — same hook as `.input[aria-invalid="true"]`. Lives on the
+   wrapper so the chrome (which is owned by the wrapper) flips. */
+.datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field {
+    @apply border-error dark:border-error-dark;
+}
+
+.datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field:focus-within {
+    @apply border-error dark:border-error-dark;
+}
+
 /* The typed-date <input> — chrome is owned by the wrapper. */
 .datepicker__input {
     @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;

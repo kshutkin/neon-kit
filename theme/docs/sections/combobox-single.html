@@ -120,18 +120,78 @@
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">Disabled</h2>
+        <h2 class="mb-4">Field States</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
-            A disabled field uses the same muted-surface treatment as
-            <code>.input:disabled</code> and <code>.btn:disabled</code>.
+            The field shares the six-state vocabulary used by
+            <code>.input</code>: empty/disabled, empty/read-only,
+            disabled with value, read-only with value, validation
+            error, and labelled inside a form. Disabled freezes the
+            chevron + clear; read-only opts in via
+            <code>aria-readonly="true"</code> and tints the well to the
+            secondary surface (consumers gate the popover from opening).
+            Invalid is opted into via <code>aria-invalid="true"</code>
+            and pairs with a <code>.field-error</code> helper. Only the
+            field appearance is shown here — the popover is unchanged.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
-            <div class="combobox">
-                <button class="combobox__field" type="button" disabled>
-                    <span class="combobox__value">Read-only value</span>
-                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
-                </button>
-            </div>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" disabled>
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-readonly="true">
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" disabled>
+                        <span class="combobox__value">Mango</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-readonly="true">
+                        <span class="combobox__value">Mango</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-invalid="true" aria-describedby="cb-fruit-error">
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <span class="field-error" id="cb-fruit-error">Choose a fruit to continue.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Country</span>
+                    <div class="combobox">
+                        <button class="combobox__field" type="button">
+                            <span class="combobox__value">Spain</span>
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                    <span class="field-hint">Used to localise tax estimates.</span>
+                </label>
+            </form>
         </div>
     </section>
 

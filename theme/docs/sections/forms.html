@@ -80,6 +80,99 @@
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Field States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Six canonical states every text-like field supports — empty
+            disabled, empty read-only, both filled equivalents, an
+            invalid field showing the error helper, and a labelled
+            field inside a form. Disabled paints the muted-surface
+            shell and freezes interaction; read-only flips to the
+            secondary surface but stays focusable; invalid is opted
+            into via <code>aria-invalid="true"</code> (the same hook
+            native form validation toggles on submit) and pairs with a
+            <code>.field-error</code> helper underneath.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <input class="input" type="text" placeholder="you@example.com" disabled>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <input class="input" type="text" placeholder="you@example.com" readonly>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <input class="input" type="text" value="ada@example.com" disabled>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <input class="input" type="text" value="ada@example.com" readonly>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <input class="input" type="email" value="not-an-email" aria-invalid="true" aria-describedby="email-error">
+                <span class="field-error" id="email-error">Enter a valid email address.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Email</span>
+                    <input class="input" type="email" name="email" placeholder="you@example.com" required>
+                    <span class="field-hint">We'll never share your address.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Textarea &amp; Select States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>textarea.input</code> and <code>select.input</code> pick
+            up the same six-state vocabulary. Disabled freezes both;
+            read-only flips a textarea to the muted surface while a
+            <code>select</code> doesn't accept <code>readonly</code>
+            natively, so consumers either lock the value with
+            <code>disabled</code> or render the chosen option as
+            non-editable text.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Textarea — disabled (empty)</span>
+                <textarea class="input" rows="3" placeholder="Multi-line content…" disabled></textarea>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Textarea — read-only (empty)</span>
+                <textarea class="input" rows="3" placeholder="Multi-line content…" readonly></textarea>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Textarea — disabled with value</span>
+                <textarea class="input" rows="3" disabled>Locked draft text.</textarea>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Textarea — read-only with value</span>
+                <textarea class="input" rows="3" readonly>Audit log entry — captured on 2026-04-15.</textarea>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Textarea — invalid</span>
+                <textarea class="input" rows="3" aria-invalid="true" aria-describedby="bio-error">Too short.</textarea>
+                <span class="field-error" id="bio-error">Bio must be at least 50 characters.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Plan</span>
+                    <select class="input" name="plan" required>
+                        <option value="" disabled selected>Choose a plan…</option>
+                        <option>Free</option>
+                        <option>Pro</option>
+                        <option>Team</option>
+                    </select>
+                    <span class="field-hint">You can change plans later.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">Checkboxes</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
             Native <code>&lt;input type="checkbox"&gt;</code> with the UA

@@ -140,6 +140,106 @@
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Field States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Same six-state vocabulary as the single-select variant.
+            Because the multi field is a <code>&lt;div&gt;</code>
+            rather than a <code>&lt;button&gt;</code>, "disabled" is
+            opted into via <code>aria-disabled="true"</code> on the
+            <code>.combobox__field</code>; tag <code>×</code>
+            affordances stay rendered but become inert. Read-only
+            paints the muted surface and locks tag removal at the JS
+            level (CSS just handles appearance). Invalid uses the
+            shared <code>aria-invalid="true"</code> hook with a
+            <code>.field-error</code> helper.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="combobox -multi">
+                    <div class="combobox__field" aria-disabled="true">
+                        <input class="combobox__input" type="text" placeholder="Add tags…" disabled>
+                        <button class="combobox__chevron-btn" type="button" disabled aria-label="Toggle options">
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="combobox -multi">
+                    <div class="combobox__field" aria-readonly="true">
+                        <input class="combobox__input" type="text" placeholder="Add tags…" readonly>
+                        <button class="combobox__chevron-btn" type="button" disabled aria-label="Toggle options">
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with values</span>
+                <div class="combobox -multi">
+                    <div class="combobox__field" aria-disabled="true">
+                        <span class="tag-list combobox__values">
+                            <span class="tag">Design</span>
+                            <span class="tag">Engineering</span>
+                        </span>
+                        <input class="combobox__input" type="text" disabled>
+                        <button class="combobox__chevron-btn" type="button" disabled aria-label="Toggle options">
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with values</span>
+                <div class="combobox -multi">
+                    <div class="combobox__field" aria-readonly="true">
+                        <span class="tag-list combobox__values">
+                            <span class="tag">Design</span>
+                            <span class="tag">Engineering</span>
+                        </span>
+                        <input class="combobox__input" type="text" readonly>
+                        <button class="combobox__chevron-btn" type="button" disabled aria-label="Toggle options">
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="combobox -multi">
+                    <div class="combobox__field" aria-invalid="true" aria-describedby="cb-multi-error">
+                        <input class="combobox__input" type="text" placeholder="Add at least one tag…">
+                        <button class="combobox__chevron-btn" type="button" aria-label="Toggle options">
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <span class="field-error" id="cb-multi-error">Pick at least one tag.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Skills</span>
+                    <div class="combobox -multi">
+                        <div class="combobox__field">
+                            <span class="tag-list combobox__values">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">CSS</span>
+                            </span>
+                            <input class="combobox__input" type="text" placeholder="Add a skill…">
+                            <button class="combobox__chevron-btn" type="button" aria-label="Toggle options">
+                                <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <span class="field-hint">Used to match you with relevant projects.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">RTL</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
             Tags wrap inline-start to inline-end; the chevron parks at

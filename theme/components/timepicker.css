@@ -78,6 +78,20 @@
     cursor: default;
 }
 
+/* Read-only — same muted-surface fill as `.input:read-only`. */
+.timepicker:has(.timepicker__input:read-only) > .timepicker__field {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+/* Invalid — flips the wrapper border, surviving focus. */
+.timepicker:has(.timepicker__input[aria-invalid="true"]:not(:disabled)) > .timepicker__field {
+    @apply border-error dark:border-error-dark;
+}
+
+.timepicker:has(.timepicker__input[aria-invalid="true"]:not(:disabled)) > .timepicker__field:focus-within {
+    @apply border-error dark:border-error-dark;
+}
+
 .timepicker__input {
     @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
 
