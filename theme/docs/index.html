@@ -27,6 +27,7 @@
                 <li><a data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
                 <li><a data-slug="combobox-single" href="combobox-single/" class="nav__item">Combobox — Single</a></li>
                 <li><a data-slug="combobox-multi" href="combobox-multi/" class="nav__item">Combobox — Multi</a></li>
+                <li><a data-slug="datepicker" href="datepicker/" class="nav__item">Datepicker</a></li>
                 <li><a data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
                 <li><a data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
                 <li><a data-slug="links" href="links/" class="nav__item">Links</a></li>
@@ -41,6 +42,7 @@
     <theme-switcher></theme-switcher>
     <script src="./theme-switcher.js" type="module"></script>
     <script src="./combobox.js" type="module"></script>
+    <script src="./datepicker.js" type="module"></script>
     <script type="module">
         const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
 
@@ -58,6 +60,7 @@
             forms: 'Forms',
             'combobox-single': 'Combobox — Single',
             'combobox-multi': 'Combobox — Multi',
+            datepicker: 'Datepicker',
             typography: 'Typography',
             colors: 'Colors',
             links: 'Links',
