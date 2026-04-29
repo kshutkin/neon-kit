@@ -46,7 +46,7 @@
     padding-inline-end: 0.2em;
     gap: 0.3em;
 
-    vertical-align: -0.2em;
+    vertical-align: middle;
     cursor: default;
 }
 
@@ -144,5 +144,5 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4em;
-    vertical-align: -0.2em;
+    vertical-align: middle;
 }

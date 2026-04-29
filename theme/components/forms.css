@@ -106,7 +106,7 @@ select.input {
     margin: 0;
 
     /* Sit on the surrounding text baseline (matches `.kbd`'s alignment). */
-    vertical-align: -0.2em;
+    vertical-align: middle;
     cursor: pointer;
 
     /* Allow the checked-state indicator to use a pseudo-element. */
