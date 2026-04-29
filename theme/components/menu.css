@@ -40,11 +40,11 @@
        chevron — never both. */
     display: grid;
     grid-template-columns: auto 1fr auto;
-    min-width: 12rem;
+    min-width: --spacing(48);
 
     /* Tunable item padding — overridable per-instance. */
-    --menu-item-padding-block: 0.375rem;
-    --menu-item-padding-inline: 0.75rem;
+    --menu-item-padding-block: --spacing(1.5);
+    --menu-item-padding-inline: --spacing(3);
 
     /* Native [popover] elements get UA `margin: auto` (centering); reset
        that so anchor positioning / margin offsets work as written. */
@@ -63,7 +63,7 @@
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
-    padding-block: 0.25rem;
+    padding-block: --spacing(1);
 
     & + & {
         @apply border-t border-border dark:border-border-dark;
@@ -74,7 +74,7 @@
 .menu__group-header {
     @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
     grid-column: 1 / -1;
-    padding-block: 0.375rem;
+    padding-block: --spacing(1.5);
     padding-inline: var(--menu-item-padding-inline);
     user-select: none;
 }
@@ -83,7 +83,7 @@
 .menu__separator {
     @apply border-0 border-t border-border dark:border-border-dark;
     grid-column: 1 / -1;
-    margin-block: 0.25rem;
+    margin-block: --spacing(1);
 }
 
 /* The focusable row. Inherits the menu's column tracks via subgrid so
@@ -97,7 +97,7 @@
     display: grid;
     grid-template-columns: subgrid;
     align-items: center;
-    column-gap: 0.625rem;
+    column-gap: --spacing(2.5);
 
     /* Reset native button styles. */
     appearance: none;

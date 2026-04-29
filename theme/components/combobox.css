@@ -49,7 +49,7 @@
 .combobox {
     position: relative;
     display: inline-block;
-    min-inline-size: 16rem;
+    min-inline-size: --spacing(64);
 }
 
 /* ---------- Field (single-select) ----------------------------------------- */
@@ -78,11 +78,11 @@
 
     /* Layout: [value | clear | chevron] aligned on the inline axis. */
     inline-size: 100%;
-    min-block-size: 2.25rem;
+    min-block-size: --spacing(9);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding-inline-end: 0.5rem;
+    gap: --spacing(2);
+    padding-inline-end: --spacing(2);
 }
 
 /* Read-only — visually `:read-only` from `.input`: muted-surface fill so the
@@ -193,12 +193,12 @@
     flex-wrap: wrap;
     align-items: center;
     cursor: text;
-    padding-block: 0.25rem;
-    padding-inline-start: 0.5rem;
+    padding-block: --spacing(1);
+    padding-inline-start: --spacing(2);
     /* Tag rows want a bit more breathing room than the single-line field. */
-    row-gap: 0.25rem;
-    column-gap: 0.25rem;
-    min-block-size: 2.25rem;
+    row-gap: --spacing(1);
+    column-gap: --spacing(1);
+    min-block-size: --spacing(9);
     block-size: auto;
 }
 
@@ -238,7 +238,7 @@
     color: inherit;
     font: inherit;
     line-height: 1.25;
-    padding: 0.125rem 0;
+    padding: --spacing(0.5) 0;
     outline: none;
     text-shadow: none;
 
@@ -278,8 +278,8 @@
 
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
-    min-inline-size: max(12rem, anchor-size(width, 100%));
-    max-block-size: 18rem;
+    min-inline-size: max(--spacing(48), anchor-size(width, 100%));
+    max-block-size: --spacing(72);
     overflow: hidden;
 
     /* Native [popover] gets `margin: auto` from the UA — clear it so
@@ -292,7 +292,7 @@
 /* Anchor offset + side — consumers set `--anchor` via inline style or
    class; default to bottom-start with a hair of breathing room. */
 .combobox__popover {
-    margin-block-start: 0.25rem;
+    margin-block-start: --spacing(1);
     position-area: bottom span-inline-end;
 }
 
@@ -300,10 +300,10 @@
 .combobox__search {
     @apply border-b border-border dark:border-border-dark
         bg-surface-secondary dark:bg-surface-secondary-dark;
-    padding: 0.375rem 0.5rem;
+    padding: --spacing(1.5) --spacing(2);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: --spacing(2);
 }
 
 .combobox__search > .input {
@@ -311,14 +311,14 @@
     min-inline-size: 0;
     /* Tighter than the standalone `.input` — the search lives inside
        the panel so it doesn't need its own visual weight. */
-    padding: 0.25rem 0.5rem;
+    padding: --spacing(1) --spacing(2);
 }
 
 /* Scrollable list region between header and footer. */
 .combobox__list {
     overflow: auto;
     min-block-size: 0;
-    padding-block: 0.25rem;
+    padding-block: --spacing(1);
     /* Inherit the menu grid so option rows can opt back into subgrid. */
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -328,7 +328,7 @@
 .combobox__empty {
     @apply text-ink-muted dark:text-ink-muted-dark text-sm;
     grid-column: 1 / -1;
-    padding: 0.5rem 0.75rem;
+    padding: --spacing(2) --spacing(3);
     text-align: center;
     user-select: none;
 }
@@ -340,7 +340,7 @@
         bg-surface-secondary dark:bg-surface-secondary-dark;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    padding-block: 0.25rem;
+    padding-block: --spacing(1);
 }
 
 /* ---------- Option rows --------------------------------------------------- */
@@ -355,7 +355,7 @@
     display: grid;
     grid-template-columns: subgrid;
     align-items: center;
-    column-gap: 0.5rem;
+    column-gap: --spacing(2);
 
     appearance: none;
     border: 0;
@@ -363,7 +363,7 @@
     font: inherit;
     text-align: start;
     inline-size: 100%;
-    padding: var(--menu-item-padding-block, 0.375rem) var(--menu-item-padding-inline, 0.75rem);
+    padding: var(--menu-item-padding-block, --spacing(1.5)) var(--menu-item-padding-inline, --spacing(3));
     cursor: default;
     color: inherit;
 }
@@ -404,7 +404,7 @@
     display: grid;
     grid-template-columns: subgrid;
     align-items: center;
-    column-gap: 0.5rem;
+    column-gap: --spacing(2);
 
     appearance: none;
     border: 0;
@@ -412,7 +412,7 @@
     font: inherit;
     text-align: start;
     inline-size: 100%;
-    padding: 0.375rem 0.75rem;
+    padding: --spacing(1.5) --spacing(3);
     cursor: default;
     color: inherit;
 }

@@ -57,7 +57,7 @@
    inline size is owned by the layout, not by the user. */
 textarea.input {
     white-space: pre-wrap;
-    min-block-size: 4rem;
+    min-block-size: --spacing(16);
     resize: vertical;
     vertical-align: top;
 }
@@ -65,10 +65,10 @@ textarea.input {
 /* Native <select> — render the chevron ourselves so the control matches the
    `.btn`-with-trailing-icon look across browsers. */
 select.input {
-    padding-inline-end: 2rem;
+    padding-inline-end: --spacing(8);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23808080'><path stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/></svg>");
     background-repeat: no-repeat;
-    background-position: right 0.625rem center;
+    background-position: right --spacing(2.5) center;
     background-size: 1em;
     cursor: default;
 }
@@ -76,7 +76,7 @@ select.input {
 /* File input — strip the OS-rendered button on the inside; consumers can pair
    the input with a sibling `.btn` if they want a styled trigger. */
 .input[type="file"] {
-    padding: 0.375rem 0.75rem;
+    padding: --spacing(1.5) --spacing(3);
     cursor: default;
 }
 
@@ -123,7 +123,7 @@ select.input {
 }
 
 .checkbox {
-    border-radius: 0.25rem;
+    border-radius: --spacing(1);
 }
 
 .radio {
@@ -186,7 +186,7 @@ select.input {
 .field {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: --spacing(2);
     cursor: pointer;
     user-select: none;
 }
@@ -200,7 +200,7 @@ select.input {
 .field-stack {
     display: inline-flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: --spacing(1);
 }
 
 .field-stack > .field-label {
@@ -239,7 +239,7 @@ select.input {
     white-space: normal;
     text-overflow: clip;
 
-    padding: 0.75rem 1rem 1rem;
+    padding: --spacing(3) --spacing(4) --spacing(4);
     min-inline-size: 0;
 }
 
@@ -247,7 +247,7 @@ select.input {
    `.menu__group-header` and `.field-label` typography family. */
 .fieldset > legend {
     @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
-    padding-inline: 0.375rem;
-    margin-inline-start: -0.375rem;
+    padding-inline: --spacing(1.5);
+    margin-inline-start: calc(--spacing(1.5) * -1);
     user-select: none;
 }

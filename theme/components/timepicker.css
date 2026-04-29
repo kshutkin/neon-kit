@@ -45,7 +45,7 @@
 .timepicker {
     position: relative;
     display: inline-block;
-    min-inline-size: 9rem;
+    min-inline-size: --spacing(36);
 }
 
 /* Reuse the .datepicker__field chrome verbatim so a paired date/time row
@@ -63,7 +63,7 @@
     display: flex;
     align-items: stretch;
     inline-size: 100%;
-    min-block-size: 2.25rem;
+    min-block-size: --spacing(9);
 }
 
 .timepicker__field:focus-within {
@@ -103,7 +103,7 @@
     color: inherit;
     font: inherit;
     line-height: 1.25;
-    padding: 0.375rem 0.75rem;
+    padding: --spacing(1.5) --spacing(3);
     outline: none;
     text-shadow: none;
 
@@ -122,7 +122,7 @@
     align-self: center;
     inline-size: 1.5em;
     block-size: 1.5em;
-    margin-inline-end: 0.25rem;
+    margin-inline-end: --spacing(1);
     padding: 0;
     border: 0;
     border-radius: 9999px;
@@ -149,7 +149,7 @@
 
     appearance: none;
     flex: none;
-    inline-size: 2.25rem;
+    inline-size: --spacing(9);
     padding: 0;
     background: transparent;
     color: inherit;
@@ -174,14 +174,14 @@
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto;
     overflow: hidden;
-    inline-size: 11rem;
-    max-block-size: 18rem;
-    margin-block-start: 0.25rem;
+    inline-size: --spacing(44);
+    max-block-size: --spacing(72);
+    margin-block-start: --spacing(1);
     position-area: bottom span-inline-end;
 
     &:popover-open {
         margin: 0;
-        margin-block-start: 0.25rem;
+        margin-block-start: --spacing(1);
     }
 }
 
@@ -191,7 +191,7 @@
 .timepicker__list {
     overflow: auto;
     min-block-size: 0;
-    padding-block: 0.25rem;
+    padding-block: --spacing(1);
     display: grid;
     grid-template-columns: 1fr auto;
 }
@@ -228,7 +228,7 @@
     appearance: none;
     align-self: center;
     flex: none;
-    margin-inline-end: 0.5rem;
+    margin-inline-end: --spacing(2);
     padding: 0;
     border: 0;
     background: transparent;
@@ -247,7 +247,7 @@
     position: relative;
     display: inline-flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: --spacing(2);
     inline-size: auto;
 }
 
@@ -256,7 +256,7 @@
 .datetime-picker > .datepicker,
 .datetime-picker > .timepicker {
     flex: 1 1 auto;
-    min-inline-size: 9rem;
+    min-inline-size: --spacing(36);
 }
 
 /* Combined popover — anchors below either field and lays the day-grid and
@@ -264,12 +264,12 @@
    pairs with `.datepicker__popover` (re-using its panel chrome), so the
    popover element gets BOTH classes: `.datepicker__popover.-with-time`. */
 .datepicker__popover.-with-time {
-    inline-size: min(34rem, calc(100vw - 1rem));
+    inline-size: min(--spacing(136), calc(100vw - --spacing(4)));
     /* Cap the height so the (much taller) time list scrolls instead of
        stretching the day grid's rows. */
-    max-block-size: min(22rem, calc(100vh - 4rem));
+    max-block-size: min(--spacing(88), calc(100vh - --spacing(16)));
     grid-template-rows: minmax(0, 1fr);
-    grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, --spacing(72)) minmax(0, 1fr);
 }
 
 .datepicker__popover.-with-time > .datepicker__panel {
@@ -307,7 +307,7 @@
 
 @media (max-width: 640px) {
     .datepicker__popover.-with-time {
-        inline-size: min(20rem, calc(100vw - 1rem));
+        inline-size: min(--spacing(80), calc(100vw - --spacing(4)));
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: auto minmax(0, 1fr);
     }

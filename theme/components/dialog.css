@@ -18,23 +18,23 @@
     grid-template-rows: auto minmax(0, 1fr) auto;
 
     /* Default (medium) size */
-    width: min(90vw, 32rem);
-    max-height: min(85vh, 40rem);
+    width: min(90vw, --spacing(128));
+    max-height: min(85vh, --spacing(160));
 }
 
 .dialog.-small {
-    width: min(90vw, 24rem);
-    max-height: min(85vh, 28rem);
+    width: min(90vw, --spacing(96));
+    max-height: min(85vh, --spacing(112));
 }
 
 .dialog.-large {
-    width: min(90vw, 48rem);
-    max-height: min(85vh, 48rem);
+    width: min(90vw, --spacing(192));
+    max-height: min(85vh, --spacing(192));
 }
 
 .dialog.-xlarge {
-    width: min(95vw, 64rem);
-    max-height: min(90vh, 56rem);
+    width: min(95vw, --spacing(256));
+    max-height: min(90vh, --spacing(224));
 }
 
 .dialog:not([open]) {
@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: --spacing(3);
     font-weight: 600;
 }
 
@@ -66,7 +66,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: --spacing(2);
 }
 
 /* Mobile: full screen */
