@@ -1,0 +1,316 @@
+/* Timepicker — typeable time field with a popover list of time points,
+   plus an optional inline IANA timezone picker. Pairs cleanly with
+   `.datepicker` for a combined date+time control via `.datetime-picker`.
+
+   Like the combobox/datepicker components, this file ships layout only;
+   behavior (parsing the typed value, generating the time list at a given
+   step, populating the timezone list) is consumer-owned. The CSS reuses:
+
+     - `.datepicker__field` chrome via the shared structural rules below,
+       so the time and date fields read as siblings.
+     - `.combobox__popover` panel chrome and `.combobox__option` row
+       layout, so the dropdown list of time points is visually a menu.
+
+   Markup:
+       <div class="timepicker">
+         <div class="timepicker__field">
+           <input class="timepicker__input" type="text" placeholder="HH:MM">
+           <button class="timepicker__field-tz" popovertarget="tp-tz">UTC</button>
+           <button class="timepicker__clear" type="button">…</button>
+           <button class="timepicker__trigger" type="button" popovertarget="tp-pop">…</button>
+         </div>
+         <div id="tp-pop" class="timepicker__popover" popover>
+           <div class="timepicker__list">
+             <button class="combobox__option" type="button">…</button>
+             …
+           </div>
+         </div>
+         <!-- Optional: separate combobox-style popover for picking an
+              IANA timezone, opened by the `.timepicker__field-tz` button. -->
+         <div id="tp-tz" class="combobox__popover" popover>…</div>
+       </div>
+
+   Combined date + time:
+       <div class="datetime-picker">
+         <div class="datetime-picker__date">…datepicker fragment…</div>
+         <div class="datetime-picker__time">…timepicker fragment…</div>
+       </div>
+
+   The combined popover uses CSS grid with one column on small viewports
+   (stacked) and two columns on larger viewports (date | time).
+*/
+
+/* ---------- Field --------------------------------------------------------- */
+
+.timepicker {
+    position: relative;
+    display: inline-block;
+    min-inline-size: 9rem;
+}
+
+/* Reuse the .datepicker__field chrome verbatim so a paired date/time row
+   reads as a single visual family. */
+.timepicker__field {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark;
+
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0;
+
+    display: flex;
+    align-items: stretch;
+    inline-size: 100%;
+    min-block-size: 2.25rem;
+}
+
+.timepicker__field:focus-within {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+.timepicker:has(.timepicker__input:disabled) > .timepicker__field {
+    @apply bg-surface-disabled dark:bg-surface-disabled-dark
+        text-ink-muted dark:text-ink-muted-dark
+        border-border-disabled dark:border-border-disabled-dark;
+    pointer-events: none;
+    cursor: default;
+}
+
+.timepicker__input {
+    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1.25;
+    padding: 0.375rem 0.75rem;
+    outline: none;
+    text-shadow: none;
+
+    /* Tabular numerals so HH:MM(:SS) doesn't shift width as digits change. */
+    font-variant-numeric: tabular-nums;
+}
+
+.timepicker__clear {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        inline-flex items-center justify-center;
+
+    align-self: center;
+    inline-size: 1.5em;
+    block-size: 1.5em;
+    margin-inline-end: 0.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    flex: none;
+}
+
+.timepicker__clear > svg {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}
+
+.timepicker__trigger {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        border-s border-border dark:border-border-dark
+        inline-flex items-center justify-center;
+
+    appearance: none;
+    flex: none;
+    inline-size: 2.25rem;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    border-block: 0;
+    border-inline-end: 0;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
+}
+
+.timepicker__icon {
+    inline-size: 1.125em;
+    block-size: 1.125em;
+}
+
+/* ---------- Popover ------------------------------------------------------- */
+
+.timepicker__popover {
+    @apply panel p-0 m-0 whitespace-normal;
+
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+    inline-size: 11rem;
+    max-block-size: 18rem;
+    margin-block-start: 0.25rem;
+    position-area: bottom span-inline-end;
+
+    &:popover-open {
+        margin: 0;
+        margin-block-start: 0.25rem;
+    }
+}
+
+/* The scrollable list of time points — mirrors `.combobox__list` so each
+   option renders as an `interactive-row`. Three-column subgrid lets a
+   trailing check (selected indicator) sit cleanly. */
+.timepicker__list {
+    overflow: auto;
+    min-block-size: 0;
+    padding-block: 0.25rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.timepicker__list .combobox__option {
+    grid-template-columns: 1fr auto;
+    /* Tabular numerals so the time column is rectangular regardless of digit. */
+    font-variant-numeric: tabular-nums;
+}
+
+.timepicker__list .combobox__option > .combobox__option-label {
+    grid-column: 1;
+}
+
+.timepicker__list .combobox__option > .combobox__option-check {
+    grid-column: 2;
+}
+
+/* ---------- Timezone trigger (optional) ---------------------------------- */
+
+/* When `data-tz` is present, the field renders an inline muted button
+   next to the time that opens a *separate* popover — visually identical
+   to a single-select combobox dropdown — for picking the IANA zone.
+   The button is rendered as a quiet inline hint (muted ink, no border,
+   no chip background) so the time stays the dominant value; hover /
+   focus tints make it clear it is interactive. There is no "clear" on
+   the zone — consumers preselect the user's (or stored) zone and let
+   them only *change* it. */
+.timepicker__field-tz {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        focus-visible:text-ink-primary dark:focus-visible:text-ink-primary-dark;
+
+    appearance: none;
+    align-self: center;
+    flex: none;
+    margin-inline-end: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.875em;
+    cursor: default;
+    text-shadow: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+/* ---------- Combined date + time ----------------------------------------- */
+
+.datetime-picker {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    inline-size: auto;
+}
+
+/* Each leg keeps its own field — they share a popover trigger pattern via
+   their own component classes, so this wrapper only handles spacing. */
+.datetime-picker > .datepicker,
+.datetime-picker > .timepicker {
+    flex: 1 1 auto;
+    min-inline-size: 9rem;
+}
+
+/* Combined popover — anchors below either field and lays the day-grid and
+   time-list side by side. Stacks on small viewports. The wrapper class
+   pairs with `.datepicker__popover` (re-using its panel chrome), so the
+   popover element gets BOTH classes: `.datepicker__popover.-with-time`. */
+.datepicker__popover.-with-time {
+    inline-size: min(34rem, calc(100vw - 1rem));
+    /* Cap the height so the (much taller) time list scrolls instead of
+       stretching the day grid's rows. */
+    max-block-size: min(22rem, calc(100vh - 4rem));
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+}
+
+.datepicker__popover.-with-time > .datepicker__panel {
+    grid-column: 1;
+    grid-row: 1;
+    min-block-size: 0;
+    border-inline-end: 1px solid var(--color-border);
+    /* Keep nav + day grid stacked at the top of their column; without
+       `align-content: start` Chrome stretches the implicit auto rows of
+       the day grid to fill the (taller) shared row. */
+    display: grid;
+    grid-template-rows: auto auto;
+    align-content: start;
+
+    :where([data-theme="dark"]) & {
+        border-inline-end-color: var(--color-border-dark);
+    }
+}
+
+.datepicker__popover.-with-time > .timepicker__panel {
+    grid-column: 2;
+    grid-row: 1;
+    min-block-size: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    overflow: hidden;
+}
+
+.datepicker__popover.-with-time > .timepicker__panel > .timepicker__list {
+    /* Time list is the scrolling region of the combined popover. */
+    min-block-size: 0;
+    max-block-size: none;
+    overflow: auto;
+}
+
+@media (max-width: 640px) {
+    .datepicker__popover.-with-time {
+        inline-size: min(20rem, calc(100vw - 1rem));
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .datepicker__popover.-with-time > .datepicker__panel {
+        grid-column: 1;
+        grid-row: 1;
+        border-inline-end: 0;
+        border-block-end: 1px solid var(--color-border);
+
+        :where([data-theme="dark"]) & {
+            border-block-end-color: var(--color-border-dark);
+        }
+    }
+
+    .datepicker__popover.-with-time > .timepicker__panel {
+        grid-column: 1;
+        grid-row: 2;
+    }
+}
