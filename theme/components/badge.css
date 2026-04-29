@@ -41,7 +41,7 @@
     gap: 0.25em;
 
     /* Sit on the surrounding text baseline, matching `.kbd`. */
-    vertical-align: -0.2em;
+    vertical-align: middle;
     cursor: default;
 }
 
