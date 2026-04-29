@@ -1,0 +1,108 @@
+/* Badge — compact inline label for counts, status, and categories.
+
+   Visually shares the family of `.kbd` (rounded, bordered, top-edge
+   highlight, em-sized so it scales with the surrounding text) but is
+   pill-shaped and ships with semantic color modifiers built from the
+   theme's state tokens (success / warning / error / info) plus a primary
+   modifier that mirrors the `.btn.cta` filled look.
+
+   Markup:
+       <span class="badge">42</span>
+       <span class="badge -primary">New</span>
+       <span class="badge -success">Active</span>
+       <span class="badge -warning">Pending</span>
+       <span class="badge -error">Failed</span>
+       <span class="badge -info">Beta</span>
+
+   Sizing notes:
+   - Every dimension is set in `em`, so dropping a badge inside any text
+     context (heading, body, small print) makes it scale with the line
+     without per-context overrides.
+   - `vertical-align: -0.2em` matches `.kbd` so badges and keyboard
+     nameplates line up on the same optical baseline when used together.
+*/
+
+.badge {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        text-shadow-embossed dark:text-shadow-embossed-dark
+        rounded-full
+        inline-flex items-center justify-center
+        whitespace-nowrap select-none;
+
+    font-size: 0.8125em;
+    font-weight: 500;
+    line-height: 1;
+    block-size: 1.6em;
+    min-inline-size: 1.6em;
+    padding-inline: 0.6em;
+    gap: 0.25em;
+
+    /* Sit on the surrounding text baseline, matching `.kbd`. */
+    vertical-align: -0.2em;
+    cursor: default;
+}
+
+/* Filled, primary-tinted badge — mirrors the `.btn.cta` family
+   (primary background, inverse ink, debossed text shadow, pressed-style
+   inset highlight). Light/dark share the same fill on purpose. */
+.badge.-primary {
+    @apply border-border-primary dark:border-border-primary-dark
+        bg-primary text-ink-inverse
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        text-shadow-debossed dark:text-shadow-debossed-dark;
+}
+
+/* Soft-tinted state modifiers — translucent fill from the state color so
+   the badge always reads against any surface, full-strength border for
+   recognition, ink-primary text for AA-legible labels. */
+.badge.-success {
+    background-color: oklch(from var(--color-success) l c h / 0.25);
+    border-color: var(--color-success);
+}
+
+[data-theme=dark] .badge.-success {
+    background-color: oklch(from var(--color-success-dark) l c h / 0.2);
+    border-color: var(--color-success-dark);
+}
+
+.badge.-warning {
+    background-color: oklch(from var(--color-warning) l c h / 0.3);
+    border-color: var(--color-warning);
+}
+
+[data-theme=dark] .badge.-warning {
+    background-color: oklch(from var(--color-warning-dark) l c h / 0.22);
+    border-color: var(--color-warning-dark);
+}
+
+.badge.-error {
+    background-color: oklch(from var(--color-error) l c h / 0.25);
+    border-color: var(--color-error);
+}
+
+[data-theme=dark] .badge.-error {
+    background-color: oklch(from var(--color-error-dark) l c h / 0.22);
+    border-color: var(--color-error-dark);
+}
+
+.badge.-info {
+    background-color: oklch(from var(--color-info) l c h / 0.3);
+    border-color: var(--color-info);
+}
+
+[data-theme=dark] .badge.-info {
+    background-color: oklch(from var(--color-info-dark) l c h / 0.22);
+    border-color: var(--color-info-dark);
+}
+
+/* A dot — useful as a leading status pip inside a label or on its own. */
+.badge__dot {
+    inline-size: 0.5em;
+    block-size: 0.5em;
+    border-radius: 9999px;
+    background-color: currentColor;
+    flex: none;
+}

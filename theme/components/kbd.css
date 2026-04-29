@@ -54,11 +54,13 @@
     cursor: default;
 }
 
-/* Wrapper that aligns a sequence of `.kbd` keys with even visual gaps. */
+/* Wrapper that aligns a sequence of `.kbd` keys with even visual gaps.
+   Gap is in `em` so a row of keys nested inside larger / smaller text
+   keeps proportional spacing without per-context overrides. */
 .kbd-keys {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.25em;
     vertical-align: -0.2em;
 }
 

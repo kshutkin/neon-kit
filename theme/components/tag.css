@@ -1,0 +1,148 @@
+/* Tag — labelled chip with a built-in remove affordance.
+
+   Visually a sibling of `.badge` (same em-sized, top-highlight family) but
+   with rectangular `rounded` corners to better seat alongside form
+   controls and a trailing close button so users can dismiss the entry.
+   The trailing button reuses `.btn.quiet`'s hover state language —
+   transparent until hovered, then a subtle surface highlight — so it
+   reads as an action without overpowering the label.
+
+   Markup:
+       <span class="tag">
+           JavaScript
+           <button type="button" class="tag__remove" aria-label="Remove JavaScript">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2" fill="none"
+                    aria-hidden="true">
+                   <path stroke-linecap="round" stroke-linejoin="round"
+                         d="M6 6l12 12M18 6L6 18" />
+               </svg>
+           </button>
+       </span>
+
+   Like `.badge`, `.tag` and `.tag__remove` are sized entirely in `em`, so
+   wrapping a tag list in a smaller / larger font-size scales the chips
+   and their controls in lock-step.
+*/
+
+.tag {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        text-shadow-embossed dark:text-shadow-embossed-dark
+        rounded
+        inline-flex items-center
+        whitespace-nowrap select-none;
+
+    font-size: 0.8125em;
+    font-weight: 500;
+    line-height: 1;
+    block-size: 1.75em;
+    /* Asymmetric padding: more on the label side, just enough on the
+       control side to seat the round remove button with even visual
+       breathing room. */
+    padding-inline-start: 0.65em;
+    padding-inline-end: 0.2em;
+    gap: 0.3em;
+
+    vertical-align: -0.2em;
+    cursor: default;
+}
+
+/* Remove button — a tiny circular hit target. Borrows the quiet-button
+   colour language: transparent at rest, surface-hover on :hover /
+   :focus-visible, surface-active when pressed. */
+.tag__remove {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        inline-flex items-center justify-center;
+
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    flex: none;
+}
+
+.tag__remove > svg {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}
+
+/* Tinted states — share semantics and contrast strategy with `.badge`. */
+.tag.-primary {
+    @apply border-border-primary dark:border-border-primary-dark
+        bg-primary text-ink-inverse
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        text-shadow-debossed dark:text-shadow-debossed-dark;
+}
+
+.tag.-primary .tag__remove {
+    @apply text-ink-inverse hover:text-ink-inverse;
+    background-color: transparent;
+}
+
+.tag.-primary .tag__remove:hover,
+.tag.-primary .tag__remove:focus-visible {
+    background-color: oklch(from var(--color-primary) calc(l - 0.1) c h / 0.6);
+}
+
+.tag.-success {
+    background-color: oklch(from var(--color-success) l c h / 0.25);
+    border-color: var(--color-success);
+}
+
+[data-theme=dark] .tag.-success {
+    background-color: oklch(from var(--color-success-dark) l c h / 0.2);
+    border-color: var(--color-success-dark);
+}
+
+.tag.-warning {
+    background-color: oklch(from var(--color-warning) l c h / 0.3);
+    border-color: var(--color-warning);
+}
+
+[data-theme=dark] .tag.-warning {
+    background-color: oklch(from var(--color-warning-dark) l c h / 0.22);
+    border-color: var(--color-warning-dark);
+}
+
+.tag.-error {
+    background-color: oklch(from var(--color-error) l c h / 0.25);
+    border-color: var(--color-error);
+}
+
+[data-theme=dark] .tag.-error {
+    background-color: oklch(from var(--color-error-dark) l c h / 0.22);
+    border-color: var(--color-error-dark);
+}
+
+.tag.-info {
+    background-color: oklch(from var(--color-info) l c h / 0.3);
+    border-color: var(--color-info);
+}
+
+[data-theme=dark] .tag.-info {
+    background-color: oklch(from var(--color-info-dark) l c h / 0.22);
+    border-color: var(--color-info-dark);
+}
+
+/* Optional layout helper — wrap a list of tags with consistent gaps that
+   also scale with the surrounding font-size. */
+.tag-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    vertical-align: -0.2em;
+}

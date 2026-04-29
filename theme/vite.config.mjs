@@ -15,6 +15,8 @@ const ROUTES = {
   menus:      { title: 'Menus',      desc: 'Dropdown menu component — focusable items with icons, shortcuts, chevrons, and groups, built on the native popover API.' },
   navigation: { title: 'Navigation', desc: 'Navigation component — element-agnostic interactive rows for sidebars, horizontal tabs, and radio-segmented controls.' },
   kbd:        { title: 'Keyboard',   desc: 'Keyboard-shortcut nameplates — flat, non-interactive keycaps that align across single keys and multi-key combos.' },
+  badges:     { title: 'Badges',     desc: 'Badge component — compact pill labels for counts, statuses, and categories, with semantic state modifiers.' },
+  tags:       { title: 'Tags',       desc: 'Tag component — labelled chips with a built-in remove affordance, sized in em to scale with surrounding text.' },
   forms:      { title: 'Forms',      desc: 'Form controls — text inputs, checkboxes, radios, and fieldsets styled to match the Neon button family.' },
   typography: { title: 'Typography', desc: 'Typography scale, headings, and body text styles in the Neon theme.' },
   colors:     { title: 'Colors',     desc: 'Color tokens — primary, surface, ink, and border roles across light and dark themes.' },
