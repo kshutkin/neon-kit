@@ -18,6 +18,8 @@ const ROUTES = {
   badges:     { title: 'Badges',     desc: 'Badge component — compact pill labels for counts, statuses, and categories, with semantic state modifiers.' },
   tags:       { title: 'Tags',       desc: 'Tag component — labelled chips with a built-in remove affordance, sized in em to scale with surrounding text.' },
   forms:      { title: 'Forms',      desc: 'Form controls — text inputs, checkboxes, radios, and fieldsets styled to match the Neon button family.' },
+  'combobox-single': { title: 'Combobox — Single', desc: 'Single-select combobox layout — focusable field with optional clear, search, and create-new in the dropdown.' },
+  'combobox-multi':  { title: 'Combobox — Multi',  desc: 'Multi-select combobox layout — wrappable tag list field with optional search, select-all, and create-new.' },
   typography: { title: 'Typography', desc: 'Typography scale, headings, and body text styles in the Neon theme.' },
   colors:     { title: 'Colors',     desc: 'Color tokens — primary, surface, ink, and border roles across light and dark themes.' },
   links:      { title: 'Links',      desc: 'Link styles and states in the Neon theme — default, hover, visited, and active.' },

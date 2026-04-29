@@ -1,0 +1,179 @@
+<main>
+    <h1 class="mb-6">Combobox — Multi-Select</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        Multi-select <code>.combobox.-multi</code> — same field/popover
+        family as the single-select variant, but the field hosts a
+        wrappable tag list and an inline auto-growing search input that
+        expand the field's block size as more items are picked. Each
+        tag carries its own <code>.tag__remove</code> close affordance,
+        the popover uses <code>.checkbox</code>-prefixed option rows,
+        and footer slots can host an optional "Select all" toggle and
+        an optional "Create new …" row. RTL is handled by the same
+        logical-property layout that single-select uses.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Plain</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Click the field or focus it and press
+            <kbd class="kbd">Space</kbd> to open. Click options to
+            toggle them; click a tag's × to remove it.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox -multi" data-combobox="multi" data-options='["Red","Orange","Yellow","Green","Blue","Indigo","Violet"]'>
+                <div class="combobox__field" data-cb-field>
+                    <span class="tag-list combobox__values" data-cb-values></span>
+                    <input class="combobox__input" type="text" placeholder="Add colors…" data-cb-input>
+                    <button class="combobox__chevron-btn" type="button" popovertarget="cb-multi-plain" aria-label="Toggle options">
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <div id="cb-multi-plain" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__list" data-cb-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Search and Select All</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-searchable</code> mounts a sticky search header;
+            <code>data-select-all</code> mounts a "Select all" toggle in
+            the popover footer. The toggle reflects an indeterminate
+            state when only some options are selected.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox -multi" data-combobox="multi" data-searchable data-select-all data-value='["JavaScript","CSS"]' data-options='["JavaScript","TypeScript","HTML","CSS","Rust","Go","Python","Ruby","Swift","Kotlin","Java","C","C++","C#","PHP","Scala","Haskell","Elixir"]'>
+                <div class="combobox__field" data-cb-field>
+                    <span class="tag-list combobox__values" data-cb-values></span>
+                    <input class="combobox__input" type="text" placeholder="Add languages…" data-cb-input>
+                    <button class="combobox__chevron-btn" type="button" popovertarget="cb-multi-search" aria-label="Toggle options">
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <div id="cb-multi-search" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="Search languages…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                    <div class="combobox__footer">
+                        <label class="combobox__option" data-cb-select-all>
+                            <input type="checkbox" class="checkbox" data-cb-select-all-input>
+                            <span class="combobox__option-label"><strong>Select all</strong></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Create New</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-creatable</code> appends a "Create new"
+            footer row when the search query doesn't match any existing
+            option. Pressing <kbd class="kbd">Enter</kbd> in the inline
+            field also creates a tag if creation is enabled.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox -multi" data-combobox="multi" data-searchable data-creatable data-options='["urgent","blocker","question","wontfix"]'>
+                <div class="combobox__field" data-cb-field>
+                    <span class="tag-list combobox__values" data-cb-values></span>
+                    <input class="combobox__input" type="text" placeholder="Add labels…" data-cb-input>
+                    <button class="combobox__chevron-btn" type="button" popovertarget="cb-multi-create" aria-label="Toggle options">
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <div id="cb-multi-create" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="Search or type to create…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                    <div class="combobox__footer" data-cb-footer hidden>
+                        <button class="combobox__create" type="button" data-cb-create>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                            <span data-cb-create-label>Create</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Everything On</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Search, select-all, and create-new together. Add a few tags
+            and watch the field grow vertically as the tag list wraps;
+            the trailing chevron stays parked at the inline-end edge.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox -multi" data-combobox="multi" data-searchable data-select-all data-creatable data-value='["Design","Engineering"]' data-options='["Design","Engineering","Product","Marketing","Sales","Support","Finance","Legal","Operations","People","IT","Research"]' style="inline-size: 28rem;">
+                <div class="combobox__field" data-cb-field>
+                    <span class="tag-list combobox__values" data-cb-values></span>
+                    <input class="combobox__input" type="text" placeholder="Add departments…" data-cb-input>
+                    <button class="combobox__chevron-btn" type="button" popovertarget="cb-multi-all" aria-label="Toggle options">
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <div id="cb-multi-all" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="Search or type to create…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                    <div class="combobox__footer">
+                        <label class="combobox__option" data-cb-select-all>
+                            <input type="checkbox" class="checkbox" data-cb-select-all-input>
+                            <span class="combobox__option-label"><strong>Select all</strong></span>
+                        </label>
+                    </div>
+                    <div class="combobox__footer" data-cb-footer hidden>
+                        <button class="combobox__create" type="button" data-cb-create>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                            <span data-cb-create-label>Create</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">RTL</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Tags wrap inline-start to inline-end; the chevron parks at
+            the inline-end (visually left in RTL); the popover anchors
+            from the field's bottom-start edge.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+            <div class="combobox -multi" data-combobox="multi" data-searchable data-select-all data-creatable data-value='["تصميم"]' data-options='["تصميم","هندسة","منتج","تسويق","مبيعات","دعم","مالية"]'>
+                <div class="combobox__field" data-cb-field>
+                    <span class="tag-list combobox__values" data-cb-values></span>
+                    <input class="combobox__input" type="text" placeholder="أضف أقسامًا…" data-cb-input>
+                    <button class="combobox__chevron-btn" type="button" popovertarget="cb-multi-rtl" aria-label="فتح">
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <div id="cb-multi-rtl" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="ابحث أو اكتب لإنشاء…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                    <div class="combobox__footer">
+                        <label class="combobox__option" data-cb-select-all>
+                            <input type="checkbox" class="checkbox" data-cb-select-all-input>
+                            <span class="combobox__option-label"><strong>تحديد الكل</strong></span>
+                        </label>
+                    </div>
+                    <div class="combobox__footer" data-cb-footer hidden>
+                        <button class="combobox__create" type="button" data-cb-create>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                            <span data-cb-create-label>إنشاء</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

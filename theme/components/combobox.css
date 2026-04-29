@@ -1,0 +1,407 @@
+/* Combobox — single- and multi-select dropdown control with an inset
+   "field" and a `.menu`-styled popover.
+
+   This file ships layout only; behavior (open/close, filtering, selection,
+   keyboard nav) is consumer-owned. The CSS is structured so that:
+
+     - The field reuses the inset-well language of `.input` so a focused
+       combobox reads the same as a focused text field.
+     - The popover reuses `.menu` (panel + interactive-row state styles),
+       extended with a sticky search header and an optional footer slot
+       for "Create new" / "Select all" actions.
+     - Single- and multi-select share `.combobox` / `.combobox__field`;
+       the `.-multi` modifier opts the field into wrap-and-grow layout
+       and switches the trailing affordance from a value+clear pair to a
+       wrappable tag list with an inline auto-growing search input.
+
+   Markup (single):
+       <div class="combobox">
+         <button class="combobox__field" type="button" popovertarget="cb-pop">
+           <span class="combobox__value">Selected</span>
+           <span class="combobox__placeholder">Choose…</span>
+           <button class="combobox__clear" type="button" aria-label="Clear">…</button>
+           <svg class="combobox__chevron" …></svg>
+         </button>
+         <div id="cb-pop" class="combobox__popover" popover>…</div>
+       </div>
+
+   Markup (multi):
+       <div class="combobox -multi">
+         <div class="combobox__field" tabindex="-1">
+           <span class="tag-list combobox__values">
+             <span class="tag">… <button class="tag__remove">…</button></span>
+           </span>
+           <input class="combobox__input" type="text" placeholder="Add…">
+           <button class="combobox__chevron-btn" type="button" popovertarget="cb-pop">
+             <svg class="combobox__chevron" …></svg>
+           </button>
+         </div>
+         <div id="cb-pop" class="combobox__popover" popover>…</div>
+       </div>
+
+   RTL: every offset uses logical properties; `.combobox__chevron` flips on
+   `:dir(rtl)` so the open-state rotation reads correctly in both writing
+   modes.
+*/
+
+/* ---------- Wrapper -------------------------------------------------------- */
+
+.combobox {
+    position: relative;
+    display: inline-block;
+    min-inline-size: 16rem;
+}
+
+/* ---------- Field (single-select) ----------------------------------------- */
+
+/* Visually a `.input` you click on. Implemented as a <button> so it is
+   natively focusable + activatable, and so a single tab-stop selects the
+   whole control. */
+.combobox__field {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark
+        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
+        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
+        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
+        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
+        disabled:pointer-events-none disabled:cursor-default;
+
+    /* Reset native button defaults */
+    appearance: none;
+    font: inherit;
+    text-align: start;
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    cursor: default;
+
+    /* Layout: [value | clear | chevron] aligned on the inline axis. */
+    inline-size: 100%;
+    min-block-size: 2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline-end: 0.5rem;
+}
+
+/* Selected value text — fills available space, truncates with ellipsis. */
+.combobox__value {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.25;
+}
+
+/* Placeholder twin to `.combobox__value` — same slot, muted color. Hidden
+   when the consumer also renders a `.combobox__value`. */
+.combobox__placeholder {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.25;
+}
+
+/* Clear button — reuses the quiet `.tag__remove` colour language so the
+   single-select clear and the per-tag removes in multi feel like one
+   family. Sized in em so it tracks the field's font-size. */
+.combobox__clear {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        inline-flex items-center justify-center;
+
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    flex: none;
+}
+
+.combobox__clear > svg {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}
+
+/* Chevron — non-interactive in single-select (the field itself is the
+   trigger) so it lives directly inside the field button. */
+.combobox__chevron {
+    inline-size: 1em;
+    block-size: 1em;
+    flex: none;
+    color: var(--color-ink-secondary);
+    transition: transform 120ms ease;
+
+    :where([data-theme="dark"]) & {
+        color: var(--color-ink-secondary-dark);
+    }
+}
+
+/* Open-state rotation — consumers toggle `aria-expanded="true"` on the
+   field (single) or on the wrapper (multi). */
+.combobox__field[aria-expanded="true"] .combobox__chevron,
+.combobox.-multi[data-open] .combobox__chevron {
+    transform: rotate(180deg);
+}
+
+/* ---------- Multi-select extensions --------------------------------------- */
+
+/* In multi mode the field grows with content: tags wrap onto new lines
+   and the inline search input flows alongside them. The wrapper itself
+   carries the inset chrome so a focus ring on the inner input is
+   suppressed in favor of one ring on the field. */
+.combobox.-multi > .combobox__field {
+    flex-wrap: wrap;
+    align-items: center;
+    cursor: text;
+    padding-block: 0.25rem;
+    padding-inline-start: 0.5rem;
+    /* Tag rows want a bit more breathing room than the single-line field. */
+    row-gap: 0.25rem;
+    column-gap: 0.25rem;
+    min-block-size: 2.25rem;
+    block-size: auto;
+}
+
+/* Multi field is rendered as a <div> + tabindex; the inner input takes the
+   focus ring so we suppress it on the wrapper. */
+.combobox.-multi > .combobox__field:focus {
+    outline: none;
+}
+
+.combobox.-multi > .combobox__field:focus-within {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+/* Tag list slot — uses the existing `.tag-list` flex/wrap layout so
+   adding/removing tags reflows the field naturally. */
+.combobox__values {
+    display: contents;
+}
+
+.combobox__values:empty {
+    display: none;
+}
+
+/* Inline auto-growing search input. Strips chrome — the surrounding
+   `.combobox__field` carries the chrome instead. `field-sizing: content`
+   makes the input grow with its value where supported; the
+   `min-inline-size` floor keeps the caret visible at rest. */
+.combobox__input {
+    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+
+    flex: 1 0 6ch;
+    min-inline-size: 6ch;
+    inline-size: auto;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1.25;
+    padding: 0.125rem 0;
+    outline: none;
+    text-shadow: none;
+
+    /* Progressive enhancement — Chromium-only today, harmless elsewhere. */
+    field-sizing: content;
+}
+
+/* Trailing chevron slot in multi mode — a real button, since the field
+   itself is non-button. Pushes to the inline-end via auto margin so it
+   stays parked in the corner regardless of how many tags wrap. */
+.combobox__chevron-btn {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        inline-flex items-center justify-center;
+
+    margin-inline-start: auto;
+    align-self: center;
+    inline-size: 1.5em;
+    block-size: 1.5em;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    cursor: default;
+    flex: none;
+}
+
+/* ---------- Popover -------------------------------------------------------- */
+
+/* Reuses `.menu`'s panel chrome via @apply so the dropdown reads as a
+   menu. Adds a sticky search header on top and a sticky footer for
+   "Create new" / "Select all" actions. */
+.combobox__popover {
+    @apply panel p-0 m-0 whitespace-normal;
+
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-inline-size: max(12rem, anchor-size(width, 100%));
+    max-block-size: 18rem;
+    overflow: hidden;
+
+    /* Native [popover] gets `margin: auto` from the UA — clear it so
+       anchor positioning resolves to the trigger's edges. */
+    &:popover-open {
+        margin: 0;
+    }
+}
+
+/* Anchor offset + side — consumers set `--anchor` via inline style or
+   class; default to bottom-start with a hair of breathing room. */
+.combobox__popover {
+    margin-block-start: 0.25rem;
+    position-area: bottom span-inline-end;
+}
+
+/* Sticky search header — looks like a slim `.input` row inside the panel. */
+.combobox__search {
+    @apply border-b border-border dark:border-border-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark;
+    padding: 0.375rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.combobox__search > .input {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    /* Tighter than the standalone `.input` — the search lives inside
+       the panel so it doesn't need its own visual weight. */
+    padding: 0.25rem 0.5rem;
+}
+
+/* Scrollable list region between header and footer. */
+.combobox__list {
+    overflow: auto;
+    min-block-size: 0;
+    padding-block: 0.25rem;
+    /* Inherit the menu grid so option rows can opt back into subgrid. */
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+}
+
+/* Empty-state row — shown when the search filter eliminates every option. */
+.combobox__empty {
+    @apply text-ink-muted dark:text-ink-muted-dark text-sm;
+    grid-column: 1 / -1;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    user-select: none;
+}
+
+/* Footer — same divider language as the search header. Hosts "Select all"
+   and "Create new …" rows. */
+.combobox__footer {
+    @apply border-t border-border dark:border-border-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    padding-block: 0.25rem;
+}
+
+/* ---------- Option rows --------------------------------------------------- */
+
+/* Individual option — extends `.menu__item` so hover/focus/active states
+   match the rest of the menu family. Rendered as a <button> in single
+   mode and as a <label> wrapping a hidden checkbox in multi mode; both
+   use the same class. */
+.combobox__option {
+    @apply interactive-row;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: start;
+    inline-size: 100%;
+    padding: var(--menu-item-padding-block, 0.375rem) var(--menu-item-padding-inline, 0.75rem);
+    cursor: default;
+    color: inherit;
+}
+
+.combobox__option > .checkbox {
+    grid-column: 1;
+}
+
+.combobox__option > .combobox__option-label {
+    grid-column: 2;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Single-select selected indicator — a small check glyph in the trailing
+   column. The consumer adds `aria-selected="true"` to mark the row. */
+.combobox__option-check {
+    grid-column: 3;
+    inline-size: 1em;
+    block-size: 1em;
+    color: var(--color-primary);
+    visibility: hidden;
+    flex: none;
+}
+
+.combobox__option[aria-selected="true"] > .combobox__option-check {
+    visibility: visible;
+}
+
+/* "Create new" row — same shape as an option, with a leading + icon
+   slot. The consumer is responsible for showing/hiding it based on the
+   search query. */
+.combobox__create {
+    @apply interactive-row;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: start;
+    inline-size: 100%;
+    padding: 0.375rem 0.75rem;
+    cursor: default;
+    color: inherit;
+}
+
+.combobox__create > svg {
+    grid-column: 1;
+    inline-size: 1em;
+    block-size: 1em;
+    color: var(--color-primary);
+}
+
+.combobox__create > span {
+    grid-column: 2;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -25,6 +25,8 @@
                 <li><a data-slug="badges" href="badges/" class="nav__item">Badges</a></li>
                 <li><a data-slug="tags" href="tags/" class="nav__item">Tags</a></li>
                 <li><a data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
+                <li><a data-slug="combobox-single" href="combobox-single/" class="nav__item">Combobox — Single</a></li>
+                <li><a data-slug="combobox-multi" href="combobox-multi/" class="nav__item">Combobox — Multi</a></li>
                 <li><a data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
                 <li><a data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
                 <li><a data-slug="links" href="links/" class="nav__item">Links</a></li>
@@ -38,6 +40,7 @@
     </main>
     <theme-switcher></theme-switcher>
     <script src="./theme-switcher.js" type="module"></script>
+    <script src="./combobox.js" type="module"></script>
     <script type="module">
         const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
 
@@ -53,6 +56,8 @@
             badges: 'Badges',
             tags: 'Tags',
             forms: 'Forms',
+            'combobox-single': 'Combobox — Single',
+            'combobox-multi': 'Combobox — Multi',
             typography: 'Typography',
             colors: 'Colors',
             links: 'Links',
