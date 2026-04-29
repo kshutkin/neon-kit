@@ -21,6 +21,7 @@ const ROUTES = {
   'combobox-single': { title: 'Combobox — Single', desc: 'Single-select combobox layout — focusable field with optional clear, search, and create-new in the dropdown.' },
   'combobox-multi':  { title: 'Combobox — Multi',  desc: 'Multi-select combobox layout — wrappable tag list field with optional search, select-all, and create-new.' },
   datepicker: { title: 'Datepicker', desc: 'Datepicker layout — typeable input with a popover hosting day, month, and year overview grids.' },
+  'datepicker-range': { title: 'Datepicker — Range', desc: 'Range-selection datepicker variant — single overlay, two endpoints, with a tentative hover-driven preview band before the second pick is committed.' },
   timepicker: { title: 'Timepicker', desc: 'Timepicker layout — typeable input with a popover list of time points at a configurable step, optional seconds, optional IANA timezone, and a combined date+time variant.' },
   typography: { title: 'Typography', desc: 'Typography scale, headings, and body text styles in the Neon theme.' },
   colors:     { title: 'Colors',     desc: 'Color tokens — primary, surface, ink, and border roles across light and dark themes.' },

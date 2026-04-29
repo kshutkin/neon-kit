@@ -31,6 +31,8 @@
         return Number.isNaN(d.getTime()) ? null : d;
     };
     const sameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    const dayTime = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+    const cmpDay = (a, b) => dayTime(a) - dayTime(b);
 
     const init = (root) => {
         if (root.dataset.dpInit) return;
@@ -40,15 +42,47 @@
         const clearBtn = root.querySelector('[data-dp-clear]');
         const popover = root.querySelector('[data-dp-popover]');
         const clearable = root.hasAttribute('data-clearable');
+        const range = root.hasAttribute('data-range');
 
-        const initial = parseISO(root.dataset.value || input?.value);
+        // Parse initial value. Range mode accepts "YYYY-MM-DD/YYYY-MM-DD".
+        const rawInitial = (root.dataset.value || input?.value || '').trim();
+        let initialStart = null, initialEnd = null;
+        if (range) {
+            const parts = rawInitial.split(/\s*\/\s*/);
+            initialStart = parseISO(parts[0]);
+            initialEnd = parseISO(parts[1]);
+            if (initialStart && initialEnd && cmpDay(initialStart, initialEnd) > 0) {
+                [initialStart, initialEnd] = [initialEnd, initialStart];
+            }
+        } else {
+            initialStart = parseISO(rawInitial);
+        }
+
         const today = new Date();
         const state = {
             view: 'days',          // days | months | years
-            cursor: initial ? new Date(initial) : new Date(today.getFullYear(), today.getMonth(), 1),
-            selected: initial,
+            cursor: initialStart
+                ? new Date(initialStart.getFullYear(), initialStart.getMonth(), 1)
+                : new Date(today.getFullYear(), today.getMonth(), 1),
+            selected: range ? null : initialStart,
+            // Range state — start/end are the committed endpoints; hovered
+            // tracks the cursor while the user is picking the second one.
+            start: range ? initialStart : null,
+            end: range ? initialEnd : null,
+            hovered: null,
         };
-        if (initial && input) input.value = fmtISO(initial);
+
+        const formatRange = () => {
+            if (state.start && state.end) return `${fmtISO(state.start)} / ${fmtISO(state.end)}`;
+            if (state.start) return `${fmtISO(state.start)} / `;
+            return '';
+        };
+
+        if (input) {
+            if (range) input.value = formatRange();
+            else if (initialStart) input.value = fmtISO(initialStart);
+        }
+        if (range && state.start && !state.end) root.classList.add('-range-pending');
 
         const updateClear = () => {
             if (!clearBtn) return;
@@ -60,6 +94,18 @@
             state.selected = d ? new Date(d) : null;
             if (input) input.value = d ? fmtISO(d) : '';
             updateClear();
+        };
+
+        const setRange = (s, e) => {
+            state.start = s ? new Date(s) : null;
+            state.end = e ? new Date(e) : null;
+            state.hovered = null;
+            if (input) input.value = formatRange();
+            updateClear();
+            // Wrapper flag drives the "pending" CSS — softer in-range band
+            // and a dashed-outline trailing endpoint while we wait for the
+            // user to commit the second click.
+            root.classList.toggle('-range-pending', !!(state.start && !state.end));
         };
 
         // ----------------------------------------------------------------
@@ -103,23 +149,46 @@
 
         const cellHtml = (date, muted) => {
             const isToday = sameDay(date, today);
-            const isSelected = sameDay(date, state.selected);
-            const cls = [
-                'datepicker__cell',
-                muted && '-muted',
-                isToday && '-today',
-                isSelected && '-selected',
-            ].filter(Boolean).join(' ');
-            return `<button class="${cls}" type="button" data-dp-pick-day="${fmtISO(date)}"${isSelected ? ' aria-pressed="true"' : ''}>${date.getDate()}</button>`;
+            const cls = ['datepicker__cell'];
+            if (muted) cls.push('-muted');
+            if (isToday) cls.push('-today');
+
+            let pressed = false;
+            if (range) {
+                // Use the hovered date as a tentative end while picking.
+                const tentativeEnd = state.end || (state.start && state.hovered) || null;
+                const lo = state.start && tentativeEnd && cmpDay(state.start, tentativeEnd) <= 0 ? state.start : tentativeEnd;
+                const hi = state.start && tentativeEnd && cmpDay(state.start, tentativeEnd) <= 0 ? tentativeEnd : state.start;
+                const isStart = sameDay(date, state.start);
+                const isEnd = !!tentativeEnd && sameDay(date, tentativeEnd);
+                if (isStart) cls.push('-range-start');
+                if (isEnd) cls.push('-range-end');
+                if (lo && hi && cmpDay(date, lo) > 0 && cmpDay(date, hi) < 0) cls.push('-in-range');
+                pressed = isStart || isEnd;
+            } else {
+                const isSelected = sameDay(date, state.selected);
+                if (isSelected) cls.push('-selected');
+                pressed = isSelected;
+            }
+            return `<button class="${cls.join(' ')}" type="button" data-dp-pick-day="${fmtISO(date)}"${pressed ? ' aria-pressed="true"' : ''}>${date.getDate()}</button>`;
         };
 
         const renderMonths = () => {
             const year = state.cursor.getFullYear();
-            const cells = MONTH_SHORT.map((label, i) => {
-                const isCurrent = today.getFullYear() === year && today.getMonth() === i;
-                const isSelected = state.selected
+            // In range mode highlight the months containing either endpoint;
+            // in single mode keep the existing selected-month indicator.
+            const monthHasMark = (i) => {
+                if (range) {
+                    const hits = [state.start, state.end].filter(Boolean);
+                    return hits.some((d) => d.getFullYear() === year && d.getMonth() === i);
+                }
+                return state.selected
                     && state.selected.getFullYear() === year
                     && state.selected.getMonth() === i;
+            };
+            const cells = MONTH_SHORT.map((label, i) => {
+                const isCurrent = today.getFullYear() === year && today.getMonth() === i;
+                const isSelected = monthHasMark(i);
                 const cls = [
                     'datepicker__cell',
                     isCurrent && '-today',
@@ -134,12 +203,19 @@
         const renderYears = () => {
             const year = state.cursor.getFullYear();
             const start = year - (year % 12) - 1; // pad with one leading + two trailing
+            const yearHasMark = (y) => {
+                if (range) {
+                    const hits = [state.start, state.end].filter(Boolean);
+                    return hits.some((d) => d.getFullYear() === y);
+                }
+                return state.selected && state.selected.getFullYear() === y;
+            };
             const cells = [];
             for (let i = 0; i < 16; i++) {
                 const y = start + i;
                 const muted = i === 0 || i > 12;
                 const isCurrent = today.getFullYear() === y;
-                const isSelected = state.selected && state.selected.getFullYear() === y;
+                const isSelected = yearHasMark(y);
                 const cls = [
                     'datepicker__cell',
                     muted && '-muted',
@@ -169,9 +245,13 @@
                 if (e.newState !== 'open') return;
                 // Reset to days view + cursor on the selected (or current) month.
                 state.view = 'days';
-                state.cursor = state.selected
-                    ? new Date(state.selected.getFullYear(), state.selected.getMonth(), 1)
+                const anchor = range
+                    ? (state.start || state.end)
+                    : state.selected;
+                state.cursor = anchor
+                    ? new Date(anchor.getFullYear(), anchor.getMonth(), 1)
                     : new Date(today.getFullYear(), today.getMonth(), 1);
+                state.hovered = null;
                 render();
             });
 
@@ -199,10 +279,25 @@
                 const dayBtn = t.closest('[data-dp-pick-day]');
                 if (dayBtn) {
                     const d = parseISO(dayBtn.dataset.dpPickDay);
-                    if (d) {
-                        setSelected(d);
+                    if (!d) return;
+                    if (range) {
+                        // First click (or restart after a complete range):
+                        // arm the start endpoint and wait for a second click.
+                        if (!state.start || (state.start && state.end)) {
+                            setRange(d, null);
+                            render();
+                            return;
+                        }
+                        // Second click commits the range. Normalize order so
+                        // start <= end regardless of which side was picked.
+                        let s = state.start, e = d;
+                        if (cmpDay(s, e) > 0) [s, e] = [e, s];
+                        setRange(s, e);
                         popover.hidePopover();
+                        return;
                     }
+                    setSelected(d);
+                    popover.hidePopover();
                     return;
                 }
                 const monthBtn = t.closest('[data-dp-pick-month]');
@@ -219,6 +314,24 @@
                     render();
                     return;
                 }
+            });
+
+            // While picking the second endpoint, follow the cursor so the
+            // tentative band updates live. Cheap full re-render — there are
+            // at most 42 cells.
+            popover.addEventListener('mouseover', (e) => {
+                if (!range) return;
+                if (!state.start || state.end) return;
+                const cell = e.target.closest('[data-dp-pick-day]');
+                if (!cell) return;
+                const d = parseISO(cell.dataset.dpPickDay);
+                if (!d || sameDay(d, state.hovered)) return;
+                state.hovered = d;
+                render();
+            });
+            popover.addEventListener('mouseleave', () => {
+                if (!range) return;
+                if (state.hovered) { state.hovered = null; render(); }
             });
 
             // Arrow-key navigation between cells inside any grid view.
@@ -252,13 +365,15 @@
             clearBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setSelected(null);
+                if (range) setRange(null, null);
+                else setSelected(null);
             });
         }
 
         if (input) {
             input.addEventListener('input', () => {
                 updateClear();
+                if (range) return; // Bare-minimum: don't parse typed ranges.
                 const d = parseISO(input.value);
                 if (d) {
                     state.selected = d;

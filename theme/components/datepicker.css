@@ -357,3 +357,61 @@
     @apply text-ink-muted dark:text-ink-muted-dark;
     pointer-events: none;
 }
+
+/* ---------- Range variant -----------------------------------------------
+
+   `.datepicker.-range` lets the user pick a start/end pair using the same
+   single-overlay shell. The consumer toggles three new cell modifiers:
+
+     - `.-range-start` / `.-range-end`  — endpoints, styled like `-selected`.
+     - `.-in-range`                     — days strictly between endpoints.
+
+   While the picker is mid-selection (start chosen, end pending), the
+   wrapper carries `.-range-pending`. Under that flag the trailing endpoint
+   and the in-range band soften so it reads as a hover preview instead of
+   a committed range.
+*/
+
+.datepicker__cell.-range-start,
+.datepicker__cell.-range-end {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        text-ink-inverse dark:text-ink-inverse
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        text-shadow-debossed dark:text-shadow-debossed-dark
+        hover:bg-primary-hover dark:hover:bg-primary-hover
+        active:bg-primary-active dark:active:bg-primary-active;
+    border: 1px solid;
+}
+
+.datepicker__cell.-in-range {
+    background: color-mix(in oklab, var(--color-primary) 18%, transparent);
+    border-radius: 0;
+}
+
+/* Square the inner edges of endpoints so they butt up flush with the
+   in-range band. The day grid is row-major; ranges flow along the
+   inline axis, so we use logical end / start radii. */
+.datepicker__cell.-range-start:not(.-range-end) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+}
+.datepicker__cell.-range-end:not(.-range-start) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+}
+
+/* Pending — the band is a tentative preview that follows the cursor.
+   Dim the fill and outline the trailing endpoint so the user can tell
+   the range isn't committed yet. */
+.datepicker.-range-pending .datepicker__cell.-in-range {
+    background: color-mix(in oklab, var(--color-primary) 10%, transparent);
+}
+
+.datepicker.-range-pending .datepicker__cell.-range-end:not(.-range-start) {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+    background: transparent;
+    border: 1px dashed var(--color-primary);
+    box-shadow: none;
+    text-shadow: none;
+}
