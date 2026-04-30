@@ -73,6 +73,21 @@
         const tzList = root.querySelector('[data-tp-tz-list]');
         const tzSearch = root.querySelector('[data-tp-tz-search]');
 
+        // Anchor the popover to the visible `.timepicker__field` rather
+        // than to the small clock-icon trigger — see datepicker.js for
+        // the same workaround.
+        const field = root.querySelector('.timepicker__field');
+        if (popover && popover.id && field) {
+            const name = `--tp-anchor-${popover.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            field.style.anchorName = name;
+            popover.style.positionAnchor = name;
+        }
+        if (tzPopover && tzPopover.id && fieldTz) {
+            const tzName = `--tp-tz-anchor-${tzPopover.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            fieldTz.style.anchorName = tzName;
+            tzPopover.style.positionAnchor = tzName;
+        }
+
         const step = +(root.dataset.step || 30);
         const withSeconds = root.hasAttribute('data-seconds');
         const clearable = root.hasAttribute('data-clearable');
@@ -217,6 +232,16 @@
         const popover   = root.querySelector('[data-dt-popover]');
         const datePanel = root.querySelector('[data-dt-date-panel]');
         const timeList  = root.querySelector('[data-dt-time-list]');
+
+        // Anchor the combined popover to the `.datetime-picker` wrapper
+        // so it aligns with the full date+time row (rather than just one
+        // of the two inner fields).
+        const field = root;
+        if (popover && popover.id && field) {
+            const name = `--dt-anchor-${popover.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            field.style.anchorName = name;
+            popover.style.positionAnchor = name;
+        }
 
         const step = +(root.dataset.step || 30);
         const withSeconds = root.hasAttribute('data-seconds');

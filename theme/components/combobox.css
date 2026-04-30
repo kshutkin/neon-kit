@@ -293,13 +293,27 @@
         margin: 0;
         inset: auto;
     }
+
+    /* Author `display: grid` above wins over the UA rule
+       `[popover]:not(:popover-open) { display: none }`, so closed
+       popovers were rendering inline. Force the closed state back to
+       `display: none`. */
+    &[popover]:not(:popover-open) {
+        display: none;
+    }
 }
 
 /* Anchor offset + side — consumers set `--anchor` via inline style or
    class; default to bottom-start with a hair of breathing room. */
 .combobox__popover {
     margin-block-start: --spacing(1);
-    position-area: bottom span-inline-end;
+    /* Use logical `block-end` instead of physical `bottom` — Chromium
+       rejects the mixed-axis form `bottom span-inline-end` (one
+       physical + one logical keyword), but accepts `block-end
+       span-inline-end` where both keywords share the logical axis
+       system. Falls through to the same visual placement in LTR
+       horizontal-tb writing modes. */
+    position-area: block-end span-inline-end;
 }
 
 /* Sticky search header — looks like a slim `.input` row inside the panel. */

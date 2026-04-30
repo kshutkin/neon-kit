@@ -184,7 +184,9 @@
     overflow: hidden;
     inline-size: --spacing(72);
     margin-block-start: --spacing(1);
-    position-area: bottom span-inline-end;
+    /* `block-end span-inline-end` instead of `bottom span-inline-end`
+       — Chromium rejects the mixed physical+logical form. */
+    position-area: block-end span-inline-end;
 
     /* Reset UA `[popover]` defaults (`margin: auto`, `inset: 0`) so the
        anchor-positioned offset above survives. Override `position: fixed`
@@ -197,6 +199,13 @@
         margin: 0;
         margin-block-start: --spacing(1);
         inset: auto;
+    }
+
+    /* Author `display: grid` above wins over the UA
+       `[popover]:not(:popover-open) { display: none }` rule, so the
+       closed popover would render inline. Force it back to none. */
+    &[popover]:not(:popover-open) {
+        display: none;
     }
 }
 

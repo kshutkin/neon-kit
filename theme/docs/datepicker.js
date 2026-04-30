@@ -44,6 +44,17 @@
         const clearable = root.hasAttribute('data-clearable');
         const range = root.hasAttribute('data-range');
 
+        // Anchor the popover to the visible field rather than to the
+        // calendar-icon trigger button. Without this, `popovertarget`'s
+        // implicit anchor is the tiny icon button, so the popover lands
+        // hugging the right edge of the field instead of below it.
+        const field = root.querySelector('.datepicker__field');
+        if (popover && popover.id && field) {
+            const name = `--dp-anchor-${popover.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            field.style.anchorName = name;
+            popover.style.positionAnchor = name;
+        }
+
         // Parse initial value. Range mode accepts "YYYY-MM-DD/YYYY-MM-DD".
         const rawInitial = (root.dataset.value || input?.value || '').trim();
         let initialStart = null, initialEnd = null;

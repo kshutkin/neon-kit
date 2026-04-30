@@ -184,6 +184,20 @@
         const selectAllInput = root.querySelector('[data-cb-select-all-input]');
         const creatable = root.hasAttribute('data-creatable');
 
+        // Wire an explicit anchor between the visible field and the
+        // popover. The chevron-button has `popovertarget`, so its
+        // implicit anchor would be only the tiny chevron; we want the
+        // popover to track the whole field. Also, the inline `<input>`
+        // calls `popover.showPopover()` programmatically when the user
+        // types, and programmatic opens drop the implicit anchor
+        // entirely \u2014 the explicit `position-anchor` survives both
+        // invocation paths.
+        if (popover && popover.id && field) {
+            const name = `--cb-anchor-${popover.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            field.style.anchorName = name;
+            popover.style.positionAnchor = name;
+        }
+
         const state = {
             options: parseList(root.dataset.options, []),
             value: parseList(root.dataset.value, []),

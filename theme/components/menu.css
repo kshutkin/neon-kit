@@ -60,6 +60,15 @@
         inset: auto;
     }
 
+    /* Author `display: grid` above wins over the UA
+       `[popover]:not(:popover-open) { display: none }` rule, so a
+       closed popover-menu would render inline at the top of the page.
+       Force the closed state back to `display: none`. Inline menus
+       (no `[popover]` attribute) are unaffected. */
+    &[popover]:not(:popover-open) {
+        display: none;
+    }
+
     /* Clip rounded corners against the first/last row's hover background. */
     overflow: hidden;
 }
