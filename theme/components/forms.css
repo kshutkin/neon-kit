@@ -203,7 +203,20 @@ select.input option {
 
 /* Shared shape: a small `.btn`-styled box. Sized in `em` so the control
    tracks the surrounding text size — placing one inline with a label keeps
-   the optical alignment correct at any font-size. */
+   the optical alignment correct at any font-size.
+
+   The `not-disabled:` prefix on every hover/active variant is load-bearing.
+   `:disabled` and `:hover` have equal CSS specificity (one pseudo-class
+   each), so source order decides — and Tailwind emits hover/active rules
+   *after* the disabled fill from `disabled-control`, which means a disabled
+   checkbox would otherwise visibly react to the cursor. `not-disabled:`
+   compiles to `:not(:disabled):hover` (specificity 0,2,0), beating both the
+   plain `:hover` and the `:disabled` fill at the same time. Don't drop the
+   guard when refactoring. The same pattern applies to `.btn` via inline
+   hover/active utilities, which work because `:disabled` there is wrapped
+   in `disabled-control`'s `:is(:disabled, [aria-disabled])` (specificity
+   0,2,0) and outranks bare `:hover` — checkboxes don't get that lift
+   because their disabled state is bare `:disabled` from the @apply chain. */
 .checkbox,
 .radio {
     @apply disabled-control focus-ring-swap
