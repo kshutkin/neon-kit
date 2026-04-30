@@ -71,15 +71,11 @@
 }
 
 .timepicker:has(.timepicker__input:disabled) > .timepicker__field {
-    @apply bg-surface-disabled dark:bg-surface-disabled-dark
-        text-ink-muted dark:text-ink-muted-dark
-        border-border-disabled dark:border-border-disabled-dark;
-    pointer-events: none;
-    cursor: default;
+    @apply disabled-surface;
 }
 
 /* Read-only — same muted-surface fill as `.input:read-only`. */
-.timepicker:has(.timepicker__input:read-only) > .timepicker__field {
+.timepicker:has(.timepicker__input:read-only:not(:disabled)) > .timepicker__field {
     @apply bg-surface-secondary dark:bg-surface-secondary-dark;
 }
 
@@ -112,11 +108,7 @@
 }
 
 .timepicker__clear {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply quiet-control
         inline-flex items-center justify-center;
 
     align-self: center;
@@ -126,7 +118,6 @@
     padding: 0;
     border: 0;
     border-radius: 9999px;
-    background: transparent;
     color: inherit;
     cursor: default;
     text-shadow: none;
@@ -139,11 +130,7 @@
 }
 
 .timepicker__trigger {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply quiet-control
         border-s border-border dark:border-border-dark
         inline-flex items-center justify-center;
 
@@ -151,7 +138,6 @@
     flex: none;
     inline-size: --spacing(9);
     padding: 0;
-    background: transparent;
     color: inherit;
     cursor: default;
     text-shadow: none;

@@ -25,14 +25,9 @@
 
 .input {
     @apply panel
+        disabled-control focus-ring-swap
         inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
         bg-surface dark:bg-surface-dark
-        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
-        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
-        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
-        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
-        disabled:pointer-events-none disabled:cursor-default
-        read-only:bg-surface-secondary dark:read-only:bg-surface-secondary-dark
         placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
 
     /* Native control reset — text fields are not inline-block-with-ellipsis. */
@@ -42,6 +37,20 @@
     text-shadow: none;
     text-overflow: clip;
     white-space: normal;
+}
+
+/* Read-only — muted surface fill. The `:not(:disabled)` guard is load-bearing:
+   in CSS, a disabled <input> ALSO matches `:read-only` (a disabled control
+   isn't user-editable), so without the guard a disabled field would pick up
+   the read-only fill instead of the disabled fill — making `.input` and
+   button-based fields like `.combobox__field` (which use `[aria-readonly]`
+   and don't have this overlap) render disabled in different colours.
+
+   Scoped to `input` and `textarea` because <select> is always `:read-only`
+   in CSS terms (no native text-editing surface), so a plain `.input:read-only`
+   would tint every <select> with the read-only fill in its idle state. */
+:is(input, textarea).input:read-only:not(:disabled) {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
 }
 
 /* Invalid state — opt in via `aria-invalid="true"`, the same hook native
@@ -135,14 +144,12 @@ select.input option {
 /* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
    grouped field is indistinguishable from a plain one in those states. */
 .input-group:has(> .input:disabled) {
-    @apply bg-surface-disabled dark:bg-surface-disabled-dark
-        text-ink-muted dark:text-ink-muted-dark
-        border-border-disabled dark:border-border-disabled-dark;
-    pointer-events: none;
-    cursor: default;
+    @apply disabled-surface;
 }
 
-.input-group:has(> .input:read-only) {
+/* Same `:read-only`/select overlap as `.input` above — scope the
+   wrapper read-only fill to text-editable inputs only. */
+.input-group:has(> :is(input, textarea).input:read-only:not(:disabled)) {
     @apply bg-surface-secondary dark:bg-surface-secondary-dark;
 }
 
@@ -199,19 +206,16 @@ select.input option {
    the optical alignment correct at any font-size. */
 .checkbox,
 .radio {
-    @apply text-ink-primary dark:text-ink-primary-dark
+    @apply disabled-control focus-ring-swap
+        text-ink-primary dark:text-ink-primary-dark
         bg-surface dark:bg-surface-dark
         border border-border dark:border-border-dark
         inset-shadow-highlight dark:inset-shadow-highlight-dark
         shadow-drop-subtle dark:shadow-drop-subtle-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark
-        active:shadow-none
-        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
-        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
-        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
-        disabled:pointer-events-none disabled:cursor-default;
+        not-disabled:hover:bg-surface-hover dark:not-disabled:hover:bg-surface-hover-dark
+        not-disabled:active:bg-surface-active dark:not-disabled:active:bg-surface-active-dark
+        not-disabled:active:inset-shadow-pressed dark:not-disabled:active:inset-shadow-pressed-dark
+        not-disabled:active:shadow-none;
 
     /* Strip the native control. */
     appearance: none;

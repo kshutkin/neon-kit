@@ -3,6 +3,85 @@
     @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
 }
 
+/* Disabled state for controls that carry :disabled or aria-disabled on
+   themselves (native <button>, <input>, or any element with the ARIA
+   hook). Wrapper-based disabled patterns — where a child carries
+   :disabled and a sibling/wrapper is styled (e.g. .datepicker /
+   .timepicker) — must @apply `disabled-surface` against their own
+   :has() selector instead.
+
+   The two state hooks are folded into a single `:is()` selector rather
+   than a comma-separated pair, because Tailwind v4 mis-nests the
+   `dark:` variant suffix when a comma-separated parent meets a nested
+   utility that carries variants — producing malformed selectors with
+   stray parens. `:is(...)` keeps the parent shape as one selector. */
+@utility disabled-control {
+    &:is(:disabled, [aria-disabled="true"]) {
+        @apply disabled-surface;
+    }
+}
+
+/* Disabled visual payload, selector-free. Use this when the disabled
+   trigger lives on a different element than the styled one — typically
+   a wrapper carrying `:has(> .input:disabled)` or `:has(.foo:disabled)`.
+   `disabled-control` composes this on top of its own state selector.
+
+   Depth is preserved but dialed down: drop shadow drops to `subtle`
+   and the top-edge highlight is removed. Without this, the full-strength
+   drop (bottom) plus full-strength inset highlight (top) read as a tilt
+   on a muted surface — the bright top edge and the wide bottom blur
+   stop balancing each other once the fill goes flat-grey.
+
+   Text uses `ink-secondary`, not `ink-muted`. WCAG technically exempts
+   disabled controls from contrast minimums, but `ink-muted` on
+   `surface-disabled` lands near 1.9:1 (light) and is hard to read for
+   anyone. `ink-secondary` lifts that to ~3:1 — still visibly demoted
+   vs. an active control (`ink-primary` ≈ 6:1) but legible. */
+@utility disabled-surface {
+    @apply bg-surface-disabled dark:bg-surface-disabled-dark
+        text-ink-secondary dark:text-ink-secondary-dark
+        border-border-disabled dark:border-border-disabled-dark
+        shadow-drop-subtle dark:shadow-drop-subtle-dark
+        inset-shadow-none;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Focus-ring border swap. The global outline is set in theme.css against
+   :focus-visible; this utility only flips the element's own border to
+   --color-border-focus so the bordered chrome (.btn, .input, fields)
+   reads its focused affordance correctly. Composes with the global
+   outline rather than replacing it. */
+@utility focus-ring-swap {
+    &:focus-visible {
+        @apply border-border-focus dark:border-border-focus-dark;
+    }
+}
+
+/* Quiet-control colour language for embedded affordances (clear,
+   remove, trigger) that sit inside a field or tag: transparent at rest,
+   secondary ink, surface-hover background on hover/focus-visible
+   (text brightens to primary on hover only), surface-active when
+   pressed. Layout (size, border-radius, flex) stays with the consumer. */
+@utility quiet-control {
+    background: transparent;
+
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+
+    &:hover {
+        @apply text-ink-primary dark:text-ink-primary-dark
+            bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:focus-visible {
+        @apply bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:active {
+        @apply bg-surface-active dark:bg-surface-active-dark;
+    }
+}
+
 /* Shared interactive-row state styles for menu items, nav items, and any
    focusable list row that uses the surface-hover background as its
    primary affordance. Layout (grid, flex, columns) is intentionally NOT

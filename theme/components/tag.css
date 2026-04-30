@@ -54,11 +54,7 @@
    colour language: transparent at rest, surface-hover on :hover /
    :focus-visible, surface-active when pressed. */
 .tag__remove {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply quiet-control
         inline-flex items-center justify-center;
 
     inline-size: 1.25em;
@@ -67,7 +63,6 @@
     margin: 0;
     border: 0;
     border-radius: 9999px;
-    background: transparent;
     color: inherit;
     cursor: default;
     text-shadow: none;
@@ -94,46 +89,51 @@
 
 .tag.-primary .tag__remove:hover,
 .tag.-primary .tag__remove:focus-visible {
-    background-color: oklch(from var(--color-primary) calc(l - 0.1) c h / 0.6);
+    background-color: var(--color-primary-soft-pressed);
+}
+
+[data-theme=dark] .tag.-primary .tag__remove:hover,
+[data-theme=dark] .tag.-primary .tag__remove:focus-visible {
+    background-color: var(--color-primary-soft-pressed-dark);
 }
 
 .tag.-success {
-    background-color: oklch(from var(--color-success) l c h / 0.25);
+    background-color: var(--color-success-soft);
     border-color: var(--color-success);
 }
 
 [data-theme=dark] .tag.-success {
-    background-color: oklch(from var(--color-success-dark) l c h / 0.2);
+    background-color: var(--color-success-soft-dark);
     border-color: var(--color-success-dark);
 }
 
 .tag.-warning {
-    background-color: oklch(from var(--color-warning) l c h / 0.3);
+    background-color: var(--color-warning-soft);
     border-color: var(--color-warning);
 }
 
 [data-theme=dark] .tag.-warning {
-    background-color: oklch(from var(--color-warning-dark) l c h / 0.22);
+    background-color: var(--color-warning-soft-dark);
     border-color: var(--color-warning-dark);
 }
 
 .tag.-error {
-    background-color: oklch(from var(--color-error) l c h / 0.25);
+    background-color: var(--color-error-soft);
     border-color: var(--color-error);
 }
 
 [data-theme=dark] .tag.-error {
-    background-color: oklch(from var(--color-error-dark) l c h / 0.22);
+    background-color: var(--color-error-soft-dark);
     border-color: var(--color-error-dark);
 }
 
 .tag.-info {
-    background-color: oklch(from var(--color-info) l c h / 0.3);
+    background-color: var(--color-info-soft);
     border-color: var(--color-info);
 }
 
 [data-theme=dark] .tag.-info {
-    background-color: oklch(from var(--color-info-dark) l c h / 0.22);
+    background-color: var(--color-info-soft-dark);
     border-color: var(--color-info-dark);
 }
 

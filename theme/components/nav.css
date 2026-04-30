@@ -156,46 +156,6 @@
     background: var(--color-surface-dark);
 }
 
-.nav.-tabs .nav__item {
-    /* Same padding/border on every tab → identical heights and baselines.
-       The transparent border reserves space so .-active swapping in a
-       solid border doesn't shift layout. */
-    border-radius: --spacing(1.5) --spacing(1.5) 0 0;
-    padding-block: --spacing(2);
-    padding-inline: --spacing(3.5);
-    border: 1px solid transparent;
-    border-bottom: 0;
-    position: relative;
-}
-
-.nav.-tabs .nav__item.-active {
-    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark;
-
-    text-shadow: none;
-    z-index: 1;
-
-    &:hover,
-    &:focus-visible {
-        @apply bg-surface dark:bg-surface-dark;
-    }
-
-    /* 1px band at the very bottom of the tab, painted in surface color,
-       so it sits on top of the panel's top border — making the active
-       tab and the content panel visually share a single surface. */
-    &::after {
-        content: "";
-        position: absolute;
-        inset-inline: 0;
-        bottom: -1px;
-        block-size: 1px;
-        background: var(--color-surface);
-    }
-}
-
-:where([data-theme="dark"]) .nav.-tabs .nav__item.-active::after {
-    background: var(--color-surface-dark);
-}
-
 /* ───────────────────────── Variant: segmented control ───────────────────── */
 
 /* Recessed track with a raised "thumb" (the active or :checked item).

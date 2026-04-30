@@ -57,44 +57,45 @@
 
 /* Soft-tinted state modifiers — translucent fill from the state color so
    the badge always reads against any surface, full-strength border for
-   recognition, ink-primary text for AA-legible labels. */
+   recognition, ink-primary text for AA-legible labels. Soft fill alphas
+   are owned by `--color-{state}-soft[-dark]` in theme.css. */
 .badge.-success {
-    background-color: oklch(from var(--color-success) l c h / 0.25);
+    background-color: var(--color-success-soft);
     border-color: var(--color-success);
 }
 
 [data-theme=dark] .badge.-success {
-    background-color: oklch(from var(--color-success-dark) l c h / 0.2);
+    background-color: var(--color-success-soft-dark);
     border-color: var(--color-success-dark);
 }
 
 .badge.-warning {
-    background-color: oklch(from var(--color-warning) l c h / 0.3);
+    background-color: var(--color-warning-soft);
     border-color: var(--color-warning);
 }
 
 [data-theme=dark] .badge.-warning {
-    background-color: oklch(from var(--color-warning-dark) l c h / 0.22);
+    background-color: var(--color-warning-soft-dark);
     border-color: var(--color-warning-dark);
 }
 
 .badge.-error {
-    background-color: oklch(from var(--color-error) l c h / 0.25);
+    background-color: var(--color-error-soft);
     border-color: var(--color-error);
 }
 
 [data-theme=dark] .badge.-error {
-    background-color: oklch(from var(--color-error-dark) l c h / 0.22);
+    background-color: var(--color-error-soft-dark);
     border-color: var(--color-error-dark);
 }
 
 .badge.-info {
-    background-color: oklch(from var(--color-info) l c h / 0.3);
+    background-color: var(--color-info-soft);
     border-color: var(--color-info);
 }
 
 [data-theme=dark] .badge.-info {
-    background-color: oklch(from var(--color-info-dark) l c h / 0.22);
+    background-color: var(--color-info-soft-dark);
     border-color: var(--color-info-dark);
 }
 

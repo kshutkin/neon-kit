@@ -1,9 +1,9 @@
 .btn {
-    @apply panel disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark disabled:text-ink-muted dark:disabled:text-ink-muted-dark disabled:border-border-disabled dark:disabled:border-border-disabled-dark disabled:pointer-events-none disabled:cursor-default hover:bg-surface-hover dark:hover:bg-surface-hover-dark active:bg-surface-active dark:active:bg-surface-active-dark active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark active:shadow-none focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark;
+    @apply panel disabled-control focus-ring-swap hover:bg-surface-hover dark:hover:bg-surface-hover-dark active:bg-surface-active dark:active:bg-surface-active-dark active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark active:shadow-none;
 }
 
 .btn.quiet {
-    @apply border-transparent bg-transparent shadow-none inset-shadow-none active:text-ink-primary dark:active:text-ink-primary-dark active:bg-surface-active dark:active:bg-surface-active-dark active:border-border dark:active:border-border-dark active:border active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark active:shadow-none active:text-shadow-embossed dark:active:text-shadow-embossed-dark hover:border-border dark:hover:border-border-dark hover:inset-shadow-highlight dark:hover:inset-shadow-highlight-dark hover:shadow-drop-subtle dark:hover:shadow-drop-subtle-dark hover:border hover:text-shadow-embossed dark:hover:text-shadow-embossed-dark focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark;
+    @apply border-transparent bg-transparent shadow-none inset-shadow-none active:text-ink-primary dark:active:text-ink-primary-dark active:bg-surface-active dark:active:bg-surface-active-dark active:border-border dark:active:border-border-dark active:border active:inset-shadow-pressed dark:active:inset-shadow-pressed-dark active:shadow-none active:text-shadow-embossed dark:active:text-shadow-embossed-dark hover:border-border dark:hover:border-border-dark hover:inset-shadow-highlight dark:hover:inset-shadow-highlight-dark hover:shadow-drop-subtle dark:hover:shadow-drop-subtle-dark hover:border hover:text-shadow-embossed dark:hover:text-shadow-embossed-dark;
 }
 
 .btn.large {
@@ -12,8 +12,11 @@
 
 /* CTA dark mode: bg and text are intentionally the same as light mode (primary blue + ink-inverse).
    Only border and shadow have dark: overrides. */
+/* CTA disabled treatment differs from `disabled-control` (keeps the
+   primary fill instead of fading to surface-disabled), so the disabled
+   chain stays inline. The focus-ring-swap utility still applies. */
 .btn.cta {
-    @apply border-border-primary dark:border-border-primary-dark bg-primary text-ink-inverse border font-medium inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark shadow-none text-shadow-debossed dark:text-shadow-debossed-dark hover:bg-primary-hover active:bg-primary-active active:inset-shadow-highlight-pressed dark:active:inset-shadow-highlight-pressed-dark disabled:bg-primary-disabled disabled:text-ink-inverse dark:disabled:text-ink-inverse disabled:border-border-disabled dark:disabled:border-border-disabled-dark focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark;
+    @apply focus-ring-swap border-border-primary dark:border-border-primary-dark bg-primary text-ink-inverse border font-medium inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark shadow-none text-shadow-debossed dark:text-shadow-debossed-dark hover:bg-primary-hover active:bg-primary-active active:inset-shadow-highlight-pressed dark:active:inset-shadow-highlight-pressed-dark disabled:bg-primary-disabled disabled:text-ink-inverse dark:disabled:text-ink-inverse disabled:border-border-disabled dark:disabled:border-border-disabled-dark;
 }
 
 .btn.left {

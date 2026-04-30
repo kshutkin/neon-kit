@@ -59,13 +59,9 @@
    whole control. */
 .combobox__field {
     @apply panel
+        disabled-control focus-ring-swap
         inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark
-        focus-visible:border-border-focus dark:focus-visible:border-border-focus-dark
-        disabled:bg-surface-disabled dark:disabled:bg-surface-disabled-dark
-        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
-        disabled:border-border-disabled dark:disabled:border-border-disabled-dark
-        disabled:pointer-events-none disabled:cursor-default;
+        bg-surface dark:bg-surface-dark;
 
     /* Reset native button defaults */
     appearance: none;
@@ -85,6 +81,11 @@
     padding-inline-end: --spacing(2);
 }
 
+/* The combobox field carries [aria-disabled="true"] in addition to
+   :disabled when the wrapper is dispatching the disabled state — both
+   are handled by `disabled-control` above, so no separate rule is
+   needed. */
+
 /* Read-only — visually `:read-only` from `.input`: muted-surface fill so the
    field reads as "displayed, not edited" while still focusable. Consumers
    set `aria-readonly="true"` and prevent the popover from opening; CSS only
@@ -97,14 +98,6 @@
    `<button>`, so the native `:disabled` pseudo never matches. Mirror the
    button's disabled chrome on `[aria-disabled="true"]` so a multi field can
    be locked the same way. */
-.combobox__field[aria-disabled="true"] {
-    @apply bg-surface-disabled dark:bg-surface-disabled-dark
-        text-ink-muted dark:text-ink-muted-dark
-        border-border-disabled dark:border-border-disabled-dark;
-    pointer-events: none;
-    cursor: default;
-}
-
 /* Invalid — same hook as `.input[aria-invalid="true"]`. */
 .combobox__field[aria-invalid="true"]:not(:disabled):not([aria-disabled="true"]) {
     @apply border-error dark:border-error-dark
@@ -137,11 +130,7 @@
    single-select clear and the per-tag removes in multi feel like one
    family. Sized in em so it tracks the field's font-size. */
 .combobox__clear {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply quiet-control
         inline-flex items-center justify-center;
 
     inline-size: 1.25em;
@@ -150,7 +139,6 @@
     margin: 0;
     border: 0;
     border-radius: 9999px;
-    background: transparent;
     color: inherit;
     cursor: default;
     text-shadow: none;

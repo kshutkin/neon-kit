@@ -73,17 +73,13 @@
 }
 
 .datepicker:has(.datepicker__input:disabled) > .datepicker__field {
-    @apply bg-surface-disabled dark:bg-surface-disabled-dark
-        text-ink-muted dark:text-ink-muted-dark
-        border-border-disabled dark:border-border-disabled-dark;
-    pointer-events: none;
-    cursor: default;
+    @apply disabled-surface;
 }
 
 /* Read-only — match `.input:read-only` (muted-surface fill). The input is
    still focusable; consumers disable the trigger button via plain `disabled`
    so the calendar popover can't open. CSS only handles the visual. */
-.datepicker:has(.datepicker__input:read-only) > .datepicker__field {
+.datepicker:has(.datepicker__input:read-only:not(:disabled)) > .datepicker__field {
     @apply bg-surface-secondary dark:bg-surface-secondary-dark;
 }
 
@@ -118,11 +114,7 @@
    datepicker reads like a clearable combobox. Hidden by default; the
    consumer toggles `hidden` based on whether the input has a value. */
 .datepicker__clear {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply quiet-control
         inline-flex items-center justify-center;
 
     align-self: center;

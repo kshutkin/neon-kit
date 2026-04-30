@@ -67,7 +67,12 @@
          --color-surface-active    (~88% L) ≈ 7.0:1
          --color-surface-disabled  (~78% L) ≈ 5.0:1  ← binding constraint, WCAG AA ✓ */
     --color-border-focus: oklch(from var(--color-primary) min(l, 0.38) c h);
-    --color-border-disabled: oklch(from var(--color-neutral) l c h / 0.4);
+    /* Disabled border — opaque, derived from --color-border so it sits on
+       the same visual register as a normal border (just lighter). A
+       translucent border would let the underlying surface bleed through
+       and read as a thinner stroke against opaque-bordered neighbours,
+       even though the physical width is identical 1px. */
+    --color-border-disabled: oklch(from var(--color-border) calc(l + 0.06) c h);
 
     /* Shadow base pigments - neutral shadows get slight primary accent */
     /* Shadow: neutral ink-primary with slight primary hue tint (blend: 90% neutral hue, 10% primary hue) */
@@ -81,6 +86,21 @@
     --color-warning: oklch(from var(--color-neon-orange) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
     --color-error: oklch(from var(--color-neon-red) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
     --color-info: oklch(from var(--color-neon-blue) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+
+    /* Soft (translucent) state fills — the background twin to each state
+       border colour. Per-state alphas are tuned by hand for equal
+       perceptual weight across hues; warm hues (warning, info) sit
+       slightly higher than cool ones (success, error) so the four
+       state badges/tags read with the same fill density. */
+    --color-success-soft: oklch(from var(--color-success) l c h / 0.25);
+    --color-warning-soft: oklch(from var(--color-warning) l c h / 0.30);
+    --color-error-soft: oklch(from var(--color-error) l c h / 0.25);
+    --color-info-soft: oklch(from var(--color-info) l c h / 0.30);
+
+    /* Primary, deepened and translucent. Used as a pressed-on-primary
+       overlay (e.g. .tag.-primary .tag__remove on hover/focus) so the
+       affordance reads as a darker pool of the same colour. */
+    --color-primary-soft-pressed: oklch(from var(--color-primary) calc(l - 0.1) c h / 0.6);
 
     /* Additional semantic colors for theming flexibility - derived from primary */
     /* Accent uses primary with higher lightness, hue shifted by --accent-hue-offset toward original neon-blue territory */
@@ -123,7 +143,9 @@
          --color-surface-active-dark    (~25% L) ≈ 5.4:1
          --color-surface-disabled-dark  (~35% L) ≈ 3.8:1  ← binding constraint, WCAG AA ✓ */
     --color-border-focus-dark: oklch(from var(--color-primary-dark) max(l, 0.70) c h);
-    --color-border-disabled-dark: oklch(from var(--color-ink-primary-dark) l c h / 0.15);
+    /* Dark disabled border — opaque, derived from --color-border-dark for
+       the same reason as light mode. See --color-border-disabled. */
+    --color-border-disabled-dark: oklch(from var(--color-border-dark) calc(l - 0.06) c h);
 
     /* Dark shadow base pigments - neutral shadows get slight primary accent */
     /* Shadow surface: neutral with slight primary tint */
@@ -159,6 +181,18 @@
     --color-warning-dark: oklch(from var(--color-neon-orange) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
     --color-error-dark: oklch(from var(--color-neon-red) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
     --color-info-dark: oklch(from var(--color-neon-blue) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
+
+    /* Dark soft state fills — mirror the light-mode tokens. Alphas are
+       slightly lower than light-mode because the dark surface absorbs
+       less of the underlying colour. */
+    --color-success-soft-dark: oklch(from var(--color-success-dark) l c h / 0.20);
+    --color-warning-soft-dark: oklch(from var(--color-warning-dark) l c h / 0.22);
+    --color-error-soft-dark: oklch(from var(--color-error-dark) l c h / 0.22);
+    --color-info-soft-dark: oklch(from var(--color-info-dark) l c h / 0.22);
+
+    /* Dark primary pressed overlay — derived from --color-primary-dark
+       so the pressed-on-primary affordance tracks the dark mode primary. */
+    --color-primary-soft-pressed-dark: oklch(from var(--color-primary-dark) calc(l - 0.1) c h / 0.6);
 
     /* Dark additional semantic colors for theming flexibility - derived from primary */
     --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
