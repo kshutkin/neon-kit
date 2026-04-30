@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-screen bg-surface dark:bg-surface-dark">
+<html lang="en" class="bg-surface dark:bg-surface-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
     <!-- prerender:head -->
     <link rel="stylesheet" href="./index-docs.css">
 </head>
-<body class="flex h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
-    <aside class="flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
+<body class="min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+    <aside class="docs-aside flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
         <header class="border-b border-border p-6 dark:border-border-dark">
             <div class="text-xs font-medium uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Theme Docs</div>
             <h1 class="mt-2 text-2xl font-bold">Project Neon</h1>
@@ -39,7 +39,7 @@
             </ul>
         </nav>
     </aside>
-    <main id="content" class="min-w-0 flex-1 overflow-y-auto bg-surface dark:bg-surface-dark">
+    <main id="content" class="docs-main bg-surface dark:bg-surface-dark">
         <div id="content-inner" class="p-8"></div>
     </main>
     <theme-switcher></theme-switcher>
