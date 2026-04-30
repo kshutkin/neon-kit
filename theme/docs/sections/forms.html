@@ -89,6 +89,92 @@
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Prefix &amp; Suffix Affixes</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Wrap an <code>.input</code> in <code>.input-group</code> to render
+            non-interactive labels — currency, units, a per-period suffix —
+            <em>inside</em> the field's border. The wrapper carries the chrome
+            (border, focus swap, disabled / read-only / invalid surfaces);
+            the inner input drops its own border so the affix and the
+            editable value read as a single field. Same pattern as the
+            <code>.timepicker__field</code> hosting its inline timezone
+            picker. Use a <code>&lt;span&gt;</code> for inert labels and a
+            <code>&lt;button&gt;</code> if the affix should be interactive
+            (e.g., a unit toggle).
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Price (prefix)</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">$</span>
+                    <input class="input" type="number" value="49">
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Weight (suffix)</span>
+                <div class="input-group w-full">
+                    <input class="input" type="number" value="2.5">
+                    <span class="input-affix">kg</span>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Amount (both)</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">$</span>
+                    <input class="input" type="number" value="1499">
+                    <span class="input-affix">USD</span>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Subscription</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">$</span>
+                    <input class="input" type="number" value="29">
+                    <span class="input-affix">/ month</span>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Discount</span>
+                <div class="input-group w-full">
+                    <input class="input" type="number" value="15">
+                    <span class="input-affix">%</span>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Website</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">https://</span>
+                    <input class="input" type="text" placeholder="example.com">
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">$</span>
+                    <input class="input" type="number" value="0" disabled>
+                    <span class="input-affix">USD</span>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only</span>
+                <div class="input-group w-full">
+                    <input class="input" type="number" value="42" readonly>
+                    <span class="input-affix">kg</span>
+                </div>
+            </label>
+            <label class="field-stack md:col-span-2">
+                <span class="field-label">Invalid (negative price)</span>
+                <div class="input-group w-full">
+                    <span class="input-affix">$</span>
+                    <input class="input" type="number" value="-12" aria-invalid="true" aria-describedby="price-error">
+                    <span class="input-affix">USD</span>
+                </div>
+                <span class="field-error" id="price-error">Price must be positive.</span>
+            </label>
+        </div>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">Field States</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
             Six canonical states every text-like field supports — empty

@@ -92,6 +92,106 @@ select.input option {
     cursor: default;
 }
 
+/* ---------- Input group (prefix / suffix affixes) ------------------------- */
+
+/* Wrap an `.input` together with non-interactive affix text ("$", "kg",
+   "/month", a unit or a currency code) that should sit *inside* the
+   field's border. The wrapper carries the field chrome (border, focus
+   swap, disabled / read-only / invalid surfaces); the inner `.input`
+   strips its own border so the affix and the editable area read as a
+   single field — same pattern as `.timepicker__field` hosting the
+   inline timezone button.
+
+   Markup:
+       <div class="input-group">
+         <span class="input-affix">$</span>
+         <input class="input" type="number" value="42">
+         <span class="input-affix">USD</span>
+       </div>
+
+   Either or both affixes may be present. Use a `<button>` instead of a
+   `<span>` if the affix should be interactive (e.g., a unit toggle).
+*/
+.input-group {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark;
+
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: stretch;
+    inline-size: 100%;
+    min-block-size: --spacing(9);
+}
+
+.input-group:focus-within {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+/* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
+   grouped field is indistinguishable from a plain one in those states. */
+.input-group:has(> .input:disabled) {
+    @apply bg-surface-disabled dark:bg-surface-disabled-dark
+        text-ink-muted dark:text-ink-muted-dark
+        border-border-disabled dark:border-border-disabled-dark;
+    pointer-events: none;
+    cursor: default;
+}
+
+.input-group:has(> .input:read-only) {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+.input-group:has(> .input[aria-invalid="true"]:not(:disabled)) {
+    @apply border-error dark:border-error-dark;
+}
+
+.input-group:has(> .input[aria-invalid="true"]:not(:disabled)):focus-within {
+    @apply border-error dark:border-error-dark;
+}
+
+/* The hosted `.input` becomes a transparent editable region — the wrapper
+   is the field. Strip the input's own border, shadow, and focus outline so
+   only the wrapper's chrome paints. */
+.input-group > .input {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    outline: none;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+}
+
+/* Non-interactive affix — short label rendered inside the field
+   (currency, units, "/month"). Muted ink so the editable value stays
+   the dominant content. Sized in `em` so it tracks the field's font. */
+.input-affix {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        inline-flex items-center;
+
+    align-self: stretch;
+    flex: none;
+    padding-inline: --spacing(3);
+    user-select: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Drop the inner-edge padding so the affix relies on the input's own
+   `padding-inline` for separation from the editable value. */
+.input-affix:first-child {
+    padding-inline-end: 0;
+}
+
+.input-affix:last-child {
+    padding-inline-start: 0;
+}
+
 /* ---------- Checkbox & Radio ---------------------------------------------- */
 
 /* Shared shape: a small `.btn`-styled box. Sized in `em` so the control
