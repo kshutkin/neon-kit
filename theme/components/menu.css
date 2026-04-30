@@ -46,10 +46,18 @@
     --menu-item-padding-block: --spacing(1.5);
     --menu-item-padding-inline: --spacing(3);
 
-    /* Native [popover] elements get UA `margin: auto` (centering); reset
-       that so anchor positioning / margin offsets work as written. */
-    &:popover-open {
+    /* Native [popover] elements get UA defaults `margin: auto` and
+       `inset: 0` that fight anchor positioning. Reset both so
+       `position-area` and any explicit margin offsets resolve cleanly
+       across browsers (per MDN's "Using position-area to position
+       popovers" note). We also drop the UA `position: fixed` for
+       `position: absolute` to dodge a Chromium anchor-positioning bug
+       that adds the page scroll offset to fixed-positioned popovers —
+       top-layer rendering still keeps the menu above siblings. */
+    &[popover] {
+        position: absolute;
         margin: 0;
+        inset: auto;
     }
 
     /* Clip rounded corners against the first/last row's hover background. */

@@ -186,9 +186,17 @@
     margin-block-start: --spacing(1);
     position-area: bottom span-inline-end;
 
-    &:popover-open {
+    /* Reset UA `[popover]` defaults (`margin: auto`, `inset: 0`) so the
+       anchor-positioned offset above survives. Override `position: fixed`
+       — Chromium currently mis-applies the document scroll offset to
+       fixed-positioned popovers under anchor placement; `absolute`
+       gets the anchor math right and top-layer rendering still keeps
+       us above siblings. */
+    &[popover] {
+        position: absolute;
         margin: 0;
         margin-block-start: --spacing(1);
+        inset: auto;
     }
 }
 

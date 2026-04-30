@@ -282,10 +282,16 @@
     max-block-size: --spacing(72);
     overflow: hidden;
 
-    /* Native [popover] gets `margin: auto` from the UA — clear it so
-       anchor positioning resolves to the trigger's edges. */
-    &:popover-open {
+    /* Native [popover] gets UA `margin: auto` + `inset: 0` — clear both
+       so anchor positioning resolves to the trigger's edges. We also
+       switch off UA `position: fixed` because Chromium currently mis-
+       offsets fixed-positioned popovers by the document scroll on
+       anchor placement; `absolute` computes the anchor math correctly
+       while top-layer rendering keeps the dropdown above siblings. */
+    &[popover] {
+        position: absolute;
         margin: 0;
+        inset: auto;
     }
 }
 
