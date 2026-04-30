@@ -1,0 +1,209 @@
+/* Tooltip / hint popover — built on the native `popover` attribute and
+   CSS anchor positioning.
+
+   Why this shape:
+   - `popover` puts the element in the browser's top layer, so it always
+     paints above siblings regardless of `overflow: hidden`, `transform`,
+     `filter`, or any other stacking-context trap on ancestors.
+   - The trigger that invokes the popover via `popovertarget` becomes the
+     popover's implicit anchor, so positioning is declarative — no
+     wrapper element, no portal, no JS to recompute on scroll/resize.
+   - Because it's a regular block element while open, the body can hold
+     rich templates: headings, lists, code, kbd, badges, even buttons.
+
+   Minimal markup (click / keyboard, long-press on touch):
+       <button class="btn" popovertarget="tip-save">Save</button>
+       <div id="tip-save" popover class="tooltip -top" role="tooltip">
+           Saves the current document.
+       </div>
+
+   Rich body — anything goes. The popover is a normal flow container
+   while open; size it via `--tooltip-max-inline-size` if a particular
+   instance needs to be wider than the default reading-width:
+       <div id="tip-shortcut" popover class="tooltip -bottom" role="tooltip">
+           <div class="tooltip__title">Save</div>
+           <p class="tooltip__body">Persists the current draft.</p>
+           <div class="tooltip__meta">
+               <span class="kbd-keys">
+                   <kbd class="kbd">⌘</kbd>
+                   <kbd class="kbd">S</kbd>
+               </span>
+           </div>
+           <div class="tooltip__arrow"></div>
+       </div>
+
+   Placement modifiers on the popover (default is `-top`):
+       .tooltip.-top      — above the anchor (default)
+       .tooltip.-bottom   — below the anchor
+       .tooltip.-left     — left of the anchor
+       .tooltip.-right    — right of the anchor
+
+   Accessibility:
+   - Add `role="tooltip"` for short label-style popovers, and reference
+     it from the trigger with `aria-describedby="tip-id"` so AT users
+     hear the description alongside the trigger's accessible name.
+   - For richer popovers that aren't just a description, drop the role
+     and rely on the popover semantics + a normal heading inside.
+*/
+
+.tooltip[popover] {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface dark:bg-surface-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        shadow-drop dark:shadow-drop-dark
+        text-shadow-embossed dark:text-shadow-embossed-dark
+        rounded;
+
+    /* Reset UA popover defaults: the browser gives [popover] its own
+       margin / padding / inset; we want full control. */
+    margin: 0;
+    padding-block: --spacing(1.5);
+    padding-inline: --spacing(2.5);
+
+    /* Tight reading proportions; rich variants can override the cap via
+       the custom property below or by setting `max-inline-size`
+       directly on a one-off instance. */
+    --tooltip-max-inline-size: --spacing(72);
+    inline-size: max-content;
+    max-inline-size: var(--tooltip-max-inline-size);
+    block-size: auto;
+    max-block-size: none;
+
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: start;
+    white-space: normal;
+    overflow: visible; /* let the arrow extend past the bubble edge */
+
+    /* Anchor positioning — the invoker (button with `popovertarget`) is
+       the implicit anchor, so we don't need `anchor-name` on the
+       trigger. Modifiers below set the actual placement. */
+    position: fixed;
+
+    /* Open / closed transitions. `display` and `overlay` need
+       `transition-behavior: allow-discrete` to animate while the
+       element is being shown / hidden by the top-layer machinery. */
+    opacity: 0;
+    transition:
+        opacity 120ms ease-out,
+        translate 120ms ease-out,
+        overlay 120ms ease-out allow-discrete,
+        display 120ms ease-out allow-discrete;
+}
+
+.tooltip[popover]:popover-open {
+    opacity: 1;
+    translate: 0 0;
+}
+
+/* Initial keyframe for the open transition — without this, the popover
+   pops in fully visible because the open state is the *first* applied
+   style after `display: none`. */
+@starting-style {
+    .tooltip[popover]:popover-open {
+        opacity: 0;
+    }
+}
+
+/* Optional structural elements for rich bodies. They're plain helpers
+   — consumers can ignore them and use Tailwind utilities directly. */
+.tooltip__title {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    margin-block-end: --spacing(1);
+}
+
+.tooltip__body {
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.tooltip__meta {
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    margin-block-start: --spacing(2);
+    display: flex;
+    align-items: center;
+    gap: --spacing(2);
+    font-size: 0.75rem;
+}
+
+/* Arrow — a rotated square that picks up the bubble's border + surface
+   so the seam between bubble and arrow is invisible. Two of its sides
+   are clipped away so only the outward-facing corner reads as a
+   triangle. */
+.tooltip__arrow {
+    position: absolute;
+    inline-size: --spacing(2);
+    block-size: --spacing(2);
+    background-color: inherit;
+    border: inherit;
+    rotate: 45deg;
+    pointer-events: none;
+}
+
+/* ── Placement: top (default) ────────────────────────────────────────── */
+.tooltip[popover],
+.tooltip[popover].-top {
+    position-area: top;
+    margin-block-end: --spacing(2);
+    translate: 0 --spacing(1);
+
+    & > .tooltip__arrow {
+        inset-block-start: 100%;
+        inset-inline-start: 50%;
+        translate: -50% -50%;
+        clip-path: polygon(-20% -20%, 120% -20%, 120% 120%);
+    }
+}
+
+/* ── Placement: bottom ───────────────────────────────────────────────── */
+.tooltip[popover].-bottom {
+    position-area: bottom;
+    margin-block-start: --spacing(2);
+    margin-block-end: 0;
+    translate: 0 calc(--spacing(1) * -1);
+
+    & > .tooltip__arrow {
+        inset-block-start: 0;
+        inset-inline-start: 50%;
+        translate: -50% -50%;
+        clip-path: polygon(-20% -20%, 120% -20%, -20% 120%);
+    }
+}
+
+/* ── Placement: left ─────────────────────────────────────────────────── */
+.tooltip[popover].-left {
+    position-area: left;
+    margin-inline-end: --spacing(2);
+    translate: --spacing(1) 0;
+
+    & > .tooltip__arrow {
+        inset-inline-start: 100%;
+        inset-block-start: 50%;
+        translate: -50% -50%;
+        clip-path: polygon(-20% -20%, 120% 120%, -20% 120%);
+    }
+}
+
+/* ── Placement: right ────────────────────────────────────────────────── */
+.tooltip[popover].-right {
+    position-area: right;
+    margin-inline-start: --spacing(2);
+    translate: calc(--spacing(1) * -1) 0;
+
+    & > .tooltip__arrow {
+        inset-inline-end: 100%;
+        inset-block-start: 50%;
+        translate: 50% -50%;
+        clip-path: polygon(120% -20%, 120% 120%, -20% 120%);
+    }
+}
+
+/* When the open animation runs, the translate is reset to 0 by the
+   `:popover-open` rule above so each placement gets a small slide-in
+   from its respective off-axis direction. */
