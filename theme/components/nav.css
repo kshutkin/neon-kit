@@ -14,7 +14,7 @@
 
    Three layout variants:
      .nav.-vertical   sidebar (flat, full-width rows)
-     .nav.-tabs       horizontal tabs (active item raises into a panel)
+     .nav.-tabs       horizontal tabs (elevated panel-style bar)
      .nav.-segmented  segmented control (inset track, raised checked thumb)
 
    The radio-segmented form uses the standard markup
@@ -93,9 +93,11 @@
 /* ───────────────────────── Variant: horizontal tabs ─────────────────────── */
 
 /* The tab bar sits on a recessed track with a bottom border. The active
-   tab raises out of the track using the panel treatment; a 1px band
-   painted under its bottom edge masks the track's border so the tab
-   appears to merge into the panel below. */
+   tab raises out of the track using the same chrome as `.panel` /
+   `.btn` (full `shadow-drop` + `inset-shadow-highlight`) so it has a
+   strong lift; a 1px band painted under its bottom edge masks the
+   track's border so the tab and the content panel below read as a
+   single continuous raised surface. */
 .nav.-tabs {
     @apply bg-surface-secondary dark:bg-surface-secondary-dark border-b border-border dark:border-border-dark;
 
@@ -121,14 +123,16 @@
 }
 
 .nav.-tabs .nav__item.-active {
-    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark;
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark;
 
     text-shadow: none;
     z-index: 1;
     /* Clip the drop-shadow on the bottom edge so it doesn't cast a line
        onto the panel below — the tab and panel should read as a single
-       continuous surface. Top/sides keep the elevation cue. */
-    clip-path: inset(-8px -8px 0 -8px);
+       continuous surface. The 1px overhang preserves the `::after`
+       masking band that bridges the shared border. Top/sides keep the
+       elevation cue. */
+    clip-path: inset(-8px -8px -1px -8px);
 
     &:hover,
     &:focus-visible {
@@ -138,6 +142,46 @@
     /* 1px band at the very bottom of the tab, painted in surface color, so
        it sits on top of the track's `border-b` and the panel's top border
        — making the tab and panel visually share a single surface. */
+    &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        block-size: 1px;
+        background: var(--color-surface);
+    }
+}
+
+:where([data-theme="dark"]) .nav.-tabs .nav__item.-active::after {
+    background: var(--color-surface-dark);
+}
+
+.nav.-tabs .nav__item {
+    /* Same padding/border on every tab → identical heights and baselines.
+       The transparent border reserves space so .-active swapping in a
+       solid border doesn't shift layout. */
+    border-radius: --spacing(1.5) --spacing(1.5) 0 0;
+    padding-block: --spacing(2);
+    padding-inline: --spacing(3.5);
+    border: 1px solid transparent;
+    border-bottom: 0;
+    position: relative;
+}
+
+.nav.-tabs .nav__item.-active {
+    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark;
+
+    text-shadow: none;
+    z-index: 1;
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-surface dark:bg-surface-dark;
+    }
+
+    /* 1px band at the very bottom of the tab, painted in surface color,
+       so it sits on top of the panel's top border — making the active
+       tab and the content panel visually share a single surface. */
     &::after {
         content: "";
         position: absolute;

@@ -63,10 +63,11 @@
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">Tabs (horizontal, elevated active)</h2>
+        <h2 class="mb-4">Tabs (horizontal, elevated surface)</h2>
         <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
-            The tab bar sits on a recessed track; the active tab raises into a panel and
-            merges with the content below. Use <code>&lt;button role="tab"&gt;</code> for
+            The tab bar and the content area form a single connected, elevated surface
+            (button/panel chrome). The active tab pops up to the surface color and merges
+            into the content panel below. Use <code>&lt;button role="tab"&gt;</code> for
             in-page tab switching with <code>aria-selected</code>, paired with
             <code>.-active</code> for visuals.
         </p>
@@ -77,10 +78,10 @@
                 <button type="button" role="tab" aria-selected="false" class="nav__item">Notifications</button>
                 <button type="button" role="tab" aria-selected="false" class="nav__item" aria-disabled="true" disabled>Billing</button>
             </div>
-            <div role="tabpanel" class="rounded-b-lg border border-border bg-surface p-6 dark:border-border-dark dark:bg-surface-dark">
+            <div role="tabpanel" class="rounded-b-lg border border-border bg-surface p-6 shadow-drop dark:border-border-dark dark:bg-surface-dark dark:shadow-drop-dark">
                 <p class="text-ink-secondary dark:text-ink-secondary-dark">
-                    Profile panel content. The active tab visually merges with this panel
-                    via a 1px overlap.
+                    Profile panel content. Tab bar and panel share the same elevated
+                    surface — consistent with buttons and <code>.panel</code>.
                 </p>
             </div>
         </div>
