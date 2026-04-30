@@ -73,6 +73,18 @@ select.input {
     cursor: default;
 }
 
+/* Native <select> placeholder — since it doesn't support ::placeholder, we
+   restyle the control when the default disabled/empty option is chosen. */
+select.input:has(option[value=""][disabled]:checked),
+select.input:required:invalid {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+}
+
+/* Reset the dropdown options to primary text so they aren't muted. */
+select.input option {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+}
+
 /* File input — strip the OS-rendered button on the inside; consumers can pair
    the input with a sibling `.btn` if they want a styled trigger. */
 .input[type="file"] {
