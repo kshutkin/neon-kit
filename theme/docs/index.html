@@ -1,105 +1,185 @@
 <!DOCTYPE html>
-<html lang="en" class="h-screen bg-surface dark:bg-surface-dark">
+<html lang="en" class="bg-surface dark:bg-surface-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Project</title>
-    <link rel="stylesheet" href="output.css">
+    <title>Project Neon</title>
+    <!-- prerender:head -->
+    <link rel="stylesheet" href="./index-docs.css">
 </head>
-<body class="flex min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
-    <aside class="flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
+<body class="min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+    <aside class="docs-aside flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
         <header class="border-b border-border p-6 dark:border-border-dark">
             <div class="text-xs font-medium uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Theme Docs</div>
             <h1 class="mt-2 text-2xl font-bold">Project Neon</h1>
             <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
         </header>
         <nav class="flex-1 p-4">
-            <ul class="list-none space-y-1 pl-0">
-                <li><a href="#/buttons" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Buttons</a></li>
-                <li><a href="#/panels" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Panels</a></li>
-                <li><a href="#/typography" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Typography</a></li>
-                <li><a href="#/colors" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Colors</a></li>
-                <li><a href="#/links" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Links</a></li>
-                <li><a href="#/shadows" class="nav-link block rounded px-3 py-2 text-ink-primary dark:text-ink-primary-dark">Shadows</a></li>
+            <ul class="nav -vertical">
+                <li><a data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
+                <li><a data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
+                <li><a data-slug="dialogs" href="dialogs/" class="nav__item">Dialogs</a></li>
+                <li><a data-slug="menus" href="menus/" class="nav__item">Menus</a></li>
+                <li><a data-slug="navigation" href="navigation/" class="nav__item">Navigation</a></li>
+                <li><a data-slug="kbd" href="kbd/" class="nav__item">Keyboard</a></li>
+                <li><a data-slug="badges" href="badges/" class="nav__item">Badges</a></li>
+                <li><a data-slug="tags" href="tags/" class="nav__item">Tags</a></li>
+                <li><a data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
+                <li><a data-slug="combobox-single" href="combobox-single/" class="nav__item">Combobox — Single</a></li>
+                <li><a data-slug="combobox-multi" href="combobox-multi/" class="nav__item">Combobox — Multi</a></li>
+                <li><a data-slug="datepicker" href="datepicker/" class="nav__item">Datepicker</a></li>
+                <li><a data-slug="datepicker-range" href="datepicker-range/" class="nav__item">Datepicker — Range</a></li>
+                <li><a data-slug="timepicker" href="timepicker/" class="nav__item">Timepicker</a></li>
+                <li><a data-slug="tooltip" href="tooltip/" class="nav__item">Tooltip</a></li>
+                <li><a data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
+                <li><a data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
+                <li><a data-slug="links" href="links/" class="nav__item">Links</a></li>
+                <li><a data-slug="shadows" href="shadows/" class="nav__item">Shadows</a></li>
+                <li><a data-slug="utilities" href="utilities/" class="nav__item">Utilities</a></li>
             </ul>
         </nav>
-        <footer class="border-t border-border p-4 dark:border-border-dark">
-            <theme-switcher></theme-switcher>
-        </footer>
     </aside>
-    <main class="min-w-0 flex-1 bg-surface dark:bg-surface-dark">
-        <iframe name="content-frame" src="" class="block h-full min-h-screen w-full border-0 bg-surface dark:bg-surface-dark"></iframe>
+    <main id="content" class="docs-main bg-surface dark:bg-surface-dark">
+        <div id="content-inner" class="p-8"></div>
     </main>
-    <script src="theme-switcher.js" type="module"></script>
+    <theme-switcher></theme-switcher>
+    <script src="./theme-switcher.js" type="module"></script>
+    <script src="./combobox.js" type="module"></script>
+    <script src="./datepicker.js" type="module"></script>
+    <script src="./timepicker.js" type="module"></script>
+    <script src="./tooltip.js" type="module"></script>
     <script type="module">
-        const listen = (cb) => {
-            const hashChangeListener = () => {
-                cb(pathname());
-            };
-            addEventListener("hashchange", hashChangeListener, false);
-            hashChangeListener();
-            return () => {
-                removeEventListener("hashchange", hashChangeListener);
-            };
+        const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
+
+        const fragmentFor = (slug) => fragments[`./sections/${slug}.html`];
+
+        const titles = {
+            buttons: 'Buttons',
+            panels: 'Panels',
+            dialogs: 'Dialogs',
+            menus: 'Menus',
+            navigation: 'Navigation',
+            kbd: 'Keyboard',
+            badges: 'Badges',
+            tags: 'Tags',
+            forms: 'Forms',
+            'combobox-single': 'Combobox — Single',
+            'combobox-multi': 'Combobox — Multi',
+            datepicker: 'Datepicker',
+            'datepicker-range': 'Datepicker — Range',
+            timepicker: 'Timepicker',
+            tooltip: 'Tooltip',
+            typography: 'Typography',
+            colors: 'Colors',
+            links: 'Links',
+            shadows: 'Shadows',
+            utilities: 'Utilities',
         };
 
-        const pathname = () => location.hash.slice(1) || "/";
+        const DEFAULT_SLUG = 'buttons';
+        const BASE = import.meta.env.BASE_URL || '/';
 
-        const links = document.querySelectorAll('nav a');
-        const iframe = document.querySelector('iframe[name="content-frame"]');
+        const links = document.querySelectorAll('nav a[data-slug]');
+        const content = document.getElementById('content');
+        const contentInner = document.getElementById('content-inner');
 
-        const setActiveLink = (currentPath) => {
-            for (const link of links) {
-                const linkHash = link.getAttribute('href').slice(1); // Remove the # prefix
-                if (linkHash === currentPath) {
-                    link.classList.add('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
-                    link.classList.remove('text-ink-primary', 'dark:text-ink-primary-dark');
-                } else {
-                    link.classList.remove('bg-primary', 'dark:bg-primary-dark', 'text-ink-inverse', 'font-semibold', 'inset-shadow-highlight', 'dark:inset-shadow-highlight-dark', 'shadow-drop-subtle', 'dark:shadow-drop-subtle-dark');
-                    link.classList.add('text-ink-primary', 'dark:text-ink-primary-dark');
-                }
+        // Backwards-compat: rewrite legacy `#/<slug>` URLs to `<slug>/`.
+        if (location.hash.startsWith('#/')) {
+            const legacy = location.hash.slice(2).replace(/\/+$/, '');
+            if (legacy in titles) {
+                history.replaceState(null, '', `${BASE}${legacy}/`);
+            } else {
+                history.replaceState(null, '', BASE);
             }
-        };
-
-        const syncPrimaryColorToIframe = () => {
-            const themeSwitcher = document.querySelector('theme-switcher');
-            if (themeSwitcher && typeof themeSwitcher.getPrimaryColor === 'function') {
-                const primaryColor = themeSwitcher.getPrimaryColor();
-                try {
-                    if (iframe.contentWindow) {
-                        // Wait a bit for iframe to be ready
-                        setTimeout(() => {
-                            iframe.contentWindow.postMessage(
-                                { type: "primary-color-sync", primaryColor },
-                                "*"
-                            );
-                        }, 100);
-                    }
-                } catch (e) {
-                    console.warn("Could not sync primary color to iframe:", e);
-                }
-            }
-        };
-
-        const loadSection = (path) => {
-            // Remove leading slash and add .html extension
-            const section = path.slice(1) || 'buttons';
-            iframe.src = `${section}.html`;
-            setActiveLink(path);
-
-            // Notify iframe of current primary color after it loads
-            iframe.addEventListener('load', syncPrimaryColorToIframe, { once: true });
-        };
-
-        // Also sync when iframe is already loaded (for initial page load)
-        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
-            syncPrimaryColorToIframe();
         }
 
-        // Listen for hash changes
-        listen((path) => {
-            loadSection(path);
+        const currentSlug = () => {
+            let path = location.pathname;
+            if (path.startsWith(BASE)) path = path.slice(BASE.length);
+            path = path.replace(/^\/+|\/+$/g, '');
+            const slug = path.split('/')[0] || DEFAULT_SLUG;
+            return slug in titles ? slug : DEFAULT_SLUG;
+        };
+
+        const setActiveLink = (slug) => {
+            for (const link of links) {
+                link.classList.toggle('-active', link.dataset.slug === slug);
+            }
+        };
+
+        let firstRender = true;
+        const render = () => {
+            const slug = currentSlug();
+            // Skip overwriting innerHTML on initial render if the page was prerendered
+            // with content already in place — avoids a flash.
+            if (!(firstRender && contentInner.children.length > 0)) {
+                contentInner.innerHTML = fragmentFor(slug) ?? '';
+            }
+            firstRender = false;
+            setActiveLink(slug);
+            document.title = `Project Neon — ${titles[slug]}`;
+            content.scrollTop = 0;
+        };
+
+        // Intercept clicks on internal nav links for soft (no-reload) navigation.
+        document.addEventListener('click', (e) => {
+            if (e.defaultPrevented) return;
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            const a = e.target.closest('a[data-slug]');
+            if (!a) return;
+            const slug = a.dataset.slug;
+            if (!(slug in titles)) return;
+            e.preventDefault();
+            const target = `${BASE}${slug}/`;
+            if (location.pathname !== target) {
+                history.pushState(null, '', target);
+                render();
+            }
         });
+
+        addEventListener('popstate', render);
+        render();
+
+        // Delegated dialog handlers — fragments are injected via innerHTML
+        // so per-fragment <script> tags don't run; wire behavior here.
+        document.addEventListener('click', (e) => {
+            const opener = e.target.closest('[data-open]');
+            if (opener) {
+                const dlg = document.getElementById(opener.getAttribute('data-open'));
+                if (dlg && typeof dlg.showModal === 'function') dlg.showModal();
+                return;
+            }
+            const closer = e.target.closest('[data-close]');
+            if (closer) {
+                const dlg = closer.closest('dialog');
+                if (dlg) {
+                    e.preventDefault();
+                    dlg.close();
+                }
+                return;
+            }
+            // Backdrop click closes the dialog
+            if (e.target.matches('dialog.dialog')) {
+                e.target.close();
+            }
+        });
+
+        document.addEventListener('close', (e) => {
+            const dlg = e.target;
+            if (dlg.id !== 'dlg-confirm') return;
+            const out = document.getElementById('confirm-result');
+            if (!out) return;
+            out.textContent =
+                dlg.returnValue === 'confirm'
+                    ? 'Deleted.'
+                    : dlg.returnValue
+                        ? `Dismissed (${dlg.returnValue}).`
+                        : 'Dismissed.';
+        }, true);
+
+        if (import.meta.hot) {
+            import.meta.hot.accept(() => render());
+        }
     </script>
 </body>
 </html>

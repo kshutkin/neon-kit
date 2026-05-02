@@ -1,0 +1,283 @@
+<main>
+    <h1 class="mb-6">Timepicker</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        A typeable time field paired with a popover list of time points
+        rendered at a configurable step (15 / 30 / 60 minutes are
+        common). The field reuses <code>.input</code>'s inset-well chrome
+        and the trailing-control language of <code>.combobox</code> /
+        <code>.datepicker</code>; the popover reuses
+        <code>.combobox__popover</code> panel chrome with
+        <code>.combobox__option</code> rows. Optional features:
+        <code>data-step</code> changes the increment, <code>data-seconds</code>
+        adds <code>:SS</code> to the format, and <code>data-tz</code>
+        mounts an IANA timezone selector inside the popover. A combined
+        date + time popover places the day grid and time list side by
+        side (stacked under <code>640px</code>).
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Plain (30-minute step)</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Default: a typeable <code>HH:MM</code> input with a clock
+            trigger. The popover lists every half hour from
+            <code>00:00</code> to <code>23:30</code>; click a row to
+            commit and close.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="timepicker" data-timepicker data-step="30">
+                <div class="timepicker__field">
+                    <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
+                    <button class="timepicker__trigger" type="button" popovertarget="tp-plain" aria-label="Open time list">
+                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                    </button>
+                </div>
+                <div id="tp-plain" popover class="timepicker__popover" data-tp-popover>
+                    <div class="timepicker__list" data-tp-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">15-Minute Step + Clear</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-step="15"</code> packs the list at quarter-hour
+            granularity. The clear button hides until the field has a
+            value.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="timepicker" data-timepicker data-step="15" data-clearable data-value="14:45">
+                <div class="timepicker__field">
+                    <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
+                    <button class="timepicker__clear" type="button" data-tp-clear aria-label="Clear time" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="timepicker__trigger" type="button" popovertarget="tp-clear" aria-label="Open time list">
+                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                    </button>
+                </div>
+                <div id="tp-clear" popover class="timepicker__popover" data-tp-popover>
+                    <div class="timepicker__list" data-tp-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Seconds (1-Hour Step)</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-seconds</code> formats values as
+            <code>HH:MM:SS</code>; <code>data-step="60"</code> shows a
+            shorter list of hourly options.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="timepicker" data-timepicker data-step="60" data-seconds data-clearable data-value="09:00:00">
+                <div class="timepicker__field">
+                    <input class="timepicker__input" type="text" placeholder="HH:MM:SS" data-tp-input>
+                    <button class="timepicker__clear" type="button" data-tp-clear aria-label="Clear time" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="timepicker__trigger" type="button" popovertarget="tp-seconds" aria-label="Open time list">
+                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                    </button>
+                </div>
+                <div id="tp-seconds" popover class="timepicker__popover" data-tp-popover>
+                    <div class="timepicker__list" data-tp-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Timezone</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-tz</code> renders an inline IANA-zone button next
+            to the time. Clicking it opens a *separate* popover with the
+            same chrome as a single-select <code>.combobox</code> —
+            search at the top, options below, click to commit. The
+            field's zone hint updates live, so a committed time always
+            reads in context without leaving the control.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="timepicker" data-timepicker data-step="30" data-tz="Europe/Berlin" data-clearable data-value="14:30"
+                 data-tz-options='["UTC","Europe/London","Europe/Berlin","Europe/Athens","America/New_York","America/Los_Angeles","America/Chicago","America/Sao_Paulo","Asia/Tokyo","Asia/Singapore","Asia/Kolkata","Asia/Dubai","Australia/Sydney","Pacific/Auckland","Africa/Cairo","Africa/Johannesburg"]'>
+                <div class="timepicker__field">
+                    <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
+                    <button class="timepicker__field-tz" type="button" popovertarget="tp-tz-pop" data-tp-field-tz>Europe/Berlin</button>
+                    <button class="timepicker__clear" type="button" data-tp-clear aria-label="Clear time" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="timepicker__trigger" type="button" popovertarget="tp-tz" aria-label="Open time list">
+                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                    </button>
+                </div>
+                <div id="tp-tz" popover class="timepicker__popover" data-tp-popover>
+                    <div class="timepicker__list" data-tp-list></div>
+                </div>
+                <div id="tp-tz-pop" popover class="combobox__popover" data-tp-tz-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="text" placeholder="Search timezone…" data-tp-tz-search>
+                    </div>
+                    <div class="combobox__list" role="listbox" data-tp-tz-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Field States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Same six-state vocabulary as the datepicker. State hooks
+            land on the inner <code>.timepicker__input</code>; the
+            <code>.timepicker__field</code> wrapper reacts via
+            <code>:has()</code>. Only the field appearance is shown —
+            the time-list popover is unchanged.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" placeholder="HH:MM" disabled>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" placeholder="HH:MM" readonly>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="14:30" disabled>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="14:30" readonly>
+                        <button class="timepicker__trigger" type="button" disabled aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" value="25:00" aria-invalid="true" aria-describedby="tp-error">
+                        <button class="timepicker__trigger" type="button" aria-label="Open time list">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <span class="field-error" id="tp-error">Use 24-hour HH:MM format.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Reminder time</span>
+                    <div class="timepicker">
+                        <div class="timepicker__field">
+                            <input class="timepicker__input" type="text" placeholder="HH:MM" name="remindAt">
+                            <button class="timepicker__trigger" type="button" aria-label="Open time list">
+                                <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <span class="field-hint">Sent in your local timezone.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Combined Date + Time</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>.datetime-picker</code> wraps a date and a time field
+            side by side so users can pick both with a single trigger.
+            The shared popover is a <code>.datepicker__popover.-with-time</code>:
+            the day grid sits inline-start, the time list inline-end.
+            On viewports under <code>640px</code> the panels stack
+            vertically and the popover narrows to fit.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="datetime-picker" data-datetime-picker data-step="30" data-clearable data-value="2026-04-15T14:30">
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dt-date-input>
+                        <button class="datepicker__clear" type="button" data-dt-clear aria-label="Clear" hidden>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                        </button>
+                        <button class="datepicker__trigger" type="button" popovertarget="dt-pop" aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="timepicker">
+                    <div class="timepicker__field">
+                        <input class="timepicker__input" type="text" placeholder="HH:MM" data-dt-time-input>
+                        <button class="timepicker__trigger" type="button" popovertarget="dt-pop" aria-label="Open calendar">
+                            <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="dt-pop" popover class="datepicker__popover -with-time" data-dt-popover>
+                    <div class="datepicker__panel" data-dt-date-panel></div>
+                    <div class="timepicker__panel">
+                        <div class="timepicker__list" data-dt-time-list></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">RTL</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Logical-property layout flips field order, the trailing
+            trigger, and the combined date+time panel order under
+            <code>dir="rtl"</code>.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+            <div class="timepicker" data-timepicker data-step="30" data-tz="Asia/Riyadh" data-clearable data-value="08:00"
+                 data-tz-options='["UTC","Asia/Riyadh","Asia/Dubai","Asia/Tehran","Africa/Cairo","Europe/Istanbul"]'>
+                <div class="timepicker__field">
+                    <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
+                    <button class="timepicker__field-tz" type="button" popovertarget="tp-rtl-tz" data-tp-field-tz>Asia/Riyadh</button>
+                    <button class="timepicker__clear" type="button" data-tp-clear aria-label="مسح" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="timepicker__trigger" type="button" popovertarget="tp-rtl" aria-label="فتح">
+                        <svg class="timepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+                    </button>
+                </div>
+                <div id="tp-rtl" popover class="timepicker__popover" data-tp-popover>
+                    <div class="timepicker__list" data-tp-list></div>
+                </div>
+                <div id="tp-rtl-tz" popover class="combobox__popover" data-tp-tz-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="text" placeholder="بحث المنطقة…" data-tp-tz-search>
+                    </div>
+                    <div class="combobox__list" role="listbox" data-tp-tz-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

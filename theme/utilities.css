@@ -1,0 +1,561 @@
+/* Core structural block for elevated box items like panels and buttons */
+@utility panel {
+    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
+}
+
+/* Disabled state for controls that carry :disabled or aria-disabled on
+   themselves (native <button>, <input>, or any element with the ARIA
+   hook). Wrapper-based disabled patterns — where a child carries
+   :disabled and a sibling/wrapper is styled (e.g. .datepicker /
+   .timepicker) — must @apply `disabled-surface` against their own
+   :has() selector instead.
+
+   The two state hooks are folded into a single `:is()` selector rather
+   than a comma-separated pair, because Tailwind v4 mis-nests the
+   `dark:` variant suffix when a comma-separated parent meets a nested
+   utility that carries variants — producing malformed selectors with
+   stray parens. `:is(...)` keeps the parent shape as one selector. */
+@utility disabled-control {
+    &:is(:disabled, [aria-disabled="true"]) {
+        @apply disabled-surface;
+    }
+}
+
+/* Disabled visual payload, selector-free. Use this when the disabled
+   trigger lives on a different element than the styled one — typically
+   a wrapper carrying `:has(> .input:disabled)` or `:has(.foo:disabled)`.
+   `disabled-control` composes this on top of its own state selector.
+
+   Depth is preserved but dialed down: drop shadow drops to `subtle`
+   and the top-edge highlight is removed. Without this, the full-strength
+   drop (bottom) plus full-strength inset highlight (top) read as a tilt
+   on a muted surface — the bright top edge and the wide bottom blur
+   stop balancing each other once the fill goes flat-grey.
+
+   Text uses `ink-secondary`, not `ink-muted`. WCAG technically exempts
+   disabled controls from contrast minimums, but `ink-muted` on
+   `surface-disabled` lands near 1.9:1 (light) and is hard to read for
+   anyone. `ink-secondary` lifts that to ~3:1 — still visibly demoted
+   vs. an active control (`ink-primary` ≈ 6:1) but legible. */
+@utility disabled-surface {
+    @apply bg-surface-disabled dark:bg-surface-disabled-dark
+        text-ink-secondary dark:text-ink-secondary-dark
+        border-border-disabled dark:border-border-disabled-dark
+        shadow-drop-subtle dark:shadow-drop-subtle-dark
+        inset-shadow-none;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Focus-ring border swap. The global outline is set in theme.css against
+   :focus-visible; this utility only flips the element's own border to
+   --color-border-focus so the bordered chrome (.btn, .input, fields)
+   reads its focused affordance correctly. Composes with the global
+   outline rather than replacing it. */
+@utility focus-ring-swap {
+    &:focus-visible {
+        @apply border-border-focus dark:border-border-focus-dark;
+    }
+}
+
+/* Quiet-control colour language for embedded affordances (clear,
+   remove, trigger) that sit inside a field or tag: transparent at rest,
+   secondary ink, surface-hover background on hover/focus-visible
+   (text brightens to primary on hover only), surface-active when
+   pressed. Layout (size, border-radius, flex) stays with the consumer. */
+@utility quiet-control {
+    background: transparent;
+
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+
+    &:hover {
+        @apply text-ink-primary dark:text-ink-primary-dark
+            bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:focus-visible {
+        @apply bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:active {
+        @apply bg-surface-active dark:bg-surface-active-dark;
+    }
+}
+
+/* Shared interactive-row state styles for menu items, nav items, and any
+   focusable list row that uses the surface-hover background as its
+   primary affordance. Layout (grid, flex, columns) is intentionally NOT
+   set here — consumers compose their own layout around the state styles.
+   Background is transparent by default so it can sit on any surface. */
+@utility interactive-row {
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    /* The strong background highlight on :focus-visible is the focus
+       indicator; suppress the UA outline. Components that need a visible
+       outline (e.g. tabs over a busy track) can re-enable it locally. */
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-surface-hover dark:bg-surface-hover-dark;
+    }
+
+    &:active {
+        @apply bg-surface-active dark:bg-surface-active-dark;
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+        @apply text-ink-muted dark:text-ink-muted-dark;
+        pointer-events: none;
+    }
+}
+
+/* Tinted metal — shiny but slightly worn finish.
+   Tints from the element's own background-color: keep a solid background-color
+   on the element and the gradient/noise layers blend on top of it. */
+@utility metal-tinted {
+    background-image:
+        /* sharp highlight for more pronounced metallic sheen */
+        linear-gradient(
+            105deg,
+            transparent 20%,
+            oklch(100% 0 0 / 0.45) 25%,
+            oklch(100% 0 0 / 0.15) 28%,
+            transparent 35%
+        ),
+        /* soft environmental reflection */
+        radial-gradient(
+            ellipse 145% 95% at 8% -12%,
+            oklch(100% 0 0 / 0.55) 0%,
+            oklch(100% 0 0 / 0.2) 28%,
+            transparent 60%
+        ),
+        /* broad tonal sweep */
+        linear-gradient(
+            118deg,
+            oklch(100% 0 0 / 0.25) 0%,
+            transparent 24%,
+            oklch(0% 0 0 / 0.15) 52%,
+            transparent 74%,
+            oklch(100% 0 0 / 0.3) 100%
+        ),
+        /* softened edge reflection */
+        radial-gradient(
+            ellipse 90% 120% at 86% 82%,
+            oklch(100% 0 0 / 0.25) 0%,
+            transparent 52%
+        ),
+        /* softened brushed-metal grain */
+        repeating-linear-gradient(
+            91deg,
+            transparent 0 17px,
+            oklch(100% 0 0 / 0.025) 17px 18px,
+            transparent 18px 43px,
+            oklch(0% 0 0 / 0.02) 43px 44px,
+            transparent 44px 79px
+        ),
+        /* subtle cross-grain breaks up repeated verticals */
+        repeating-linear-gradient(
+            13deg,
+            transparent 0 19px,
+            oklch(100% 0 0 / 0.02) 19px 20px,
+            transparent 20px 47px
+        ),
+        /* worn dark patina blotch */
+        radial-gradient(
+            ellipse at 18% 28%,
+            oklch(0% 0 0 / 0.2) 0%,
+            transparent 42%
+        ),
+        /* fine grain noise for the worn texture */
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.58' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.15 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size:
+        300% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        211px 100%,
+        100% 113px,
+        100% 100%,
+        260px 260px;
+    background-position: 
+        100% 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0;
+    background-blend-mode: overlay, screen, soft-light, screen, overlay, soft-light, multiply, overlay;
+    
+    @media (prefers-reduced-motion: no-preference) {
+        animation: metal-shimmer 6s infinite linear;
+    }
+}
+
+@keyframes metal-shimmer {
+    0% {
+        background-position: 100% 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+    100% {
+        background-position: -100% 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+}
+
+/* Neon text effect.
+   Glow color follows text color by default (text-neon text-neon-blue).
+   Override with a shadow-* utility to decouple glow from text color (text-neon shadow-neon-blue text-white). */
+@utility text-neon {
+    --neon-text-color: var(--tw-shadow-color, currentColor);
+    text-shadow:
+        0 0 0.1em oklch(100% 0 0 / 0.8),
+        0 0 0.2em var(--neon-text-color),
+        0 0 0.4em var(--neon-text-color),
+        0 0 0.8em var(--neon-text-color),
+        0 0 1.6em var(--neon-text-color);
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: text-neon-pulse 4s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes text-neon-pulse {
+    from {
+        text-shadow:
+            0 0 0.05em oklch(100% 0 0 / 0.8),
+            0 0 0.1em var(--neon-text-color),
+            0 0 0.2em var(--neon-text-color),
+            0 0 0.4em var(--neon-text-color),
+            0 0 0.8em var(--neon-text-color);
+    }
+    to {
+        text-shadow:
+            0 0 0.15em oklch(100% 0 0 / 0.9),
+            0 0 0.3em var(--neon-text-color),
+            0 0 0.6em var(--neon-text-color),
+            0 0 1.2em var(--neon-text-color),
+            0 0 2.4em var(--neon-text-color);
+    }
+}
+
+/* Neon box shadow effect.
+   Casts an asymmetric, pulsating light underneath an element.
+   More prominent on one side (bottom-right) to give directional glow.
+   Uses a ::before pseudo-element to avoid overriding existing shadows. */
+@utility shadow-neon {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays behind the parent's background
+       but doesn't fall behind the rest of the page */
+    z-index: 0;
+
+    /* Capture the shadow color on the parent so the pseudo-element can inherit it, 
+       since Tailwind v4 sets --tw-shadow-color to inherits: false */
+    --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+        box-shadow:
+            -0.7px -0.7px 1.4px var(--neon-glow),
+            0 0 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            1.4px 2.8px 11.2px var(--neon-glow);
+    }
+    
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: shadow-neon-pulse 5s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes shadow-neon-pulse {
+    from {
+        box-shadow:
+            0 0 0.7px var(--neon-glow),
+            0 0 1.4px var(--neon-glow),
+            0.7px 0.7px 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow);
+    }
+    to {
+        box-shadow:
+            -0.7px -0.7px 2.1px var(--neon-glow),
+            0 0 4.2px var(--neon-glow),
+            1.4px 2.8px 8.4px var(--neon-glow),
+            2.1px 4.2px 14px var(--neon-glow);
+    }
+}
+
+/* Inset neon glow effect.
+   Mirrors `shadow-neon`, but the light pools inward along the inside
+   edges instead of casting outward. Useful for form fields, inset
+   panels, and any concave-feeling surface that should glow from within.
+   Uses --tw-shadow-color so any shadow-* color utility sets the glow color.
+
+   Implementation note: applies box-shadow directly to the element rather
+   than via ::before, because replaced elements like <input> don't render
+   pseudo-elements. */
+@utility inset-shadow-neon {
+    /* Capture the shadow color so we can use it after Tailwind v4 resets
+       --tw-shadow-color (it's declared with inherits: false). */
+    --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
+
+    box-shadow:
+        inset -0.7px -0.7px 1.4px var(--neon-glow),
+        inset 0 0 2.8px var(--neon-glow),
+        inset 0.7px 1.4px 5.6px var(--neon-glow),
+        inset 1.4px 2.8px 11.2px var(--neon-glow);
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: inset-shadow-neon-pulse 5s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes inset-shadow-neon-pulse {
+    from {
+        box-shadow:
+            inset 0 0 0.7px var(--neon-glow),
+            inset 0 0 1.4px var(--neon-glow),
+            inset 0.7px 0.7px 2.8px var(--neon-glow),
+            inset 0.7px 1.4px 5.6px var(--neon-glow);
+    }
+    to {
+        box-shadow:
+            inset -0.7px -0.7px 2.1px var(--neon-glow),
+            inset 0 0 4.2px var(--neon-glow),
+            inset 1.4px 2.8px 8.4px var(--neon-glow),
+            inset 2.1px 4.2px 14px var(--neon-glow);
+    }
+}
+
+/* Neon border effect.
+   Makes the element's border look like a glowing neon tube.
+   Uses the border color for the tube's glow. */
+@utility border-neon {
+    /* Capture the border color so we can use it for the shell */
+    --neon-border-color: var(--tw-border-color, currentColor);
+    
+    /* The bright, hot core of the neon tube */
+    border-color: color-mix(in srgb, var(--neon-border-color) 60%, white);
+    
+    /* The subtle glass shell encasing the core (no diffuse glow) */
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, var(--neon-border-color) 35%, transparent);
+}
+
+/* Bidirectional neon glow.
+   Casts a pulsating light both outward (around the element) and inward
+   (along the inside edges of the element), so transparent containers
+   visibly shine on the inside as well as the outside.
+   Uses --tw-shadow-color so any shadow-* color utility sets the glow color. */
+@utility glow-neon {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays behind the parent's content
+       but doesn't fall behind the rest of the page */
+    z-index: 0;
+
+    /* Capture the shadow color on the parent so the pseudo-element can inherit it,
+       since Tailwind v4 sets --tw-shadow-color to inherits: false */
+    --neon-color: var(--tw-shadow-color, currentColor);
+    /* Faded glow color (~70% intensity) */
+    --neon-glow: color-mix(in srgb, var(--neon-color) 70%, transparent);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+        box-shadow:
+            /* outward asymmetric glow */
+            -0.7px -0.7px 1.4px var(--neon-glow),
+            0 0 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            1.4px 2.8px 11.2px var(--neon-glow),
+            /* inward glow along the inside edges */
+            inset 0 0 2.8px var(--neon-glow),
+            inset 0 0 5.6px var(--neon-glow),
+            inset 0 0 11.2px var(--neon-glow);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: glow-neon-pulse 5s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes glow-neon-pulse {
+    from {
+        box-shadow:
+            0 0 0.7px var(--neon-glow),
+            0 0 1.4px var(--neon-glow),
+            0.7px 0.7px 2.8px var(--neon-glow),
+            0.7px 1.4px 5.6px var(--neon-glow),
+            inset 0 0 1.4px var(--neon-glow),
+            inset 0 0 2.8px var(--neon-glow),
+            inset 0 0 5.6px var(--neon-glow);
+    }
+    to {
+        box-shadow:
+            -0.7px -0.7px 2.1px var(--neon-glow),
+            0 0 4.2px var(--neon-glow),
+            1.4px 2.8px 8.4px var(--neon-glow),
+            2.1px 4.2px 14px var(--neon-glow),
+            inset 0 0 4.2px var(--neon-glow),
+            inset 0 0 8.4px var(--neon-glow),
+            inset 0 0 16.8px var(--neon-glow);
+    }
+}
+
+/* Holographic foil effect reminiscent of shiny trading cards.
+   Applies a shifting iridescent rainbow gradient and metallic glare.
+   Works best when the element has a base background color. */
+@utility foil {
+    background-image:
+        /* Sharp bright glare sweep */
+        linear-gradient(
+            115deg,
+            transparent 15%,
+            oklch(100% 0 0 / 0.5) 23%,
+            oklch(100% 0 0 / 0.8) 25%,
+            oklch(100% 0 0 / 0.5) 27%,
+            transparent 35%
+        ),
+        /* Iridescent rainbow spectrum */
+        linear-gradient(
+            115deg,
+            transparent 0%,
+            oklch(75% 0.2 20 / 0.5) 15%,   /* Pinkish Red */
+            oklch(85% 0.2 80 / 0.5) 30%,   /* Yellow */
+            oklch(80% 0.2 150 / 0.5) 45%,  /* Green */
+            oklch(80% 0.2 240 / 0.5) 60%,  /* Blue */
+            oklch(75% 0.2 300 / 0.5) 75%,  /* Purple/Magenta */
+            transparent 100%
+        ),
+        /* Fine noise for that foil texture grain */
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.58' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.15 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size:
+        300% 300%,
+        300% 300%,
+        260px 260px;
+    background-position:
+        0% 50%,
+        0% 50%,
+        0 0;
+    background-blend-mode: screen, color-dodge, multiply;
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: foil-shimmer 7s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes foil-shimmer {
+    0% {
+        background-position: 0% 50%, 0% 50%, 0 0;
+    }
+    100% {
+        background-position: 100% 50%, 100% 50%, 0 0;
+    }
+}
+
+/* Holographic foil border.
+   Renders the element's border as a shifting iridescent rainbow ring
+   with a sweeping metallic glare — same vibe as the `foil` utility,
+   but applied to the border only.
+
+   Implementation note: Tailwind sets a single border-color, so a true
+   gradient border can't be done via the native border alone (and
+   border-image squares off rounded corners). Instead we draw the ring on
+   a ::before pseudo-element using the mask-composite "donut" technique
+   (subtract the inner padding-box from the full box). This preserves
+   border-radius, the host's background, and any existing box-shadow.
+
+   Thickness is controlled by --foil-border-width (default 2px). Override
+   with the Tailwind arbitrary property syntax, e.g.:
+       <div class="border-foil [--foil-border-width:3px]">…</div>
+   The host element does NOT need a Tailwind `border-*` utility — the ring
+   is painted entirely by the pseudo-element. */
+@utility border-foil {
+    position: relative;
+    /* Establish a stacking context so the pseudo-element stays on top of
+       the host's background but doesn't escape its bounds. */
+    isolation: isolate;
+    --foil-border-width: 2px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: var(--foil-border-width);
+        pointer-events: none;
+        background-image:
+            /* Sharp bright glare sweep — same recipe as `foil`. */
+            linear-gradient(
+                115deg,
+                transparent 15%,
+                oklch(100% 0 0 / 0.6) 23%,
+                oklch(100% 0 0 / 0.95) 25%,
+                oklch(100% 0 0 / 0.6) 27%,
+                transparent 35%
+            ),
+            /* Iridescent rainbow spectrum — opaque so the ring reads as a
+               solid colored border rather than a wash. */
+            linear-gradient(
+                115deg,
+                oklch(75% 0.2 20) 0%,    /* Pinkish Red */
+                oklch(85% 0.2 80) 25%,   /* Yellow */
+                oklch(80% 0.2 150) 45%,  /* Green */
+                oklch(80% 0.2 240) 65%,  /* Blue */
+                oklch(75% 0.2 300) 85%,  /* Purple/Magenta */
+                oklch(75% 0.2 20) 100%   /* loop back to red for seamless travel */
+            );
+        background-size:
+            300% 100%,
+            300% 100%;
+        background-position:
+            0% 50%,
+            0% 50%;
+        background-blend-mode: screen;
+        /* Mask-composite donut: keep only the area between the outer box
+           and the inner padding-box, leaving a clean ring of the desired
+           thickness with rounded corners intact. */
+        -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        mask-composite: exclude;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::before {
+            animation: border-foil-shimmer 7s ease-in-out infinite alternate;
+        }
+    }
+}
+
+@keyframes border-foil-shimmer {
+    0% {
+        background-position: 0% 50%, 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%, 100% 50%;
+    }
+}

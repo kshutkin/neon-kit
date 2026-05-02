@@ -1,0 +1,205 @@
+<main>
+    <h1 class="mb-6">Tags</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        The <code>.tag</code> component is a labelled chip with a built-in
+        remove button. It shares the visual family of <code>.badge</code>
+        (rounded, bordered, top-edge highlight, em-sized) but with squarer
+        corners that seat well alongside form controls and a trailing
+        <code>.tag__remove</code> close affordance.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Variants</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Same modifier set as <code>.badge</code>: default neutral
+            surface, <code>.-primary</code> filled, plus state tints
+            (<code>.-success</code>, <code>.-warning</code>,
+            <code>.-error</code>, <code>.-info</code>).
+        </p>
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <span class="tag">
+                Default
+                <button type="button" class="tag__remove" aria-label="Remove Default">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+            <span class="tag -primary">
+                Primary
+                <button type="button" class="tag__remove" aria-label="Remove Primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+            <span class="tag -success">
+                Success
+                <button type="button" class="tag__remove" aria-label="Remove Success">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+            <span class="tag -warning">
+                Warning
+                <button type="button" class="tag__remove" aria-label="Remove Warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+            <span class="tag -error">
+                Error
+                <button type="button" class="tag__remove" aria-label="Remove Error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+            <span class="tag -info">
+                Info
+                <button type="button" class="tag__remove" aria-label="Remove Info">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </span>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Tag List</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            The optional <code>.tag-list</code> wrapper provides a flex
+            row with consistent <code>em</code>-sized gaps so a list of
+            chips wraps cleanly inside any container.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <span class="tag-list">
+                <span class="tag">
+                    JavaScript
+                    <button type="button" class="tag__remove" aria-label="Remove JavaScript">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <span class="tag">
+                    TypeScript
+                    <button type="button" class="tag__remove" aria-label="Remove TypeScript">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <span class="tag">
+                    CSS
+                    <button type="button" class="tag__remove" aria-label="Remove CSS">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <span class="tag">
+                    HTML
+                    <button type="button" class="tag__remove" aria-label="Remove HTML">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <span class="tag -info">
+                    Beta
+                    <button type="button" class="tag__remove" aria-label="Remove Beta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+            </span>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">In a Form Field</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Pair tags with an <code>.input</code> to build a token-style
+            multi-select. The input's inset-pressed shadow doubles as the
+            container affordance.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <label class="mb-2 block text-sm font-medium" for="tag-recipients">Recipients</label>
+            <div class="input flex flex-wrap items-center gap-2" style="min-block-size: 2.5rem;">
+                <span class="tag">
+                    alice@example.com
+                    <button type="button" class="tag__remove" aria-label="Remove alice@example.com">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <span class="tag">
+                    bob@example.com
+                    <button type="button" class="tag__remove" aria-label="Remove bob@example.com">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+                <input id="tag-recipients" type="text" class="grow border-0 bg-transparent p-0 shadow-none focus:outline-none" placeholder="Add another…" style="box-shadow: none; min-inline-size: 8rem;">
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Sizing</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Every <code>.tag</code> dimension — including the remove
+            button — is set in <code>em</code>, so wrapping a list in a
+            different font-size scales chips and controls together.
+        </p>
+        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="text-sm">
+                <span class="tag">
+                    Small
+                    <button type="button" class="tag__remove" aria-label="Remove small">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+            <div>
+                <span class="tag">
+                    Default
+                    <button type="button" class="tag__remove" aria-label="Remove default">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+            <div class="text-lg">
+                <span class="tag">
+                    Large
+                    <button type="button" class="tag__remove" aria-label="Remove large">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+            <div class="text-2xl">
+                <span class="tag">
+                    Huge
+                    <button type="button" class="tag__remove" aria-label="Remove huge">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </section>
+</main>

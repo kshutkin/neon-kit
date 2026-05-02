@@ -1,16 +1,8 @@
 class ThemeSwitcher extends HTMLElement {
   connectedCallback() {
-    const isMainWindow = window.top === window.self;
-
-    if (isMainWindow) {
-      this.#initMainWindowTheme();
-      this.#initPrimaryColor();
-      this.#renderButton();
-    } else {
-      this.#loadThemeFromStorage();
-      this.#loadPrimaryColorFromStorage();
-      this.#setupIframeListener();
-    }
+    this.#initTheme();
+    this.#initPrimaryColor();
+    this.#renderButton();
   }
 
   #renderButton() {
@@ -106,7 +98,6 @@ class ThemeSwitcher extends HTMLElement {
       const newTheme = currentTheme === "dark" ? "light" : "dark";
       this.#setTheme(newTheme);
       localStorage.setItem("theme", newTheme);
-      this.#notifyIframes(newTheme);
     });
 
     // Primary color sliders
@@ -177,49 +168,7 @@ class ThemeSwitcher extends HTMLElement {
     }
   }
 
-  #setupIframeListener() {
-    window.addEventListener("message", (e) => {
-      if (e.data && e.data.type === "theme-sync") {
-        this.#setTheme(e.data.theme);
-      }
-      if (e.data && e.data.type === "primary-color-sync") {
-        this.#setPrimaryColor(e.data.primaryColor);
-      }
-    });
-  }
-
-  #notifyIframes(theme, excludeSource = null) {
-    const iframes = document.querySelectorAll("iframe");
-    for (const iframe of iframes) {
-      try {
-        if (iframe.contentWindow && iframe.contentWindow !== excludeSource) {
-          iframe.contentWindow.postMessage({ type: "theme-sync", theme }, "*");
-        }
-      } catch (e) {
-        // Cross-origin iframe, skip
-        console.warn("Could not notify iframe:", e);
-      }
-    }
-  }
-
-  #notifyIframesPrimaryColor(primaryColor, excludeSource = null) {
-    const iframes = document.querySelectorAll("iframe");
-    for (const iframe of iframes) {
-      try {
-        if (iframe.contentWindow && iframe.contentWindow !== excludeSource) {
-          iframe.contentWindow.postMessage(
-            { type: "primary-color-sync", primaryColor },
-            "*"
-          );
-        }
-      } catch (e) {
-        // Cross-origin iframe, skip
-        console.warn("Could not notify iframe:", e);
-      }
-    }
-  }
-
-  #initMainWindowTheme() {
+  #initTheme() {
     const savedTheme = this.#loadThemeFromStorage();
     if (!savedTheme) {
       const prefersDark = window.matchMedia(
@@ -229,27 +178,14 @@ class ThemeSwitcher extends HTMLElement {
       this.#setTheme(theme);
       localStorage.setItem("theme", theme);
     }
-
-    // Notify any iframes of initial theme
-    const currentTheme = document.documentElement.dataset.theme;
-    if (currentTheme) {
-      this.#notifyIframes(currentTheme);
-    }
   }
 
   #initPrimaryColor() {
     const savedPrimaryColor = this.#loadPrimaryColorFromStorage();
     if (!savedPrimaryColor) {
-      // Use default primary color from CSS
       const defaultPrimary = this.#getCurrentPrimaryColor();
       this.#setPrimaryColor(defaultPrimary);
       localStorage.setItem("primaryColor", JSON.stringify(defaultPrimary));
-    }
-
-    // Notify any iframes of initial primary color
-    const currentPrimaryColor = this.#getCurrentPrimaryColor();
-    if (currentPrimaryColor) {
-      this.#notifyIframesPrimaryColor(currentPrimaryColor);
     }
   }
 
@@ -391,9 +327,6 @@ class ThemeSwitcher extends HTMLElement {
     const primaryColor = { l, c, h };
     this.#setPrimaryColor(primaryColor);
     localStorage.setItem("primaryColor", JSON.stringify(primaryColor));
-    if (window.top === window.self) {
-      this.#notifyIframesPrimaryColor(primaryColor);
-    }
   }
 
   getPrimaryColor() {

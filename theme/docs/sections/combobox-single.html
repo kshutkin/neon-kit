@@ -1,0 +1,224 @@
+<main>
+    <h1 class="mb-6">Combobox — Single-Select</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        Single-select <code>.combobox</code> — a focusable field that
+        opens a <code>.menu</code>-styled popover with one selectable
+        option. The field reuses the inset-well language of
+        <code>.input</code>; the popover reuses the panel chrome of
+        <code>.menu</code>. A trailing clear button removes the current
+        value, an optional search field filters options, and an
+        optional "Create new" row appends an option from the typed
+        query. Layout is logical-property based so the control flips
+        cleanly under <code>dir="rtl"</code>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Plain</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            The minimum: a field, a chevron, and a list of options.
+            Click the field or press <kbd class="kbd">Space</kbd> /
+            <kbd class="kbd">Enter</kbd> while focused to toggle the
+            popover.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox" data-combobox="single" data-options='["Apple","Banana","Cherry","Date","Elderberry","Fig","Grape"]'>
+                <button class="combobox__field" type="button" popovertarget="cb-single-plain" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="combobox__placeholder" data-cb-placeholder>Choose a fruit…</span>
+                    <span class="combobox__value" data-cb-value hidden></span>
+                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div id="cb-single-plain" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__list" data-cb-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Clear</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Adding a <code>.combobox__clear</code> button next to the
+            value lets users remove the current selection without
+            opening the popover.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox" data-combobox="single" data-clearable data-value="TypeScript" data-options='["JavaScript","TypeScript","Rust","Go","Python","Ruby","Swift","Kotlin"]'>
+                <button class="combobox__field" type="button" popovertarget="cb-single-clear" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="combobox__placeholder" data-cb-placeholder hidden>Choose a language…</span>
+                    <span class="combobox__value" data-cb-value>TypeScript</span>
+                    <span class="combobox__clear" data-cb-clear role="button" tabindex="0" aria-label="Clear selection">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </span>
+                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div id="cb-single-clear" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__list" data-cb-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Search</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            A sticky <code>.combobox__search</code> header at the top of
+            the popover filters the list as the user types. Empty-state
+            row appears when the filter eliminates every option.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox" data-combobox="single" data-clearable data-searchable data-options='["Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Chile","China","Colombia","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Ecuador","Egypt","El Salvador","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Guatemala","Guinea","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","UAE","UK","USA","Uruguay","Uzbekistan","Vanuatu","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"]'>
+                <button class="combobox__field" type="button" popovertarget="cb-single-search" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="combobox__placeholder" data-cb-placeholder>Pick a country…</span>
+                    <span class="combobox__value" data-cb-value hidden></span>
+                    <span class="combobox__clear" data-cb-clear role="button" tabindex="0" aria-label="Clear selection" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </span>
+                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div id="cb-single-search" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="Search countries…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Create New</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <code>data-creatable</code> opts in to a footer row that lets
+            users add a new option from the typed query. The footer row
+            only appears while the query is non-empty and not already in
+            the list.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="combobox" data-combobox="single" data-clearable data-searchable data-creatable data-options='["Bug","Feature","Chore","Docs"]'>
+                <button class="combobox__field" type="button" popovertarget="cb-single-create" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="combobox__placeholder" data-cb-placeholder>Pick or create a label…</span>
+                    <span class="combobox__value" data-cb-value hidden></span>
+                    <span class="combobox__clear" data-cb-clear role="button" tabindex="0" aria-label="Clear selection" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </span>
+                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div id="cb-single-create" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="Search or type to create…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                    <div class="combobox__footer" data-cb-footer hidden>
+                        <button class="combobox__create" type="button" data-cb-create>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                            <span data-cb-create-label>Create</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Field States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            The field shares the six-state vocabulary used by
+            <code>.input</code>: empty/disabled, empty/read-only,
+            disabled with value, read-only with value, validation
+            error, and labelled inside a form. Disabled freezes the
+            chevron + clear; read-only opts in via
+            <code>aria-readonly="true"</code> and tints the well to the
+            secondary surface (consumers gate the popover from opening).
+            Invalid is opted into via <code>aria-invalid="true"</code>
+            and pairs with a <code>.field-error</code> helper. Only the
+            field appearance is shown here — the popover is unchanged.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" disabled>
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-readonly="true">
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" disabled>
+                        <span class="combobox__value">Mango</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-readonly="true">
+                        <span class="combobox__value">Mango</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="combobox">
+                    <button class="combobox__field" type="button" aria-invalid="true" aria-describedby="cb-fruit-error">
+                        <span class="combobox__placeholder">Pick a fruit…</span>
+                        <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                </div>
+                <span class="field-error" id="cb-fruit-error">Choose a fruit to continue.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Country</span>
+                    <div class="combobox">
+                        <button class="combobox__field" type="button">
+                            <span class="combobox__value">Spain</span>
+                            <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                    </div>
+                    <span class="field-hint">Used to localise tax estimates.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">RTL</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Setting <code>dir="rtl"</code> on any ancestor flips the
+            field, the chevron position, and the popover anchor side —
+            no per-component code required.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+            <div class="combobox" data-combobox="single" data-clearable data-searchable data-options='["تفاحة","موزة","كرز","تمر","عنب","ليمون","مانجو","برتقال"]'>
+                <button class="combobox__field" type="button" popovertarget="cb-single-rtl" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="combobox__placeholder" data-cb-placeholder>اختر فاكهة…</span>
+                    <span class="combobox__value" data-cb-value hidden></span>
+                    <span class="combobox__clear" data-cb-clear role="button" tabindex="0" aria-label="مسح" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </span>
+                    <svg class="combobox__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div id="cb-single-rtl" popover class="combobox__popover" data-cb-popover>
+                    <div class="combobox__search">
+                        <input class="input" type="search" placeholder="ابحث…" data-cb-search>
+                    </div>
+                    <div class="combobox__list" data-cb-list></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

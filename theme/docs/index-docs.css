@@ -1,0 +1,29 @@
+/* Docs entry — Vite/Tailwind compiles this to serve the docs site.
+   The published package still ships raw CSS via ../index.css and friends. */
+@import "../index.css";
+
+/* Docs shell — document-level scrolling with a fixed sidebar.
+
+   Why not the more obvious `body { display: flex; height: 100vh } main {
+   overflow-y: auto }` shell? Because Chromium's CSS anchor positioning
+   currently mis-applies the page scroll offset to popovers whose trigger
+   lives inside an intermediate scroll container — the popover lands at
+   the trigger's pre-scroll position, which makes every menu, combobox,
+   datepicker, timepicker, and tooltip jump off-screen as soon as the
+   docs page is scrolled. Using the document as the scrolling container
+   sidesteps the bug entirely. */
+
+.docs-aside {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    block-size: 100vh;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.docs-main {
+    /* Match `.docs-aside`'s width (w-72 = 18rem). */
+    margin-inline-start: 18rem;
+    min-block-size: 100vh;
+}

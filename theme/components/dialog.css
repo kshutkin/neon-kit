@@ -1,0 +1,86 @@
+/* Dialog component — built on the native <dialog> element.
+   Structure:
+     <dialog class="dialog">
+       <header class="dialog__header">…</header>
+       <div class="dialog__body">…</div>
+       <footer class="dialog__footer">…</footer>
+     </dialog>
+
+   Sizes (modifiers on .dialog): .dialog.-small, .dialog.-medium (default), .dialog.-large, .dialog.-xlarge.
+   Mobile (<= 640px): always full-screen regardless of size.
+*/
+
+.dialog {
+    @apply panel p-0 m-auto whitespace-normal;
+
+    /* Layout: header / body / footer with body taking remaining space */
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    /* Default (medium) size */
+    width: min(90vw, --spacing(128));
+    max-height: min(85vh, --spacing(160));
+}
+
+.dialog.-small {
+    width: min(90vw, --spacing(96));
+    max-height: min(85vh, --spacing(112));
+}
+
+.dialog.-large {
+    width: min(90vw, --spacing(192));
+    max-height: min(85vh, --spacing(192));
+}
+
+.dialog.-xlarge {
+    width: min(95vw, --spacing(256));
+    max-height: min(90vh, --spacing(224));
+}
+
+.dialog:not([open]) {
+    display: none;
+}
+
+.dialog::backdrop {
+    background-color: oklch(from var(--color-ink-primary) l c h / 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.dialog__header {
+    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark text-ink-primary dark:text-ink-primary-dark border-b px-5 py-3 text-shadow-embossed dark:text-shadow-embossed-dark;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: --spacing(3);
+    font-weight: 600;
+}
+
+.dialog__body {
+    @apply px-5 py-4;
+    overflow: auto;
+    min-height: 0;
+}
+
+.dialog__footer {
+    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark border-t px-5 py-3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: --spacing(2);
+}
+
+/* Mobile: full screen */
+@media (max-width: 640px) {
+    .dialog,
+    .dialog.-small,
+    .dialog.-large,
+    .dialog.-xlarge {
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+    }
+}

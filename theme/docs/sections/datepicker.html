@@ -1,0 +1,293 @@
+<main>
+    <h1 class="mb-6">Datepicker</h1>
+    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+        A typeable date field paired with a popover that hosts three
+        navigable views — days inside a month, months inside a year, and
+        years inside a decade. The field reuses the inset-well chrome of
+        <code>.input</code> and the trailing-control language of
+        <code>.combobox</code>: a clear button (optional) plus a
+        calendar-icon trigger. Each cell in every view is a focusable
+        button so the picker is fully keyboard-navigable. Layout is
+        logical-property based; everything flips cleanly under
+        <code>dir="rtl"</code>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Plain</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            The minimum: a typeable input and a calendar trigger that
+            opens the day grid. Click the header label to step up to the
+            month view, then again to the year view.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="datepicker" data-datepicker>
+                <div class="datepicker__field">
+                    <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
+                    <button class="datepicker__trigger" type="button" popovertarget="dp-plain" aria-label="Open calendar">
+                        <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                    </button>
+                </div>
+                <div id="dp-plain" popover class="datepicker__popover" data-dp-popover></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">With Clear</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Adding <code>data-clearable</code> shows a clear button when
+            the field has a value — same affordance language as
+            <code>.combobox__clear</code>.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
+                <div class="datepicker__field">
+                    <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
+                    <button class="datepicker__clear" type="button" data-dp-clear aria-label="Clear date" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="datepicker__trigger" type="button" popovertarget="dp-clear" aria-label="Open calendar">
+                        <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                    </button>
+                </div>
+                <div id="dp-clear" popover class="datepicker__popover" data-dp-popover></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Field States</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Same six-state vocabulary every text-like control ships:
+            empty/disabled, empty/read-only, both filled equivalents,
+            invalid, and labelled inside a form. State hooks land on
+            the inner <code>.datepicker__input</code>; the
+            <code>.datepicker__field</code> wrapper reacts via
+            <code>:has()</code>. Trigger and clear buttons mirror the
+            input's <code>disabled</code> attribute. Only the field
+            appearance is shown — the calendar popover is unchanged.
+        </p>
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+            <label class="field-stack">
+                <span class="field-label">Disabled (empty)</span>
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" disabled>
+                        <button class="datepicker__trigger" type="button" disabled aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only (empty)</span>
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" readonly>
+                        <button class="datepicker__trigger" type="button" disabled aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Disabled with value</span>
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" value="2026-01-01" disabled>
+                        <button class="datepicker__trigger" type="button" disabled aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Read-only with value</span>
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" value="2026-01-01" readonly>
+                        <button class="datepicker__trigger" type="button" disabled aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </label>
+            <label class="field-stack">
+                <span class="field-label">Validation error</span>
+                <div class="datepicker">
+                    <div class="datepicker__field">
+                        <input class="datepicker__input" type="text" value="2099-99-99" aria-invalid="true" aria-describedby="dp-error">
+                        <button class="datepicker__trigger" type="button" aria-label="Open calendar">
+                            <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <span class="field-error" id="dp-error">Use the format YYYY-MM-DD.</span>
+            </label>
+            <form class="field-stack" onsubmit="event.preventDefault();">
+                <label class="field-stack">
+                    <span class="field-label">Start date</span>
+                    <div class="datepicker">
+                        <div class="datepicker__field">
+                            <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" name="start">
+                            <button class="datepicker__trigger" type="button" aria-label="Open calendar">
+                                <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <span class="field-hint">Used to compute your billing cycle.</span>
+                </label>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Static Views</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Each of the three overlays rendered inline so the layout is
+            visible without opening a popover. Each cell is a real
+            <code>&lt;button&gt;</code>; tab through to confirm
+            keyboard reachability.
+        </p>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <!-- Days view -->
+            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+                <header class="datepicker__nav">
+                    <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous month">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                    </button>
+                    <button class="datepicker__view-switch" type="button">April 2026</button>
+                    <button class="datepicker__nav-btn" type="button" data-dir="next" aria-label="Next month">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                    </button>
+                </header>
+                <div class="datepicker__grid -days">
+                    <div class="datepicker__weekday">Mo</div>
+                    <div class="datepicker__weekday">Tu</div>
+                    <div class="datepicker__weekday">We</div>
+                    <div class="datepicker__weekday">Th</div>
+                    <div class="datepicker__weekday">Fr</div>
+                    <div class="datepicker__weekday">Sa</div>
+                    <div class="datepicker__weekday">Su</div>
+                    <button class="datepicker__cell -muted" type="button">30</button>
+                    <button class="datepicker__cell -muted" type="button">31</button>
+                    <button class="datepicker__cell" type="button">1</button>
+                    <button class="datepicker__cell" type="button">2</button>
+                    <button class="datepicker__cell" type="button">3</button>
+                    <button class="datepicker__cell" type="button">4</button>
+                    <button class="datepicker__cell" type="button">5</button>
+                    <button class="datepicker__cell" type="button">6</button>
+                    <button class="datepicker__cell" type="button">7</button>
+                    <button class="datepicker__cell" type="button">8</button>
+                    <button class="datepicker__cell" type="button">9</button>
+                    <button class="datepicker__cell" type="button">10</button>
+                    <button class="datepicker__cell" type="button">11</button>
+                    <button class="datepicker__cell" type="button">12</button>
+                    <button class="datepicker__cell" type="button">13</button>
+                    <button class="datepicker__cell" type="button">14</button>
+                    <button class="datepicker__cell -selected" type="button" aria-pressed="true">15</button>
+                    <button class="datepicker__cell" type="button">16</button>
+                    <button class="datepicker__cell" type="button">17</button>
+                    <button class="datepicker__cell" type="button">18</button>
+                    <button class="datepicker__cell" type="button">19</button>
+                    <button class="datepicker__cell" type="button">20</button>
+                    <button class="datepicker__cell" type="button">21</button>
+                    <button class="datepicker__cell" type="button">22</button>
+                    <button class="datepicker__cell" type="button">23</button>
+                    <button class="datepicker__cell" type="button">24</button>
+                    <button class="datepicker__cell" type="button">25</button>
+                    <button class="datepicker__cell" type="button">26</button>
+                    <button class="datepicker__cell" type="button">27</button>
+                    <button class="datepicker__cell" type="button">28</button>
+                    <button class="datepicker__cell -today" type="button">29</button>
+                    <button class="datepicker__cell" type="button">30</button>
+                    <button class="datepicker__cell -muted" type="button">1</button>
+                    <button class="datepicker__cell -muted" type="button">2</button>
+                    <button class="datepicker__cell -muted" type="button">3</button>
+                </div>
+            </div>
+
+            <!-- Months view -->
+            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+                <header class="datepicker__nav">
+                    <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous year">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                    </button>
+                    <button class="datepicker__view-switch" type="button">2026</button>
+                    <button class="datepicker__nav-btn" type="button" data-dir="next" aria-label="Next year">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                    </button>
+                </header>
+                <div class="datepicker__grid -months">
+                    <button class="datepicker__cell" type="button">Jan</button>
+                    <button class="datepicker__cell" type="button">Feb</button>
+                    <button class="datepicker__cell" type="button">Mar</button>
+                    <button class="datepicker__cell -selected" type="button" aria-pressed="true">Apr</button>
+                    <button class="datepicker__cell -today" type="button">May</button>
+                    <button class="datepicker__cell" type="button">Jun</button>
+                    <button class="datepicker__cell" type="button">Jul</button>
+                    <button class="datepicker__cell" type="button">Aug</button>
+                    <button class="datepicker__cell" type="button">Sep</button>
+                    <button class="datepicker__cell" type="button">Oct</button>
+                    <button class="datepicker__cell" type="button">Nov</button>
+                    <button class="datepicker__cell" type="button">Dec</button>
+                </div>
+            </div>
+
+            <!-- Years view -->
+            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+                <header class="datepicker__nav">
+                    <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous decade">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                    </button>
+                    <button class="datepicker__view-switch" type="button">2020 – 2031</button>
+                    <button class="datepicker__nav-btn" type="button" data-dir="next" aria-label="Next decade">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                    </button>
+                </header>
+                <div class="datepicker__grid -years">
+                    <button class="datepicker__cell -muted" type="button">2019</button>
+                    <button class="datepicker__cell" type="button">2020</button>
+                    <button class="datepicker__cell" type="button">2021</button>
+                    <button class="datepicker__cell" type="button">2022</button>
+                    <button class="datepicker__cell" type="button">2023</button>
+                    <button class="datepicker__cell" type="button">2024</button>
+                    <button class="datepicker__cell" type="button">2025</button>
+                    <button class="datepicker__cell -selected" type="button" aria-pressed="true">2026</button>
+                    <button class="datepicker__cell -today" type="button">2027</button>
+                    <button class="datepicker__cell" type="button">2028</button>
+                    <button class="datepicker__cell" type="button">2029</button>
+                    <button class="datepicker__cell" type="button">2030</button>
+                    <button class="datepicker__cell" type="button">2031</button>
+                    <button class="datepicker__cell -muted" type="button">2032</button>
+                    <button class="datepicker__cell -muted" type="button">2033</button>
+                    <button class="datepicker__cell -muted" type="button">2034</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">RTL</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Setting <code>dir="rtl"</code> on any ancestor flips the
+            field, the trailing trigger, the prev/next chevrons, and the
+            popover anchor side — no per-component code required.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+            <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
+                <div class="datepicker__field">
+                    <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
+                    <button class="datepicker__clear" type="button" data-dp-clear aria-label="مسح" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                    <button class="datepicker__trigger" type="button" popovertarget="dp-rtl" aria-label="فتح التقويم">
+                        <svg class="datepicker__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                    </button>
+                </div>
+                <div id="dp-rtl" popover class="datepicker__popover" data-dp-popover></div>
+            </div>
+        </div>
+    </section>
+</main>

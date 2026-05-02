@@ -6,5 +6,12 @@
 @import "./reset-normalize.css" layer(base);
 @import "./components.css" layer(components);
 @import "tailwindcss/utilities.css" layer(utilities);
+/* `./utilities.css` is imported WITHOUT `layer(...)`. Tailwind v4's
+   `@utility` directive cannot be nested inside an `@layer` block —
+   doing so emits an `@utility cannot be nested` build error. The
+   compiler still places these custom utilities into the `utilities`
+   layer at output time (same cascade position as Tailwind's own
+   utilities), so the unlayered import is correct. Do not wrap. */
+@import "./utilities.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

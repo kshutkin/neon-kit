@@ -1,0 +1,426 @@
+/* Datepicker — input field + popover with three navigable views.
+
+   Layout-only, like `.combobox`. Behavior (parsing typed dates, populating
+   the day/month/year grids, moving focus with arrow keys) is consumer-
+   owned. The CSS is structured so that:
+
+     - The field reuses `.input`'s inset-well chrome and pairs the typed
+       input with an optional `.combobox__clear`-styled clear button and
+       a calendar-icon trigger button — the same trailing-control language
+       as `.combobox` so the two controls feel like siblings.
+     - The popover reuses `.combobox__popover`'s panel chrome with a
+       header (prev / view-switcher / next) plus one of three grids:
+       days (7-col), months (4-col), years (4-col).
+     - Each cell is a focusable `<button>` styled with `interactive-row`
+       so keyboard navigation reads the same as menu / option rows.
+
+   Markup:
+       <div class="datepicker">
+         <div class="datepicker__field">
+           <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD">
+           <button class="datepicker__clear" type="button">…</button>
+           <button class="datepicker__trigger" type="button" popovertarget="dp-pop">
+             <svg class="datepicker__icon">…</svg>
+           </button>
+         </div>
+         <div id="dp-pop" class="datepicker__popover" popover>
+           <header class="datepicker__nav">
+             <button class="datepicker__nav-btn">‹</button>
+             <button class="datepicker__view-switch">January 2025</button>
+             <button class="datepicker__nav-btn">›</button>
+           </header>
+           <div class="datepicker__grid -days">…</div>  <!-- or -months / -years -->
+         </div>
+       </div>
+
+   RTL: every offset is logical; the prev/next chevrons flip on
+   `:dir(rtl)` so "previous" always points toward the inline-start.
+*/
+
+/* ---------- Wrapper ------------------------------------------------------- */
+
+.datepicker {
+    position: relative;
+    display: inline-block;
+    min-inline-size: --spacing(48);
+}
+
+/* ---------- Field --------------------------------------------------------- */
+
+/* The chrome lives on the wrapper so the inner <input> can stay flush — that
+   way the cursor sits next to the leading edge instead of inside a nested
+   border. Treats focus-within as the focus ring, like `.combobox.-multi`. */
+.datepicker__field {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark;
+
+    /* Override panel's whitespace/ellipsis defaults — fields hold form
+       controls, not a single line of label text. */
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0;
+
+    display: flex;
+    align-items: stretch;
+    inline-size: 100%;
+    min-block-size: --spacing(9);
+}
+
+.datepicker__field:focus-within {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+.datepicker:has(.datepicker__input:disabled) > .datepicker__field {
+    @apply disabled-surface;
+}
+
+/* Read-only — match `.input:read-only` (muted-surface fill). The input is
+   still focusable; consumers disable the trigger button via plain `disabled`
+   so the calendar popover can't open. CSS only handles the visual. */
+.datepicker:has(.datepicker__input:read-only:not(:disabled)) > .datepicker__field {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+/* Invalid — same hook as `.input[aria-invalid="true"]`. Lives on the
+   wrapper so the chrome (which is owned by the wrapper) flips. */
+.datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field {
+    @apply border-error dark:border-error-dark;
+}
+
+.datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field:focus-within {
+    @apply border-error dark:border-error-dark;
+}
+
+/* The typed-date <input> — chrome is owned by the wrapper. */
+.datepicker__input {
+    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1.25;
+    padding: --spacing(1.5) --spacing(3);
+    outline: none;
+    text-shadow: none;
+}
+
+/* Clear — same affordance language as `.combobox__clear` so a clearable
+   datepicker reads like a clearable combobox. Hidden by default; the
+   consumer toggles `hidden` based on whether the input has a value. */
+.datepicker__clear {
+    @apply quiet-control
+        inline-flex items-center justify-center;
+
+    align-self: center;
+    inline-size: 1.5em;
+    block-size: 1.5em;
+    margin-inline-end: --spacing(1);
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    flex: none;
+}
+
+.datepicker__clear > svg {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}
+
+/* Calendar trigger — hugs the inline-end edge of the field. Borrows the
+   quiet-button colour language and shares a divider with the input. */
+.datepicker__trigger {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        border-s border-border dark:border-border-dark
+        inline-flex items-center justify-center;
+
+    appearance: none;
+    flex: none;
+    inline-size: --spacing(9);
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    border-block: 0;
+    border-inline-end: 0;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
+}
+
+.datepicker__icon {
+    inline-size: 1.125em;
+    block-size: 1.125em;
+}
+
+/* ---------- Popover ------------------------------------------------------- */
+
+.datepicker__popover {
+    @apply panel p-0 m-0 whitespace-normal;
+
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow: hidden;
+    inline-size: --spacing(72);
+    margin-block-start: --spacing(1);
+    /* `block-end span-inline-end` instead of `bottom span-inline-end`
+       — Chromium rejects the mixed physical+logical form. */
+    position-area: block-end span-inline-end;
+
+    /* Reset UA `[popover]` defaults (`margin: auto`, `inset: 0`) so the
+       anchor-positioned offset above survives. Override `position: fixed`
+       — Chromium currently mis-applies the document scroll offset to
+       fixed-positioned popovers under anchor placement; `absolute`
+       gets the anchor math right and top-layer rendering still keeps
+       us above siblings. */
+    &[popover] {
+        position: absolute;
+        margin: 0;
+        margin-block-start: --spacing(1);
+        inset: auto;
+    }
+
+    /* Author `display: grid` above wins over the UA
+       `[popover]:not(:popover-open) { display: none }` rule, so the
+       closed popover would render inline. Force it back to none. */
+    &[popover]:not(:popover-open) {
+        display: none;
+    }
+}
+
+/* ---------- Header (prev / view-switch / next) ---------------------------- */
+
+.datepicker__nav {
+    @apply border-b border-border dark:border-border-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: --spacing(1);
+}
+
+/* Prev/next chevron buttons — small square hit targets. */
+.datepicker__nav-btn {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        hover:text-ink-primary dark:hover:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
+        disabled:pointer-events-none
+        inline-flex items-center justify-center;
+
+    appearance: none;
+    inline-size: --spacing(8);
+    block-size: --spacing(8);
+    padding: 0;
+    border: 0;
+    border-radius: --spacing(1);
+    background: transparent;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+}
+
+.datepicker__nav-btn > svg {
+    inline-size: 1em;
+    block-size: 1em;
+}
+
+.datepicker__nav-btn[data-dir="prev"] > svg,
+.datepicker__nav-btn[data-dir="next"] > svg {
+    /* RTL: flip horizontally so prev/next still point toward the inline
+       direction the user reads from. */
+    :where(:dir(rtl)) & {
+        transform: scaleX(-1);
+    }
+}
+
+/* The view-switch button — clicking cycles days → months → years. */
+.datepicker__view-switch {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
+        active:bg-surface-active dark:active:bg-surface-active-dark
+        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+        text-shadow-embossed dark:text-shadow-embossed-dark;
+
+    appearance: none;
+    block-size: --spacing(8);
+    padding-inline: --spacing(2.5);
+    border: 0;
+    border-radius: --spacing(1);
+    background: transparent;
+    font: inherit;
+    font-weight: 600;
+    color: inherit;
+    cursor: default;
+}
+
+/* ---------- Grids --------------------------------------------------------- */
+
+/* Shared grid frame. Each variant supplies its own column count via a
+   modifier so the same paddings, gaps, and cell sizing apply across views. */
+.datepicker__grid {
+    display: grid;
+    gap: --spacing(0.5);
+    padding: --spacing(2);
+}
+
+.datepicker__grid.-days {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.datepicker__grid.-months,
+.datepicker__grid.-years {
+    grid-template-columns: repeat(4, 1fr);
+    /* Months and years want a bit more room per cell since they hold
+       longer labels and there's only 12 / 16 of them. */
+    gap: --spacing(1);
+    padding: --spacing(2.5);
+}
+
+/* Day-of-week header strip — non-interactive, spans the day grid's row. */
+.datepicker__weekday {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold uppercase tracking-wide;
+    text-align: center;
+    padding-block: --spacing(1);
+    user-select: none;
+}
+
+/* ---------- Cell --------------------------------------------------------- */
+
+/* A single picker target — day, month, or year. Focusable button so
+   keyboard nav (roving-tabindex etc.) is consumer-managed but the
+   landing styles are baked in. Reuses interactive-row state colours. */
+.datepicker__cell {
+    @apply interactive-row text-ink-primary dark:text-ink-primary-dark;
+
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: default;
+
+    border-radius: --spacing(1);
+    padding: --spacing(1.5) --spacing(1);
+    text-align: center;
+    line-height: 1.1;
+    min-block-size: --spacing(8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Months and years are sparser; give them a touch more vertical room so
+   the four-column grid feels balanced against the 7-column day grid. */
+.datepicker__grid.-months > .datepicker__cell,
+.datepicker__grid.-years > .datepicker__cell {
+    min-block-size: --spacing(10);
+    padding-block: --spacing(2);
+}
+
+/* Out-of-month days (leading / trailing fill) — dim them so the active
+   month reads cleanly while still letting the user click into adjacent
+   months without changing views. */
+.datepicker__cell.-muted {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+}
+
+/* Today indicator — subtle dotted underline, no surface fill so the
+   selection state can layer on top without conflict. */
+.datepicker__cell.-today {
+    font-weight: 600;
+    box-shadow: inset 0 -2px 0 0 var(--color-primary);
+}
+
+/* Selected cell — fills with primary, mirrors `.checkbox:checked` /
+   `.btn.cta` so a picked date reads as committed in the same visual
+   language as a checked option. */
+.datepicker__cell.-selected {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        text-ink-inverse dark:text-ink-inverse
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        text-shadow-debossed dark:text-shadow-debossed-dark
+        hover:bg-primary-hover dark:hover:bg-primary-hover
+        active:bg-primary-active dark:active:bg-primary-active;
+    border: 1px solid;
+}
+
+.datepicker__cell:disabled,
+.datepicker__cell[aria-disabled="true"] {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+    pointer-events: none;
+}
+
+/* ---------- Range variant -----------------------------------------------
+
+   `.datepicker.-range` lets the user pick a start/end pair using the same
+   single-overlay shell. The consumer toggles three new cell modifiers:
+
+     - `.-range-start` / `.-range-end`  — endpoints, styled like `-selected`.
+     - `.-in-range`                     — days strictly between endpoints.
+
+   While the picker is mid-selection (start chosen, end pending), the
+   wrapper carries `.-range-pending`. Under that flag the trailing endpoint
+   and the in-range band soften so it reads as a hover preview instead of
+   a committed range.
+*/
+
+.datepicker__cell.-range-start,
+.datepicker__cell.-range-end {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        text-ink-inverse dark:text-ink-inverse
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        text-shadow-debossed dark:text-shadow-debossed-dark
+        hover:bg-primary-hover dark:hover:bg-primary-hover
+        active:bg-primary-active dark:active:bg-primary-active;
+    border: 1px solid;
+}
+
+.datepicker__cell.-in-range {
+    background: color-mix(in oklab, var(--color-primary) 18%, transparent);
+    border-radius: 0;
+}
+
+/* Square the inner edges of endpoints so they butt up flush with the
+   in-range band. The day grid is row-major; ranges flow along the
+   inline axis, so we use logical end / start radii. */
+.datepicker__cell.-range-start:not(.-range-end) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+}
+.datepicker__cell.-range-end:not(.-range-start) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+}
+
+/* Pending — the band is a tentative preview that follows the cursor.
+   Dim the fill and outline the trailing endpoint so the user can tell
+   the range isn't committed yet. */
+.datepicker.-range-pending .datepicker__cell.-in-range {
+    background: color-mix(in oklab, var(--color-primary) 10%, transparent);
+}
+
+.datepicker.-range-pending .datepicker__cell.-range-end:not(.-range-start) {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+    background: transparent;
+    border: 1px dashed var(--color-primary);
+    box-shadow: none;
+    text-shadow: none;
+}

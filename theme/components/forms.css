@@ -1,0 +1,382 @@
+/* Form components — `.input`, `.checkbox`, `.radio`, `.fieldset`.
+
+   All four sit in the same visual family as `.btn` and `.kbd`:
+   - bordered, rounded, with the top-edge highlight from `--inset-shadow-highlight`
+   - the same focus ring (handled globally via `:focus-visible`) and the same
+     `border-border-focus` border swap on focus, so a focused field reads the
+     same as a focused button
+   - the same disabled treatment (`bg-surface-disabled`, `text-ink-muted`,
+     `border-border-disabled`)
+
+   Where they differ:
+   - `.input` reads as an inset "well": the raised drop-shadow of `.btn` is
+     replaced with `inset-shadow-pressed` so the field looks like something
+     you type *into*, not something you press.
+   - `.checkbox` / `.radio` strip the native UA control and re-render it as a
+     small `.btn`-shaped square / circle. Unchecked state matches the btn's
+     idle look; `:checked` fills with `--color-primary` and reuses the
+     `inset-shadow-highlight-pressed` token from CTA buttons so the checked
+     state reads as "pressed in".
+   - `.fieldset` is a flat panel — no drop shadow, no top highlight — that
+     groups related fields under a small-caps legend.
+*/
+
+/* ---------- Input ---------------------------------------------------------- */
+
+.input {
+    @apply panel
+        disabled-control focus-ring-swap
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark
+        placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+
+    /* Native control reset — text fields are not inline-block-with-ellipsis. */
+    appearance: none;
+    font: inherit;
+    line-height: 1.25;
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+/* Read-only — muted surface fill. The `:not(:disabled)` guard is load-bearing:
+   in CSS, a disabled <input> ALSO matches `:read-only` (a disabled control
+   isn't user-editable), so without the guard a disabled field would pick up
+   the read-only fill instead of the disabled fill — making `.input` and
+   button-based fields like `.combobox__field` (which use `[aria-readonly]`
+   and don't have this overlap) render disabled in different colours.
+
+   Scoped to `input` and `textarea` because <select> is always `:read-only`
+   in CSS terms (no native text-editing surface), so a plain `.input:read-only`
+   would tint every <select> with the read-only fill in its idle state. */
+:is(input, textarea).input:read-only:not(:disabled) {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+/* Invalid state — opt in via `aria-invalid="true"`, the same hook native
+   form validation toggles on submit. Border swaps to `--color-error`; the
+   focus ring re-uses the same border so the invalid affordance survives
+   focus. Disabled fields skip the treatment so a locked field doesn't shout. */
+.input[aria-invalid="true"]:not(:disabled) {
+    @apply border-error dark:border-error-dark
+        focus-visible:border-error dark:focus-visible:border-error-dark;
+}
+
+/* Multi-line variant. Allow vertical resize but not horizontal — the field's
+   inline size is owned by the layout, not by the user. */
+textarea.input {
+    white-space: pre-wrap;
+    min-block-size: --spacing(16);
+    resize: vertical;
+    vertical-align: top;
+}
+
+/* Native <select> — render the chevron ourselves so the control matches the
+   `.btn`-with-trailing-icon look across browsers. */
+select.input {
+    padding-inline-end: --spacing(8);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23808080'><path stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right --spacing(2.5) center;
+    background-size: 1em;
+    cursor: default;
+}
+
+/* Native <select> placeholder — since it doesn't support ::placeholder, we
+   restyle the control when the default disabled/empty option is chosen. */
+select.input:has(option[value=""][disabled]:checked),
+select.input:required:invalid {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+}
+
+/* Reset the dropdown options to primary text so they aren't muted. */
+select.input option {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+}
+
+/* File input — strip the OS-rendered button on the inside; consumers can pair
+   the input with a sibling `.btn` if they want a styled trigger. */
+.input[type="file"] {
+    padding: --spacing(1.5) --spacing(3);
+    cursor: default;
+}
+
+/* ---------- Input group (prefix / suffix affixes) ------------------------- */
+
+/* Wrap an `.input` together with non-interactive affix text ("$", "kg",
+   "/month", a unit or a currency code) that should sit *inside* the
+   field's border. The wrapper carries the field chrome (border, focus
+   swap, disabled / read-only / invalid surfaces); the inner `.input`
+   strips its own border so the affix and the editable area read as a
+   single field — same pattern as `.timepicker__field` hosting the
+   inline timezone button.
+
+   Markup:
+       <div class="input-group">
+         <span class="input-affix">$</span>
+         <input class="input" type="number" value="42">
+         <span class="input-affix">USD</span>
+       </div>
+
+   Either or both affixes may be present. Use a `<button>` instead of a
+   `<span>` if the affix should be interactive (e.g., a unit toggle).
+*/
+.input-group {
+    @apply panel
+        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
+        bg-surface dark:bg-surface-dark;
+
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: stretch;
+    inline-size: 100%;
+    min-block-size: --spacing(9);
+}
+
+.input-group:focus-within {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+/* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
+   grouped field is indistinguishable from a plain one in those states. */
+.input-group:has(> .input:disabled) {
+    @apply disabled-surface;
+}
+
+/* Same `:read-only`/select overlap as `.input` above — scope the
+   wrapper read-only fill to text-editable inputs only. */
+.input-group:has(> :is(input, textarea).input:read-only:not(:disabled)) {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+.input-group:has(> .input[aria-invalid="true"]:not(:disabled)) {
+    @apply border-error dark:border-error-dark;
+}
+
+.input-group:has(> .input[aria-invalid="true"]:not(:disabled)):focus-within {
+    @apply border-error dark:border-error-dark;
+}
+
+/* The hosted `.input` becomes a transparent editable region — the wrapper
+   is the field. Strip the input's own border, shadow, and focus outline so
+   only the wrapper's chrome paints. */
+.input-group > .input {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    outline: none;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+}
+
+/* Non-interactive affix — short label rendered inside the field
+   (currency, units, "/month"). Muted ink so the editable value stays
+   the dominant content. Sized in `em` so it tracks the field's font. */
+.input-affix {
+    @apply text-ink-secondary dark:text-ink-secondary-dark
+        inline-flex items-center;
+
+    align-self: stretch;
+    flex: none;
+    padding-inline: --spacing(3);
+    user-select: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Drop the inner-edge padding so the affix relies on the input's own
+   `padding-inline` for separation from the editable value. */
+.input-affix:first-child {
+    padding-inline-end: 0;
+}
+
+.input-affix:last-child {
+    padding-inline-start: 0;
+}
+
+/* ---------- Checkbox & Radio ---------------------------------------------- */
+
+/* Shared shape: a small `.btn`-styled box. Sized in `em` so the control
+   tracks the surrounding text size — placing one inline with a label keeps
+   the optical alignment correct at any font-size.
+
+   The `not-disabled:` prefix on every hover/active variant is load-bearing.
+   `:disabled` and `:hover` have equal CSS specificity (one pseudo-class
+   each), so source order decides — and Tailwind emits hover/active rules
+   *after* the disabled fill from `disabled-control`, which means a disabled
+   checkbox would otherwise visibly react to the cursor. `not-disabled:`
+   compiles to `:not(:disabled):hover` (specificity 0,2,0), beating both the
+   plain `:hover` and the `:disabled` fill at the same time. Don't drop the
+   guard when refactoring. The same pattern applies to `.btn` via inline
+   hover/active utilities, which work because `:disabled` there is wrapped
+   in `disabled-control`'s `:is(:disabled, [aria-disabled])` (specificity
+   0,2,0) and outranks bare `:hover` — checkboxes don't get that lift
+   because their disabled state is bare `:disabled` from the @apply chain. */
+.checkbox,
+.radio {
+    @apply disabled-control focus-ring-swap
+        text-ink-primary dark:text-ink-primary-dark
+        bg-surface dark:bg-surface-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        shadow-drop-subtle dark:shadow-drop-subtle-dark
+        not-disabled:hover:bg-surface-hover dark:not-disabled:hover:bg-surface-hover-dark
+        not-disabled:active:bg-surface-active dark:not-disabled:active:bg-surface-active-dark
+        not-disabled:active:inset-shadow-pressed dark:not-disabled:active:inset-shadow-pressed-dark
+        not-disabled:active:shadow-none;
+
+    /* Strip the native control. */
+    appearance: none;
+    -webkit-appearance: none;
+
+    display: inline-grid;
+    place-content: center;
+    flex-shrink: 0;
+
+    inline-size: 1.125em;
+    block-size: 1.125em;
+    padding: 0;
+    margin: 0;
+
+    /* Sit on the surrounding text baseline (matches `.kbd`'s alignment). */
+    vertical-align: middle;
+    cursor: pointer;
+
+    /* Allow the checked-state indicator to use a pseudo-element. */
+    position: relative;
+}
+
+.checkbox {
+    border-radius: --spacing(1);
+}
+
+.radio {
+    border-radius: 9999px;
+}
+
+/* Checked: fill with primary, reuse the CTA "pressed-in" highlight token so
+   the checked state reads as committed rather than just hovered. */
+.checkbox:checked,
+.radio:checked {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        shadow-none
+        hover:bg-primary-hover dark:hover:bg-primary-hover
+        active:bg-primary-active dark:active:bg-primary-active
+        disabled:bg-primary-disabled dark:disabled:bg-primary-disabled
+        disabled:border-border-disabled dark:disabled:border-border-disabled-dark;
+}
+
+/* Checkmark — drawn as a CSS-only glyph using two borders, so it inherits
+   `currentColor` and stays crisp at any size. */
+.checkbox:checked::after {
+    content: "";
+    inline-size: 0.3em;
+    block-size: 0.6em;
+    border: solid var(--color-ink-inverse);
+    border-width: 0 0.15em 0.15em 0;
+    transform: translateY(-0.05em) rotate(45deg);
+}
+
+/* Indeterminate state — horizontal bar instead of a checkmark. */
+.checkbox:indeterminate {
+    @apply bg-primary dark:bg-primary-dark
+        border-border-primary dark:border-border-primary-dark
+        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+        shadow-none;
+}
+
+.checkbox:indeterminate::after {
+    content: "";
+    inline-size: 0.6em;
+    block-size: 0.15em;
+    background: var(--color-ink-inverse);
+    border-radius: 0.05em;
+}
+
+/* Radio dot. */
+.radio:checked::after {
+    content: "";
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-radius: 9999px;
+    background: var(--color-ink-inverse);
+}
+
+/* Field row — convenience wrapper for "<label> <control> <text>" layouts.
+   Aligns the control and label text on a shared baseline and gives them a
+   click-friendly target. */
+.field {
+    display: inline-flex;
+    align-items: center;
+    gap: --spacing(2);
+    cursor: pointer;
+    user-select: none;
+}
+
+.field:has(:disabled) {
+    @apply text-ink-muted dark:text-ink-muted-dark;
+    cursor: default;
+}
+
+/* Stacked label above an input. */
+.field-stack {
+    display: inline-flex;
+    flex-direction: column;
+    gap: --spacing(1);
+}
+
+.field-stack > .field-label {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    user-select: none;
+}
+
+/* Helper text under a field. `.field-hint` is the neutral form (e.g.
+   formatting tips); `.field-error` is the validation message a consumer
+   shows when the input flips to `aria-invalid="true"`. Both inherit
+   small-text sizing so they don't fight the field for visual weight. */
+.field-hint {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs;
+    user-select: none;
+}
+
+.field-error {
+    @apply text-error dark:text-error-dark text-xs;
+    user-select: none;
+}
+
+/* ---------- Fieldset ------------------------------------------------------- */
+
+/* Flat panel grouping for related fields. No drop shadow (the contained
+   inputs already carry their own elevation), no top highlight — a fieldset is
+   a frame, not a surface you press. */
+.fieldset {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark
+        border border-border dark:border-border-dark
+        rounded
+        block;
+
+    /* Override panel's whitespace/ellipsis defaults — fieldsets contain
+       wrapping content, not a single line of label text. */
+    white-space: normal;
+    text-overflow: clip;
+
+    padding: --spacing(3) --spacing(4) --spacing(4);
+    min-inline-size: 0;
+}
+
+/* Native <legend> sits inside the top border. Use small-caps to match the
+   `.menu__group-header` and `.field-label` typography family. */
+.fieldset > legend {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    padding-inline: --spacing(1.5);
+    margin-inline-start: calc(--spacing(1.5) * -1);
+    user-select: none;
+}

@@ -1,0 +1,75 @@
+/* Keyboard-shortcut hint — a small "nameplate" style sign.
+
+   Visually shares the family of `.btn` (rounded, bordered, top-edge
+   highlight, embossed text) but is non-interactive and intentionally flat:
+   no drop shadow, slightly muted surface, tighter proportions, monospaced
+   characters so a key sits like a printed legend on a physical keycap.
+
+   Single-key markup:
+       <kbd class="kbd">K</kbd>
+
+   Combo markup — wrap individual keys in `.kbd-keys` so they share a
+   consistent baseline, equal heights, and equal visual gaps:
+       <span class="kbd-keys">
+           <kbd class="kbd">⌘</kbd>
+           <kbd class="kbd">⇧</kbd>
+           <kbd class="kbd">K</kbd>
+       </span>
+
+   Alignment notes:
+   - Each `.kbd` is a flex box with `min-inline-size = block-size`, so
+     single-character keys (letters, digits, glyphs like ⌘ ⇧ ⌥ ⌃ ↵ ⌫ ↑ ↓)
+     render as identical squares regardless of glyph width.
+   - Multi-character labels (Esc, Tab, Ctrl) keep the same height and
+     stretch horizontally with even side padding.
+   - `line-height: 1` plus `align-items: center` removes ascender/descender
+     drift so glyphs of different visual height (e.g. ⌘ vs k vs g) sit on
+     the same optical center line.
+*/
+
+.kbd {
+    @apply text-ink-primary dark:text-ink-primary-dark
+        bg-surface-secondary dark:bg-surface-secondary-dark
+        border border-border dark:border-border-dark
+        inset-shadow-highlight dark:inset-shadow-highlight-dark
+        text-shadow-embossed dark:text-shadow-embossed-dark
+        rounded
+        inline-flex items-center justify-center
+        whitespace-nowrap select-none;
+
+    /* Monospaced + tabular numerals so digits and letters share width. */
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125em;
+    font-weight: 500;
+    line-height: 1;
+
+    /* Square-by-default sign proportions; multi-char labels grow inline. */
+    block-size: 1.6em;
+    min-inline-size: 1.6em;
+    padding-inline: 0.4em;
+
+    /* Sit on the surrounding text baseline. */
+    vertical-align: middle;
+    cursor: default;
+}
+
+/* Wrapper that aligns a sequence of `.kbd` keys with even visual gaps.
+   Gap is in `em` so a row of keys nested inside larger / smaller text
+   keeps proportional spacing without per-context overrides. */
+.kbd-keys {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    vertical-align: middle;
+}
+
+/* Optional textual separator between keys (e.g. "+"). Muted, monospaced,
+   matched to the kbd font-size so it lines up with the keycaps. */
+.kbd-keys__sep {
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8125em;
+    line-height: 1;
+    user-select: none;
+}
