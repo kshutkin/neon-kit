@@ -1,6 +1,6 @@
 {
   "name": "@neon-kit/theme",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "@neon-kit/theme is a simple, lightweight, CSS theme for Tailwind CSS with optional neon-like colors / effects.",
   "repository": {
     "type": "git",
