@@ -1,0 +1,70 @@
+<main>
+    <h1 class="mb-6">Menu — Web Component</h1>
+    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
+        keyboard behavior to the theme's <code>.menu</code> markup: a roving
+        <code>tabindex</code> across <code>.menu__item</code> rows, arrow-key
+        navigation, <code>Home</code> / <code>End</code> jump, and
+        type-ahead. Disabled items (<code>[disabled]</code> or
+        <code>aria-disabled="true"</code>) are skipped. See the
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+
+// In your bundle entry:
+import '@neon-kit/theme/index.css';
+import '@neon-kit/web-components/menu';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Popover-anchored menu</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Pair the host element with the native popover API:
+            <code>popovertarget</code> on a trigger button, <code>popover</code>
+            on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the
+            arrow keys, <code>Home</code>, <code>End</code>, or type the first
+            letters of an item label to focus it.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <button type="button" class="btn" popovertarget="wc-demo-menu">
+                Open menu
+            </button>
+            <neon-menu id="wc-demo-menu" popover class="menu">
+                <div class="menu__group">
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">New file</span>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">N</kbd>
+                        </span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Open</span>
+                        <span class="menu__shortcut kbd-keys">
+                            <kbd class="kbd">⌘</kbd>
+                            <kbd class="kbd">O</kbd>
+                        </span>
+                    </button>
+                    <button class="menu__item" type="button" disabled>
+                        <span class="menu__label">Save (disabled)</span>
+                    </button>
+                </div>
+                <div class="menu__group">
+                    <div class="menu__group-header">Recent</div>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Project Neon</span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Theme tokens</span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Tooltip notes</span>
+                    </button>
+                </div>
+            </neon-menu>
+        </div>
+    </section>
+</main>

@@ -1,6 +1,6 @@
 /* Docs entry — Vite/Tailwind compiles this to serve the docs site.
    The published package still ships raw CSS via ../index.css and friends. */
-@import "../index.css";
+@import "../theme/index.css";
 
 /* Docs shell — document-level scrolling with a fixed sidebar.
 

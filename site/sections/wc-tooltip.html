@@ -1,0 +1,85 @@
+<main>
+    <h1 class="mb-6">Tooltip — Web Component</h1>
+    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <code>&lt;neon-tooltip&gt;</code> is an autonomous custom element. Drop
+        it inside the element you want to annotate; it turns its own markup
+        into a popover styled by <code>@neon-kit/theme</code> and wires the
+        parent as the trigger. Renders Light DOM only — see the
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+
+// In your bundle entry:
+import '@neon-kit/theme/index.css';
+import '@neon-kit/web-components/tooltip';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Basic</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Plain text inside the element becomes the tooltip body. Default
+            trigger is <code>hover focus</code>; on a <code>&lt;button&gt;</code>
+            parent you also get free click-to-toggle from the platform.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <button type="button" class="btn">
+                Hover me<neon-tooltip>Hello world</neon-tooltip>
+            </button>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Placement</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Set <code>data-placement</code> to one of <code>top</code> (default),
+            <code>right</code>, <code>bottom</code>, or <code>left</code>.
+        </p>
+        <div class="flex flex-wrap gap-3 rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <button type="button" class="btn">Top<neon-tooltip data-placement="top">Top placement</neon-tooltip></button>
+            <button type="button" class="btn">Right<neon-tooltip data-placement="right">Right placement</neon-tooltip></button>
+            <button type="button" class="btn">Bottom<neon-tooltip data-placement="bottom">Bottom placement</neon-tooltip></button>
+            <button type="button" class="btn">Left<neon-tooltip data-placement="left">Left placement</neon-tooltip></button>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Rich content</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Put any markup inside. Structural content disables the implicit
+            <code>role="tooltip"</code> (use the popover semantics instead).
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <button type="button" class="btn">
+                Show rich tooltip<neon-tooltip data-placement="bottom">
+                    <strong>Keyboard shortcut</strong>
+                    <div class="kbd-keys">
+                        <kbd class="kbd">⌘</kbd>
+                        <kbd class="kbd">K</kbd>
+                    </div>
+                </neon-tooltip>
+            </button>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Non-button parents</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Works on any focusable element. Void elements (<code>&lt;input&gt;</code>,
+            <code>&lt;img&gt;</code>) cannot host children — wrap them.
+        </p>
+        <div class="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <a class="link" href="#">
+                Focus me<neon-tooltip>Tooltips work on links too.</neon-tooltip>
+            </a>
+            <span tabindex="0">
+                Focusable span<neon-tooltip data-placement="bottom">
+                    Add <code>tabindex="0"</code> to make a non-focusable element
+                    keyboard-reachable.
+                </neon-tooltip>
+            </span>
+        </div>
+    </section>
+</main>

@@ -15,7 +15,7 @@
             <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
         </header>
         <nav class="flex-1 p-4">
-            <ul class="nav -vertical">
+            <ul class="nav -vertical" data-section="css">
                 <li><a data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
                 <li><a data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
                 <li><a data-slug="dialogs" href="dialogs/" class="nav__item">Dialogs</a></li>
@@ -37,9 +37,17 @@
                 <li><a data-slug="shadows" href="shadows/" class="nav__item">Shadows</a></li>
                 <li><a data-slug="utilities" href="utilities/" class="nav__item">Utilities</a></li>
             </ul>
+            <ul class="nav -vertical" data-section="wc" hidden>
+                <li><a data-slug="wc-tooltip" href="wc-tooltip/" class="nav__item">Tooltip</a></li>
+                <li><a data-slug="wc-menu" href="wc-menu/" class="nav__item">Menu</a></li>
+            </ul>
         </nav>
     </aside>
     <main id="content" class="docs-main bg-surface dark:bg-surface-dark">
+        <ul class="nav -tabs" data-top-nav>
+            <li><a data-section="css" href="buttons/" class="nav__item">CSS</a></li>
+            <li><a data-section="wc" href="wc-tooltip/" class="nav__item">Web Components</a></li>
+        </ul>
         <div id="content-inner" class="p-8"></div>
     </main>
     <theme-switcher></theme-switcher>
@@ -48,6 +56,7 @@
     <script src="./datepicker.js" type="module"></script>
     <script src="./timepicker.js" type="module"></script>
     <script src="./tooltip.js" type="module"></script>
+    <script src="./wc.js" type="module"></script>
     <script type="module">
         const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
 
@@ -74,12 +83,18 @@
             links: 'Links',
             shadows: 'Shadows',
             utilities: 'Utilities',
+            'wc-tooltip': 'Tooltip (WC)',
+            'wc-menu': 'Menu (WC)',
         };
 
         const DEFAULT_SLUG = 'buttons';
+        const SECTION_DEFAULTS = { css: 'buttons', wc: 'wc-tooltip' };
+        const sectionOf = (slug) => (slug.startsWith('wc-') ? 'wc' : 'css');
         const BASE = import.meta.env.BASE_URL || '/';
 
         const links = document.querySelectorAll('nav a[data-slug]');
+        const sidebarLists = document.querySelectorAll('aside nav ul[data-section]');
+        const topNavLinks = document.querySelectorAll('[data-top-nav] a[data-section]');
         const content = document.getElementById('content');
         const contentInner = document.getElementById('content-inner');
 
@@ -105,6 +120,13 @@
             for (const link of links) {
                 link.classList.toggle('-active', link.dataset.slug === slug);
             }
+            const section = sectionOf(slug);
+            for (const ul of sidebarLists) {
+                ul.hidden = ul.dataset.section !== section;
+            }
+            for (const link of topNavLinks) {
+                link.classList.toggle('-active', link.dataset.section === section);
+            }
         };
 
         let firstRender = true;
@@ -125,6 +147,19 @@
         document.addEventListener('click', (e) => {
             if (e.defaultPrevented) return;
             if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            const topLink = e.target.closest('[data-top-nav] a[data-section]');
+            if (topLink) {
+                const slug = SECTION_DEFAULTS[topLink.dataset.section];
+                if (slug) {
+                    e.preventDefault();
+                    const target = `${BASE}${slug}/`;
+                    if (location.pathname !== target) {
+                        history.pushState(null, '', target);
+                        render();
+                    }
+                }
+                return;
+            }
             const a = e.target.closest('a[data-slug]');
             if (!a) return;
             const slug = a.dataset.slug;

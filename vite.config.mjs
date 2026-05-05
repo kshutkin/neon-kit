@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, 'docs');
+const ROOT = resolve(import.meta.dirname, 'site');
 const OUT = resolve(import.meta.dirname, 'dist-docs');
 const BASE = '/neon-kit/';
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
@@ -28,6 +28,8 @@ const ROUTES = {
   links:      { title: 'Links',      desc: 'Link styles and states in the Neon theme — default, hover, visited, and active.' },
   shadows:    { title: 'Shadows',    desc: 'Shadow and inset highlight utilities for elevation in the Neon theme.' },
   utilities:  { title: 'Utilities',  desc: 'Utility classes that complement the Neon theme tokens.' },
+  'wc-tooltip': { title: 'Tooltip (WC)', desc: 'Customized built-in <button is="neon-tooltip"> — a Light-DOM web component wrapping the Neon tooltip styles.' },
+  'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — Light-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.' },
 };
 
 const DEFAULT_SLUG = 'buttons';
@@ -72,6 +74,24 @@ const renderPage = (shell, slug, fragment) => {
     `(<a[^>]*data-slug="${slug}"[^>]*class=")[^"]*(")`,
   );
   html = html.replace(activeLinkRegex, `$1${ACTIVE_CLASSES}$2`);
+
+  const section = slug.startsWith('wc-') ? 'wc' : 'css';
+
+  // Hide the inactive sidebar list and reveal the active one.
+  html = html.replace(
+    /(<ul class="nav -vertical" data-section="css")(\s+hidden)?/,
+    section === 'css' ? '$1' : '$1 hidden',
+  );
+  html = html.replace(
+    /(<ul class="nav -vertical" data-section="wc")(\s+hidden)?/,
+    section === 'wc' ? '$1' : '$1 hidden',
+  );
+
+  // Mark the active top-nav item.
+  const topNavRegex = new RegExp(
+    `(<a[^>]*data-section="${section}"[^>]*class=")[^"]*(")`,
+  );
+  html = html.replace(topNavRegex, `$1${ACTIVE_CLASSES}$2`);
 
   return html;
 };

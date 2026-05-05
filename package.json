@@ -8,10 +8,26 @@
     "build": "pnpm --aggregate-output --reporter=append-only --stream -r build",
     "lint": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r lint",
     "test": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r test",
-    "ci:publish": "changeset publish"
+    "ci:publish": "changeset publish",
+    "dev": "vite",
+    "start": "vite",
+    "build:docs": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.12",
-    "pkgprn": "^0.1.0"
+    "@neon-kit/theme": "workspace:*",
+    "@neon-kit/web-components": "workspace:*",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "^25.6.0",
+    "@vitest/browser": "^4.1.5",
+    "@vitest/browser-playwright": "^4.1.5",
+    "@vitest/coverage-v8": "^4.1.5",
+    "dts-buddy": "^0.7.0",
+    "pkgprn": "^0.8.0",
+    "playwright": "^1.59.1",
+    "tailwindcss": "^4.1.13",
+    "vite": "^8.0.10",
+    "vitest": "^4.1.5"
   }
 }

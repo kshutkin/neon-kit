@@ -1,0 +1,53 @@
+{
+    "version": "0.0.1",
+    "license": "MIT",
+    "name": "@neon-kit/web-components",
+    "author": "Konstantin Shutkin",
+    "type": "module",
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./tooltip": {
+            "types": "./types/index.d.ts",
+            "default": "./src/tooltip.js"
+        },
+        "./menu": {
+            "types": "./types/index.d.ts",
+            "default": "./src/menu.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./src/index.js",
+    "module": "./src/index.js",
+    "files": [
+        "src",
+        "types"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kshutkin/neon-kit.git",
+        "directory": "web-components"
+    },
+    "bugs": "https://github.com/kshutkin/neon-kit/issues",
+    "homepage": "https://github.com/kshutkin/neon-kit/blob/main/web-components/README.md",
+    "readme": "README.md",
+    "description": "Web components implementing parts of the @neon-kit/theme as native custom elements.",
+    "keywords": [
+        "web-components",
+        "custom-elements",
+        "neon",
+        "theme"
+    ],
+    "scripts": {
+        "build": "dts-buddy",
+        "prepack": "pkgprn --flatten types,src --strip-comments",
+        "test": "vitest run --coverage --config ../vitest.config.js",
+        "test:types": "tsc -p tsconfig.types.json"
+    }
+}

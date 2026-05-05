@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "@neon-kit/web-components": ["./types/index.d.ts"],
+            "@neon-kit/web-components/tooltip": ["./types/index.d.ts"],
+            "@neon-kit/web-components/menu": ["./types/index.d.ts"]
+        }
+    },
+    "include": ["tests/types.ts"],
+    "exclude": ["node_modules"]
+}
