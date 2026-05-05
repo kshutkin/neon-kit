@@ -2,3 +2,5 @@ output.css
 node_modules
 .serena
 dist-docs
+coverage
+types
