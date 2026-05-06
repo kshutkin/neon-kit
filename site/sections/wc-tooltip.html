@@ -82,4 +82,114 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             </span>
         </div>
     </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">API</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            <code>&lt;neon-tooltip&gt;</code> is the popover itself — there is no
+            wrapper DOM. The element it lives inside becomes the trigger.
+        </p>
+
+        <h3 class="mb-2">Attributes</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Attribute</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Values</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Default</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>data-placement</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>top</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>data-trigger</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>hover focus</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Set to an empty string (<code>data-trigger=""</code>) to opt out of all automatic triggers and drive the tooltip programmatically.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">Methods</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Method</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>showTooltip()</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Open the tooltip immediately, bypassing any open delay.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>hideTooltip()</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Close the tooltip immediately.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">DOM contract</h3>
+        <p class="mb-3 text-ink-secondary dark:text-ink-secondary-dark">
+            On connect, the component:
+        </p>
+        <ul class="mb-4 list-disc pl-6 text-ink-secondary dark:text-ink-secondary-dark">
+            <li>Generates an <code>id</code> if one is not set.</li>
+            <li>Adds <code>popover="manual"</code> (unless the consumer set <code>popover</code>).</li>
+            <li>Adds the <code>tooltip</code> class plus the placement class (<code>-top</code>, <code>-bottom</code>, <code>-left</code>, <code>-right</code>).</li>
+            <li>Injects a <code>.tooltip__arrow</code> child if one isn't already present.</li>
+            <li>Assigns an <code>anchor-name</code> to the parent and references it from the tooltip's <code>position-anchor</code> (existing <code>anchor-name</code> on the parent is reused, not overwritten).</li>
+            <li>Sets <code>aria-describedby</code> on the parent to the tooltip's <code>id</code> — only if the consumer hasn't already set <code>aria-describedby</code>.</li>
+        </ul>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Accessibility pattern</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Implements the
+            <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/">WAI-ARIA tooltip pattern</a>.
+            The tooltip is rendered into the browser's top layer via the native
+            popover API, so it escapes overflow and stacking-context ancestors and
+            stays reachable by assistive technology without ARIA portal hacks.
+        </p>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            <code>role="tooltip"</code> is auto-applied when the body is text-only.
+            For rich popover content with structural markup, the role is
+            intentionally omitted — the popover semantics describe richer content
+            more accurately than <code>role="tooltip"</code>.
+        </p>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            The trigger receives <code>aria-describedby="&lt;tooltip-id&gt;"</code>
+            so screen readers announce the tooltip text alongside the trigger's
+            accessible name. If the consumer already set
+            <code>aria-describedby</code> on the trigger, the component leaves it
+            alone.
+        </p>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            For the <code>focus</code> trigger to fire, the parent must be
+            focusable. In development builds the component logs a
+            <code>console.debug</code> hint when the parent is clearly not
+            focusable (e.g. a <code>&lt;span&gt;</code> without
+            <code>tabindex</code>).
+        </p>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Keyboard: <kbd class="kbd">Esc</kbd> does not auto-close the tooltip
+            (it uses <code>popover="manual"</code>). The hover and focus close
+            paths handle dismissal naturally — moving the pointer or focus away
+            closes the tooltip after a short delay. For click-driven tooltips
+            (<code>data-trigger="click"</code>), clicking the trigger again
+            toggles it closed.
+        </p>
+    </section>
 </main>
