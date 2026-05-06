@@ -403,6 +403,14 @@
     visibility: visible;
 }
 
+/* Keyboard "active descendant" highlight — focus stays on the search
+   input while ArrowUp/Down move a virtual cursor across rows. The
+   consumer toggles `.-active` on the currently highlighted row; mirror
+   the hover background so it reads as the same affordance. */
+.combobox__option.-active {
+    @apply bg-surface-hover dark:bg-surface-hover-dark;
+}
+
 /* "Create new" row — same shape as an option, with a leading + icon
    slot. The consumer is responsible for showing/hiding it based on the
    search query. */

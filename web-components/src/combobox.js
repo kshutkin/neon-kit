@@ -280,6 +280,7 @@ export class NeonComboboxElement extends HTMLElement {
         button.className = FIELD_CLASS;
         button.setAttribute('popovertarget', this.#popoverId);
         button.setAttribute('aria-haspopup', 'listbox');
+        button.setAttribute('aria-controls', this.#listId);
         button.setAttribute('aria-expanded', 'false');
 
         const placeholder = document.createElement('span');
@@ -294,7 +295,7 @@ export class NeonComboboxElement extends HTMLElement {
         clear.type = 'button';
         clear.className = CLEAR_CLASS;
         clear.setAttribute('aria-label', 'Clear selection');
-        clear.hidden = true;
+        clear.style.display = 'none';
         clear.tabIndex = -1;
         const clearSvg = document.createElementNS(SVG_NS, 'svg');
         clearSvg.setAttribute('viewBox', '0 0 24 24');
@@ -599,8 +600,10 @@ export class NeonComboboxElement extends HTMLElement {
 
     #syncClearVisibility() {
         if (!this.#clearEl) return;
-        const clearable = this.hasAttribute('data-clearable');
-        this.#clearEl.hidden = !(clearable && this.#selected);
+        const visible = this.hasAttribute('data-clearable') && this.#selected !== null;
+        // Use inline `display` rather than the `hidden` attribute because
+        // `.combobox__clear { display: inline-flex }` outranks `[hidden]`.
+        this.#clearEl.style.display = visible ? '' : 'none';
     }
 
     #updateValidity() {
@@ -639,7 +642,12 @@ export class NeonComboboxElement extends HTMLElement {
                 if (!this.open) {
                     e.preventDefault();
                     try {
-                        this.#popover?.showPopover();
+                        // Pass `source` so the field button becomes the
+                        // implicit invoker/anchor; without it
+                        // anchor-size() and position-area resolve to
+                        // nothing and the popover stretches across the
+                        // viewport at the top of the screen.
+                        this.#popover?.showPopover({ source: this.#fieldButton ?? undefined });
                     } catch (err) {
                         if (DEV) {
                             // eslint-disable-next-line no-console
@@ -736,6 +744,10 @@ export class NeonComboboxElement extends HTMLElement {
                 : null;
             this.#setActive(currentRow ?? this.#visibleRows()[0] ?? null);
             queueMicrotask(() => this.#searchInput?.focus());
+        } else {
+            // Drop the active-descendant pointer so AT doesn't keep
+            // referencing a now-hidden row id.
+            this.#setActive(null);
         }
     };
 

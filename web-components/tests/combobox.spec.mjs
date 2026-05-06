@@ -195,11 +195,11 @@ describe('<neon-combobox>', () => {
         let changes = 0;
         cb.addEventListener('change', () => changes++);
         const clear = /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__clear'));
-        expect(clear.hidden).toBe(false);
+        expect(clear.style.display).not.toBe('none');
         clear.click();
         expect(/** @type {any} */ (cb).value).toBe('');
         expect(changes).toBe(1);
-        expect(clear.hidden).toBe(true);
+        expect(clear.style.display).toBe('none');
     });
 
     it('input event fires while user types in the search field', async () => {
