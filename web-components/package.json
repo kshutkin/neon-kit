@@ -49,5 +49,8 @@
         "prepack": "pkgprn --flatten types,src --strip-comments",
         "test": "vitest run --coverage --config ../vitest.config.js",
         "test:types": "tsc -p tsconfig.types.json"
+    },
+    "dependencies": {
+        "esm-env": "^1.2.2"
     }
 }

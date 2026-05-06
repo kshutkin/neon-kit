@@ -45,7 +45,7 @@
  * - Inside SVG you'll need a `<foreignObject>` host (the usual
  *   foreign-namespace caveat).
  */
-
+import { DEV } from 'esm-env';
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
 const OPEN_DELAY_MS = 120;
@@ -165,7 +165,7 @@ export class NeonTooltipElement extends HTMLElement {
         this.#refresh();
         this.#applyTriggers();
 
-        if (this.#triggers.has('focus') && !isFocusable(parent)) {
+        if (DEV && this.#triggers.has('focus') && !isFocusable(parent)) {
             // eslint-disable-next-line no-console
             console.debug(
                 '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
@@ -331,12 +331,12 @@ function readTriggerSet(value) {
  * @param {Element} el
  */
 function isFocusable(el) {
-    if (el.matches('button, a[href], input, select, textarea, summary, [contenteditable=""], [contenteditable="true"]')) {
-        const ti = el.getAttribute('tabindex');
-        return !ti || ti !== '-1';
-    }
-    const ti = el.getAttribute('tabindex');
-    return ti !== null && ti !== '-1';
+    const disabled = /** @type {HTMLButtonElement | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} */ (el).disabled === true;
+    const tabindex = el.getAttribute('tabindex');
+    return !disabled
+        && tabindex !== '-1'
+        && (tabindex !== null
+            || el.matches('button, a[href], input, select, textarea, summary, [contenteditable=""], [contenteditable="true"]'));
 }
 
 /**

@@ -60,7 +60,11 @@ importers:
         specifier: ^0.6.14
         version: 0.6.14(prettier@3.6.2)
 
-  web-components: {}
+  web-components:
+    dependencies:
+      esm-env:
+        specifier: ^1.2.2
+        version: 1.2.2
 
 packages:
 
@@ -571,6 +575,9 @@ packages:
 
   es-module-lexer@2.1.0:
     resolution: {integrity: sha512-n27zTYMjYu1aj4MjCWzSP7G9r75utsaoc8m61weK+W8JMBGGQybd43GstCXZ3WNmSFtGT9wi59qQTW6mhTR5LQ==}
+
+  esm-env@1.2.2:
+    resolution: {integrity: sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==}
 
   esprima@4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
@@ -1812,6 +1819,8 @@ snapshots:
     optional: true
 
   es-module-lexer@2.1.0: {}
+
+  esm-env@1.2.2: {}
 
   esprima@4.0.1: {}
 
