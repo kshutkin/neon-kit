@@ -55,7 +55,32 @@ let nextId = 0;
 
 /**
  * @typedef {'hover' | 'focus' | 'click'} Trigger
+ * @typedef {{ target: 'parent' | 'self', event: string, action: 'show' | 'hide' | 'toggle' | 'cancelHide' }} Binding
  */
+
+/**
+ * Map a trigger keyword to the listeners that implement it. Each entry
+ * is `{ target, event, action }`. The component installs only the
+ * bindings for the triggers in the active set.
+ *
+ * @type {Record<Trigger, Binding[]>}
+ */
+const TRIGGER_BINDINGS = {
+    hover: [
+        { target: 'parent', event: 'pointerenter', action: 'show' },
+        { target: 'parent', event: 'pointerleave', action: 'hide' },
+        // Keep the popover open while the cursor is over rich content.
+        { target: 'self', event: 'pointerenter', action: 'cancelHide' },
+        { target: 'self', event: 'pointerleave', action: 'hide' },
+    ],
+    focus: [
+        { target: 'parent', event: 'focusin', action: 'show' },
+        { target: 'parent', event: 'focusout', action: 'hide' },
+    ],
+    click: [
+        { target: 'parent', event: 'click', action: 'toggle' },
+    ],
+};
 
 export class NeonTooltipElement extends HTMLElement {
     static get observedAttributes() {
@@ -76,42 +101,21 @@ export class NeonTooltipElement extends HTMLElement {
     #setAriaDescribedBy = false;
     #anchorName = '';
 
-    #onPointerEnter = () => {
-        if (this.#triggers.has('hover')) this.#scheduleShow();
-    };
-    #onPointerLeave = () => {
-        if (this.#triggers.has('hover')) this.#scheduleHide();
-    };
-    #onFocusIn = () => {
-        if (this.#triggers.has('focus')) this.#scheduleShow();
-    };
-    #onFocusOut = () => {
-        if (this.#triggers.has('focus')) this.#scheduleHide();
-    };
-    #onClick = () => {
-        if (!this.#triggers.has('click')) return;
-        if (this.matches(':popover-open')) this.hideTooltip();
-        else {
-            // Skip the open delay when the user explicitly clicks.
+    /** @type {Record<'show' | 'hide' | 'toggle' | 'cancelHide', () => void>} */
+    #actions = {
+        show: () => this.#scheduleShow(),
+        hide: () => this.#scheduleHide(),
+        toggle: () => {
+            // Click toggles immediately, with no open delay.
+            if (this.matches(':popover-open')) this.hideTooltip();
+            else this.showTooltip();
+        },
+        cancelHide: () => {
             if (this.#timer) {
                 clearTimeout(this.#timer);
                 this.#timer = null;
             }
-            try {
-                /** @type {any} */ (this).showPopover();
-            } catch {
-                /* already open or unsupported */
-            }
-        }
-    };
-    #onSelfPointerEnter = () => {
-        if (this.#timer) {
-            clearTimeout(this.#timer);
-            this.#timer = null;
-        }
-    };
-    #onSelfPointerLeave = () => {
-        this.#scheduleHide();
+        },
     };
 
     connectedCallback() {
@@ -159,16 +163,7 @@ export class NeonTooltipElement extends HTMLElement {
         }
 
         this.#refresh();
-
-        this.#listeners = new AbortController();
-        const opts = { signal: this.#listeners.signal };
-        parent.addEventListener('pointerenter', this.#onPointerEnter, opts);
-        parent.addEventListener('pointerleave', this.#onPointerLeave, opts);
-        parent.addEventListener('focusin', this.#onFocusIn, opts);
-        parent.addEventListener('focusout', this.#onFocusOut, opts);
-        parent.addEventListener('click', this.#onClick, opts);
-        this.addEventListener('pointerenter', this.#onSelfPointerEnter, opts);
-        this.addEventListener('pointerleave', this.#onSelfPointerLeave, opts);
+        this.#applyTriggers();
 
         if (this.#triggers.has('focus') && !isFocusable(parent)) {
             // eslint-disable-next-line no-console
@@ -201,12 +196,24 @@ export class NeonTooltipElement extends HTMLElement {
     }
 
     attributeChangedCallback() {
-        if (this.#parent) this.#refresh();
+        if (!this.#parent) return;
+        this.#refresh();
+        this.#applyTriggers();
     }
 
     /** Programmatically show the tooltip. */
     showTooltip() {
-        this.#scheduleShow(0);
+        if (this.#timer) {
+            clearTimeout(this.#timer);
+            this.#timer = null;
+        }
+        try {
+            if (typeof (/** @type {any} */ (this)).showPopover === 'function' && !this.matches(':popover-open')) {
+                /** @type {any} */ (this).showPopover();
+            }
+        } catch {
+            /* already open or unsupported */
+        }
     }
 
     /** Programmatically hide the tooltip. */
@@ -230,6 +237,25 @@ export class NeonTooltipElement extends HTMLElement {
         this.classList.add(`-${placement}`);
 
         this.#triggers = readTriggerSet(this.getAttribute('data-trigger'));
+    }
+
+    /**
+     * Bind exactly the listeners required by the active trigger set.
+     * Called on connect and whenever `data-trigger` changes.
+     */
+    #applyTriggers() {
+        this.#listeners?.abort();
+        const parent = this.#parent;
+        if (!parent) return;
+        const ctrl = new AbortController();
+        this.#listeners = ctrl;
+        const opts = { signal: ctrl.signal };
+        for (const trigger of this.#triggers) {
+            for (const binding of TRIGGER_BINDINGS[trigger]) {
+                const target = binding.target === 'parent' ? parent : this;
+                target.addEventListener(binding.event, this.#actions[binding.action], opts);
+            }
+        }
     }
 
     /**
