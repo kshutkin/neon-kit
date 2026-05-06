@@ -2,3 +2,4 @@
 // the WC documentation pages. Importing for side effects only.
 import '@neon-kit/web-components/tooltip';
 import '@neon-kit/web-components/menu';
+import '@neon-kit/web-components/combobox';

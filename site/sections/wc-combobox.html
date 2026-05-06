@@ -1,0 +1,300 @@
+<main>
+    <h1 class="mb-6">Combobox — Web Component</h1>
+    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <code>&lt;neon-combobox&gt;</code> is a Light-DOM, form-associated
+        custom element that wraps the theme's <code>.combobox</code> markup
+        with a single-select, filterable, keyboard-friendly popover. List
+        options as plain <code>&lt;option&gt;</code> children — the element
+        synthesises the field, popover, search input, and option rows for
+        you, and participates in HTML forms via
+        <code>ElementInternals</code>. See the
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+
+// In your bundle entry:
+import '@neon-kit/theme/index.css';
+import '@neon-kit/web-components/combobox';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Form participation</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            The element is form-associated. Submitting the form serialises
+            the current selection under its <code>name</code>. The demo
+            captures the submitted <code>FormData</code> below.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <form id="wc-cb-form" class="field-stack">
+                <label class="field-stack">
+                    <span class="field-label">Country</span>
+                    <neon-combobox name="country" required placeholder="Select a country…">
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="de">Germany</option>
+                        <option value="fr">France</option>
+                        <option value="es">Spain</option>
+                        <option value="it">Italy</option>
+                        <option value="jp">Japan</option>
+                        <option value="kr">South Korea</option>
+                        <option value="br">Brazil</option>
+                        <option value="au">Australia</option>
+                    </neon-combobox>
+                </label>
+                <div>
+                    <button class="btn -primary" type="submit">Submit</button>
+                </div>
+            </form>
+            <pre id="wc-cb-form-out" class="mt-4 rounded border border-border p-3 text-sm dark:border-border-dark" hidden></pre>
+        </div>
+        <script type="module">
+            const form = document.getElementById('wc-cb-form');
+            const out = document.getElementById('wc-cb-form-out');
+            if (form && out) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const data = new FormData(form);
+                    const obj = {};
+                    for (const [k, v] of data.entries()) obj[k] = v;
+                    out.textContent = JSON.stringify(obj, null, 2);
+                    out.hidden = false;
+                });
+            }
+        </script>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Filtering</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Open the popover and type to filter the list. Matching is a
+            case-insensitive substring match against each option's text.
+            Use <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd> to move
+            the highlight, <kbd class="kbd">Enter</kbd> to select.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <neon-combobox placeholder="Search a fruit…">
+                <option value="apple">Apple</option>
+                <option value="apricot">Apricot</option>
+                <option value="banana">Banana</option>
+                <option value="blueberry">Blueberry</option>
+                <option value="cherry">Cherry</option>
+                <option value="date">Date</option>
+                <option value="elderberry">Elderberry</option>
+                <option value="fig">Fig</option>
+                <option value="grape">Grape</option>
+                <option value="kiwi">Kiwi</option>
+                <option value="lemon">Lemon</option>
+                <option value="mango">Mango</option>
+                <option value="orange">Orange</option>
+                <option value="pear">Pear</option>
+                <option value="pineapple">Pineapple</option>
+            </neon-combobox>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Clearable</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Add <code>data-clearable</code> to render an inline clear
+            button next to the value. The button only shows when a value
+            is set; clicking it clears the selection and dispatches
+            <code>change</code>.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <neon-combobox data-clearable value="ts" placeholder="Pick a language…">
+                <option value="js">JavaScript</option>
+                <option value="ts">TypeScript</option>
+                <option value="rs">Rust</option>
+                <option value="go">Go</option>
+                <option value="py">Python</option>
+                <option value="rb">Ruby</option>
+                <option value="swift">Swift</option>
+                <option value="kt">Kotlin</option>
+            </neon-combobox>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">API</h2>
+
+        <h3 class="mb-2">Attributes</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Attribute</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>name</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Form field name used when serialising the form.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Currently selected option value. Setting an unknown value is a no-op (matches native <code>&lt;select&gt;</code>).</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>placeholder</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Text shown when no value is selected.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>disabled</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Disables the field and prevents the popover from opening.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>required</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Marks the field required for form validation. With no value set, <code>checkValidity()</code> returns <code>false</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>data-clearable</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Renders an inline clear button when a value is set.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">Properties &amp; methods</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Member</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Type</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>string</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Currently selected value. Setting it does not dispatch <code>change</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>selectedOption</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>HTMLOptionElement | null</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">The underlying <code>&lt;option&gt;</code> element currently selected.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>options</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>HTMLOptionElement[]</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">All <code>&lt;option&gt;</code> children in DOM order.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>open</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>boolean</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Whether the popover is currently open.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>form</code> / <code>validity</code> / <code>validationMessage</code> / <code>willValidate</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">—</td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Delegated to <code>ElementInternals</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>checkValidity()</code> / <code>reportValidity()</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>() =&gt; boolean</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Standard form-validation methods.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">Events</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Event</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Detail</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">When</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>change</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>{ value, option }</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">User selected a different option (or cleared). Not fired for programmatic <code>value =</code> writes.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>input</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>{ query }</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">User typed in the search field.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Accessibility pattern</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Implements the
+            <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/">WAI-ARIA Combobox pattern</a>
+            with list autocomplete and manual selection. Focus stays on
+            the search <code>&lt;input role="combobox"&gt;</code>; the
+            highlighted option is tracked with
+            <code>aria-activedescendant</code> rather than DOM focus, so
+            the user can keep typing while navigating the list.
+        </p>
+
+        <h3 class="mb-2">ARIA wiring</h3>
+        <ul class="mb-6 list-disc pl-6 text-ink-secondary dark:text-ink-secondary-dark">
+            <li>Search input: <code>role="combobox"</code>, <code>aria-autocomplete="list"</code>, <code>aria-expanded</code>, <code>aria-controls</code> pointing at the listbox, <code>aria-activedescendant</code> pointing at the highlighted option row.</li>
+            <li>Listbox container: <code>role="listbox"</code> on the popover's option list.</li>
+            <li>Option rows: <code>role="option"</code> with <code>aria-selected="true"</code> on the chosen one.</li>
+            <li>Field button: <code>aria-haspopup="listbox"</code>, <code>aria-expanded</code> reflects the popover's open state, <code>aria-required</code> mirrors the host's <code>required</code> attribute.</li>
+        </ul>
+
+        <h3 class="mb-2">Keyboard support</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Key</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">
+                            <kbd class="kbd">Enter</kbd> /
+                            <kbd class="kbd">Space</kbd> /
+                            <kbd class="kbd">↓</kbd>
+                        </td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">On the field: open the popover and focus the search input.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">
+                            <kbd class="kbd">↓</kbd> /
+                            <kbd class="kbd">↑</kbd>
+                        </td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">In the popover: move the active descendant through visible options, wrapping at the ends.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">
+                            <kbd class="kbd">Home</kbd> /
+                            <kbd class="kbd">End</kbd>
+                        </td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Jump the active descendant to the first / last visible option.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Enter</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Select the active option, close the popover, return focus to the field.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Escape</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Close without changing selection, return focus to the field.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Tab</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Close the popover and let the tab move on naturally.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

@@ -12,7 +12,8 @@
         "paths": {
             "@neon-kit/web-components": ["./types/index.d.ts"],
             "@neon-kit/web-components/tooltip": ["./types/index.d.ts"],
-            "@neon-kit/web-components/menu": ["./types/index.d.ts"]
+            "@neon-kit/web-components/menu": ["./types/index.d.ts"],
+            "@neon-kit/web-components/combobox": ["./types/index.d.ts"]
         }
     },
     "include": ["tests/types.ts"],

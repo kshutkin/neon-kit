@@ -18,6 +18,10 @@
             "types": "./types/index.d.ts",
             "default": "./src/menu.js"
         },
+        "./combobox": {
+            "types": "./types/index.d.ts",
+            "default": "./src/combobox.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./src/index.js",

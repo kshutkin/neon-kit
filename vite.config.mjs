@@ -30,6 +30,7 @@ const ROUTES = {
   utilities:  { title: 'Utilities',  desc: 'Utility classes that complement the Neon theme tokens.' },
   'wc-tooltip': { title: 'Tooltip (WC)', desc: 'Customized built-in <button is="neon-tooltip"> — a Light-DOM web component wrapping the Neon tooltip styles.' },
   'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — Light-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.' },
+  'wc-combobox': { title: 'Combobox (WC)', desc: '<neon-combobox> — Light-DOM, form-associated combobox web component with filtering, keyboard navigation, and ElementInternals form participation.' },
 };
 
 const DEFAULT_SLUG = 'buttons';
