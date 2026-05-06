@@ -31,12 +31,14 @@ export class NeonMenuElement extends HTMLElement {
     #onKeyDown = (/** @type {KeyboardEvent} */ e) => this.#handleKeyDown(e);
     #onFocusIn = (/** @type {FocusEvent} */ e) => this.#handleFocusIn(e);
     #onClick = (/** @type {MouseEvent} */ e) => this.#handleClick(e);
+    #onToggle = (/** @type {ToggleEvent} */ e) => this.#handleToggle(e);
 
     connectedCallback() {
         if (!this.hasAttribute('role')) this.setAttribute('role', 'menu');
         this.addEventListener('keydown', this.#onKeyDown);
         this.addEventListener('focusin', this.#onFocusIn);
         this.addEventListener('click', this.#onClick);
+        this.addEventListener('toggle', /** @type {EventListener} */ (this.#onToggle));
         this.#refreshItems();
         this.#mo = new MutationObserver(() => this.#refreshItems());
         this.#mo.observe(this, {
@@ -51,6 +53,7 @@ export class NeonMenuElement extends HTMLElement {
         this.removeEventListener('keydown', this.#onKeyDown);
         this.removeEventListener('focusin', this.#onFocusIn);
         this.removeEventListener('click', this.#onClick);
+        this.removeEventListener('toggle', /** @type {EventListener} */ (this.#onToggle));
         if (this.#typeTimer) clearTimeout(this.#typeTimer);
         this.#mo?.disconnect();
         this.#mo = null;
@@ -165,6 +168,22 @@ export class NeonMenuElement extends HTMLElement {
         if (!target.matches(ITEM_SELECTOR)) return;
         if (isDisabled(target)) return;
         for (const it of this.items) it.setAttribute('tabindex', it === target ? '0' : '-1');
+    }
+
+    /**
+     * @param {ToggleEvent} e
+     */
+    #handleToggle(e) {
+        if (e.newState !== 'open') return;
+        // Focus the first focusable item on open. Modern browsers'
+        // `:focus-visible` heuristic suppresses the focus ring when the
+        // popover was opened by a pointer click and shows it when opened
+        // via keyboard — no manual modality tracking needed.
+        const first = this.focusableItems[0];
+        if (first) {
+            for (const it of this.items) it.setAttribute('tabindex', it === first ? '0' : '-1');
+            first.focus();
+        }
     }
 
     /**

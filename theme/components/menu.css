@@ -58,6 +58,14 @@
         position: absolute;
         margin: 0;
         inset: auto;
+
+        /* Default placement: drop below the trigger, aligned to its
+           inline-start edge. Relies on the implicit anchor that the
+           UA sets up when a button uses `popovertarget="<menu-id>"`.
+           Logical sides auto-flip in RTL. Consumers can override by
+           setting their own `position-area` on the menu. */
+        position-area: block-end span-inline-end;
+        margin-block-start: --spacing(1);
     }
 
     /* Author `display: grid` above wins over the UA
