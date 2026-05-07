@@ -3,3 +3,4 @@
 import '@neon-kit/web-components/tooltip';
 import '@neon-kit/web-components/menu';
 import '@neon-kit/web-components/combobox';
+import '@neon-kit/web-components/multicombobox';

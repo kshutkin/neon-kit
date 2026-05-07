@@ -9,3 +9,4 @@
 export { NeonTooltipElement, registerTooltip } from './tooltip.js';
 export { NeonMenuElement, registerMenu } from './menu.js';
 export { NeonComboboxElement, registerCombobox } from './combobox.js';
+export { NeonMulticomboboxElement, registerMulticombobox } from './multicombobox.js';
