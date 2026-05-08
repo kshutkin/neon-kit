@@ -6,6 +6,11 @@ The package ships unbundled JavaScript with JSDoc types — types are produced b
 [`dts-buddy`](https://github.com/Rich-Harris/dts-buddy) and the published layout
 is flattened by `pkgprn` at pack time.
 
-## Status
+## Components
 
-Scaffolding only. Components will be added incrementally.
+- `@neon-kit/web-components/tooltip` - `<neon-tooltip>`
+- `@neon-kit/web-components/menu` - `<neon-menu>`
+- `@neon-kit/web-components/combobox` - `<neon-combobox>`
+- `@neon-kit/web-components/multicombobox` - `<neon-multicombobox>`
+- `@neon-kit/web-components/datepicker` - `<neon-datepicker>`
+- `@neon-kit/web-components/timepicker` - `<neon-timepicker>`

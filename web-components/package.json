@@ -26,6 +26,14 @@
             "types": "./types/index.d.ts",
             "default": "./src/multicombobox.js"
         },
+        "./datepicker": {
+            "types": "./types/index.d.ts",
+            "default": "./src/datepicker.js"
+        },
+        "./timepicker": {
+            "types": "./types/index.d.ts",
+            "default": "./src/timepicker.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./src/index.js",

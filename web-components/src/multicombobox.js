@@ -165,14 +165,17 @@ export class NeonMulticomboboxElement extends HTMLElement {
 
     // ---- Public API ------------------------------------------------------
 
-    /** Defensive copy of the currently selected values, in option order. */
+    /**
+     * Defensive copy of the currently selected values, in option order.
+     * @returns {string[]}
+     */
     get values() {
         return this.#options
             .filter((o) => this.#selected.has(o.value))
             .map((o) => o.value);
     }
 
-    /** @param {Iterable<string> | null | undefined} v */
+    /** @param {readonly string[] | ReadonlySet<string> | null | undefined} v */
     set values(v) {
         const next = v == null ? [] : Array.from(v, (x) => String(x));
         if (!this.#connected) {
@@ -182,7 +185,10 @@ export class NeonMulticomboboxElement extends HTMLElement {
         this.#applyValues(next, { silent: true });
     }
 
-    /** Back-compat read-only convenience: comma-joined values. */
+    /**
+     * Back-compat read-only convenience: comma-joined values.
+     * @returns {string}
+     */
     get value() {
         return this.values.join(',');
     }
@@ -368,6 +374,7 @@ export class NeonMulticomboboxElement extends HTMLElement {
         this.#options = opts;
     }
 
+    /** @param {string} query */
     /** @param {string} query */
     #renderRows(query) {
         if (!this.#listEl || !this.#emptyEl) return;
@@ -643,7 +650,7 @@ export class NeonMulticomboboxElement extends HTMLElement {
                 if (!this.open) {
                     e.preventDefault();
                     try {
-                        this.#popover?.showPopover({ source: this.#fieldButton ?? undefined });
+                        /** @type {any} */ (this.#popover)?.showPopover({ source: this.#fieldButton ?? undefined });
                     } catch (err) {
                         if (DEV) {
                             // eslint-disable-next-line no-console

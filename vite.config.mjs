@@ -32,6 +32,8 @@ const ROUTES = {
   'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — Light-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.' },
   'wc-combobox': { title: 'Combobox (WC)', desc: '<neon-combobox> — Light-DOM, form-associated combobox web component with filtering, keyboard navigation, and ElementInternals form participation.' },
   'wc-multicombobox': { title: 'Multicombobox (WC)', desc: '<neon-multicombobox> — Light-DOM, form-associated multi-select combobox web component with tag chips, filtering, keyboard navigation, and ElementInternals form participation.' },
+  'wc-datepicker': { title: 'Datepicker (WC)', desc: '<neon-datepicker> - Light-DOM, form-associated datepicker web component with native date-input style APIs and ElementInternals form participation.' },
+  'wc-timepicker': { title: 'Timepicker (WC)', desc: '<neon-timepicker> - Light-DOM, form-associated timepicker web component with native time-input style APIs, optional seconds, and ElementInternals form participation.' },
 };
 
 const DEFAULT_SLUG = 'buttons';

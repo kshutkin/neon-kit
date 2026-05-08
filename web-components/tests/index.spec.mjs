@@ -8,9 +8,13 @@ describe('@neon-kit/web-components', () => {
         expect(typeof wc.registerMenu).toBe('function');
         expect(typeof wc.registerCombobox).toBe('function');
         expect(typeof wc.registerMulticombobox).toBe('function');
+        expect(typeof wc.registerDatepicker).toBe('function');
+        expect(typeof wc.registerTimepicker).toBe('function');
         expect(typeof wc.NeonMenuElement).toBe('function');
         expect(typeof wc.NeonTooltipElement).toBe('function');
         expect(typeof wc.NeonComboboxElement).toBe('function');
         expect(typeof wc.NeonMulticomboboxElement).toBe('function');
+        expect(typeof wc.NeonDatepickerElement).toBe('function');
+        expect(typeof wc.NeonTimepickerElement).toBe('function');
     });
 });

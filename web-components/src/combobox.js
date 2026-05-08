@@ -381,6 +381,7 @@ export class NeonComboboxElement extends HTMLElement {
         this.#options = opts;
     }
 
+    /** @param {string} query */
     #renderRows(query) {
         if (!this.#listEl || !this.#emptyEl) return;
         // Clear existing rows (keep the empty placeholder).
@@ -647,7 +648,7 @@ export class NeonComboboxElement extends HTMLElement {
                         // anchor-size() and position-area resolve to
                         // nothing and the popover stretches across the
                         // viewport at the top of the screen.
-                        this.#popover?.showPopover({ source: this.#fieldButton ?? undefined });
+                        /** @type {any} */ (this.#popover)?.showPopover({ source: this.#fieldButton ?? undefined });
                     } catch (err) {
                         if (DEV) {
                             // eslint-disable-next-line no-console

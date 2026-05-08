@@ -2,7 +2,7 @@
 name: Senior Engineer
 description: Senior Software Engineer.
 argument-hint: Task to solve.
-model: ['Claude Opus 4.7 (copilot)']
+model: ['GPT-5.5 (copilot)']
 target: vscode
 user-invocable: false
 tools: ['execute', 'read', 'agent', 'edit', 'todo', 'search', 'web', 'vscode/memory', 'agent/runSubagent']

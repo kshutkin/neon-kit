@@ -1,0 +1,235 @@
+<main>
+    <h1 class="mb-6">Datepicker - Web Component</h1>
+    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <code>&lt;neon-datepicker&gt;</code> is a Light-DOM, form-associated
+        custom element that wraps the theme's <code>.datepicker</code>
+        markup with a typeable date field and calendar popover. It mirrors
+        the native <code>&lt;input type="date"&gt;</code> API where
+        practical, including <code>value</code>, <code>min</code>,
+        <code>max</code>, <code>step</code>, <code>required</code>,
+        <code>readOnly</code>, <code>valueAsNumber</code>,
+        <code>valueAsDate</code>, <code>stepUp()</code>,
+        <code>stepDown()</code>, and HTML form participation via
+        <code>ElementInternals</code>. Values use <code>YYYY-MM-DD</code>.
+        See the
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+
+// In your bundle entry:
+import '@neon-kit/theme/index.css';
+import '@neon-kit/web-components/datepicker';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Form participation</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            The element is form-associated. Submitting the form serialises
+            the current date under its <code>name</code>, including an empty
+            string when the field is blank, matching native input behavior.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <form class="field-stack" onsubmit="event.preventDefault(); const out = this.nextElementSibling; const data = new FormData(this); out.textContent = JSON.stringify(Object.fromEntries(data.entries()), null, 2); out.hidden = false;">
+                <label class="field-stack">
+                    <span class="field-label">Start date</span>
+                    <neon-datepicker name="startsOn" value="2026-04-15" min="2026-01-01" max="2026-12-31" required data-clearable></neon-datepicker>
+                    <span class="field-hint">Limited to the 2026 calendar year.</span>
+                </label>
+                <div>
+                    <button class="btn -primary" type="submit">Submit</button>
+                </div>
+            </form>
+            <pre class="mt-4 rounded border border-border p-3 text-sm dark:border-border-dark" hidden></pre>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Calendar navigation</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            The popover opens on the day grid. Use the header label to move
+            to months and years, or the chevrons to page through the active
+            view. Out-of-range days are disabled in the grid.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <neon-datepicker value="2026-04-15" min="2026-04-10" max="2026-05-20" data-clearable></neon-datepicker>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Step</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            <code>step</code> uses native date-input semantics: the number is
+            measured in days. With <code>min="2026-01-01"</code> and
+            <code>step="7"</code>, valid values fall on weekly intervals
+            from the minimum date.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <neon-datepicker value="2026-01-08" min="2026-01-01" step="7"></neon-datepicker>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">API</h2>
+
+        <h3 class="mb-2">Attributes</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Attribute</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>name</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Form field name used when serialising the form.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Default value in <code>YYYY-MM-DD</code> format.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>min</code> / <code>max</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Lower and upper date bounds used for constraint validation and disabled calendar cells.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>step</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Native date step in days. Default is <code>1</code>; use <code>7</code> for weekly intervals, or <code>any</code> to skip step validation.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>placeholder</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Text shown in the input. Defaults to <code>YYYY-MM-DD</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>disabled</code> / <code>readonly</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Disable the field, or make it read-only while preserving form submission.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>required</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Marks the field required for constraint validation.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>data-clearable</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Renders an inline clear button when the field has text.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">Properties &amp; methods</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Member</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Type</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>string</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Current normalised value. Programmatic writes do not dispatch <code>input</code> or <code>change</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>defaultValue</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>string</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Reflects the <code>value</code> attribute and is restored by <code>form.reset()</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>valueAsNumber</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>number</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Milliseconds at UTC midnight, or <code>NaN</code> when empty.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>valueAsDate</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>Date | null</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">A UTC midnight <code>Date</code> for the selected calendar day.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>stepUp()</code> / <code>stepDown()</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>(n?: number) =&gt; void</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Move the value by <code>n</code> native date steps.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>form</code> / <code>labels</code> / <code>validity</code> / <code>validationMessage</code> / <code>willValidate</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">-</td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Delegated to <code>ElementInternals</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>checkValidity()</code> / <code>reportValidity()</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>() =&gt; boolean</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Standard form-validation methods.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-2">Events</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Event</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">When</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>input</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">User edits the text field, picks a day, or clears the value.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>change</code></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">User commits a different value by leaving the field, picking a day, or clearing.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Keyboard support</h2>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Key</th>
+                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">ArrowDown</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">On the input, open the calendar.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Arrow keys</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Inside a grid, move between date, month, or year cells.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Move to the start or end of the current grid row.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Enter</kbd> / <kbd class="kbd">Space</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Activate the focused cell or navigation button.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Escape</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Close the popover and return focus to the input.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Tab</kbd></td>
+                        <td class="border border-border dark:border-border-dark px-4 py-2">Commit typed text, close the popover, and continue tab navigation.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
