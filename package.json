@@ -5,9 +5,9 @@
     "url": "git+https://github.com/kshutkin/neon-kit.git"
   },
   "scripts": {
-    "build": "pnpm --aggregate-output --reporter=append-only --stream -r build --if-present",
-    "lint": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r lint --if-present",
-    "test": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r test --if-present",
+    "build": "pnpm --aggregate-output --reporter=append-only --stream -r --if-present build",
+    "lint": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r --if-present lint",
+    "test": "pnpm --aggregate-output --reporter=append-only --stream --parallel -r --if-present test",
     "ci:publish": "changeset publish",
     "dev": "vite",
     "start": "vite",
