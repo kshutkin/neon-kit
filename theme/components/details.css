@@ -1,0 +1,106 @@
+/* Details component - built on the native <details> / <summary> disclosure.
+   Apply `.details` to the native element and wrap expanded content in
+   `.details__body` when it needs the padded, divided body treatment.
+*/
+
+.details {
+    @apply panel p-0 whitespace-normal;
+
+    display: block;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.details:has(> summary:focus-visible) {
+    @apply border-border-focus dark:border-border-focus-dark;
+}
+
+.details > summary {
+    @apply text-ink-primary dark:text-ink-primary-dark font-semibold select-none;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: --spacing(2.5);
+    padding-block: --spacing(3);
+    padding-inline: --spacing(4);
+    list-style: none;
+    cursor: default;
+}
+
+.details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.details > summary::marker {
+    content: "";
+}
+
+.details > summary::before {
+    content: "";
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-block-end: 2px solid currentColor;
+    border-inline-end: 2px solid currentColor;
+    color: var(--color-ink-secondary);
+    transform: rotate(-45deg);
+    transition: transform 150ms ease;
+}
+
+[data-theme=dark] .details > summary::before {
+    color: var(--color-ink-secondary-dark);
+}
+
+:where(:dir(rtl)) .details > summary::before {
+    transform: rotate(135deg);
+}
+
+.details[open] > summary {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
+
+.details[open] > summary::before,
+:where(:dir(rtl)) .details[open] > summary::before {
+    transform: rotate(45deg);
+}
+
+.details:not([aria-disabled="true"]):not([inert]) > summary:hover,
+.details:not([aria-disabled="true"]):not([inert]) > summary:focus-visible {
+    @apply bg-surface-hover dark:bg-surface-hover-dark;
+}
+
+.details:not([aria-disabled="true"]):not([inert]) > summary:active {
+    @apply bg-surface-active dark:bg-surface-active-dark;
+}
+
+.details__meta {
+    @apply text-ink-secondary dark:text-ink-secondary-dark text-sm font-normal;
+
+    justify-self: end;
+    min-inline-size: 0;
+}
+
+.details__body {
+    @apply border-t border-border dark:border-border-dark;
+
+    padding-block: --spacing(3);
+    padding-inline: --spacing(4);
+}
+
+.details__body > :where(* + *) {
+    margin-block-start: --spacing(3);
+}
+
+.details:is([aria-disabled="true"], [inert]) {
+    @apply disabled-surface;
+}
+
+.details:is([aria-disabled="true"], [inert]) > summary {
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+
+    background: transparent;
+}
+
+.details:is([aria-disabled="true"], [inert]) > .details__body {
+    @apply border-border-disabled dark:border-border-disabled-dark;
+}
