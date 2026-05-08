@@ -15,36 +15,28 @@
             <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
         </header>
         <nav class="flex-1 p-4">
-            <ul class="nav -vertical" data-section="css">
-                <li><a data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
-                <li><a data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
-                <li><a data-slug="details" href="details/" class="nav__item">Details</a></li>
-                <li><a data-slug="dialogs" href="dialogs/" class="nav__item">Dialogs</a></li>
-                <li><a data-slug="menus" href="menus/" class="nav__item">Menus</a></li>
-                <li><a data-slug="navigation" href="navigation/" class="nav__item">Navigation</a></li>
-                <li><a data-slug="kbd" href="kbd/" class="nav__item">Keyboard</a></li>
-                <li><a data-slug="badges" href="badges/" class="nav__item">Badges</a></li>
-                <li><a data-slug="tags" href="tags/" class="nav__item">Tags</a></li>
-                <li><a data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
-                <li><a data-slug="combobox-single" href="combobox-single/" class="nav__item">Combobox — Single</a></li>
-                <li><a data-slug="combobox-multi" href="combobox-multi/" class="nav__item">Combobox — Multi</a></li>
-                <li><a data-slug="datepicker" href="datepicker/" class="nav__item">Datepicker</a></li>
-                <li><a data-slug="datepicker-range" href="datepicker-range/" class="nav__item">Datepicker — Range</a></li>
-                <li><a data-slug="timepicker" href="timepicker/" class="nav__item">Timepicker</a></li>
-                <li><a data-slug="tooltip" href="tooltip/" class="nav__item">Tooltip</a></li>
-                <li><a data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
-                <li><a data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
-                <li><a data-slug="links" href="links/" class="nav__item">Links</a></li>
-                <li><a data-slug="shadows" href="shadows/" class="nav__item">Shadows</a></li>
-                <li><a data-slug="utilities" href="utilities/" class="nav__item">Utilities</a></li>
-            </ul>
-            <ul class="nav -vertical" data-section="wc" hidden>
-                <li><a data-slug="wc-tooltip" href="wc-tooltip/" class="nav__item">Tooltip</a></li>
-                <li><a data-slug="wc-menu" href="wc-menu/" class="nav__item">Menu</a></li>
-                <li><a data-slug="wc-combobox" href="wc-combobox/" class="nav__item">Combobox</a></li>
-                <li><a data-slug="wc-multicombobox" href="wc-multicombobox/" class="nav__item">Multicombobox</a></li>
-                <li><a data-slug="wc-datepicker" href="wc-datepicker/" class="nav__item">Datepicker</a></li>
-                <li><a data-slug="wc-timepicker" href="wc-timepicker/" class="nav__item">Timepicker</a></li>
+            <ul class="nav -vertical" data-sidebar>
+                <li data-item="buttons"><a data-item="buttons" data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
+                <li data-item="panels"><a data-item="panels" data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
+                <li data-item="details"><a data-item="details" data-slug="details" href="details/" class="nav__item">Details</a></li>
+                <li data-item="dialogs"><a data-item="dialogs" data-slug="dialogs" href="dialogs/" class="nav__item">Dialogs</a></li>
+                <li data-item="menus"><a data-item="menus" data-slug="menus" href="menus/" class="nav__item">Menus</a></li>
+                <li data-item="navigation"><a data-item="navigation" data-slug="navigation" href="navigation/" class="nav__item">Navigation</a></li>
+                <li data-item="kbd"><a data-item="kbd" data-slug="kbd" href="kbd/" class="nav__item">Keyboard</a></li>
+                <li data-item="badges"><a data-item="badges" data-slug="badges" href="badges/" class="nav__item">Badges</a></li>
+                <li data-item="tags"><a data-item="tags" data-slug="tags" href="tags/" class="nav__item">Tags</a></li>
+                <li data-item="forms"><a data-item="forms" data-slug="forms" href="forms/" class="nav__item">Forms</a></li>
+                <li data-item="combobox-single"><a data-item="combobox-single" data-slug="combobox-single" href="combobox-single/" class="nav__item">Combobox — Single</a></li>
+                <li data-item="combobox-multi"><a data-item="combobox-multi" data-slug="combobox-multi" href="combobox-multi/" class="nav__item">Combobox — Multi</a></li>
+                <li data-item="datepicker"><a data-item="datepicker" data-slug="datepicker" href="datepicker/" class="nav__item">Datepicker</a></li>
+                <li data-item="datepicker-range"><a data-item="datepicker-range" data-slug="datepicker-range" href="datepicker-range/" class="nav__item">Datepicker — Range</a></li>
+                <li data-item="timepicker"><a data-item="timepicker" data-slug="timepicker" href="timepicker/" class="nav__item">Timepicker</a></li>
+                <li data-item="tooltip"><a data-item="tooltip" data-slug="tooltip" href="tooltip/" class="nav__item">Tooltip</a></li>
+                <li data-item="typography"><a data-item="typography" data-slug="typography" href="typography/" class="nav__item">Typography</a></li>
+                <li data-item="colors"><a data-item="colors" data-slug="colors" href="colors/" class="nav__item">Colors</a></li>
+                <li data-item="links"><a data-item="links" data-slug="links" href="links/" class="nav__item">Links</a></li>
+                <li data-item="shadows"><a data-item="shadows" data-slug="shadows" href="shadows/" class="nav__item">Shadows</a></li>
+                <li data-item="utilities"><a data-item="utilities" data-slug="utilities" href="utilities/" class="nav__item">Utilities</a></li>
             </ul>
         </nav>
     </aside>
@@ -67,43 +59,72 @@
 
         const fragmentFor = (slug) => fragments[`./sections/${slug}.html`];
 
-        const titles = {
-            buttons: 'Buttons',
-            panels: 'Panels',
-            details: 'Details',
-            dialogs: 'Dialogs',
-            menus: 'Menus',
-            navigation: 'Navigation',
-            kbd: 'Keyboard',
-            badges: 'Badges',
-            tags: 'Tags',
-            forms: 'Forms',
-            'combobox-single': 'Combobox — Single',
-            'combobox-multi': 'Combobox — Multi',
-            datepicker: 'Datepicker',
-            'datepicker-range': 'Datepicker — Range',
-            timepicker: 'Timepicker',
-            tooltip: 'Tooltip',
-            typography: 'Typography',
-            colors: 'Colors',
-            links: 'Links',
-            shadows: 'Shadows',
-            utilities: 'Utilities',
-            'wc-tooltip': 'Tooltip (WC)',
-            'wc-menu': 'Menu (WC)',
-            'wc-combobox': 'Combobox (WC)',
-            'wc-multicombobox': 'Multicombobox (WC)',
-            'wc-datepicker': 'Datepicker (WC)',
-            'wc-timepicker': 'Timepicker (WC)',
+        const routes = {
+            buttons: { title: 'Buttons', section: 'css', item: 'buttons' },
+            panels: { title: 'Panels', section: 'css', item: 'panels' },
+            details: { title: 'Details', section: 'css', item: 'details' },
+            dialogs: { title: 'Dialogs', section: 'css', item: 'dialogs' },
+            menus: { title: 'Menus', section: 'css', item: 'menus' },
+            navigation: { title: 'Navigation', section: 'css', item: 'navigation' },
+            kbd: { title: 'Keyboard', section: 'css', item: 'kbd' },
+            badges: { title: 'Badges', section: 'css', item: 'badges' },
+            tags: { title: 'Tags', section: 'css', item: 'tags' },
+            forms: { title: 'Forms', section: 'css', item: 'forms' },
+            'combobox-single': { title: 'Combobox — Single', section: 'css', item: 'combobox-single' },
+            'combobox-multi': { title: 'Combobox — Multi', section: 'css', item: 'combobox-multi' },
+            datepicker: { title: 'Datepicker', section: 'css', item: 'datepicker' },
+            'datepicker-range': { title: 'Datepicker — Range', section: 'css', item: 'datepicker-range' },
+            timepicker: { title: 'Timepicker', section: 'css', item: 'timepicker' },
+            tooltip: { title: 'Tooltip', section: 'css', item: 'tooltip' },
+            typography: { title: 'Typography', section: 'css', item: 'typography' },
+            colors: { title: 'Colors', section: 'css', item: 'colors' },
+            links: { title: 'Links', section: 'css', item: 'links' },
+            shadows: { title: 'Shadows', section: 'css', item: 'shadows' },
+            utilities: { title: 'Utilities', section: 'css', item: 'utilities' },
+            'wc-tooltip': { title: 'Tooltip (WC)', section: 'wc', item: 'tooltip' },
+            'wc-menu': { title: 'Menu (WC)', section: 'wc', item: 'menus' },
+            'wc-combobox': { title: 'Combobox (WC)', section: 'wc', item: 'combobox-single' },
+            'wc-multicombobox': { title: 'Multicombobox (WC)', section: 'wc', item: 'combobox-multi' },
+            'wc-datepicker': { title: 'Datepicker (WC)', section: 'wc', item: 'datepicker' },
+            'wc-timepicker': { title: 'Timepicker (WC)', section: 'wc', item: 'timepicker' },
         };
 
-        const DEFAULT_SLUG = 'buttons';
-        const SECTION_DEFAULTS = { css: 'buttons', wc: 'wc-tooltip' };
-        const sectionOf = (slug) => (slug.startsWith('wc-') ? 'wc' : 'css');
-        const BASE = import.meta.env.BASE_URL || '/';
+        const sidebarItems = [
+            { item: 'buttons', css: 'buttons' },
+            { item: 'panels', css: 'panels' },
+            { item: 'details', css: 'details' },
+            { item: 'dialogs', css: 'dialogs' },
+            { item: 'menus', css: 'menus', wc: 'wc-menu' },
+            { item: 'navigation', css: 'navigation' },
+            { item: 'kbd', css: 'kbd' },
+            { item: 'badges', css: 'badges' },
+            { item: 'tags', css: 'tags' },
+            { item: 'forms', css: 'forms' },
+            { item: 'combobox-single', css: 'combobox-single', wc: 'wc-combobox' },
+            { item: 'combobox-multi', css: 'combobox-multi', wc: 'wc-multicombobox' },
+            { item: 'datepicker', css: 'datepicker', wc: 'wc-datepicker' },
+            { item: 'datepicker-range', css: 'datepicker-range' },
+            { item: 'timepicker', css: 'timepicker', wc: 'wc-timepicker' },
+            { item: 'tooltip', css: 'tooltip', wc: 'wc-tooltip' },
+            { item: 'typography', css: 'typography' },
+            { item: 'colors', css: 'colors' },
+            { item: 'links', css: 'links' },
+            { item: 'shadows', css: 'shadows' },
+            { item: 'utilities', css: 'utilities' },
+        ];
 
-        const links = document.querySelectorAll('nav a[data-slug]');
-        const sidebarLists = document.querySelectorAll('aside nav ul[data-section]');
+        const sidebarItemsById = Object.fromEntries(sidebarItems.map((item) => [item.item, item]));
+
+        const DEFAULT_SLUG = 'buttons';
+        const BASE = import.meta.env.BASE_URL || '/';
+        const pathFor = (slug) => `${BASE}${slug}/`;
+        const sidebarSlugFor = (item, section) => {
+            const sidebarItem = sidebarItemsById[item];
+            return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
+        };
+        const topNavSlugFor = (item, section) => sidebarItemsById[item]?.[section];
+
+        const links = document.querySelectorAll('nav a[data-item]');
         const topNavLinks = document.querySelectorAll('[data-top-nav] a[data-section]');
         const content = document.getElementById('content');
         const contentInner = document.getElementById('content-inner');
@@ -111,8 +132,8 @@
         // Backwards-compat: rewrite legacy `#/<slug>` URLs to `<slug>/`.
         if (location.hash.startsWith('#/')) {
             const legacy = location.hash.slice(2).replace(/\/+$/, '');
-            if (legacy in titles) {
-                history.replaceState(null, '', `${BASE}${legacy}/`);
+            if (legacy in routes) {
+                history.replaceState(null, '', pathFor(legacy));
             } else {
                 history.replaceState(null, '', BASE);
             }
@@ -123,19 +144,28 @@
             if (path.startsWith(BASE)) path = path.slice(BASE.length);
             path = path.replace(/^\/+|\/+$/g, '');
             const slug = path.split('/')[0] || DEFAULT_SLUG;
-            return slug in titles ? slug : DEFAULT_SLUG;
+            return slug in routes ? slug : DEFAULT_SLUG;
         };
 
         const setActiveLink = (slug) => {
+            const route = routes[slug];
+            const { item, section } = route;
             for (const link of links) {
-                link.classList.toggle('-active', link.dataset.slug === slug);
-            }
-            const section = sectionOf(slug);
-            for (const ul of sidebarLists) {
-                ul.hidden = ul.dataset.section !== section;
+                const targetSlug = sidebarSlugFor(link.dataset.item, section);
+                link.dataset.slug = targetSlug;
+                link.href = pathFor(targetSlug);
+                link.closest('li').hidden = false;
+                link.classList.toggle('-active', link.dataset.item === item);
             }
             for (const link of topNavLinks) {
-                link.classList.toggle('-active', link.dataset.section === section);
+                const targetSlug = topNavSlugFor(item, link.dataset.section);
+                if (targetSlug) {
+                    link.href = pathFor(targetSlug);
+                } else {
+                    link.removeAttribute('href');
+                }
+                link.closest('li').hidden = !targetSlug;
+                link.classList.toggle('-active', Boolean(targetSlug) && link.dataset.section === section);
             }
         };
 
@@ -149,7 +179,7 @@
             }
             firstRender = false;
             setActiveLink(slug);
-            document.title = `Project Neon — ${titles[slug]}`;
+            document.title = `Project Neon — ${routes[slug].title}`;
             content.scrollTop = 0;
         };
 
@@ -159,10 +189,10 @@
             if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
             const topLink = e.target.closest('[data-top-nav] a[data-section]');
             if (topLink) {
-                const slug = SECTION_DEFAULTS[topLink.dataset.section];
+                const slug = topNavSlugFor(routes[currentSlug()].item, topLink.dataset.section);
                 if (slug) {
                     e.preventDefault();
-                    const target = `${BASE}${slug}/`;
+                    const target = pathFor(slug);
                     if (location.pathname !== target) {
                         history.pushState(null, '', target);
                         render();
@@ -173,9 +203,9 @@
             const a = e.target.closest('a[data-slug]');
             if (!a) return;
             const slug = a.dataset.slug;
-            if (!(slug in titles)) return;
+            if (!(slug in routes)) return;
             e.preventDefault();
-            const target = `${BASE}${slug}/`;
+            const target = pathFor(slug);
             if (location.pathname !== target) {
                 history.pushState(null, '', target);
                 render();
