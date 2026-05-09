@@ -74,7 +74,7 @@
                 id="menu-popover"
                 popover
                 class="menu"
-                style="position-anchor: --menu-trigger; position-area: block-end span-inline-end; margin-block-start: 0.25rem;"
+                style="position-anchor: --menu-trigger;"
             >
                 <div class="menu__group">
                     <button class="menu__item" type="button">
@@ -112,6 +112,68 @@
                             <kbd class="kbd">⌫</kbd>
                         </span>
                     </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Preferred direction</h2>
+        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+            Add one of the directional modifier classes to a popover-mode menu to
+            change the side it opens on. Each modifier auto-flips to the opposite
+            side(s) when the requested direction would overflow the viewport, so
+            you only have to declare a preference — the browser handles edges.
+        </p>
+        <pre class="mb-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>&lt;div class="menu" popover&gt;…&lt;/div&gt;                  <span class="text-ink-secondary dark:text-ink-secondary-dark">// default: drop down</span>
+&lt;div class="menu -block-start" popover&gt;…&lt;/div&gt;     <span class="text-ink-secondary dark:text-ink-secondary-dark">// drop up</span>
+&lt;div class="menu -inline-end" popover&gt;…&lt;/div&gt;      <span class="text-ink-secondary dark:text-ink-secondary-dark">// open right</span>
+&lt;div class="menu -inline-start" popover&gt;…&lt;/div&gt;    <span class="text-ink-secondary dark:text-ink-secondary-dark">// open left</span></code></pre>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="flex flex-wrap items-center gap-3">
+                <button class="btn" type="button" popovertarget="menu-dir-default" style="anchor-name: --menu-dir-default;">
+                    Drop down (default)
+                </button>
+                <button class="btn" type="button" popovertarget="menu-dir-block-start" style="anchor-name: --menu-dir-block-start;">
+                    Drop up
+                </button>
+                <button class="btn" type="button" popovertarget="menu-dir-inline-end" style="anchor-name: --menu-dir-inline-end;">
+                    Open right
+                </button>
+                <button class="btn" type="button" popovertarget="menu-dir-inline-start" style="anchor-name: --menu-dir-inline-start;">
+                    Open left
+                </button>
+            </div>
+
+            <div id="menu-dir-default" popover class="menu" style="position-anchor: --menu-dir-default;">
+                <div class="menu__group">
+                    <button class="menu__item" type="button"><span class="menu__label">Cut</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Copy</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Paste</span></button>
+                </div>
+            </div>
+
+            <div id="menu-dir-block-start" popover class="menu -block-start" style="position-anchor: --menu-dir-block-start;">
+                <div class="menu__group">
+                    <button class="menu__item" type="button"><span class="menu__label">Undo</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Redo</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Find…</span></button>
+                </div>
+            </div>
+
+            <div id="menu-dir-inline-end" popover class="menu -inline-end" style="position-anchor: --menu-dir-inline-end;">
+                <div class="menu__group">
+                    <button class="menu__item" type="button"><span class="menu__label">Profile</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Settings</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Sign out</span></button>
+                </div>
+            </div>
+
+            <div id="menu-dir-inline-start" popover class="menu -inline-start" style="position-anchor: --menu-dir-inline-start;">
+                <div class="menu__group">
+                    <button class="menu__item" type="button"><span class="menu__label">Move to…</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Rename</span></button>
+                    <button class="menu__item" type="button"><span class="menu__label">Archive</span></button>
                 </div>
             </div>
         </div>
