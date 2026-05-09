@@ -9,6 +9,7 @@ const BASE = '/neon-kit/';
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
 
 const ROUTES = {
+  'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
   details:    { title: 'Details',    desc: 'Native <details> disclosures with Neon panel styling, custom summary chevrons, focus states, and disabled-looking states.', section: 'css', item: 'details' },
@@ -38,8 +39,10 @@ const ROUTES = {
   'wc-timepicker': { title: 'Timepicker (WC)', desc: '<neon-timepicker> - Light-DOM, form-associated timepicker web component with native time-input style APIs, optional seconds, and ElementInternals form participation.', section: 'wc', item: 'timepicker' },
 };
 
-const DEFAULT_SLUG = 'buttons';
-const TOP_NAV_SECTIONS = ['css', 'wc'];
+const DEFAULT_SLUG = 'getting-started';
+const DEFAULT_COMPONENT_SLUG = 'buttons';
+const DOCS_SECTIONS = ['getting-started', 'components'];
+const COMPONENT_MODE_SECTIONS = ['css', 'wc'];
 
 const SIDEBAR_ITEMS = [
   { item: 'buttons', css: 'buttons' },
@@ -71,7 +74,9 @@ const SIDEBAR_ITEMS_BY_ID = Object.fromEntries(
 
 const ACTIVE_CLASSES = 'nav__item -active';
 
-const pathFor = (slug) => `${BASE}${slug}/`;
+const pathFor = (slug) => slug === DEFAULT_SLUG ? BASE : `${BASE}${slug}/`;
+
+const isComponentRoute = (slug) => Boolean(ROUTES[slug]?.item);
 
 const sidebarSlugFor = (item, section) => {
   const sidebarItem = SIDEBAR_ITEMS_BY_ID[item];
@@ -79,6 +84,11 @@ const sidebarSlugFor = (item, section) => {
 };
 
 const topNavSlugFor = (item, section) => SIDEBAR_ITEMS_BY_ID[item]?.[section];
+
+const docsNavSlugFor = (slug, section) =>
+  section === 'components'
+    ? (isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG)
+    : DEFAULT_SLUG;
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -92,7 +102,7 @@ const writeFileEnsured = async (path, content) => {
 
 const renderPage = (shell, slug, fragment) => {
   const route = ROUTES[slug];
-  const canonical = `${SITE_ORIGIN}${BASE}${slug}/`;
+  const canonical = `${SITE_ORIGIN}${pathFor(slug)}`;
   const title = `Project Neon — ${route.title}`;
 
   let html = shell;
@@ -116,7 +126,8 @@ const renderPage = (shell, slug, fragment) => {
     `$1${fragment}$2`,
   );
 
-  const section = route.section;
+  const componentRoute = isComponentRoute(slug);
+  const section = componentRoute ? route.section : 'css';
 
   for (const item of SIDEBAR_ITEMS) {
     const targetSlug = sidebarSlugFor(item.item, section);
@@ -128,12 +139,34 @@ const renderPage = (shell, slug, fragment) => {
     const linkRegex = new RegExp(
       `(<a[^>]*data-item="${escapeRegExp(item.item)}"[^>]*data-slug=")[^"]*("[^>]*href=")[^"]*("[^>]*class=")[^"]*(")`,
     );
-    const className = item.item === route.item ? ACTIVE_CLASSES : 'nav__item';
+    const className = componentRoute && item.item === route.item ? ACTIVE_CLASSES : 'nav__item';
     html = html.replace(linkRegex, `$1${targetSlug}$2${pathFor(targetSlug)}$3${className}$4`);
   }
 
-  for (const targetSection of TOP_NAV_SECTIONS) {
-    const targetSlug = topNavSlugFor(route.item, targetSection);
+  html = html.replace(
+    /(<a[^>]*data-docs-home[^>]*href=")[^"]*(")/,
+    `$1${BASE}$2`,
+  );
+
+  for (const docsSection of DOCS_SECTIONS) {
+    const targetSlug = docsNavSlugFor(slug, docsSection);
+    const docsNavRegex = new RegExp(
+      `(<a[^>]*data-docs-section="${docsSection}"[^>]*href=")[^"]*("[^>]*class=")[^"]*(")`,
+    );
+    const className = docsSection === (componentRoute ? 'components' : 'getting-started') ? ACTIVE_CLASSES : 'nav__item';
+    html = html.replace(docsNavRegex, `$1${pathFor(targetSlug)}$2${className}$3`);
+  }
+
+  html = html.replace(
+    /<nav data-component-mode-nav([^>]*)>/,
+    (_match, attrs) => {
+      const attrsWithoutHidden = attrs.replace(/\s+hidden(?=\s|$)/, '');
+      return `<nav data-component-mode-nav${attrsWithoutHidden}${componentRoute ? '' : ' hidden'}>`;
+    },
+  );
+
+  for (const targetSection of COMPONENT_MODE_SECTIONS) {
+    const targetSlug = componentRoute ? topNavSlugFor(route.item, targetSection) : undefined;
     const hidden = !targetSlug;
     const topNavItemRegex = new RegExp(
       `(<li)( hidden)?(><a[^>]*data-section="${targetSection}")`,
@@ -182,7 +215,7 @@ const prerenderPlugin = () => ({
     const now = new Date().toISOString().slice(0, 10);
     const urls = [
       `${SITE_ORIGIN}${BASE}`,
-      ...slugs.map((s) => `${SITE_ORIGIN}${BASE}${s}/`),
+      ...slugs.filter((s) => s !== DEFAULT_SLUG).map((s) => `${SITE_ORIGIN}${pathFor(s)}`),
     ];
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

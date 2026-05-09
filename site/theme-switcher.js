@@ -8,11 +8,11 @@ class ThemeSwitcher extends HTMLElement {
   #renderButton() {
     const currentPrimary = this.#getCurrentPrimaryColor();
     this.innerHTML = `
-      <div class="fixed top-6 right-6 z-[1000]">
+      <div class="relative">
         <button class="btn theme-toggle-btn cursor-pointer text-sm">
           Theme & Colors
         </button>
-        <div class="theme-panel hidden absolute top-full right-0 mt-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px]" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+        <div class="theme-panel hidden absolute top-full right-0 mt-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px] z-[1000]" style="background: var(--color-surface); border: 1px solid var(--color-border);">
           <div class="mb-6">
             <h3 class="text-base font-semibold mb-4" style="color: var(--color-ink-primary);">Theme</h3>
             <button class="btn cta theme-toggle w-full cursor-pointer">

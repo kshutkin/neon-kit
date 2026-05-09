@@ -8,12 +8,17 @@
     <link rel="stylesheet" href="./index-docs.css">
 </head>
 <body class="min-h-screen bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark">
+    <header class="docs-topbar">
+        <a class="docs-wordmark" data-docs-home href="./">Neon Kit</a>
+        <nav class="docs-topbar__nav" aria-label="Documentation sections">
+            <ul class="nav -segmented" data-docs-nav>
+                <li><a data-docs-section="getting-started" href="./" class="nav__item -active">Getting Started</a></li>
+                <li><a data-docs-section="components" href="buttons/" class="nav__item">Components</a></li>
+            </ul>
+        </nav>
+        <theme-switcher></theme-switcher>
+    </header>
     <aside class="docs-aside flex w-72 flex-col border-r border-border bg-surface-secondary dark:border-border-dark dark:bg-surface-secondary-dark">
-        <header class="border-b border-border p-6 dark:border-border-dark">
-            <div class="text-xs font-medium uppercase tracking-wide text-ink-secondary dark:text-ink-secondary-dark">Theme Docs</div>
-            <h1 class="mt-2 text-2xl font-bold">Project Neon</h1>
-            <p class="mt-2 text-sm text-ink-secondary dark:text-ink-secondary-dark">Component and token reference for the current theme system.</p>
-        </header>
         <nav class="flex-1 p-4">
             <ul class="nav -vertical" data-sidebar>
                 <li data-item="buttons"><a data-item="buttons" data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
@@ -41,13 +46,14 @@
         </nav>
     </aside>
     <main id="content" class="docs-main bg-surface dark:bg-surface-dark">
-        <ul class="nav -tabs" data-top-nav>
-            <li><a data-section="css" href="buttons/" class="nav__item">CSS</a></li>
-            <li><a data-section="wc" href="wc-tooltip/" class="nav__item">Web Components</a></li>
-        </ul>
+        <nav data-component-mode-nav aria-label="Component mode" class="docs-tabs" hidden>
+            <ul class="nav -tabs">
+                <li><a data-section="css" href="buttons/" class="nav__item">CSS</a></li>
+                <li><a data-section="wc" href="wc-tooltip/" class="nav__item">Web Components</a></li>
+            </ul>
+        </nav>
         <div id="content-inner" class="p-8"></div>
     </main>
-    <theme-switcher></theme-switcher>
     <script src="./theme-switcher.js" type="module"></script>
     <script src="./combobox.js" type="module"></script>
     <script src="./datepicker.js" type="module"></script>
@@ -60,6 +66,7 @@
         const fragmentFor = (slug) => fragments[`./sections/${slug}.html`];
 
         const routes = {
+            'getting-started': { title: 'Getting Started' },
             buttons: { title: 'Buttons', section: 'css', item: 'buttons' },
             panels: { title: 'Panels', section: 'css', item: 'panels' },
             details: { title: 'Details', section: 'css', item: 'details' },
@@ -115,17 +122,26 @@
 
         const sidebarItemsById = Object.fromEntries(sidebarItems.map((item) => [item.item, item]));
 
-        const DEFAULT_SLUG = 'buttons';
+        const DEFAULT_SLUG = 'getting-started';
+        const DEFAULT_COMPONENT_SLUG = 'buttons';
         const BASE = import.meta.env.BASE_URL || '/';
-        const pathFor = (slug) => `${BASE}${slug}/`;
+        const pathFor = (slug) => slug === DEFAULT_SLUG ? BASE : `${BASE}${slug}/`;
+        const isComponentRoute = (slug) => Boolean(routes[slug]?.item);
         const sidebarSlugFor = (item, section) => {
             const sidebarItem = sidebarItemsById[item];
             return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
         };
         const topNavSlugFor = (item, section) => sidebarItemsById[item]?.[section];
+        const docsNavSlugFor = (slug, section) =>
+            section === 'components'
+                ? (isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG)
+                : DEFAULT_SLUG;
 
         const links = document.querySelectorAll('nav a[data-item]');
-        const topNavLinks = document.querySelectorAll('[data-top-nav] a[data-section]');
+        const docsNavLinks = document.querySelectorAll('[data-docs-nav] a[data-docs-section]');
+        const homeLink = document.querySelector('[data-docs-home]');
+        const componentModeNav = document.querySelector('[data-component-mode-nav]');
+        const componentModeLinks = document.querySelectorAll('[data-component-mode-nav] a[data-section]');
         const content = document.getElementById('content');
         const contentInner = document.getElementById('content-inner');
 
@@ -149,23 +165,34 @@
 
         const setActiveLink = (slug) => {
             const route = routes[slug];
-            const { item, section } = route;
+            const componentRoute = isComponentRoute(slug);
+            const section = componentRoute ? route.section : 'css';
             for (const link of links) {
                 const targetSlug = sidebarSlugFor(link.dataset.item, section);
                 link.dataset.slug = targetSlug;
                 link.href = pathFor(targetSlug);
                 link.closest('li').hidden = false;
-                link.classList.toggle('-active', link.dataset.item === item);
+                link.classList.toggle('-active', componentRoute && link.dataset.item === route.item);
             }
-            for (const link of topNavLinks) {
-                const targetSlug = topNavSlugFor(item, link.dataset.section);
+            if (homeLink) homeLink.href = pathFor(DEFAULT_SLUG);
+            for (const link of docsNavLinks) {
+                const targetSlug = docsNavSlugFor(slug, link.dataset.docsSection);
+                link.href = pathFor(targetSlug);
+                link.classList.toggle(
+                    '-active',
+                    link.dataset.docsSection === (componentRoute ? 'components' : 'getting-started'),
+                );
+            }
+            componentModeNav.hidden = !componentRoute;
+            for (const link of componentModeLinks) {
+                const targetSlug = componentRoute ? topNavSlugFor(route.item, link.dataset.section) : undefined;
                 if (targetSlug) {
                     link.href = pathFor(targetSlug);
                 } else {
                     link.removeAttribute('href');
                 }
                 link.closest('li').hidden = !targetSlug;
-                link.classList.toggle('-active', Boolean(targetSlug) && link.dataset.section === section);
+                link.classList.toggle('-active', Boolean(targetSlug) && componentRoute && link.dataset.section === route.section);
             }
         };
 
@@ -187,9 +214,30 @@
         document.addEventListener('click', (e) => {
             if (e.defaultPrevented) return;
             if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            const topLink = e.target.closest('[data-top-nav] a[data-section]');
-            if (topLink) {
-                const slug = topNavSlugFor(routes[currentSlug()].item, topLink.dataset.section);
+            const docsLink = e.target.closest('[data-docs-nav] a[data-docs-section]');
+            if (docsLink) {
+                e.preventDefault();
+                const slug = docsNavSlugFor(currentSlug(), docsLink.dataset.docsSection);
+                const target = pathFor(slug);
+                if (location.pathname !== target) {
+                    history.pushState(null, '', target);
+                    render();
+                }
+                return;
+            }
+            const homeAnchor = e.target.closest('[data-docs-home]');
+            if (homeAnchor) {
+                e.preventDefault();
+                const target = pathFor(DEFAULT_SLUG);
+                if (location.pathname !== target) {
+                    history.pushState(null, '', target);
+                    render();
+                }
+                return;
+            }
+            const componentModeLink = e.target.closest('[data-component-mode-nav] a[data-section]');
+            if (componentModeLink) {
+                const slug = topNavSlugFor(routes[currentSlug()].item, componentModeLink.dataset.section);
                 if (slug) {
                     e.preventDefault();
                     const target = pathFor(slug);

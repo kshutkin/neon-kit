@@ -13,11 +13,50 @@
    docs page is scrolled. Using the document as the scrolling container
    sidesteps the bug entirely. */
 
+:root {
+    --docs-topbar-height: 4rem;
+}
+
+.docs-topbar {
+    @apply bg-surface dark:bg-surface-dark border-b border-border dark:border-border-dark;
+
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    min-block-size: var(--docs-topbar-height);
+    padding-block: --spacing(3);
+    padding-inline: 0;
+}
+
+.docs-wordmark {
+    @apply text-ink-primary dark:text-ink-primary-dark;
+    flex: 0 0 auto;
+    inline-size: 18rem;
+    padding-inline: --spacing(4);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+}
+
+.docs-topbar__nav {
+    flex: 1 1 auto;
+    padding-inline-start: --spacing(8);
+    padding-inline-end: --spacing(4);
+}
+
+.docs-topbar theme-switcher {
+    flex: 0 0 auto;
+    padding-inline-end: --spacing(8);
+}
+
 .docs-aside {
     position: fixed;
-    inset-block: 0;
+    inset-block-start: var(--docs-topbar-height);
     inset-inline-start: 0;
-    block-size: 100vh;
+    block-size: calc(100vh - var(--docs-topbar-height));
     overflow-y: auto;
     z-index: 1;
 }
@@ -25,5 +64,11 @@
 .docs-main {
     /* Match `.docs-aside`'s width (w-72 = 18rem). */
     margin-inline-start: 18rem;
-    min-block-size: 100vh;
+    min-block-size: calc(100vh - var(--docs-topbar-height));
 }
+
+.docs-tabs {
+    padding-inline: --spacing(8);
+    padding-block-start: --spacing(4);
+}
+
