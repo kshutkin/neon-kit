@@ -62,10 +62,38 @@
         /* Default placement: drop below the trigger, aligned to its
            inline-start edge. Relies on the implicit anchor that the
            UA sets up when a button uses `popovertarget="<menu-id>"`.
-           Logical sides auto-flip in RTL. Consumers can override by
-           setting their own `position-area` on the menu. */
+           Logical sides auto-flip in RTL. Consumers can override the
+           preferred direction with a `.-block-start` / `.-inline-end`
+           / `.-inline-start` modifier (see below). */
         position-area: block-end span-inline-end;
         margin-block-start: --spacing(1);
+        /* Flip to the opposite side(s) on viewport overflow. Built-in
+           fallbacks suffice (no arrow). `flip-block` swaps block-axis
+           insets/margins symmetrically, `flip-inline` does the same on
+           the inline axis, and the third combined try handles the
+           corner-overflow case. */
+        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    }
+
+    /* Preferred-direction modifiers. Each picks a primary `position-area`
+       and matching margin gap; `position-try-fallbacks` keeps flipping
+       to the opposite side(s) on overflow. */
+    &[popover].-block-start {
+        position-area: block-start span-inline-end;
+        margin-block-start: 0;
+        margin-block-end: --spacing(1);
+    }
+
+    &[popover].-inline-end {
+        position-area: span-block-end inline-end;
+        margin-block-start: 0;
+        margin-inline-start: --spacing(1);
+    }
+
+    &[popover].-inline-start {
+        position-area: span-block-end inline-start;
+        margin-block-start: 0;
+        margin-inline-end: --spacing(1);
     }
 
     /* Author `display: grid` above wins over the UA
