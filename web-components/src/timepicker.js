@@ -806,10 +806,36 @@ export class NeonTimepickerElement extends HTMLElement {
             row.classList.add('-active');
             this.#activeId = row.id;
             this.#input.setAttribute('aria-activedescendant', row.id);
-            row.scrollIntoView({ block: 'nearest' });
+            this.#scrollRowIntoList(row, 'nearest');
         } else {
             this.#activeId = '';
             this.#input.removeAttribute('aria-activedescendant');
+        }
+    }
+
+    /**
+     * Scroll the list container so the row is visible, WITHOUT bubbling
+     * the scroll up to ancestor scroll containers (Element.scrollIntoView
+     * walks all ancestors up to the document, which would scroll the page
+     * when the popover opens). Modifies only `#listEl.scrollTop`.
+     *
+     * @param {HTMLElement} row
+     * @param {'nearest' | 'center'} mode
+     */
+    #scrollRowIntoList(row, mode) {
+        const list = this.#listEl;
+        if (!list) return;
+        const listRect = list.getBoundingClientRect();
+        const rowRect = row.getBoundingClientRect();
+        if (mode === 'center') {
+            const target = rowRect.top - listRect.top - (listRect.height - rowRect.height) / 2;
+            list.scrollTop += target;
+            return;
+        }
+        if (rowRect.top < listRect.top) {
+            list.scrollTop -= listRect.top - rowRect.top;
+        } else if (rowRect.bottom > listRect.bottom) {
+            list.scrollTop += rowRect.bottom - listRect.bottom;
         }
     }
 
@@ -954,8 +980,10 @@ export class NeonTimepickerElement extends HTMLElement {
             const selected = this.#rows.find((row) => row.dataset.value === this.#value) ?? null;
             this.#setActive(selected ?? this.#visibleRows()[0] ?? null);
             queueMicrotask(() => {
-                this.#input?.focus();
-                selected?.scrollIntoView({ block: 'center' });
+                // `preventScroll` keeps the document from jumping when
+                // the popover opens far from the viewport center.
+                this.#input?.focus({ preventScroll: true });
+                if (selected) this.#scrollRowIntoList(selected, 'center');
             });
         } else {
             this.#setActive(null);
