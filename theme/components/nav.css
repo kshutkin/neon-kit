@@ -181,11 +181,11 @@
    broad: we target the label that immediately follows a checked radio. */
 .nav.-segmented .nav__item.-active,
 .nav.-segmented input[type="radio"]:checked + .nav__item {
-    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark font-semibold;
+    @apply bg-surface dark:bg-primary-dark text-ink-primary dark:text-ink-inverse inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark font-semibold;
 
     &:hover,
     &:focus-visible {
-        @apply bg-surface dark:bg-surface-dark;
+        @apply bg-surface dark:bg-primary-dark;
     }
 }
 
