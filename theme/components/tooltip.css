@@ -146,7 +146,13 @@
    seam between bubble and arrow is invisible. Two of its sides are
    clipped away so only the outward-facing corner reads as a triangle.
    Positioned inside the bubble (`position: absolute`) — works because
-   the popover is itself a positioned containing block. */
+   the popover is itself a positioned containing block.
+
+   Arrow geometry is driven by inherited custom properties set on the
+   popover by the placement rules and `@position-try` fallbacks below.
+   Plumbing it through vars lets a named try-block override BOTH the
+   body's `position-area` and the arrow side in one declaration, so the
+   arrow follows the body when the browser flips us — no JS required. */
 .tooltip__arrow {
     position: absolute;
     inline-size: --spacing(2);
@@ -155,86 +161,135 @@
     border: inherit;
     rotate: 45deg;
     pointer-events: none;
+    inset-block-start: var(--tooltip-arrow-inset-block-start);
+    inset-inline-start: var(--tooltip-arrow-inset-inline-start);
+    translate: var(--tooltip-arrow-translate);
+    clip-path: var(--tooltip-arrow-clip);
 }
 
-/* ---------- Placement: top (default) ------------------------------------ */
+/* ---------- Named position-try fallbacks --------------------------------
 
-/* Arrow clip-path notes: the arrow square is rotated 45°, so its
+   Each fallback is the OPPOSITE-side counterpart of one primary
+   placement. It overrides BOTH the body's `position-area` / margin AND
+   the arrow custom properties, so when `position-try-fallbacks` engages
+   the arrow geometry follows the flipped body.
+
+   Arrow clip-path notes: the arrow square is rotated 45°, so its
    original top-left / top-right / bottom-right / bottom-left corners
    map to top / right / bottom / left after rotation. To get a triangle
    pointing TOWARD the trigger we KEEP the three corners that face
    AWAY from the trigger — the dropped corner becomes the arrow tip. */
 
+@position-try --tooltip-flip-bottom {
+    position-area: bottom;
+    margin-block: --spacing(2);
+    margin-inline: 0;
+    /* Tooltip below trigger → arrow points UP. */
+    --tooltip-arrow-inset-block-start: 0;
+    --tooltip-arrow-inset-inline-start: 50%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, -20% 120%);
+}
+
+@position-try --tooltip-flip-top {
+    position-area: top;
+    margin-block: --spacing(2);
+    margin-inline: 0;
+    /* Tooltip above trigger → arrow points DOWN. */
+    --tooltip-arrow-inset-block-start: 100%;
+    --tooltip-arrow-inset-inline-start: 50%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(120% -20%, 120% 120%, -20% 120%);
+}
+
+@position-try --tooltip-flip-right {
+    position-area: right;
+    margin-inline: --spacing(2);
+    margin-block: 0;
+    /* Tooltip right of trigger → arrow points LEFT. */
+    --tooltip-arrow-inset-block-start: 50%;
+    --tooltip-arrow-inset-inline-start: 0;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% 120%, -20% 120%);
+}
+
+@position-try --tooltip-flip-left {
+    position-area: left;
+    margin-inline: --spacing(2);
+    margin-block: 0;
+    /* Tooltip left of trigger → arrow points RIGHT. */
+    --tooltip-arrow-inset-block-start: 50%;
+    --tooltip-arrow-inset-inline-start: 100%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, 120% 120%);
+}
+
+/* ---------- Placement: top (default) ------------------------------------ */
+
 .tooltip[popover],
 .tooltip[popover].-top {
     position-area: top;
-    margin-block-end: --spacing(2);
+    /* Symmetric margin so the trigger gap is preserved when the named
+       `--tooltip-flip-bottom` fallback engages and flips us downward. */
+    margin-block: --spacing(2);
+    position-try-fallbacks: --tooltip-flip-bottom;
 
-    & > .tooltip__arrow {
-        inset-block-start: 100%;
-        inset-inline-start: 50%;
-        translate: -50% -50%;
-        /* Tooltip above trigger → arrow points DOWN. The original
-           Top-Left corner rotates to Top, which is the flat base.
-           The Bottom-Right corner rotates to Bottom, which is the tip.
-           Therefore, KEEP TR, BR, BL and DROP TL (-20% -20%). */
-        clip-path: polygon(120% -20%, 120% 120%, -20% 120%);
-    }
+    /* Tooltip above trigger → arrow points DOWN. The original
+       Top-Left corner rotates to Top (flat base); the Bottom-Right
+       corner rotates to Bottom (tip). KEEP TR, BR, BL; DROP TL. */
+    --tooltip-arrow-inset-block-start: 100%;
+    --tooltip-arrow-inset-inline-start: 50%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(120% -20%, 120% 120%, -20% 120%);
 }
 
 /* ---------- Placement: bottom ------------------------------------------- */
 
 .tooltip[popover].-bottom {
     position-area: bottom;
-    margin-block-start: --spacing(2);
-    margin-block-end: 0;
+    margin-block: --spacing(2);
+    margin-inline: 0;
+    position-try-fallbacks: --tooltip-flip-top;
 
-    & > .tooltip__arrow {
-        inset-block-start: 0;
-        inset-inline-start: 50%;
-        translate: -50% -50%;
-        /* Tooltip below trigger → arrow points UP. The original 
-           Bottom-Right corner rotates to Bottom, which is the flat base.
-           The Top-Left corner rotates to Top, which is the tip.
-           Therefore, KEEP TL, TR, BL and DROP BR (120% 120%). */
-        clip-path: polygon(-20% -20%, 120% -20%, -20% 120%);
-    }
+    /* Tooltip below trigger → arrow points UP. The original
+       Bottom-Right corner rotates to Bottom (flat base); the Top-Left
+       corner rotates to Top (tip). KEEP TL, TR, BL; DROP BR. */
+    --tooltip-arrow-inset-block-start: 0;
+    --tooltip-arrow-inset-inline-start: 50%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, -20% 120%);
 }
 
 /* ---------- Placement: left (inline-start) ------------------------------ */
 
 .tooltip[popover].-left {
     position-area: left;
-    margin-inline-end: --spacing(2);
-    margin-block-end: 0;
+    margin-inline: --spacing(2);
+    margin-block: 0;
+    position-try-fallbacks: --tooltip-flip-right;
 
-    & > .tooltip__arrow {
-        inset-block-start: 50%;
-        inset-inline-start: 100%;
-        translate: -50% -50%;
-        /* Tooltip left of trigger → arrow points RIGHT. The original
-           Bottom-Left corner rotates to Left, which is the flat base.
-           The Top-Right corner rotates to Right, which is the tip.
-           Therefore, KEEP TL, TR, BR and DROP BL (-20% 120%). */
-        clip-path: polygon(-20% -20%, 120% -20%, 120% 120%);
-    }
+    /* Tooltip left of trigger → arrow points RIGHT. The original
+       Bottom-Left corner rotates to Left (flat base); the Top-Right
+       corner rotates to Right (tip). KEEP TL, TR, BR; DROP BL. */
+    --tooltip-arrow-inset-block-start: 50%;
+    --tooltip-arrow-inset-inline-start: 100%;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, 120% 120%);
 }
 
 /* ---------- Placement: right (inline-end) ------------------------------- */
 
 .tooltip[popover].-right {
     position-area: right;
-    margin-inline-start: --spacing(2);
-    margin-block-end: 0;
+    margin-inline: --spacing(2);
+    margin-block: 0;
+    position-try-fallbacks: --tooltip-flip-left;
 
-    & > .tooltip__arrow {
-        inset-block-start: 50%;
-        inset-inline-start: 0;
-        translate: -50% -50%;
-        /* Tooltip right of trigger → arrow points LEFT. The original
-           Top-Right corner rotates to Right, which is the flat base.
-           The Bottom-Left corner rotates to Left, which is the tip.
-           Therefore, KEEP TL, BR, BL and DROP TR (120% -20%). */
-        clip-path: polygon(-20% -20%, 120% 120%, -20% 120%);
-    }
+    /* Tooltip right of trigger → arrow points LEFT. The original
+       Top-Right corner rotates to Right (flat base); the Bottom-Left
+       corner rotates to Left (tip). KEEP TL, BR, BL; DROP TR. */
+    --tooltip-arrow-inset-block-start: 50%;
+    --tooltip-arrow-inset-inline-start: 0;
+    --tooltip-arrow-translate: -50% -50%;
+    --tooltip-arrow-clip: polygon(-20% -20%, 120% 120%, -20% 120%);
 }

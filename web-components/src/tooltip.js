@@ -95,6 +95,8 @@ export class NeonTooltipElement extends HTMLElement {
     #timer = null;
     /** @type {AbortController | null} */
     #listeners = null;
+    /** @type {'top' | 'bottom' | 'left' | 'right'} */
+    #appliedPlacement = 'top';
 
     // Track which attributes we set on the parent so we can restore
     // cleanly. We never overwrite values the consumer set themselves.
@@ -233,10 +235,20 @@ export class NeonTooltipElement extends HTMLElement {
 
     #refresh() {
         const placement = readPlacement(this.getAttribute('data-placement'));
-        this.classList.remove('-top', '-bottom', '-left', '-right');
-        this.classList.add(`-${placement}`);
+        this.#applyPlacementClass(placement);
 
         this.#triggers = readTriggerSet(this.getAttribute('data-trigger'));
+    }
+
+    /**
+     * @param {'top' | 'bottom' | 'left' | 'right'} placement
+     */
+    #applyPlacementClass(placement) {
+        if (this.#appliedPlacement === placement
+            && this.classList.contains(`-${placement}`)) return;
+        this.classList.remove('-top', '-bottom', '-left', '-right');
+        this.classList.add(`-${placement}`);
+        this.#appliedPlacement = placement;
     }
 
     /**
