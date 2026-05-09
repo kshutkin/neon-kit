@@ -179,6 +179,9 @@
     /* `block-end span-inline-end` instead of `bottom span-inline-end`
        — Chromium rejects the mixed physical+logical form. */
     position-area: block-end span-inline-end;
+    /* Flip to the opposite side(s) on viewport overflow. See combobox.css
+       for the rationale; built-in fallbacks suffice (no arrow). */
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
 
     /* Reset UA `[popover]` defaults (`margin: auto`, `inset: 0`) so the
        anchor-positioned offset above survives. Override `position: fixed`

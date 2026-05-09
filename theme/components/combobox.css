@@ -302,6 +302,13 @@
        system. Falls through to the same visual placement in LTR
        horizontal-tb writing modes. */
     position-area: block-end span-inline-end;
+    /* Flip to the opposite side(s) when the primary placement would
+       overflow the viewport. `flip-block` swaps block-axis insets and
+       margins symmetrically (so the trigger-gap survives), `flip-inline`
+       does the same on the inline axis, and the third combined try
+       handles the corner-overflow case. Built-in fallbacks are
+       sufficient here — these overlays have no arrow to keep aligned. */
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
 }
 
 /* Sticky search header — looks like a slim `.input` row inside the panel. */
