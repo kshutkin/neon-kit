@@ -9,6 +9,7 @@ const BASE = '/neon-kit/';
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
 
 const ROUTES = {
+  about: { title: 'About', desc: 'Neon Kit is a Tailwind-based theme paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
   'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
@@ -39,9 +40,9 @@ const ROUTES = {
   'wc-timepicker': { title: 'Timepicker (WC)', desc: '<neon-timepicker> - Light-DOM, form-associated timepicker web component with native time-input style APIs, optional seconds, and ElementInternals form participation.', section: 'wc', item: 'timepicker' },
 };
 
-const DEFAULT_SLUG = 'getting-started';
+const DEFAULT_SLUG = 'about';
 const DEFAULT_COMPONENT_SLUG = 'buttons';
-const DOCS_SECTIONS = ['getting-started', 'components'];
+const DOCS_SECTIONS = ['about', 'getting-started', 'components'];
 const COMPONENT_MODE_SECTIONS = ['css', 'wc'];
 
 const SIDEBAR_ITEMS = [
@@ -85,10 +86,17 @@ const sidebarSlugFor = (item, section) => {
 
 const topNavSlugFor = (item, section) => SIDEBAR_ITEMS_BY_ID[item]?.[section];
 
-const docsNavSlugFor = (slug, section) =>
-  section === 'components'
-    ? (isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG)
-    : DEFAULT_SLUG;
+const docsNavSlugFor = (slug, section) => {
+  if (section === 'components') return isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG;
+  if (section === 'about') return 'about';
+  return 'getting-started';
+};
+
+const activeDocsSection = (slug) => {
+  if (isComponentRoute(slug)) return 'components';
+  if (slug === 'about') return 'about';
+  return 'getting-started';
+};
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -153,7 +161,7 @@ const renderPage = (shell, slug, fragment) => {
     const docsNavRegex = new RegExp(
       `(<a[^>]*data-docs-section="${docsSection}"[^>]*href=")[^"]*("[^>]*class=")[^"]*(")`,
     );
-    const className = docsSection === (componentRoute ? 'components' : 'getting-started') ? ACTIVE_CLASSES : 'nav__item';
+    const className = docsSection === activeDocsSection(slug) ? ACTIVE_CLASSES : 'nav__item';
     html = html.replace(docsNavRegex, `$1${pathFor(targetSlug)}$2${className}$3`);
   }
 

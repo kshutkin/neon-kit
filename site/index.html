@@ -12,7 +12,8 @@
         <a class="docs-wordmark" data-docs-home href="./">Neon Kit</a>
         <nav class="docs-topbar__nav" aria-label="Documentation sections">
             <ul class="nav -segmented" data-docs-nav>
-                <li><a data-docs-section="getting-started" href="./" class="nav__item -active">Getting Started</a></li>
+                <li><a data-docs-section="about" href="./" class="nav__item -active">About</a></li>
+                <li><a data-docs-section="getting-started" href="getting-started/" class="nav__item">Getting Started</a></li>
                 <li><a data-docs-section="components" href="buttons/" class="nav__item">Components</a></li>
             </ul>
         </nav>
@@ -66,6 +67,7 @@
         const fragmentFor = (slug) => fragments[`./sections/${slug}.html`];
 
         const routes = {
+            about: { title: 'About' },
             'getting-started': { title: 'Getting Started' },
             buttons: { title: 'Buttons', section: 'css', item: 'buttons' },
             panels: { title: 'Panels', section: 'css', item: 'panels' },
@@ -122,7 +124,7 @@
 
         const sidebarItemsById = Object.fromEntries(sidebarItems.map((item) => [item.item, item]));
 
-        const DEFAULT_SLUG = 'getting-started';
+        const DEFAULT_SLUG = 'about';
         const DEFAULT_COMPONENT_SLUG = 'buttons';
         const BASE = import.meta.env.BASE_URL || '/';
         const pathFor = (slug) => slug === DEFAULT_SLUG ? BASE : `${BASE}${slug}/`;
@@ -132,10 +134,16 @@
             return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
         };
         const topNavSlugFor = (item, section) => sidebarItemsById[item]?.[section];
-        const docsNavSlugFor = (slug, section) =>
-            section === 'components'
-                ? (isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG)
-                : DEFAULT_SLUG;
+        const docsNavSlugFor = (slug, section) => {
+            if (section === 'components') return isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG;
+            if (section === 'about') return 'about';
+            return 'getting-started';
+        };
+        const activeDocsSection = (slug) => {
+            if (isComponentRoute(slug)) return 'components';
+            if (slug === 'about') return 'about';
+            return 'getting-started';
+        };
 
         const links = document.querySelectorAll('nav a[data-item]');
         const docsNavLinks = document.querySelectorAll('[data-docs-nav] a[data-docs-section]');
@@ -175,13 +183,11 @@
                 link.classList.toggle('-active', componentRoute && link.dataset.item === route.item);
             }
             if (homeLink) homeLink.href = pathFor(DEFAULT_SLUG);
+            const activeSection = activeDocsSection(slug);
             for (const link of docsNavLinks) {
                 const targetSlug = docsNavSlugFor(slug, link.dataset.docsSection);
                 link.href = pathFor(targetSlug);
-                link.classList.toggle(
-                    '-active',
-                    link.dataset.docsSection === (componentRoute ? 'components' : 'getting-started'),
-                );
+                link.classList.toggle('-active', link.dataset.docsSection === activeSection);
             }
             componentModeNav.hidden = !componentRoute;
             for (const link of componentModeLinks) {
