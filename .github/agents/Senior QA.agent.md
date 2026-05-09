@@ -2,7 +2,7 @@
 name: Senior QA
 description: .
 argument-hint: Describe WHAT you're looking for and desired thoroughness (quick/medium/thorough)
-model: ['GPT-5.5 (copilot)']
+model: ['Claude Opus 4.7 (copilot)']
 target: vscode
 user-invocable: false
 tools: ['execute', 'read', 'agent', 'edit', 'todo', 'search', 'web', 'vscode/memory']
