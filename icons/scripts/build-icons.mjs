@@ -304,11 +304,17 @@ function renderRootIndex() {
  *     import { outline, solid, mini, micro } from '@neon-kit/icons';
  *     outline['bars-3'];   // IconDef
  *
- * Also re-exports the shared \`serialize\` helper from \`./serialize.js\`.
+ * Also re-exports the shared \`serialize\` helper from \`./serialize.js\`
+ * and the shared \`IconPath\` / \`IconDef\` typedefs.
  *
  * Subpath imports remain the recommended path for tree-shaking.
  *
  * Generated from \`scripts/build-icons.mjs\`. Do not edit by hand.
+ */
+
+/**
+ * @typedef {import('./types.js').IconPath} IconPath
+ * @typedef {import('./types.js').IconDef} IconDef
  */
 
 export { default as outline } from './outline/index.js';
