@@ -342,6 +342,79 @@
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Filter bar</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            No dedicated component class — a filter bar is just a
+            two-row flex layout composed from existing primitives:
+            <code>&lt;select class="input"&gt;</code> to pick a filter
+            type, <code>&lt;input class="input"&gt;</code> for the
+            value, a default <code>.btn</code> to apply, then a row of
+            <code>.tag</code> chips (with <code>.tag__remove</code>) for
+            applied filters and a <code>.btn.quiet</code> "Clear all"
+            trailing the chips. Consumers wire apply / remove / clear
+            handlers and hide the chips row when no filters are active.
+        </p>
+        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="flex items-center gap-2 text-sm">
+                        <span>Filter by</span>
+                        <select class="input">
+                            <option>Status</option>
+                            <option>Package</option>
+                            <option>Owner</option>
+                        </select>
+                    </label>
+                    <input type="text" class="input" placeholder="Enter value" />
+                    <button type="button" class="btn">Apply</button>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="tag">
+                        Status: Open
+                        <button type="button" class="tag__remove" aria-label="Remove filter: Status is Open">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2" fill="none"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </span>
+                    <span class="tag">
+                        Package: @neon-kit/theme
+                        <button type="button" class="tag__remove" aria-label="Remove filter: Package is @neon-kit/theme">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2" fill="none"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </span>
+                    <button type="button" class="btn quiet">Clear all</button>
+                </div>
+            </div>
+
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Package</th>
+                        <th>Status</th>
+                        <th>Owner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@neon-kit/theme</td>
+                        <td>Open</td>
+                        <td>core</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">Pagination</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
             No dedicated component class — pagination is composed from
