@@ -1,0 +1,79 @@
+/* Tabular data — a restrained default style on top of the reset.
+
+   The Neon reset already collapses borders and sets
+   `border-color: currentColor` for every `<table>`. The `.table`
+   component layers a basic, readable look on top: full-width layout,
+   muted header surface, hairline row separators in the theme border
+   token, and a slightly stronger separator above `<tfoot>`.
+
+   No variants for now — a single `.table` class only. If
+   striping / hover / compact density are wanted later, they should
+   come in as additional classes (`.table.-striped`, etc.) without
+   reshaping these defaults.
+
+   Markup:
+       <table class="table">
+           <caption>Neon Kit packages</caption>
+           <thead>
+               <tr><th>Package</th><th>Description</th></tr>
+           </thead>
+           <tbody>
+               <tr><td>@neon-kit/theme</td><td>CSS theme</td></tr>
+           </tbody>
+           <tfoot>
+               <tr><td>Total</td><td>1 package</td></tr>
+           </tfoot>
+       </table>
+*/
+
+.table {
+    @apply border-border dark:border-border-dark;
+    width: 100%;
+    caption-side: bottom;
+    text-align: start;
+    color: inherit;
+}
+
+.table caption {
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    font-size: 0.875rem;
+    padding-block: 0.5rem;
+    text-align: start;
+}
+
+.table th,
+.table td {
+    @apply border-b border-border dark:border-border-dark;
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    text-align: inherit;
+}
+
+.table thead th {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    font-weight: 600;
+    text-align: start;
+}
+
+.table tfoot td,
+.table tfoot th {
+    @apply border-t border-border dark:border-border-dark;
+    font-weight: 500;
+}
+
+/* Strip the trailing tbody row's bottom border so the table doesn't
+   double up against a tfoot top border or a surrounding container.
+   With `border-collapse: collapse`, the tfoot's own top border still
+   separates body from footer when one is present. */
+.table > tbody > tr:last-child > td,
+.table > tbody > tr:last-child > th {
+    border-bottom: 0;
+}
+
+/* Striped rows — alternate the secondary surface on even tbody rows.
+   The thead row uses the same token, so it stays visually anchored
+   above the body via the cell bottom border. */
+.table.-striped > tbody > tr:nth-child(even) > td,
+.table.-striped > tbody > tr:nth-child(even) > th {
+    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+}
