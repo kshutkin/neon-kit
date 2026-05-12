@@ -289,6 +289,59 @@
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Sortable headers</h2>
+        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            Mark a <code>&lt;th&gt;</code> as sortable with
+            <code>aria-sort="none|ascending|descending"</code> and put a
+            <code>&lt;button type="button"&gt;</code> inside it as the
+            click / keyboard target. The button stretches to fill the
+            cell, an arrow indicator renders via <code>::after</code>
+            (<code>↕</code> when neutral, <code>↑</code> / <code>↓</code>
+            when active), and the indicator slot is always reserved so
+            column widths don't shift between states. Sorting logic is
+            up to the consumer — this is presentation + a11y only.
+        </p>
+        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th aria-sort="ascending">
+                            <button type="button">Package</button>
+                        </th>
+                        <th aria-sort="none">
+                            <button type="button">Description</button>
+                        </th>
+                        <th aria-sort="none">
+                            <button type="button">Status</button>
+                        </th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@neon-kit/icons</td>
+                        <td>Tree-shakeable SVG icons</td>
+                        <td>Stable</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>@neon-kit/theme</td>
+                        <td>Tailwind-based CSS theme</td>
+                        <td>Stable</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>@neon-kit/web-components</td>
+                        <td>Native custom elements</td>
+                        <td>Stable</td>
+                        <td>Light DOM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">Pagination</h2>
         <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
             No dedicated component class — pagination is composed from

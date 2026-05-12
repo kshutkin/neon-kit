@@ -77,3 +77,74 @@
 .table.-striped > tbody > tr:nth-child(even) > th {
     @apply bg-surface-secondary dark:bg-surface-secondary-dark;
 }
+
+/* Sortable headers — `<th aria-sort="none|ascending|descending">` with
+   an inner `<button type="button">` as the click/keyboard target. The
+   button stretches to fill the cell so the whole header is hit-target,
+   and an arrow indicator is rendered via `::after`:
+
+       ↕   neutral / unsorted          (dim placeholder)
+       ↑   currently sorted ascending  (active)
+       ↓   currently sorted descending (active)
+
+   Space for the arrow is always reserved, so column widths don't shift
+   when the active column changes. Consumers wire the actual sorting
+   logic; this is presentation + a11y only.
+
+   Markup:
+       <th aria-sort="none">
+           <button type="button">Name</button>
+       </th>
+       <th aria-sort="ascending">
+           <button type="button">Date</button>
+       </th>
+*/
+.table thead th:has(> button[type="button"]) {
+    padding: 0;
+}
+
+.table thead th > button[type="button"] {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.table thead th > button[type="button"]:hover {
+    @apply bg-border dark:bg-border-dark;
+}
+
+.table thead th > button[type="button"]:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.table thead th[aria-sort] > button[type="button"]::after {
+    content: "\2195"; /* ↕ */
+    margin-inline-start: auto;
+    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    opacity: 0.6;
+    font-size: 0.875em;
+    line-height: 1;
+}
+
+.table thead th[aria-sort="ascending"] > button[type="button"]::after {
+    content: "\2191"; /* ↑ */
+    opacity: 1;
+    color: inherit;
+}
+
+.table thead th[aria-sort="descending"] > button[type="button"]::after {
+    content: "\2193"; /* ↓ */
+    opacity: 1;
+    color: inherit;
+}
