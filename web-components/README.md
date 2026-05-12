@@ -15,61 +15,37 @@ is flattened by `pkgprn` at pack time.
 - `@neon-kit/web-components/datepicker` - `<neon-datepicker>`
 - `@neon-kit/web-components/timepicker` - `<neon-timepicker>`
 - `@neon-kit/web-components/icon` - `<neon-icon>`
-- `@neon-kit/web-components/icon-vite-loader` - side-effect: wires `<neon-icon>` to `@neon-kit/icons` via `import.meta.glob` (Vite only)
 
 ## `<neon-icon>`
 
-Light-DOM custom element that renders a registered icon by `name`. Icon data
+Light-DOM custom element that renders an icon by `name`. Icon data
 lives in [`@neon-kit/icons`](../icons); this package only ships the element.
-Register the icons you use so bundlers can tree-shake the rest:
 
-```js
-import { defineIcons, registerIcon } from '@neon-kit/web-components/icon';
-import { outline } from '@neon-kit/icons';
-
-defineIcons({ menu: outline['bars-3'] });
-registerIcon();
-```
-
-```html
-<neon-icon name="menu" size="20"></neon-icon>
-<neon-icon name="menu" aria-label="Open menu"></neon-icon>
-```
+The rendered SVG is always `1em × 1em`; size it via CSS `font-size` on
+the host (or any ancestor).
 
 ### Dynamic loading via `name`
 
-`<neon-icon name="<variant>/<icon>">` lazy-loads the icon module on demand.
-The default loader runs `import('@neon-kit/icons/<name>')`, which works in
-runtimes that resolve dynamic bare specifiers (Node ESM, native browser
-ESM, esbuild).
+`<neon-icon name="<variant>/<icon>">` lazy-loads the icon module on demand
+via `import('@neon-kit/icons/<name>')`. The component marks that call
+`/* @vite-ignore */`, so the dynamic specifier reaches the host runtime
+verbatim. It resolves in Node ESM and any runtime that resolves bare
+specifiers without bundler intervention (e.g. a browser configured with
+an import map, Deno).
 
-#### Vite (and Vitest browser mode)
-
-Vite cannot statically analyze that dynamic specifier, so add the bundled
-Vite adapter as a one-shot side-effect import. It wires
-`import.meta.glob` against `@neon-kit/icons` and feeds the result to
-`setIconLoader`, code-splitting each icon into its own lazy chunk:
-
-```js
-import '@neon-kit/web-components/icon';
-import '@neon-kit/web-components/icon-vite-loader';
-```
-
-#### Other bundlers
-
-For non-Vite toolchains, swap the loader yourself:
-
-```js
-import { setIconLoader } from '@neon-kit/web-components/icon';
-
-setIconLoader(async (name) => (await import(`./icons/${name}.js`)).default);
-```
+Bundlers (Vite, Rollup, esbuild, webpack) cannot rewrite a dynamic
+specifier they're explicitly told to ignore, and browsers without an
+import map cannot resolve `@neon-kit/icons/<name>` either. In those
+environments, drive the element from outside: either follow the
+`import.meta.glob` + `MutationObserver` hydrator pattern in
+[`site/icons.js`](../site/icons.js), or set `el.icon = importedDef`
+directly from a static import (see below).
 
 #### Bundler-agnostic, tree-shakeable
 
-Assigning the `icon` property bypasses the loader entirely and is the
-most tree-shake-friendly path — only the icons you statically import are
-shipped:
+Assigning the `icon` property bypasses the dynamic import entirely and is
+the most tree-shake-friendly path — only the icons you statically import
+are shipped:
 
 ```js
 import bars from '@neon-kit/icons/outline/bars-3';

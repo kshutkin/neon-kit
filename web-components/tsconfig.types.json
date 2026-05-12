@@ -17,8 +17,7 @@
             "@neon-kit/web-components/multicombobox": ["./types/index.d.ts"],
             "@neon-kit/web-components/datepicker": ["./types/index.d.ts"],
             "@neon-kit/web-components/timepicker": ["./types/index.d.ts"],
-            "@neon-kit/web-components/icon": ["./types/index.d.ts"],
-            "@neon-kit/web-components/icon-vite-loader": ["./types/index.d.ts"]
+            "@neon-kit/web-components/icon": ["./types/index.d.ts"]
         }
     },
     "include": ["tests/types.ts"],

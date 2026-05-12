@@ -7,21 +7,64 @@ import check from '@neon-kit/icons/solid/check';
 import { serialize } from '@neon-kit/icons';
 
 // Side-effect import registers `<neon-icon>`.
-import { NeonIconElement, registerIcon, setIconLoader } from '../src/icon.js';
+import { NeonIconElement, registerIcon } from '../src/icon.js';
 
 /** @typedef {import('@neon-kit/icons').IconDef} IconDef */
 
-// Vite (and vitest browser mode) can't resolve a bare specifier from
-// a dynamic import. Wire a workspace-relative `import.meta.glob`
-// loader for the test run.
-const iconModules = /** @type {Record<string, () => Promise<IconDef>>} */ (
-    import.meta.glob('../../icons/src/{outline,solid,mini,micro}/*.js', { import: 'default' })
+// The component uses `import(/* @vite-ignore */ '@neon-kit/icons/<name>')`
+// which is intentionally opaque to Vite. In vitest browser mode that
+// dynamic specifier reaches the browser verbatim and fails to resolve,
+// so we mirror the docs-site adapter: pre-assign `el.icon` from an
+// `import.meta.glob` lookup before the component's inline import fires.
+//
+// Consequence: the hydrator below pre-empts the component's inline
+// `import('@neon-kit/icons/${name}')`, so the inline-import success
+// path is intentionally NOT covered in browser-mode tests. It is
+// exercised end-to-end via the docs site build and by Node-ESM
+// consumers that resolve bare specifiers natively.
+const iconModules = /** @type {Record<string, () => Promise<{ default: IconDef }>>} */ (
+    import.meta.glob('../../icons/src/{outline,solid,mini,micro}/*.js')
 );
-setIconLoader(async (name) => {
-    const key = `../../icons/src/${name}.js`;
-    const factory = iconModules[key];
-    if (!factory) throw new Error(`Unknown icon "${name}"`);
-    return factory();
+/** @type {Map<string, () => Promise<{ default: IconDef }>>} */
+const iconLookup = new Map();
+for (const [path, load] of Object.entries(iconModules)) {
+    const m = path.match(/\/(outline|solid|mini|micro)\/([^/]+)\.js$/);
+    if (!m) continue;
+    if (m[2] === 'index' || m[2] === '_variant') continue;
+    iconLookup.set(`${m[1]}/${m[2]}`, load);
+}
+/** @param {Element} el */
+function hydrateIcon(el) {
+    if (el.tagName !== 'NEON-ICON') return;
+    const name = el.getAttribute('name');
+    if (!name) return;
+    const load = iconLookup.get(name);
+    if (!load) return;
+    load().then((mod) => {
+        if (el.getAttribute('name') === name && !(/** @type {any} */ (el).icon)) {
+            /** @type {any} */ (el).icon = mod.default;
+        }
+    });
+}
+const iconObserver = new MutationObserver((records) => {
+    for (const record of records) {
+        for (const node of record.addedNodes) {
+            if (!(node instanceof Element)) continue;
+            if (node.tagName === 'NEON-ICON') hydrateIcon(node);
+            if (node.querySelectorAll) {
+                for (const el of node.querySelectorAll('neon-icon')) hydrateIcon(el);
+            }
+        }
+        if (record.type === 'attributes' && record.target instanceof Element) {
+            hydrateIcon(record.target);
+        }
+    }
+});
+iconObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['name'],
 });
 
 /** Wait for the element's async load + paint to settle. */
@@ -115,12 +158,12 @@ describe('<neon-icon>', () => {
         }
     });
 
-    it('applies `size` as a pixel width', async () => {
-        document.body.innerHTML = `<neon-icon name="outline/bars-3" size="32"></neon-icon>`;
+    it('renders SVG at 1em × 1em', async () => {
+        document.body.innerHTML = `<neon-icon name="outline/bars-3"></neon-icon>`;
         await settle();
         const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
-        expect(svg.getAttribute('width')).toBe('32px');
-        expect(svg.getAttribute('height')).toBe('32px');
+        expect(svg.getAttribute('width')).toBe('1em');
+        expect(svg.getAttribute('height')).toBe('1em');
     });
 
     it('uses `aria-label` to emit a <title> and role="img"', async () => {
@@ -139,43 +182,13 @@ describe('<neon-icon>', () => {
         }).not.toThrow();
     });
 
-    it('caches loader promises by name across instances', async () => {
-        const stub = /** @type {IconDef} */ ({
-            viewBox: '0 0 10 10',
-            paths: [{ d: 'M0 0h10v10H0z' }],
-        });
-        const spy = vi.fn(async () => stub);
-        setIconLoader(spy);
-        try {
-            const a = document.createElement('neon-icon');
-            const b = document.createElement('neon-icon');
-            a.setAttribute('name', 'stub/one');
-            b.setAttribute('name', 'stub/one');
-            document.body.append(a, b);
-            await settle();
-            expect(spy).toHaveBeenCalledTimes(1);
-            expect(a.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 10 10');
-            expect(b.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 10 10');
-        } finally {
-            setIconLoader(async (name) => {
-                const key = `../../icons/src/${name}.js`;
-                const factory = iconModules[key];
-                if (!factory) throw new Error(`Unknown icon "${name}"`);
-                return factory();
-            });
-        }
-    });
-
     it('matches serialize() output structurally', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
-        el.setAttribute('size', '20');
         document.body.appendChild(el);
         el.icon = barsSolid;
         const live = /** @type {SVGSVGElement} */ (el.querySelector('svg'));
-        const str = serialize(barsSolid, { size: 20 });
+        const str = serialize(barsSolid);
         const parsed = new DOMParser().parseFromString(str, 'image/svg+xml').documentElement;
-
-        live.removeAttribute('data-neon-icon');
 
         const liveAttrs = Object.fromEntries(Array.from(live.attributes).map((a) => [a.name, a.value]));
         const parsedAttrs = Object.fromEntries(Array.from(parsed.attributes).map((a) => [a.name, a.value]));

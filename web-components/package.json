@@ -38,10 +38,6 @@
             "types": "./types/index.d.ts",
             "default": "./src/icon.js"
         },
-        "./icon-vite-loader": {
-            "types": "./types/index.d.ts",
-            "default": "./src/icon-vite-loader.js"
-        },
         "./package.json": "./package.json"
     },
     "main": "./src/index.js",

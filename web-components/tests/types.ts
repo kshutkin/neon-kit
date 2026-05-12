@@ -7,7 +7,7 @@ import { NeonComboboxElement, registerCombobox } from '@neon-kit/web-components/
 import { NeonMulticomboboxElement, registerMulticombobox } from '@neon-kit/web-components/multicombobox';
 import { NeonDatepickerElement, registerDatepicker } from '@neon-kit/web-components/datepicker';
 import { NeonTimepickerElement, registerTimepicker } from '@neon-kit/web-components/timepicker';
-import { NeonIconElement, registerIcon, setIconLoader } from '@neon-kit/web-components/icon';
+import { NeonIconElement, registerIcon } from '@neon-kit/web-components/icon';
 import bars3Outline from '@neon-kit/icons/outline/bars-3';
 
 void wc;
@@ -26,7 +26,6 @@ registerTimepicker();
 registerTimepicker('app-timepicker');
 registerIcon();
 registerIcon('app-icon');
-setIconLoader(async (name) => bars3Outline);
 
 const icon = new NeonIconElement();
 icon.icon = bars3Outline;
