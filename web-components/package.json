@@ -34,6 +34,14 @@
             "types": "./types/index.d.ts",
             "default": "./src/timepicker.js"
         },
+        "./icon": {
+            "types": "./types/index.d.ts",
+            "default": "./src/icon.js"
+        },
+        "./icon-vite-loader": {
+            "types": "./types/index.d.ts",
+            "default": "./src/icon-vite-loader.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./src/index.js",
@@ -68,5 +76,8 @@
     },
     "dependencies": {
         "esm-env": "^1.2.2"
+    },
+    "devDependencies": {
+        "@neon-kit/icons": "workspace:*"
     }
 }

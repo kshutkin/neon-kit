@@ -12,3 +12,4 @@ export { NeonComboboxElement, registerCombobox } from './combobox.js';
 export { NeonMulticomboboxElement, registerMulticombobox } from './multicombobox.js';
 export { NeonDatepickerElement, registerDatepicker } from './datepicker.js';
 export { NeonTimepickerElement, registerTimepicker } from './timepicker.js';
+export { NeonIconElement, registerIcon, setIconLoader } from './icon.js';

@@ -1,0 +1,354 @@
+{
+    "version": "0.0.1",
+    "license": "MIT",
+    "name": "@neon-kit/icons",
+    "author": "Konstantin Shutkin",
+    "type": "module",
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./outline": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/index.js"
+        },
+        "./outline/arrow-path": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/arrow-path.js"
+        },
+        "./outline/bars-3": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/bars-3.js"
+        },
+        "./outline/calendar": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/calendar.js"
+        },
+        "./outline/check": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/check.js"
+        },
+        "./outline/chevron-down": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/chevron-down.js"
+        },
+        "./outline/chevron-left": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/chevron-left.js"
+        },
+        "./outline/chevron-right": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/chevron-right.js"
+        },
+        "./outline/chevron-up": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/chevron-up.js"
+        },
+        "./outline/clock": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/clock.js"
+        },
+        "./outline/cog-6-tooth": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/cog-6-tooth.js"
+        },
+        "./outline/exclamation-triangle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/exclamation-triangle.js"
+        },
+        "./outline/information-circle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/information-circle.js"
+        },
+        "./outline/magnifying-glass": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/magnifying-glass.js"
+        },
+        "./outline/minus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/minus.js"
+        },
+        "./outline/pencil": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/pencil.js"
+        },
+        "./outline/plus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/plus.js"
+        },
+        "./outline/trash": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/trash.js"
+        },
+        "./outline/x-mark": {
+            "types": "./types/index.d.ts",
+            "default": "./src/outline/x-mark.js"
+        },
+        "./solid": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/index.js"
+        },
+        "./solid/arrow-path": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/arrow-path.js"
+        },
+        "./solid/bars-3": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/bars-3.js"
+        },
+        "./solid/calendar": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/calendar.js"
+        },
+        "./solid/check": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/check.js"
+        },
+        "./solid/chevron-down": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/chevron-down.js"
+        },
+        "./solid/chevron-left": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/chevron-left.js"
+        },
+        "./solid/chevron-right": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/chevron-right.js"
+        },
+        "./solid/chevron-up": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/chevron-up.js"
+        },
+        "./solid/clock": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/clock.js"
+        },
+        "./solid/cog-6-tooth": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/cog-6-tooth.js"
+        },
+        "./solid/exclamation-triangle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/exclamation-triangle.js"
+        },
+        "./solid/information-circle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/information-circle.js"
+        },
+        "./solid/magnifying-glass": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/magnifying-glass.js"
+        },
+        "./solid/minus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/minus.js"
+        },
+        "./solid/pencil": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/pencil.js"
+        },
+        "./solid/plus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/plus.js"
+        },
+        "./solid/trash": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/trash.js"
+        },
+        "./solid/x-mark": {
+            "types": "./types/index.d.ts",
+            "default": "./src/solid/x-mark.js"
+        },
+        "./mini": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/index.js"
+        },
+        "./mini/arrow-path": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/arrow-path.js"
+        },
+        "./mini/bars-3": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/bars-3.js"
+        },
+        "./mini/calendar": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/calendar.js"
+        },
+        "./mini/check": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/check.js"
+        },
+        "./mini/chevron-down": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/chevron-down.js"
+        },
+        "./mini/chevron-left": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/chevron-left.js"
+        },
+        "./mini/chevron-right": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/chevron-right.js"
+        },
+        "./mini/chevron-up": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/chevron-up.js"
+        },
+        "./mini/clock": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/clock.js"
+        },
+        "./mini/cog-6-tooth": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/cog-6-tooth.js"
+        },
+        "./mini/exclamation-triangle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/exclamation-triangle.js"
+        },
+        "./mini/information-circle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/information-circle.js"
+        },
+        "./mini/magnifying-glass": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/magnifying-glass.js"
+        },
+        "./mini/minus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/minus.js"
+        },
+        "./mini/pencil": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/pencil.js"
+        },
+        "./mini/plus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/plus.js"
+        },
+        "./mini/trash": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/trash.js"
+        },
+        "./mini/x-mark": {
+            "types": "./types/index.d.ts",
+            "default": "./src/mini/x-mark.js"
+        },
+        "./micro": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/index.js"
+        },
+        "./micro/arrow-path": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/arrow-path.js"
+        },
+        "./micro/bars-3": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/bars-3.js"
+        },
+        "./micro/calendar": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/calendar.js"
+        },
+        "./micro/check": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/check.js"
+        },
+        "./micro/chevron-down": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/chevron-down.js"
+        },
+        "./micro/chevron-left": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/chevron-left.js"
+        },
+        "./micro/chevron-right": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/chevron-right.js"
+        },
+        "./micro/chevron-up": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/chevron-up.js"
+        },
+        "./micro/clock": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/clock.js"
+        },
+        "./micro/cog-6-tooth": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/cog-6-tooth.js"
+        },
+        "./micro/exclamation-triangle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/exclamation-triangle.js"
+        },
+        "./micro/information-circle": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/information-circle.js"
+        },
+        "./micro/magnifying-glass": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/magnifying-glass.js"
+        },
+        "./micro/minus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/minus.js"
+        },
+        "./micro/pencil": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/pencil.js"
+        },
+        "./micro/plus": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/plus.js"
+        },
+        "./micro/trash": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/trash.js"
+        },
+        "./micro/x-mark": {
+            "types": "./types/index.d.ts",
+            "default": "./src/micro/x-mark.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./src/index.js",
+    "module": "./src/index.js",
+    "files": [
+        "src",
+        "types"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kshutkin/neon-kit.git",
+        "directory": "icons"
+    },
+    "bugs": "https://github.com/kshutkin/neon-kit/issues",
+    "homepage": "https://github.com/kshutkin/neon-kit/blob/main/icons/README.md",
+    "readme": "README.md",
+    "description": "Icon set for the Neon Kit theme — tree-shakeable ESM exports of SVG primitives.",
+    "keywords": [
+        "icons",
+        "svg",
+        "neon",
+        "theme"
+    ],
+    "scripts": {
+        "gen": "node scripts/build-icons.mjs",
+        "prepare": "node scripts/build-icons.mjs",
+        "build": "node scripts/build-icons.mjs && dts-buddy && node scripts/fix-types.mjs",
+        "prepack": "node scripts/build-icons.mjs && pkgprn --flatten types,src --strip-comments",
+        "test": "node scripts/build-icons.mjs && vitest run --coverage --config ../vitest.config.js",
+        "test:types": "node scripts/build-icons.mjs && tsc -p tsconfig.types.json"
+    },
+    "devDependencies": {
+        "heroicons": "^2.2.0"
+    }
+}

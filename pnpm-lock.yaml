@@ -11,6 +11,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.27.12
         version: 2.29.7(@types/node@25.6.0)
+      '@neon-kit/icons':
+        specifier: workspace:*
+        version: link:icons
       '@neon-kit/theme':
         specifier: workspace:*
         version: link:theme
@@ -51,6 +54,12 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5(@types/node@25.6.0)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(happy-dom@15.11.7)(vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1))
 
+  icons:
+    devDependencies:
+      heroicons:
+        specifier: ^2.2.0
+        version: 2.2.0
+
   theme:
     devDependencies:
       heroicons:
@@ -65,6 +74,10 @@ importers:
       esm-env:
         specifier: ^1.2.2
         version: 1.2.2
+    devDependencies:
+      '@neon-kit/icons':
+        specifier: workspace:*
+        version: link:../icons
 
 packages:
 

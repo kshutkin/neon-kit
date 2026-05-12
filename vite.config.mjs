@@ -11,6 +11,7 @@ const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
 const ROUTES = {
   about: { title: 'About', desc: 'Neon Kit is a Tailwind-based theme paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
   'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
+  icons:            { title: 'Icons',           desc: 'A curated set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules with an optional <neon-icon> web component wrapper.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
   details:    { title: 'Details',    desc: 'Native <details> disclosures with Neon panel styling, custom summary chevrons, focus states, and disabled-looking states.', section: 'css', item: 'details' },
@@ -42,7 +43,7 @@ const ROUTES = {
 
 const DEFAULT_SLUG = 'about';
 const DEFAULT_COMPONENT_SLUG = 'buttons';
-const DOCS_SECTIONS = ['about', 'getting-started', 'components'];
+const DOCS_SECTIONS = ['about', 'getting-started', 'components', 'icons'];
 const COMPONENT_MODE_SECTIONS = ['css', 'wc'];
 
 const SIDEBAR_ITEMS = [
@@ -89,12 +90,14 @@ const topNavSlugFor = (item, section) => SIDEBAR_ITEMS_BY_ID[item]?.[section];
 const docsNavSlugFor = (slug, section) => {
   if (section === 'components') return isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG;
   if (section === 'about') return 'about';
+  if (section === 'icons') return 'icons';
   return 'getting-started';
 };
 
 const activeDocsSection = (slug) => {
   if (isComponentRoute(slug)) return 'components';
   if (slug === 'about') return 'about';
+  if (slug === 'icons') return 'icons';
   return 'getting-started';
 };
 
