@@ -97,3 +97,27 @@
     --text-shadow-embossed: 0 1px oklch(15% var(--neutral-chroma) var(--neutral-hue) / 0.6);
     --text-shadow-debossed: 0 -1px oklch(15% var(--neutral-chroma) var(--neutral-hue) / 0.6), 0 1px oklch(from var(--color-surface) calc(l + 0.15) c h / 0.5);
 }
+
+/* ──────────────────── Component overrides (dark-only) ────────────────────
+   Rules below cannot be expressed by simply re-pointing a token — they
+   swap the *property* used by a component in dark mode. They live here so
+   the entire dark theme remains opt-in: consumers who skip this file get
+   neither the token overrides nor the component variants. */
+
+/* Segmented nav active thumb — in dark mode the raised thumb is tinted
+   with the primary colour and carries ink-inverse text. Without this
+   the active segment would just read as a slightly different shade of
+   dark surface and lose its affordance. */
+[data-theme="dark"] .nav.-segmented .nav__item.-active,
+[data-theme="dark"] .nav.-segmented input[type="radio"]:checked + .nav__item {
+    @apply bg-primary text-ink-inverse;
+
+    &:hover,
+    &:focus-visible {
+        @apply bg-primary;
+    }
+}
+
+[data-theme="dark"] .nav.-segmented input[type="radio"]:focus-visible:checked + .nav__item {
+    @apply bg-primary;
+}
