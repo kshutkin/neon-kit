@@ -27,6 +27,8 @@
     "./reset-normalize": "./reset-normalize.css",
     "./theme.css": "./theme.css",
     "./theme": "./theme.css",
+    "./theme-dark.css": "./theme-dark.css",
+    "./theme-dark": "./theme-dark.css",
     "./components.css": "./components.css",
     "./components": "./components.css"
   },
