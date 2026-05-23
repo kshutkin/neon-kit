@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Datepicker — Range</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         A range-selection variant of <code>.datepicker</code>. Same field
         chrome, same single overlay — the only differences live on the
         day cells. The user picks the first endpoint, navigates to bring
@@ -14,13 +14,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Plain</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>data-range</code> on the wrapper switches the picker
             into range mode. The field shows
             <code>YYYY-MM-DD / YYYY-MM-DD</code> once both endpoints
             have been picked.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="datepicker" data-datepicker data-range>
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>
@@ -35,13 +35,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Pre-filled with Clear</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>data-value="YYYY-MM-DD/YYYY-MM-DD"</code> seeds an
             initial range. <code>data-clearable</code> shows a clear
             button — clicking it wipes both endpoints and resets the
             wrapper out of pending state.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="datepicker" data-datepicker data-range data-clearable data-value="2026-04-08/2026-04-22">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>
@@ -59,7 +59,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Static Views</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Two day-grid snapshots side-by-side: the left panel shows a
             committed range (<code>.-range-start</code>,
             <code>.-in-range</code>, <code>.-range-end</code>); the
@@ -191,12 +191,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">RTL</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Range styling uses logical end / start radii so the
             endpoints connect to the band correctly regardless of
             writing direction.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6" dir="rtl">
             <div class="datepicker" data-datepicker data-range data-clearable data-value="2026-04-08/2026-04-22">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>

@@ -12,11 +12,11 @@
 }
 
 .details:has(> summary:focus-visible) {
-    @apply border-border-focus dark:border-border-focus-dark;
+    @apply border-border-focus;
 }
 
 .details > summary {
-    @apply text-ink-primary dark:text-ink-primary-dark font-semibold select-none;
+    @apply text-ink-primary font-semibold select-none;
 
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -47,16 +47,12 @@
     transition: transform 150ms ease;
 }
 
-[data-theme=dark] .details > summary::before {
-    color: var(--color-ink-secondary-dark);
-}
-
 :where(:dir(rtl)) .details > summary::before {
     transform: rotate(135deg);
 }
 
 .details[open] > summary {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 .details[open] > summary::before,
@@ -66,22 +62,22 @@
 
 .details:not([aria-disabled="true"]):not([inert]) > summary:hover,
 .details:not([aria-disabled="true"]):not([inert]) > summary:focus-visible {
-    @apply bg-surface-hover dark:bg-surface-hover-dark;
+    @apply bg-surface-hover;
 }
 
 .details:not([aria-disabled="true"]):not([inert]) > summary:active {
-    @apply bg-surface-active dark:bg-surface-active-dark;
+    @apply bg-surface-active;
 }
 
 .details__meta {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-sm font-normal;
+    @apply text-ink-secondary text-sm font-normal;
 
     justify-self: end;
     min-inline-size: 0;
 }
 
 .details__body {
-    @apply border-t border-border dark:border-border-dark;
+    @apply border-t border-border;
 
     padding-block: --spacing(3);
     padding-inline: --spacing(4);
@@ -96,11 +92,11 @@
 }
 
 .details:is([aria-disabled="true"], [inert]) > summary {
-    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    @apply text-ink-secondary;
 
     background: transparent;
 }
 
 .details:is([aria-disabled="true"], [inert]) > .details__body {
-    @apply border-border-disabled dark:border-border-disabled-dark;
+    @apply border-border-disabled;
 }

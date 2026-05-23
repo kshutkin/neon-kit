@@ -15,16 +15,13 @@
     --neutral-chroma: 0.02;
     --surface-chroma: calc(var(--neutral-chroma) * 0.25);
 
-    /* Light mode base colors */
+    /* Neutral base — light value. Overridden by the dark scope below. */
     --color-neutral: oklch(90% var(--neutral-chroma) var(--neutral-hue));
-
-    /* Dark mode base colors */
-    --color-neutral-dark: oklch(25% var(--neutral-chroma) var(--neutral-hue));
 
     /* Semantic colors derived from base colors */
 
-    /* Ink colors — ink-primary derives from neutral-dark to stay in sync */
-    --color-ink-primary: var(--color-neutral-dark);
+    /* Ink colors */
+    --color-ink-primary: oklch(25% var(--neutral-chroma) var(--neutral-hue));
     --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l + 0.27) c h);
     --color-ink-muted: oklch(from var(--color-ink-primary) calc(l + 0.37) c h);
     --color-ink-inverse: oklch(from var(--color-ink-primary) calc(l + 0.75) c h);
@@ -44,9 +41,9 @@
     /* Accent hue offset — shifts accent away from primary toward cyan/blue */
     --accent-hue-offset: 18;
 
-    /* State color target lightness — normalizes all state colors to the same perceptual weight */
+    /* State color target lightness — normalizes all state colors to the same perceptual weight.
+       Overridden in the dark scope to lift state colors for dark surfaces. */
     --state-target-lightness: 0.68;
-    --state-target-lightness-dark: 0.78;
     --state-chroma-scale: 0.82;
 
     /* Primary colors - constructed from components */
@@ -65,7 +62,8 @@
          --color-surface-secondary (~95% L) ≈ 8.6:1
          --color-surface-hover     (~93% L) ≈ 8.1:1
          --color-surface-active    (~88% L) ≈ 7.0:1
-         --color-surface-disabled  (~78% L) ≈ 5.0:1  ← binding constraint, WCAG AA ✓ */
+         --color-surface-disabled  (~78% L) ≈ 5.0:1  ← binding constraint, WCAG AA ✓
+       The dark scope overrides this token with a floor instead of a cap; see below. */
     --color-border-focus: oklch(from var(--color-primary) min(l, 0.38) c h);
     /* Disabled border — opaque, derived from --color-border so it sits on
        the same visual register as a normal border (just lighter). A
@@ -81,7 +79,7 @@
     --color-shadow-surface-base: oklch(from var(--color-ink-inverse) l calc(var(--primary-chroma) * 0.05) var(--primary-hue));
 
     /* State colors - independent of primary color, using neon accent colors
-       All normalized to ~68% lightness for consistent perceptual weight */
+       All normalized to ~68% lightness in light mode for consistent perceptual weight */
     --color-success: oklch(from var(--color-neon-green) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
     --color-warning: oklch(from var(--color-neon-orange) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
     --color-error: oklch(from var(--color-neon-red) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
@@ -108,96 +106,117 @@
     --color-accent-hover: oklch(from var(--color-accent) calc(l + 0.02) calc(c * 0.85) h);
     --color-accent-active: oklch(from var(--color-accent) calc(l - 0.16) calc(c * 0.78) h);
 
-    /* Dark mode semantic colors for Tailwind utilities */
-
-    /* Dark ink colors — reduced chroma (0.01) for comfortable reading on dark backgrounds */
-    --color-ink-primary-dark: oklch(from var(--color-neutral) calc(l + 0.02) calc(c * 0.5) h);
-    --color-ink-secondary-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.22) c h);
-    --color-ink-muted-dark: oklch(from var(--color-ink-primary-dark) calc(l - 0.42) c h);
-    --color-ink-inverse-dark: var(--color-ink-primary);
-
-    /* Dark surface colors */
-    --color-surface-dark: oklch(from var(--color-neutral-dark) calc(l - 0.1) var(--surface-chroma) h);
-    --color-surface-secondary-dark: oklch(from var(--color-surface-dark) calc(l + 0.03) c h);
-    --color-surface-hover-dark: oklch(from var(--color-surface-dark) calc(l + 0.05) c h);
-    --color-surface-active-dark: oklch(from var(--color-surface-dark) calc(l + 0.1) c h);
-    --color-surface-disabled-dark: oklch(from var(--color-surface-dark) calc(l + 0.2) c h);
-
-    /* Dark primary colors - derived from primary */
-    --color-primary-dark: oklch(from var(--color-primary) calc(l + 0.1) c h);
-    --color-primary-hover-dark: oklch(from var(--color-primary-dark) calc(l + 0.03) calc(c * 0.9) h);
-    --color-primary-active-dark: oklch(from var(--color-primary-dark) calc(l - 0.11) calc(c * 0.8) h);
-    --color-primary-disabled-dark: oklch(from var(--color-primary-dark) calc(l - 0.27) calc(c * 0.48) h);
-
-    /* Dark border colors */
-    --color-border-dark: oklch(from var(--color-neutral-dark) calc(l + 0.13) c h);
-    --color-border-secondary-dark: oklch(from var(--color-neutral-dark) l c h / 0.6);
-    --color-border-primary-dark: oklch(from var(--color-primary-dark) calc(l + 0.04) calc(c * 0.81) h);
-    /* Focus ring — lightness floored at 0.70, verified against all five dark-mode surfaces
-       (ratios use blue primary at 70% L, Y≈0.31; warm primaries yield higher Y and better contrast).
-       Floor is set above the neutral-geometry threshold (~0.61) because blue-hued primaries have
-       lower actual sRGB luminance than the L³≈Y approximation implies:
-         --color-surface-dark           (~15% L) ≈ 6.7:1
-         --color-surface-secondary-dark (~18% L) ≈ 6.4:1
-         --color-surface-hover-dark     (~20% L) ≈ 6.2:1
-         --color-surface-active-dark    (~25% L) ≈ 5.4:1
-         --color-surface-disabled-dark  (~35% L) ≈ 3.8:1  ← binding constraint, WCAG AA ✓ */
-    --color-border-focus-dark: oklch(from var(--color-primary-dark) max(l, 0.70) c h);
-    /* Dark disabled border — opaque, derived from --color-border-dark for
-       the same reason as light mode. See --color-border-disabled. */
-    --color-border-disabled-dark: oklch(from var(--color-border-dark) calc(l - 0.06) c h);
-
-    /* Dark shadow base pigments - neutral shadows get slight primary accent */
-    /* Shadow surface: neutral with slight primary tint */
-    --color-shadow-surface-base-dark: oklch(from var(--color-ink-primary-dark) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
-
     /* Shadow tokens — composable across Tailwind's inset-shadow-* and shadow-* slots.
        Combine one inset-shadow token with one shadow token on the same element;
        Tailwind v4 merges them into a single box-shadow declaration automatically. */
 
     /* Inset shadow slot (inset-shadow-* utilities) — top-edge highlights and pressed effects */
     --inset-shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.6);
-    --inset-shadow-highlight-dark: inset 0 1px oklch(from var(--color-shadow-surface-base-dark) l c h / 0.3);
     --inset-shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.15);
-    --inset-shadow-highlight-pressed-dark: inset 0 1px oklch(from var(--color-primary-dark) l c h / 0.25);
     --inset-shadow-pressed: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.1);
-    --inset-shadow-pressed-dark: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Outer shadow slot (shadow-* utilities) — drop shadows */
     --shadow-drop: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.2);
-    --shadow-drop-dark: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
     --shadow-drop-subtle: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.1);
-    --shadow-drop-subtle-dark: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
 
     /* Text shadow tokens */
     --text-shadow-embossed: 0 1px oklch(from var(--color-ink-primary) l c h / 0.2);
-    --text-shadow-embossed-dark: 0 1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6);
     --text-shadow-debossed: 0 -1px oklch(from var(--color-ink-primary) l c h / 0.2), 0 1px oklch(from var(--color-surface) calc(l + 0.1) c h / 0.8);
-    --text-shadow-debossed-dark: 0 -1px oklch(from var(--color-ink-primary) calc(l - 0.1) c h / 0.6), 0 1px oklch(from var(--color-surface-dark) calc(l + 0.15) c h / 0.5);
+}
 
-    /* Dark state colors - independent of primary color, using neon accent colors
-       Slightly lighter than light-mode counterparts for visibility on dark backgrounds */
-    --color-success-dark: oklch(from var(--color-neon-green) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
-    --color-warning-dark: oklch(from var(--color-neon-orange) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
-    --color-error-dark: oklch(from var(--color-neon-red) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
-    --color-info-dark: oklch(from var(--color-neon-blue) var(--state-target-lightness-dark) calc(c * var(--state-chroma-scale)) h);
+/* Dark theme — overrides every semantic token defined in @theme default
+   with its dark-mode value. Tokens registered in @theme default generate
+   Tailwind utilities (bg-surface, text-ink-primary, …); the cascade resolves
+   `var(--color-x)` at use time, so utilities pick up the dark values when
+   <html data-theme="dark"> is set.
 
-    /* Dark soft state fills — mirror the light-mode tokens. Alphas are
-       slightly lower than light-mode because the dark surface absorbs
-       less of the underlying colour. */
-    --color-success-soft-dark: oklch(from var(--color-success-dark) l c h / 0.20);
-    --color-warning-soft-dark: oklch(from var(--color-warning-dark) l c h / 0.22);
-    --color-error-soft-dark: oklch(from var(--color-error-dark) l c h / 0.22);
-    --color-info-soft-dark: oklch(from var(--color-info-dark) l c h / 0.22);
+   Derived expressions (`oklch(from var(--color-x) …)`) here resolve lazily
+   from the dark cascade. Where a token must keep its LIGHT value in dark
+   mode (e.g. shadow pigments — the underlying dark mass that produces drop
+   shadows is the same in both themes), the formula is restated with an
+   explicit `oklch(…)` rather than `from var(--color-ink-primary)` so it
+   does not pick up the now-light dark ink colour. */
+[data-theme="dark"] {
+    /* Neutral base — dark */
+    --color-neutral: oklch(25% var(--neutral-chroma) var(--neutral-hue));
 
-    /* Dark primary pressed overlay — derived from --color-primary-dark
-       so the pressed-on-primary affordance tracks the dark mode primary. */
-    --color-primary-soft-pressed-dark: oklch(from var(--color-primary-dark) calc(l - 0.1) c h / 0.6);
+    /* Dark ink colors — reduced chroma (0.5x) for comfortable reading on dark backgrounds.
+       Hard-coded lightness because in dark mode `from var(--color-neutral)` resolves to
+       the dark neutral; we want the ~92% lightness derived from the LIGHT neutral. */
+    --color-ink-primary: oklch(92% calc(var(--neutral-chroma) * 0.5) var(--neutral-hue));
+    --color-ink-secondary: oklch(from var(--color-ink-primary) calc(l - 0.22) c h);
+    --color-ink-muted: oklch(from var(--color-ink-primary) calc(l - 0.42) c h);
+    /* ink-inverse in dark mode must remain dark so it reads on bright primary fills.
+       Matches light mode's --color-ink-primary (= oklch(25% ...)) literally. */
+    --color-ink-inverse: oklch(25% var(--neutral-chroma) var(--neutral-hue));
 
-    /* Dark additional semantic colors for theming flexibility - derived from primary */
-    --color-accent-dark: oklch(from var(--color-primary-dark) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
-    --color-accent-hover-dark: oklch(from var(--color-accent-dark) l calc(c * 0.95) h);
-    --color-accent-active-dark: oklch(from var(--color-accent-dark) calc(l - 0.15) calc(c * 0.8) h);
+    /* Dark surface colors */
+    --color-surface: oklch(from var(--color-neutral) calc(l - 0.1) var(--surface-chroma) h);
+    --color-surface-secondary: oklch(from var(--color-surface) calc(l + 0.03) c h);
+    --color-surface-hover: oklch(from var(--color-surface) calc(l + 0.05) c h);
+    --color-surface-active: oklch(from var(--color-surface) calc(l + 0.1) c h);
+    --color-surface-disabled: oklch(from var(--color-surface) calc(l + 0.2) c h);
+
+    /* Dark primary — light primary + 10% lightness, parameterized on --primary-lightness. */
+    --color-primary: oklch(calc((var(--primary-lightness) + 10) * 1%) var(--primary-chroma) var(--primary-hue));
+    --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.03) calc(c * 0.9) h);
+    --color-primary-active: oklch(from var(--color-primary) calc(l - 0.11) calc(c * 0.8) h);
+    --color-primary-disabled: oklch(from var(--color-primary) calc(l - 0.27) calc(c * 0.48) h);
+
+    /* Dark border colors */
+    --color-border: oklch(from var(--color-neutral) calc(l + 0.13) c h);
+    --color-border-secondary: oklch(from var(--color-neutral) l c h / 0.6);
+    --color-border-primary: oklch(from var(--color-primary) calc(l + 0.04) calc(c * 0.81) h);
+    /* Focus ring — lightness floored at 0.70, verified against all five dark-mode surfaces
+       (ratios use blue primary at 70% L, Y≈0.31; warm primaries yield higher Y and better contrast).
+       Floor is set above the neutral-geometry threshold (~0.61) because blue-hued primaries have
+       lower actual sRGB luminance than the L³≈Y approximation implies:
+         --color-surface          (~15% L) ≈ 6.7:1
+         --color-surface-secondary (~18% L) ≈ 6.4:1
+         --color-surface-hover     (~20% L) ≈ 6.2:1
+         --color-surface-active    (~25% L) ≈ 5.4:1
+         --color-surface-disabled  (~35% L) ≈ 3.8:1  ← binding constraint, WCAG AA ✓ */
+    --color-border-focus: oklch(from var(--color-primary) max(l, 0.70) c h);
+    /* Dark disabled border — opaque, derived from --color-border. See --color-border-disabled. */
+    --color-border-disabled: oklch(from var(--color-border) calc(l - 0.06) c h);
+
+    /* Shadow base pigments — kept at LIGHT ink-primary value across themes so drop
+       shadows always represent dark mass. Restated explicitly because `var(--color-ink-primary)`
+       in this scope resolves to the bright dark-mode ink. */
+    --color-shadow-base: oklch(25% var(--neutral-chroma) calc(var(--neutral-hue) * 0.9 + var(--primary-hue) * 0.1));
+    /* Surface shadow base in dark mode — slight primary tint on dark ink (the bright one). */
+    --color-shadow-surface-base: oklch(from var(--color-ink-primary) l c calc(h * 0.9 + var(--primary-hue) * 0.1));
+
+    /* State colors — lifted in dark mode for visibility on dark surfaces */
+    --state-target-lightness: 0.78;
+    --color-success: oklch(from var(--color-neon-green) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-warning: oklch(from var(--color-neon-orange) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-error: oklch(from var(--color-neon-red) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+    --color-info: oklch(from var(--color-neon-blue) var(--state-target-lightness) calc(c * var(--state-chroma-scale)) h);
+
+    /* Dark soft state fills — slightly lower alphas than light mode. */
+    --color-success-soft: oklch(from var(--color-success) l c h / 0.20);
+    --color-warning-soft: oklch(from var(--color-warning) l c h / 0.22);
+    --color-error-soft: oklch(from var(--color-error) l c h / 0.22);
+    --color-info-soft: oklch(from var(--color-info) l c h / 0.22);
+
+    /* Dark primary pressed overlay — tracks the dark primary. */
+    --color-primary-soft-pressed: oklch(from var(--color-primary) calc(l - 0.1) c h / 0.6);
+
+    /* Dark additional semantic colors */
+    --color-accent: oklch(from var(--color-primary) l calc(c * 0.91) calc(h - var(--accent-hue-offset)));
+    --color-accent-hover: oklch(from var(--color-accent) l calc(c * 0.95) h);
+    --color-accent-active: oklch(from var(--color-accent) calc(l - 0.15) calc(c * 0.8) h);
+
+    /* Dark shadows — alphas raised for dark surfaces. shadow-base / text-shadow tokens
+       reference the LIGHT-ink-primary value (deep, dark) restated above. */
+    --inset-shadow-highlight: inset 0 1px oklch(from var(--color-shadow-surface-base) l c h / 0.3);
+    --inset-shadow-highlight-pressed: inset 0 1px oklch(from var(--color-primary) l c h / 0.25);
+    --inset-shadow-pressed: inset 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.3);
+    --shadow-drop: 0 1px 2px oklch(from var(--color-shadow-base) l c h / 0.4);
+    --shadow-drop-subtle: 0 1px 1px oklch(from var(--color-shadow-base) l c h / 0.3);
+    --text-shadow-embossed: 0 1px oklch(15% var(--neutral-chroma) var(--neutral-hue) / 0.6);
+    --text-shadow-debossed: 0 -1px oklch(15% var(--neutral-chroma) var(--neutral-hue) / 0.6), 0 1px oklch(from var(--color-surface) calc(l + 0.15) c h / 0.5);
 }
 
 :host,
@@ -206,7 +225,7 @@ html {
 }
 
 body {
-    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark;
+    @apply bg-surface text-ink-primary;
 }
 
 a {
@@ -215,12 +234,8 @@ a {
 }
 
 /* Focus ring — WCAG 2.4.11 (AA) against all five light-mode and all five dark-mode surfaces.
-   See --color-border-focus and --color-border-focus-dark for per-surface contrast ratios. */
+   The dark scope re-themes --color-border-focus, so this single rule suffices. */
 :focus-visible {
     outline: 2px solid --theme(--color-border-focus);
     outline-offset: 2px;
-}
-
-[data-theme=dark] :focus-visible {
-    outline-color: --theme(--color-border-focus-dark);
 }

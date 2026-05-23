@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Menu Component</h1>
-    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-6 text-ink-secondary">
         A panel-styled list of focusable rows for dropdown menus, command palettes, and
         contextual actions. Items can carry icons (start or end), keyboard-shortcut hints,
         and chevrons for multi-level menus. Groups are visually divided and may have an
@@ -9,12 +9,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Inline</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             All variants together. Tab through the menu — only items receive focus;
             group headers and separators are skipped. Hover and <code>:focus-visible</code>
             produce the same highlight.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="menu">
                 <div class="menu__group">
                     <button class="menu__item" type="button">
@@ -61,11 +61,11 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Dropdown (native popover)</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Uses the native HTML Popover API plus CSS anchor positioning — no JavaScript.
             Click the trigger to open; press <kbd class="kbd">Esc</kbd> or click outside to dismiss.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button class="btn" type="button" popovertarget="menu-popover" style="anchor-name: --menu-trigger;">
                 Open menu
             </button>
@@ -119,17 +119,17 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Preferred direction</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Add one of the directional modifier classes to a popover-mode menu to
             change the side it opens on. Each modifier auto-flips to the opposite
             side(s) when the requested direction would overflow the viewport, so
             you only have to declare a preference — the browser handles edges.
         </p>
-        <pre class="mb-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>&lt;div class="menu" popover&gt;…&lt;/div&gt;                  <span class="text-ink-secondary dark:text-ink-secondary-dark">// default: drop down</span>
-&lt;div class="menu -block-start" popover&gt;…&lt;/div&gt;     <span class="text-ink-secondary dark:text-ink-secondary-dark">// drop up</span>
-&lt;div class="menu -inline-end" popover&gt;…&lt;/div&gt;      <span class="text-ink-secondary dark:text-ink-secondary-dark">// open right</span>
-&lt;div class="menu -inline-start" popover&gt;…&lt;/div&gt;    <span class="text-ink-secondary dark:text-ink-secondary-dark">// open left</span></code></pre>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <pre class="mb-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;div class="menu" popover&gt;…&lt;/div&gt;                  <span class="text-ink-secondary">// default: drop down</span>
+&lt;div class="menu -block-start" popover&gt;…&lt;/div&gt;     <span class="text-ink-secondary">// drop up</span>
+&lt;div class="menu -inline-end" popover&gt;…&lt;/div&gt;      <span class="text-ink-secondary">// open right</span>
+&lt;div class="menu -inline-start" popover&gt;…&lt;/div&gt;    <span class="text-ink-secondary">// open left</span></code></pre>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="flex flex-wrap items-center gap-3">
                 <button class="btn" type="button" popovertarget="menu-dir-default" style="anchor-name: --menu-dir-default;">
                     Drop down (default)
@@ -181,12 +181,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">RTL</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Same markup, wrapped in <code>dir="rtl"</code>. Start icons move to the right
             edge, the shortcut hint sits on the start (left) edge, and the chevron flips
             so the arrow always points toward the inline-end.
         </p>
-        <div dir="rtl" class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div dir="rtl" class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="menu">
                 <div class="menu__group">
                     <button class="menu__item" type="button">

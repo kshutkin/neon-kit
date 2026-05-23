@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Menu — Web Component</h1>
-    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-6 text-ink-secondary">
         <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
         keyboard behavior to the theme's <code>.menu</code> markup: a roving
         <code>tabindex</code> across <code>.menu__item</code> rows, arrow-key
@@ -12,7 +12,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Installation</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
 
 // In your bundle entry:
 import '@neon-kit/theme/index.css';
@@ -21,14 +21,14 @@ import '@neon-kit/web-components/menu';</code></pre>
 
     <section class="mb-8">
         <h2 class="mb-4">Popover-anchored menu</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Pair the host element with the native popover API:
             <code>popovertarget</code> on a trigger button, <code>popover</code>
             on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the
             arrow keys, <code>Home</code>, <code>End</code>, or type the first
             letters of an item label to focus it.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button type="button" class="btn" popovertarget="wc-demo-menu">
                 Open menu
             </button>
@@ -70,14 +70,14 @@ import '@neon-kit/web-components/menu';</code></pre>
 
     <section class="mb-8">
         <h2 class="mb-4">API</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It
             does not create any DOM of its own — it consumes the theme's
             <code>.menu</code> markup and adds keyboard behavior on top.
         </p>
 
         <h3 class="mb-2">Markup contract</h3>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Descendant rows must use <code>class="menu__item"</code>. Disabled
             rows use the native <code>disabled</code> attribute (on form
             controls) or <code>aria-disabled="true"</code> — both are skipped
@@ -86,7 +86,7 @@ import '@neon-kit/web-components/menu';</code></pre>
         </p>
 
         <h3 class="mb-2">Behavior</h3>
-        <ul class="mb-6 list-disc pl-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <ul class="mb-6 list-disc pl-6 text-ink-secondary">
             <li>Sets <code>role="menu"</code> on the host (unless one is already set).</li>
             <li>Sets <code>role="menuitem"</code> on each <code>.menu__item</code> (unless one is already set).</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
@@ -98,34 +98,34 @@ import '@neon-kit/web-components/menu';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Property</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Type</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Property</th>
+                        <th class="border border-border px-4 py-2 text-left">Type</th>
+                        <th class="border border-border px-4 py-2 text-left">Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>items</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>HTMLElement[]</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">All <code>.menu__item</code> rows in DOM order, including disabled ones.</td>
+                        <td class="border border-border px-4 py-2"><code>items</code></td>
+                        <td class="border border-border px-4 py-2"><code>HTMLElement[]</code></td>
+                        <td class="border border-border px-4 py-2">All <code>.menu__item</code> rows in DOM order, including disabled ones.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>focusableItems</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>HTMLElement[]</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Items excluding disabled ones, in DOM order.</td>
+                        <td class="border border-border px-4 py-2"><code>focusableItems</code></td>
+                        <td class="border border-border px-4 py-2"><code>HTMLElement[]</code></td>
+                        <td class="border border-border px-4 py-2">Items excluding disabled ones, in DOM order.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>activeItem</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>HTMLElement | null</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">The currently focused item, if any.</td>
+                        <td class="border border-border px-4 py-2"><code>activeItem</code></td>
+                        <td class="border border-border px-4 py-2"><code>HTMLElement | null</code></td>
+                        <td class="border border-border px-4 py-2">The currently focused item, if any.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <h3 class="mb-2">Popover wiring</h3>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             No popover wiring lives in the component itself. Pair the host with
             the <code>popover</code> attribute and a trigger button using
             <code>popovertarget="&lt;menu-id&gt;"</code> (as in the demo above).
@@ -136,7 +136,7 @@ import '@neon-kit/web-components/menu';</code></pre>
 
     <section class="mb-8">
         <h2 class="mb-4">Accessibility pattern</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Implements the
             <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/">WAI-ARIA Menu pattern</a>.
             The host carries <code>role="menu"</code>, each row carries
@@ -148,43 +148,43 @@ import '@neon-kit/web-components/menu';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Key</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Action</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Key</th>
+                        <th class="border border-border px-4 py-2 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">↓</kbd> <kbd class="kbd">↑</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Move focus to the next / previous focusable item, wrapping at the ends.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">↓</kbd> <kbd class="kbd">↑</kbd></td>
+                        <td class="border border-border px-4 py-2">Move focus to the next / previous focusable item, wrapping at the ends.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Home</kbd> <kbd class="kbd">End</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Jump to the first / last focusable item.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Home</kbd> <kbd class="kbd">End</kbd></td>
+                        <td class="border border-border px-4 py-2">Jump to the first / last focusable item.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Enter</kbd> <kbd class="kbd">Space</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Activate the focused item (calls <code>click()</code>).</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Enter</kbd> <kbd class="kbd">Space</kbd></td>
+                        <td class="border border-border px-4 py-2">Activate the focused item (calls <code>click()</code>).</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Printable characters</td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Type-ahead: case-insensitive prefix match against item labels within ~500&nbsp;ms. From a no-focus state the match starts at the very first item.</td>
+                        <td class="border border-border px-4 py-2">Printable characters</td>
+                        <td class="border border-border px-4 py-2">Type-ahead: case-insensitive prefix match against item labels within ~500&nbsp;ms. From a no-focus state the match starts at the very first item.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Esc</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Esc</kbd></td>
+                        <td class="border border-border px-4 py-2">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Disabled items are kept in the DOM for context but skipped during
             arrow / type-ahead navigation, do not receive the roving
             <code>tabindex</code>, and have their <code>click</code> events
             suppressed.
         </p>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             The trigger button keeps its native semantics. On open, focus moves
             into the menu (first focusable item). On close via
             <kbd class="kbd">Esc</kbd> or outside dismissal, the native popover

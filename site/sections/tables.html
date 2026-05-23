@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Tables</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         The Neon theme ships a single <code>.table</code> component for
         tabular data: full-width layout, muted header surface, hairline
         row separators, and a stronger top border above <code>tfoot</code>.
@@ -10,7 +10,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Without <code>.table</code></h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table>
                 <thead>
                     <tr>
@@ -37,10 +37,10 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Basic Table</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             All examples from here on apply <code>class="table"</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -77,7 +77,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">With Caption</h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <caption>Neon Kit packages</caption>
                 <thead>
@@ -106,7 +106,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">With Footer</h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -145,7 +145,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Column Groups</h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <colgroup>
                     <col>
@@ -186,7 +186,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Row &amp; Cell Spans</h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -216,7 +216,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Empty Cells</h2>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -248,12 +248,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Striped</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Add <code>.-striped</code> to tint even <code>&lt;tbody&gt;</code>
             rows with the secondary surface. Stacks with all other features
             (caption, footer, colgroups, spans).
         </p>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table -striped">
                 <thead>
                     <tr>
@@ -290,7 +290,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Sortable headers</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Mark a <code>&lt;th&gt;</code> as sortable with
             <code>aria-sort="none|ascending|descending"</code> and put a
             <code>&lt;button type="button"&gt;</code> inside it as the
@@ -301,7 +301,7 @@
             column widths don't shift between states. Sorting logic is
             up to the consumer — this is presentation + a11y only.
         </p>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -343,7 +343,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Filter bar</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             No dedicated component class — a filter bar is just a
             two-row flex layout composed from existing primitives:
             <code>&lt;select class="input"&gt;</code> to pick a filter
@@ -354,7 +354,7 @@
             trailing the chips. Consumers wire apply / remove / clear
             handlers and hide the chips row when no filters are active.
         </p>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <div class="flex flex-col gap-3">
                 <div class="flex flex-wrap items-center gap-2">
                     <label class="flex items-center gap-2 text-sm">
@@ -416,7 +416,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Pagination</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             No dedicated component class — pagination is composed from
             existing primitives: <code>.btn.quiet</code> (optionally with
             <code>.left</code> / <code>.right</code> for grouped edges), a
@@ -427,7 +427,7 @@
         </p>
 
         <h3 class="mb-2 text-sm font-medium">Full row — page size, first/prev/status/next/last</h3>
-        <div class="mb-6 rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="mb-6 rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -465,7 +465,7 @@
                         <button type="button" class="btn quiet left">First</button>
                         <button type="button" class="btn quiet left right">Prev</button>
                     </span>
-                    <span class="text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    <span class="text-sm text-ink-secondary">
                         Page <strong>3</strong> of <strong>10</strong>
                     </span>
                     <span class="inline-flex">
@@ -477,7 +477,7 @@
         </div>
 
         <h3 class="mb-2 text-sm font-medium">Minimal — prev / status / next</h3>
-        <div class="mb-6 rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="mb-6 rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -498,7 +498,7 @@
             </table>
             <div class="mt-3 flex items-center justify-end gap-3">
                 <button type="button" class="btn quiet">Prev</button>
-                <span class="text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                <span class="text-sm text-ink-secondary">
                     3 / 10
                 </span>
                 <button type="button" class="btn quiet">Next</button>
@@ -506,7 +506,7 @@
         </div>
 
         <h3 class="mb-2 text-sm font-medium">First/last only — no page size</h3>
-        <div class="rounded-lg border border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+        <div class="rounded-lg border border-border bg-surface p-4">
             <table class="table">
                 <thead>
                     <tr>

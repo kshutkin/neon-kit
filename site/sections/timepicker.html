@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Timepicker</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         A typeable time field paired with a popover list of time points
         rendered at a configurable step (15 / 30 / 60 minutes are
         common). The field reuses <code>.input</code>'s inset-well chrome
@@ -17,13 +17,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Plain (30-minute step)</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Default: a typeable <code>HH:MM</code> input with a clock
             trigger. The popover lists every half hour from
             <code>00:00</code> to <code>23:30</code>; click a row to
             commit and close.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="timepicker" data-timepicker data-step="30">
                 <div class="timepicker__field">
                     <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
@@ -40,12 +40,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">15-Minute Step + Clear</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>data-step="15"</code> packs the list at quarter-hour
             granularity. The clear button hides until the field has a
             value.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="timepicker" data-timepicker data-step="15" data-clearable data-value="14:45">
                 <div class="timepicker__field">
                     <input class="timepicker__input" type="text" placeholder="HH:MM" data-tp-input>
@@ -65,12 +65,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">With Seconds (1-Hour Step)</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>data-seconds</code> formats values as
             <code>HH:MM:SS</code>; <code>data-step="60"</code> shows a
             shorter list of hourly options.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="timepicker" data-timepicker data-step="60" data-seconds data-clearable data-value="09:00:00">
                 <div class="timepicker__field">
                     <input class="timepicker__input" type="text" placeholder="HH:MM:SS" data-tp-input>
@@ -90,7 +90,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">With Timezone</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>data-tz</code> renders an inline IANA-zone button next
             to the time. Clicking it opens a *separate* popover with the
             same chrome as a single-select <code>.combobox</code> —
@@ -98,7 +98,7 @@
             field's zone hint updates live, so a committed time always
             reads in context without leaving the control.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="timepicker" data-timepicker data-step="30" data-tz="Europe/Berlin" data-clearable data-value="14:30"
                  data-tz-options='["UTC","Europe/London","Europe/Berlin","Europe/Athens","America/New_York","America/Los_Angeles","America/Chicago","America/Sao_Paulo","Asia/Tokyo","Asia/Singapore","Asia/Kolkata","Asia/Dubai","Australia/Sydney","Pacific/Auckland","Africa/Cairo","Africa/Johannesburg"]'>
                 <div class="timepicker__field">
@@ -126,14 +126,14 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Field States</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Same six-state vocabulary as the datepicker. State hooks
             land on the inner <code>.timepicker__input</code>; the
             <code>.timepicker__field</code> wrapper reacts via
             <code>:has()</code>. Only the field appearance is shown —
             the time-list popover is unchanged.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Disabled (empty)</span>
                 <div class="timepicker">
@@ -209,7 +209,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Combined Date + Time</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>.datetime-picker</code> wraps a date and a time field
             side by side so users can pick both with a single trigger.
             The shared popover is a <code>.datepicker__popover.-with-time</code>:
@@ -217,7 +217,7 @@
             On viewports under <code>640px</code> the panels stack
             vertically and the popover narrows to fit.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="datetime-picker" data-datetime-picker data-step="30" data-clearable data-value="2026-04-15T14:30">
                 <div class="datepicker">
                     <div class="datepicker__field">
@@ -250,12 +250,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">RTL</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Logical-property layout flips field order, the trailing
             trigger, and the combined date+time panel order under
             <code>dir="rtl"</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6" dir="rtl">
             <div class="timepicker" data-timepicker data-step="30" data-tz="Asia/Riyadh" data-clearable data-value="08:00"
                  data-tz-options='["UTC","Asia/Riyadh","Asia/Dubai","Asia/Tehran","Africa/Cairo","Europe/Istanbul"]'>
                 <div class="timepicker__field">

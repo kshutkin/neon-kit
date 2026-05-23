@@ -65,13 +65,13 @@
 /* Active state — opt-in modifier. ARIA hooks like aria-current / aria-selected
    are intentionally NOT styled; pair them with `.-active` when relevant. */
 .nav__item.-active {
-    @apply bg-primary dark:bg-primary-dark text-ink-inverse font-semibold inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark;
+    @apply bg-primary text-ink-inverse font-semibold inset-shadow-highlight shadow-drop-subtle;
 
     /* Beat the utility's hover/focus-visible bg-swap so the active row
        stays primary-colored when hovered. */
     &:hover,
     &:focus-visible {
-        @apply bg-primary dark:bg-primary-dark;
+        @apply bg-primary;
     }
 }
 
@@ -99,7 +99,7 @@
    track's border so the tab and the content panel below read as a
    single continuous raised surface. */
 .nav.-tabs {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark border-b border-border dark:border-border-dark;
+    @apply bg-surface-secondary border-b border-border;
 
     gap: --spacing(1);
     padding-block: --spacing(1.5) 0;
@@ -123,7 +123,7 @@
 }
 
 .nav.-tabs .nav__item.-active {
-    @apply bg-surface dark:bg-surface-dark text-ink-primary dark:text-ink-primary-dark border-border dark:border-border-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark;
+    @apply bg-surface text-ink-primary border-border inset-shadow-highlight shadow-drop;
 
     text-shadow: none;
     z-index: 1;
@@ -136,7 +136,7 @@
 
     &:hover,
     &:focus-visible {
-        @apply bg-surface dark:bg-surface-dark;
+        @apply bg-surface;
     }
 
     /* 1px band at the very bottom of the tab, painted in surface color, so
@@ -152,17 +152,13 @@
     }
 }
 
-:where([data-theme="dark"]) .nav.-tabs .nav__item.-active::after {
-    background: var(--color-surface-dark);
-}
-
 /* ───────────────────────── Variant: segmented control ───────────────────── */
 
 /* Recessed track with a raised "thumb" (the active or :checked item).
    Designed to host either <button>s or <input type="radio"> + <label>
    pairs. Use a tight gap so segments visually share the track. */
 .nav.-segmented {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark border-border dark:border-border-dark inset-shadow-pressed dark:inset-shadow-pressed-dark;
+    @apply bg-surface-secondary border-border inset-shadow-pressed;
 
     display: inline-flex;
     gap: --spacing(0.5);
@@ -181,11 +177,11 @@
    broad: we target the label that immediately follows a checked radio. */
 .nav.-segmented .nav__item.-active,
 .nav.-segmented input[type="radio"]:checked + .nav__item {
-    @apply bg-surface dark:bg-primary-dark text-ink-primary dark:text-ink-inverse inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark font-semibold;
+    @apply bg-surface text-ink-primary inset-shadow-highlight shadow-drop-subtle font-semibold;
 
     &:hover,
     &:focus-visible {
-        @apply bg-surface dark:bg-primary-dark;
+        @apply bg-surface;
     }
 }
 
@@ -194,11 +190,11 @@
    The radio itself uses the `.sr-only` utility to stay focusable but
    visually hidden. */
 .nav.-segmented input[type="radio"]:focus-visible + .nav__item {
-    @apply bg-surface-hover dark:bg-surface-hover-dark;
+    @apply bg-surface-hover;
 }
 
 .nav.-segmented input[type="radio"]:focus-visible:checked + .nav__item {
-    @apply bg-surface dark:bg-surface-dark;
+    @apply bg-surface;
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }

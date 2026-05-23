@@ -23,11 +23,11 @@
 */
 
 .badge {
-    @apply text-ink-primary dark:text-ink-primary-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark
-        border border-border dark:border-border-dark
-        inset-shadow-highlight dark:inset-shadow-highlight-dark
-        text-shadow-embossed dark:text-shadow-embossed-dark
+    @apply text-ink-primary
+        bg-surface-secondary
+        border border-border
+        inset-shadow-highlight
+        text-shadow-embossed
         rounded-full
         inline-flex items-center justify-center
         whitespace-nowrap select-none;
@@ -49,10 +49,10 @@
    (primary background, inverse ink, debossed text shadow, pressed-style
    inset highlight). Light/dark share the same fill on purpose. */
 .badge.-primary {
-    @apply border-border-primary dark:border-border-primary-dark
+    @apply border-border-primary
         bg-primary text-ink-inverse
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
-        text-shadow-debossed dark:text-shadow-debossed-dark;
+        inset-shadow-highlight-pressed
+        text-shadow-debossed;
 }
 
 /* Soft-tinted state modifiers — translucent fill from the state color so
@@ -64,19 +64,9 @@
     border-color: var(--color-success);
 }
 
-[data-theme=dark] .badge.-success {
-    background-color: var(--color-success-soft-dark);
-    border-color: var(--color-success-dark);
-}
-
 .badge.-warning {
     background-color: var(--color-warning-soft);
     border-color: var(--color-warning);
-}
-
-[data-theme=dark] .badge.-warning {
-    background-color: var(--color-warning-soft-dark);
-    border-color: var(--color-warning-dark);
 }
 
 .badge.-error {
@@ -84,19 +74,9 @@
     border-color: var(--color-error);
 }
 
-[data-theme=dark] .badge.-error {
-    background-color: var(--color-error-soft-dark);
-    border-color: var(--color-error-dark);
-}
-
 .badge.-info {
     background-color: var(--color-info-soft);
     border-color: var(--color-info);
-}
-
-[data-theme=dark] .badge.-info {
-    background-color: var(--color-info-soft-dark);
-    border-color: var(--color-info-dark);
 }
 
 /* A dot — useful as a leading status pip inside a label or on its own. */

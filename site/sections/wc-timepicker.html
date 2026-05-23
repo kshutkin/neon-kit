@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Timepicker - Web Component</h1>
-    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-6 text-ink-secondary">
         <code>&lt;neon-timepicker&gt;</code> is a Light-DOM, form-associated
         custom element that wraps the theme's <code>.timepicker</code>
         markup with a typeable time field and popover list. It mirrors the
@@ -17,7 +17,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Installation</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
 
 // In your bundle entry:
 import '@neon-kit/theme/index.css';
@@ -26,12 +26,12 @@ import '@neon-kit/web-components/timepicker';</code></pre>
 
     <section class="mb-8">
         <h2 class="mb-4">Form participation</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             The element is form-associated. Submitting the form serialises
             the current time under its <code>name</code>, including an empty
             string when the field is blank, matching native input behavior.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <form class="field-stack" onsubmit="event.preventDefault(); const out = this.nextElementSibling; const data = new FormData(this); out.textContent = JSON.stringify(Object.fromEntries(data.entries()), null, 2); out.hidden = false;">
                 <label class="field-stack">
                     <span class="field-label">Start time</span>
@@ -42,31 +42,31 @@ import '@neon-kit/web-components/timepicker';</code></pre>
                     <button class="btn -primary" type="submit">Submit</button>
                 </div>
             </form>
-            <pre class="mt-4 rounded border border-border p-3 text-sm dark:border-border-dark" hidden></pre>
+            <pre class="mt-4 rounded border border-border p-3 text-sm" hidden></pre>
         </div>
     </section>
 
     <section class="mb-8">
         <h2 class="mb-4">Seconds</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Add <code>seconds</code> when the value needs second precision.
             The value format switches to <code>HH:MM:SS</code>; <code>step</code>
             still uses native input semantics, so the number is measured in
             seconds.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <neon-timepicker seconds value="14:30:00" step="300" data-clearable></neon-timepicker>
         </div>
     </section>
 
     <section class="mb-8">
         <h2 class="mb-4">Datalist Options</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Set <code>list</code> to a <code>&lt;datalist&gt;</code> id to use
             explicit suggestion rows instead of generated step rows. Invalid
             time values are ignored.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <neon-timepicker list="meeting-times" placeholder="Pick a slot"></neon-timepicker>
             <datalist id="meeting-times">
                 <option value="09:00" label="Opening"></option>
@@ -84,51 +84,51 @@ import '@neon-kit/web-components/timepicker';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Attribute</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Attribute</th>
+                        <th class="border border-border px-4 py-2 text-left">Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>name</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Form field name used when serialising the form.</td>
+                        <td class="border border-border px-4 py-2"><code>name</code></td>
+                        <td class="border border-border px-4 py-2">Form field name used when serialising the form.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Default value. Format is <code>HH:MM</code>, or <code>HH:MM:SS</code> when <code>seconds</code> is present.</td>
+                        <td class="border border-border px-4 py-2"><code>value</code></td>
+                        <td class="border border-border px-4 py-2">Default value. Format is <code>HH:MM</code>, or <code>HH:MM:SS</code> when <code>seconds</code> is present.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>min</code> / <code>max</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Lower and upper time bounds used for constraint validation and generated list rows.</td>
+                        <td class="border border-border px-4 py-2"><code>min</code> / <code>max</code></td>
+                        <td class="border border-border px-4 py-2">Lower and upper time bounds used for constraint validation and generated list rows.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>step</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Native time step in seconds. Default is <code>60</code>; use <code>900</code> for 15 minutes, or <code>any</code> to skip step validation.</td>
+                        <td class="border border-border px-4 py-2"><code>step</code></td>
+                        <td class="border border-border px-4 py-2">Native time step in seconds. Default is <code>60</code>; use <code>900</code> for 15 minutes, or <code>any</code> to skip step validation.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>list</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Optional <code>&lt;datalist&gt;</code> id used for explicit popover suggestions.</td>
+                        <td class="border border-border px-4 py-2"><code>list</code></td>
+                        <td class="border border-border px-4 py-2">Optional <code>&lt;datalist&gt;</code> id used for explicit popover suggestions.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>placeholder</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Text shown in the input. Defaults to <code>HH:MM</code> or <code>HH:MM:SS</code>.</td>
+                        <td class="border border-border px-4 py-2"><code>placeholder</code></td>
+                        <td class="border border-border px-4 py-2">Text shown in the input. Defaults to <code>HH:MM</code> or <code>HH:MM:SS</code>.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>disabled</code> / <code>readonly</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Disable the field, or make it read-only while preserving form submission.</td>
+                        <td class="border border-border px-4 py-2"><code>disabled</code> / <code>readonly</code></td>
+                        <td class="border border-border px-4 py-2">Disable the field, or make it read-only while preserving form submission.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>required</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Marks the field required for constraint validation.</td>
+                        <td class="border border-border px-4 py-2"><code>required</code></td>
+                        <td class="border border-border px-4 py-2">Marks the field required for constraint validation.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>seconds</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Boolean extension that enables <code>HH:MM:SS</code> values.</td>
+                        <td class="border border-border px-4 py-2"><code>seconds</code></td>
+                        <td class="border border-border px-4 py-2">Boolean extension that enables <code>HH:MM:SS</code> values.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>data-clearable</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Renders an inline clear button when the field has text.</td>
+                        <td class="border border-border px-4 py-2"><code>data-clearable</code></td>
+                        <td class="border border-border px-4 py-2">Renders an inline clear button when the field has text.</td>
                     </tr>
                 </tbody>
             </table>
@@ -138,47 +138,47 @@ import '@neon-kit/web-components/timepicker';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Member</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Type</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Description</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Member</th>
+                        <th class="border border-border px-4 py-2 text-left">Type</th>
+                        <th class="border border-border px-4 py-2 text-left">Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>value</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>string</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Current normalised value. Programmatic writes do not dispatch <code>input</code> or <code>change</code>.</td>
+                        <td class="border border-border px-4 py-2"><code>value</code></td>
+                        <td class="border border-border px-4 py-2"><code>string</code></td>
+                        <td class="border border-border px-4 py-2">Current normalised value. Programmatic writes do not dispatch <code>input</code> or <code>change</code>.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>defaultValue</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>string</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Reflects the <code>value</code> attribute and is restored by <code>form.reset()</code>.</td>
+                        <td class="border border-border px-4 py-2"><code>defaultValue</code></td>
+                        <td class="border border-border px-4 py-2"><code>string</code></td>
+                        <td class="border border-border px-4 py-2">Reflects the <code>value</code> attribute and is restored by <code>form.reset()</code>.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>valueAsNumber</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>number</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Milliseconds since midnight, or <code>NaN</code> when empty.</td>
+                        <td class="border border-border px-4 py-2"><code>valueAsNumber</code></td>
+                        <td class="border border-border px-4 py-2"><code>number</code></td>
+                        <td class="border border-border px-4 py-2">Milliseconds since midnight, or <code>NaN</code> when empty.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>valueAsDate</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>Date | null</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">A UTC <code>1970-01-01</code> date carrying the selected time.</td>
+                        <td class="border border-border px-4 py-2"><code>valueAsDate</code></td>
+                        <td class="border border-border px-4 py-2"><code>Date | null</code></td>
+                        <td class="border border-border px-4 py-2">A UTC <code>1970-01-01</code> date carrying the selected time.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>stepUp()</code> / <code>stepDown()</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>(n?: number) =&gt; void</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Move the value by <code>n</code> native time steps.</td>
+                        <td class="border border-border px-4 py-2"><code>stepUp()</code> / <code>stepDown()</code></td>
+                        <td class="border border-border px-4 py-2"><code>(n?: number) =&gt; void</code></td>
+                        <td class="border border-border px-4 py-2">Move the value by <code>n</code> native time steps.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>form</code> / <code>labels</code> / <code>validity</code> / <code>validationMessage</code> / <code>willValidate</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">-</td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Delegated to <code>ElementInternals</code>.</td>
+                        <td class="border border-border px-4 py-2"><code>form</code> / <code>labels</code> / <code>validity</code> / <code>validationMessage</code> / <code>willValidate</code></td>
+                        <td class="border border-border px-4 py-2">-</td>
+                        <td class="border border-border px-4 py-2">Delegated to <code>ElementInternals</code>.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>checkValidity()</code> / <code>reportValidity()</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>() =&gt; boolean</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Standard form-validation methods.</td>
+                        <td class="border border-border px-4 py-2"><code>checkValidity()</code> / <code>reportValidity()</code></td>
+                        <td class="border border-border px-4 py-2"><code>() =&gt; boolean</code></td>
+                        <td class="border border-border px-4 py-2">Standard form-validation methods.</td>
                     </tr>
                 </tbody>
             </table>
@@ -188,19 +188,19 @@ import '@neon-kit/web-components/timepicker';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Event</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">When</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Event</th>
+                        <th class="border border-border px-4 py-2 text-left">When</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>input</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">User edits the text field, picks a row, or clears the value.</td>
+                        <td class="border border-border px-4 py-2"><code>input</code></td>
+                        <td class="border border-border px-4 py-2">User edits the text field, picks a row, or clears the value.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><code>change</code></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">User commits a different value by leaving the field, picking a row, or clearing.</td>
+                        <td class="border border-border px-4 py-2"><code>change</code></td>
+                        <td class="border border-border px-4 py-2">User commits a different value by leaving the field, picking a row, or clearing.</td>
                     </tr>
                 </tbody>
             </table>
@@ -212,27 +212,27 @@ import '@neon-kit/web-components/timepicker';</code></pre>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Key</th>
-                        <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Action</th>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Key</th>
+                        <th class="border border-border px-4 py-2 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">ArrowDown</kbd> / <kbd class="kbd">ArrowUp</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Open the popover and move through suggested times.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">ArrowDown</kbd> / <kbd class="kbd">ArrowUp</kbd></td>
+                        <td class="border border-border px-4 py-2">Open the popover and move through suggested times.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Enter</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">When the popover is open, choose the active suggestion.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Enter</kbd></td>
+                        <td class="border border-border px-4 py-2">When the popover is open, choose the active suggestion.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Escape</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Close the popover without changing the value.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Escape</kbd></td>
+                        <td class="border border-border px-4 py-2">Close the popover without changing the value.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border dark:border-border-dark px-4 py-2"><kbd class="kbd">Tab</kbd></td>
-                        <td class="border border-border dark:border-border-dark px-4 py-2">Commit typed text, close the popover, and continue tab navigation.</td>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">Tab</kbd></td>
+                        <td class="border border-border px-4 py-2">Commit typed text, close the popover, and continue tab navigation.</td>
                     </tr>
                 </tbody>
             </table>

@@ -18,7 +18,7 @@
 }
 
 .docs-topbar {
-    @apply bg-surface dark:bg-surface-dark border-b border-border dark:border-border-dark;
+    @apply bg-surface border-b border-border;
 
     position: sticky;
     inset-block-start: 0;
@@ -31,7 +31,7 @@
 }
 
 .docs-wordmark {
-    @apply text-ink-primary dark:text-ink-primary-dark;
+    @apply text-ink-primary;
     flex: 0 0 auto;
     inline-size: 18rem;
     padding-inline: --spacing(4);

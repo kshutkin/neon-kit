@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Datepicker</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         A typeable date field paired with a popover that hosts three
         navigable views — days inside a month, months inside a year, and
         years inside a decade. The field reuses the inset-well chrome of
@@ -14,12 +14,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Plain</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             The minimum: a typeable input and a calendar trigger that
             opens the day grid. Click the header label to step up to the
             month view, then again to the year view.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="datepicker" data-datepicker>
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
@@ -34,12 +34,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">With Clear</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Adding <code>data-clearable</code> shows a clear button when
             the field has a value — same affordance language as
             <code>.combobox__clear</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
@@ -57,7 +57,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Field States</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Same six-state vocabulary every text-like control ships:
             empty/disabled, empty/read-only, both filled equivalents,
             invalid, and labelled inside a form. State hooks land on
@@ -67,7 +67,7 @@
             input's <code>disabled</code> attribute. Only the field
             appearance is shown — the calendar popover is unchanged.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Disabled (empty)</span>
                 <div class="datepicker">
@@ -143,7 +143,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Static Views</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Each of the three overlays rendered inline so the layout is
             visible without opening a popover. Each cell is a real
             <code>&lt;button&gt;</code>; tab through to confirm
@@ -270,12 +270,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">RTL</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Setting <code>dir="rtl"</code> on any ancestor flips the
             field, the trailing trigger, the prev/next chevrons, and the
             popover anchor side — no per-component code required.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark" dir="rtl">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6" dir="rtl">
             <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>

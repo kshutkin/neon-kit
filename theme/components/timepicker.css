@@ -52,8 +52,8 @@
    reads as a single visual family. */
 .timepicker__field {
     @apply panel
-        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark;
+        inset-shadow-pressed shadow-none
+        bg-surface;
 
     text-shadow: none;
     text-overflow: clip;
@@ -67,7 +67,7 @@
 }
 
 .timepicker__field:focus-within {
-    @apply border-border-focus dark:border-border-focus-dark;
+    @apply border-border-focus;
 }
 
 .timepicker:has(.timepicker__input:disabled) > .timepicker__field {
@@ -76,20 +76,20 @@
 
 /* Read-only — same muted-surface fill as `.input:read-only`. */
 .timepicker:has(.timepicker__input:read-only:not(:disabled)) > .timepicker__field {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 /* Invalid — flips the wrapper border, surviving focus. */
 .timepicker:has(.timepicker__input[aria-invalid="true"]:not(:disabled)) > .timepicker__field {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 .timepicker:has(.timepicker__input[aria-invalid="true"]:not(:disabled)) > .timepicker__field:focus-within {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 .timepicker__input {
-    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+    @apply placeholder:text-ink-muted;
 
     flex: 1 1 auto;
     min-inline-size: 0;
@@ -131,7 +131,7 @@
 
 .timepicker__trigger {
     @apply quiet-control
-        border-s border-border dark:border-border-dark
+        border-s border-border
         inline-flex items-center justify-center;
 
     appearance: none;
@@ -227,9 +227,9 @@
    the zone — consumers preselect the user's (or stored) zone and let
    them only *change* it. */
 .timepicker__field-tz {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        focus-visible:text-ink-primary dark:focus-visible:text-ink-primary-dark;
+    @apply text-ink-secondary
+        hover:text-ink-primary
+        focus-visible:text-ink-primary;
 
     appearance: none;
     align-self: center;
@@ -289,10 +289,6 @@
     display: grid;
     grid-template-rows: auto auto;
     align-content: start;
-
-    :where([data-theme="dark"]) & {
-        border-inline-end-color: var(--color-border-dark);
-    }
 }
 
 .datepicker__popover.-with-time > .timepicker__panel {
@@ -323,10 +319,6 @@
         grid-row: 1;
         border-inline-end: 0;
         border-block-end: 1px solid var(--color-border);
-
-        :where([data-theme="dark"]) & {
-            border-block-end-color: var(--color-border-dark);
-        }
     }
 
     .datepicker__popover.-with-time > .timepicker__panel {

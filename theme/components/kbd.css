@@ -28,11 +28,11 @@
 */
 
 .kbd {
-    @apply text-ink-primary dark:text-ink-primary-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark
-        border border-border dark:border-border-dark
-        inset-shadow-highlight dark:inset-shadow-highlight-dark
-        text-shadow-embossed dark:text-shadow-embossed-dark
+    @apply text-ink-primary
+        bg-surface-secondary
+        border border-border
+        inset-shadow-highlight
+        text-shadow-embossed
         rounded
         inline-flex items-center justify-center
         whitespace-nowrap select-none;
@@ -67,7 +67,7 @@
 /* Optional textual separator between keys (e.g. "+"). Muted, monospaced,
    matched to the kbd font-size so it lines up with the keycaps. */
 .kbd-keys__sep {
-    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    @apply text-ink-secondary;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.8125em;
     line-height: 1;

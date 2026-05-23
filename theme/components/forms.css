@@ -26,9 +26,9 @@
 .input {
     @apply panel
         disabled-control focus-ring-swap
-        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark
-        placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+        inset-shadow-pressed shadow-none
+        bg-surface
+        placeholder:text-ink-muted;
 
     /* Native control reset — text fields are not inline-block-with-ellipsis. */
     appearance: none;
@@ -50,7 +50,7 @@
    in CSS terms (no native text-editing surface), so a plain `.input:read-only`
    would tint every <select> with the read-only fill in its idle state. */
 :is(input, textarea).input:read-only:not(:disabled) {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 /* Invalid state — opt in via `aria-invalid="true"`, the same hook native
@@ -58,8 +58,8 @@
    focus ring re-uses the same border so the invalid affordance survives
    focus. Disabled fields skip the treatment so a locked field doesn't shout. */
 .input[aria-invalid="true"]:not(:disabled) {
-    @apply border-error dark:border-error-dark
-        focus-visible:border-error dark:focus-visible:border-error-dark;
+    @apply border-error
+        focus-visible:border-error;
 }
 
 /* Multi-line variant. Allow vertical resize but not horizontal — the field's
@@ -86,12 +86,12 @@ select.input {
    restyle the control when the default disabled/empty option is chosen. */
 select.input:has(option[value=""][disabled]:checked),
 select.input:required:invalid {
-    @apply text-ink-muted dark:text-ink-muted-dark;
+    @apply text-ink-muted;
 }
 
 /* Reset the dropdown options to primary text so they aren't muted. */
 select.input option {
-    @apply text-ink-primary dark:text-ink-primary-dark;
+    @apply text-ink-primary;
 }
 
 /* File input — strip the OS-rendered button on the inside; consumers can pair
@@ -123,8 +123,8 @@ select.input option {
 */
 .input-group {
     @apply panel
-        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark;
+        inset-shadow-pressed shadow-none
+        bg-surface;
 
     text-shadow: none;
     text-overflow: clip;
@@ -138,7 +138,7 @@ select.input option {
 }
 
 .input-group:focus-within {
-    @apply border-border-focus dark:border-border-focus-dark;
+    @apply border-border-focus;
 }
 
 /* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
@@ -150,15 +150,15 @@ select.input option {
 /* Same `:read-only`/select overlap as `.input` above — scope the
    wrapper read-only fill to text-editable inputs only. */
 .input-group:has(> :is(input, textarea).input:read-only:not(:disabled)) {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 .input-group:has(> .input[aria-invalid="true"]:not(:disabled)) {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 .input-group:has(> .input[aria-invalid="true"]:not(:disabled)):focus-within {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 /* The hosted `.input` becomes a transparent editable region — the wrapper
@@ -178,7 +178,7 @@ select.input option {
    (currency, units, "/month"). Muted ink so the editable value stays
    the dominant content. Sized in `em` so it tracks the field's font. */
 .input-affix {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
+    @apply text-ink-secondary
         inline-flex items-center;
 
     align-self: stretch;
@@ -220,14 +220,14 @@ select.input option {
 .checkbox,
 .radio {
     @apply disabled-control focus-ring-swap
-        text-ink-primary dark:text-ink-primary-dark
-        bg-surface dark:bg-surface-dark
-        border border-border dark:border-border-dark
-        inset-shadow-highlight dark:inset-shadow-highlight-dark
-        shadow-drop-subtle dark:shadow-drop-subtle-dark
-        not-disabled:hover:bg-surface-hover dark:not-disabled:hover:bg-surface-hover-dark
-        not-disabled:active:bg-surface-active dark:not-disabled:active:bg-surface-active-dark
-        not-disabled:active:inset-shadow-pressed dark:not-disabled:active:inset-shadow-pressed-dark
+        text-ink-primary
+        bg-surface
+        border border-border
+        inset-shadow-highlight
+        shadow-drop-subtle
+        not-disabled:hover:bg-surface-hover
+        not-disabled:active:bg-surface-active
+        not-disabled:active:inset-shadow-pressed
         not-disabled:active:shadow-none;
 
     /* Strip the native control. */
@@ -263,14 +263,14 @@ select.input option {
    the checked state reads as committed rather than just hovered. */
 .checkbox:checked,
 .radio:checked {
-    @apply bg-primary dark:bg-primary-dark
-        border-border-primary dark:border-border-primary-dark
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+    @apply bg-primary
+        border-border-primary
+        inset-shadow-highlight-pressed
         shadow-none
-        hover:bg-primary-hover dark:hover:bg-primary-hover
-        active:bg-primary-active dark:active:bg-primary-active
-        disabled:bg-primary-disabled dark:disabled:bg-primary-disabled
-        disabled:border-border-disabled dark:disabled:border-border-disabled-dark;
+        hover:bg-primary-hover
+        active:bg-primary-active
+        disabled:bg-primary-disabled
+        disabled:border-border-disabled;
 }
 
 /* Checkmark — drawn as a CSS-only glyph using two borders, so it inherits
@@ -286,9 +286,9 @@ select.input option {
 
 /* Indeterminate state — horizontal bar instead of a checkmark. */
 .checkbox:indeterminate {
-    @apply bg-primary dark:bg-primary-dark
-        border-border-primary dark:border-border-primary-dark
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
+    @apply bg-primary
+        border-border-primary
+        inset-shadow-highlight-pressed
         shadow-none;
 }
 
@@ -321,7 +321,7 @@ select.input option {
 }
 
 .field:has(:disabled) {
-    @apply text-ink-muted dark:text-ink-muted-dark;
+    @apply text-ink-muted;
     cursor: default;
 }
 
@@ -333,7 +333,7 @@ select.input option {
 }
 
 .field-stack > .field-label {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    @apply text-ink-secondary text-xs font-semibold tracking-wide uppercase;
     user-select: none;
 }
 
@@ -342,12 +342,12 @@ select.input option {
    shows when the input flips to `aria-invalid="true"`. Both inherit
    small-text sizing so they don't fight the field for visual weight. */
 .field-hint {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs;
+    @apply text-ink-secondary text-xs;
     user-select: none;
 }
 
 .field-error {
-    @apply text-error dark:text-error-dark text-xs;
+    @apply text-error text-xs;
     user-select: none;
 }
 
@@ -357,9 +357,9 @@ select.input option {
    inputs already carry their own elevation), no top highlight — a fieldset is
    a frame, not a surface you press. */
 .fieldset {
-    @apply text-ink-primary dark:text-ink-primary-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark
-        border border-border dark:border-border-dark
+    @apply text-ink-primary
+        bg-surface-secondary
+        border border-border
         rounded
         block;
 
@@ -375,7 +375,7 @@ select.input option {
 /* Native <legend> sits inside the top border. Use small-caps to match the
    `.menu__group-header` and `.field-label` typography family. */
 .fieldset > legend {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    @apply text-ink-secondary text-xs font-semibold tracking-wide uppercase;
     padding-inline: --spacing(1.5);
     margin-inline-start: calc(--spacing(1.5) * -1);
     user-select: none;

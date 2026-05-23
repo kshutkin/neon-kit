@@ -26,11 +26,11 @@
 */
 
 .tag {
-    @apply text-ink-primary dark:text-ink-primary-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark
-        border border-border dark:border-border-dark
-        inset-shadow-highlight dark:inset-shadow-highlight-dark
-        text-shadow-embossed dark:text-shadow-embossed-dark
+    @apply text-ink-primary
+        bg-surface-secondary
+        border border-border
+        inset-shadow-highlight
+        text-shadow-embossed
         rounded
         inline-flex items-center
         whitespace-nowrap select-none;
@@ -76,10 +76,10 @@
 
 /* Tinted states — share semantics and contrast strategy with `.badge`. */
 .tag.-primary {
-    @apply border-border-primary dark:border-border-primary-dark
+    @apply border-border-primary
         bg-primary text-ink-inverse
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
-        text-shadow-debossed dark:text-shadow-debossed-dark;
+        inset-shadow-highlight-pressed
+        text-shadow-debossed;
 }
 
 .tag.-primary .tag__remove {
@@ -92,19 +92,9 @@
     background-color: var(--color-primary-soft-pressed);
 }
 
-[data-theme=dark] .tag.-primary .tag__remove:hover,
-[data-theme=dark] .tag.-primary .tag__remove:focus-visible {
-    background-color: var(--color-primary-soft-pressed-dark);
-}
-
 .tag.-success {
     background-color: var(--color-success-soft);
     border-color: var(--color-success);
-}
-
-[data-theme=dark] .tag.-success {
-    background-color: var(--color-success-soft-dark);
-    border-color: var(--color-success-dark);
 }
 
 .tag.-warning {
@@ -112,29 +102,14 @@
     border-color: var(--color-warning);
 }
 
-[data-theme=dark] .tag.-warning {
-    background-color: var(--color-warning-soft-dark);
-    border-color: var(--color-warning-dark);
-}
-
 .tag.-error {
     background-color: var(--color-error-soft);
     border-color: var(--color-error);
 }
 
-[data-theme=dark] .tag.-error {
-    background-color: var(--color-error-soft-dark);
-    border-color: var(--color-error-dark);
-}
-
 .tag.-info {
     background-color: var(--color-info-soft);
     border-color: var(--color-info);
-}
-
-[data-theme=dark] .tag.-info {
-    background-color: var(--color-info-soft-dark);
-    border-color: var(--color-info-dark);
 }
 
 /* Optional layout helper — wrap a list of tags with consistent gaps that

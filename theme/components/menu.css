@@ -119,13 +119,13 @@
     padding-block: --spacing(1);
 
     & + & {
-        @apply border-t border-border dark:border-border-dark;
+        @apply border-t border-border;
     }
 }
 
 /* Optional small-caps section header — spans all columns. Non-interactive. */
 .menu__group-header {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold tracking-wide uppercase;
+    @apply text-ink-secondary text-xs font-semibold tracking-wide uppercase;
     grid-column: 1 / -1;
     padding-block: --spacing(1.5);
     padding-inline: var(--menu-item-padding-inline);
@@ -134,7 +134,7 @@
 
 /* Explicit separator (alternative to between-group divider). */
 .menu__separator {
-    @apply border-0 border-t border-border dark:border-border-dark;
+    @apply border-0 border-t border-border;
     grid-column: 1 / -1;
     margin-block: --spacing(1);
 }
@@ -180,7 +180,7 @@
 /* Keyboard-shortcut hint. Slightly muted, monospace. Shares the trailing
    column with `.menu__chevron`; an item should carry one or the other. */
 .menu__shortcut {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs;
+    @apply text-ink-secondary text-xs;
     grid-column: 3;
     justify-self: end;
     align-self: center;
@@ -200,10 +200,6 @@
     block-size: 1em;
     align-self: center;
     color: var(--color-ink-secondary);
-
-    :where([data-theme="dark"]) & {
-        color: var(--color-ink-secondary-dark);
-    }
 
     :where(:dir(rtl)) & {
         transform: scaleX(-1);

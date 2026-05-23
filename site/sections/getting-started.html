@@ -1,7 +1,7 @@
 <main>
     <h1 class="mb-6">Getting Started</h1>
 
-    <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-6 text-ink-secondary">
         Neon Kit ships a Tailwind-based theme package and optional native
         web components. Import the theme stylesheet once in your app entry,
         then use the component classes in your markup.
@@ -9,7 +9,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Install the theme</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme
 
 // In your bundle entry:
 import '@neon-kit/theme/index.css';</code></pre>
@@ -17,26 +17,26 @@ import '@neon-kit/theme/index.css';</code></pre>
 
     <section class="mb-8">
         <h2 class="mb-4">Use the CSS components</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Theme components are plain CSS classes, so they work with native
             elements and your framework's regular templates.
         </p>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>&lt;button class="btn cta"&gt;Save changes&lt;/button&gt;</code></pre>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;button class="btn cta"&gt;Save changes&lt;/button&gt;</code></pre>
     </section>
 
     <section class="mb-8">
         <h2 class="mb-4">Add web components</h2>
-        <p class="mb-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-4 text-ink-secondary">
             Install the web component package when you want the native custom
             elements to manage interaction, keyboard behavior, and form
             participation for supported controls.
         </p>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
 
 // In your bundle entry:
 import '@neon-kit/theme/index.css';
 import '@neon-kit/web-components/tooltip';</code></pre>
-        <p class="mt-4 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mt-4 text-ink-secondary">
             Web components render in Light DOM and do not attach shadow roots.
             The host page must include <code>@neon-kit/theme/index.css</code>
             or a theme-equivalent stylesheet for them to render correctly.

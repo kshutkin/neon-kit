@@ -60,8 +60,8 @@
 .combobox__field {
     @apply panel
         disabled-control focus-ring-swap
-        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark;
+        inset-shadow-pressed shadow-none
+        bg-surface;
 
     /* Reset native button defaults */
     appearance: none;
@@ -91,7 +91,7 @@
    set `aria-readonly="true"` and prevent the popover from opening; CSS only
    handles the appearance. */
 .combobox__field[aria-readonly="true"] {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 /* Disabled — for the multi-select variant the field is a `<div>`, not a
@@ -100,8 +100,8 @@
    be locked the same way. */
 /* Invalid — same hook as `.input[aria-invalid="true"]`. */
 .combobox__field[aria-invalid="true"]:not(:disabled):not([aria-disabled="true"]) {
-    @apply border-error dark:border-error-dark
-        focus-visible:border-error dark:focus-visible:border-error-dark;
+    @apply border-error
+        focus-visible:border-error;
 }
 
 /* Selected value text — fills available space, truncates with ellipsis. */
@@ -117,7 +117,7 @@
 /* Placeholder twin to `.combobox__value` — same slot, muted color. Hidden
    when the consumer also renders a `.combobox__value`. */
 .combobox__placeholder {
-    @apply text-ink-muted dark:text-ink-muted-dark;
+    @apply text-ink-muted;
     flex: 1 1 auto;
     min-inline-size: 0;
     overflow: hidden;
@@ -158,10 +158,6 @@
     flex: none;
     color: var(--color-ink-secondary);
     transition: transform 120ms ease;
-
-    :where([data-theme="dark"]) & {
-        color: var(--color-ink-secondary-dark);
-    }
 }
 
 /* Open-state rotation — consumers toggle `aria-expanded="true"` on the
@@ -197,7 +193,7 @@
 }
 
 .combobox.-multi > .combobox__field:focus-within {
-    @apply border-border-focus dark:border-border-focus-dark;
+    @apply border-border-focus;
 }
 
 /* Tag list slot — uses the existing `.tag-list` flex/wrap layout so
@@ -215,7 +211,7 @@
    makes the input grow with its value where supported; the
    `min-inline-size` floor keeps the caret visible at rest. */
 .combobox__input {
-    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+    @apply placeholder:text-ink-muted;
 
     flex: 1 0 6ch;
     min-inline-size: 6ch;
@@ -238,10 +234,10 @@
    itself is non-button. Pushes to the inline-end via auto margin so it
    stays parked in the corner regardless of how many tags wrap. */
 .combobox__chevron-btn {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
+    @apply text-ink-secondary
+        hover:text-ink-primary
+        hover:bg-surface-hover
+        focus-visible:bg-surface-hover
         inline-flex items-center justify-center;
 
     margin-inline-start: auto;
@@ -313,8 +309,8 @@
 
 /* Sticky search header — looks like a slim `.input` row inside the panel. */
 .combobox__search {
-    @apply border-b border-border dark:border-border-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply border-b border-border
+        bg-surface-secondary;
     padding: --spacing(1.5) --spacing(2);
     display: flex;
     align-items: center;
@@ -341,7 +337,7 @@
 
 /* Empty-state row — shown when the search filter eliminates every option. */
 .combobox__empty {
-    @apply text-ink-muted dark:text-ink-muted-dark text-sm;
+    @apply text-ink-muted text-sm;
     grid-column: 1 / -1;
     padding: --spacing(2) --spacing(3);
     text-align: center;
@@ -351,8 +347,8 @@
 /* Footer — same divider language as the search header. Hosts "Select all"
    and "Create new …" rows. */
 .combobox__footer {
-    @apply border-t border-border dark:border-border-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply border-t border-border
+        bg-surface-secondary;
     display: grid;
     grid-template-columns: auto 1fr auto;
     padding-block: --spacing(1);
@@ -415,7 +411,7 @@
    consumer toggles `.-active` on the currently highlighted row; mirror
    the hover background so it reads as the same affordance. */
 .combobox__option.-active {
-    @apply bg-surface-hover dark:bg-surface-hover-dark;
+    @apply bg-surface-hover;
 }
 
 /* "Create new" row — same shape as an option, with a leading + icon

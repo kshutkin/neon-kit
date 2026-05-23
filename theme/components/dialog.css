@@ -47,7 +47,7 @@
 }
 
 .dialog__header {
-    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark text-ink-primary dark:text-ink-primary-dark border-b px-5 py-3 text-shadow-embossed dark:text-shadow-embossed-dark;
+    @apply border-border bg-surface-secondary text-ink-primary border-b px-5 py-3 text-shadow-embossed;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -62,7 +62,7 @@
 }
 
 .dialog__footer {
-    @apply border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-secondary-dark border-t px-5 py-3;
+    @apply border-border bg-surface-secondary border-t px-5 py-3;
     display: flex;
     align-items: center;
     justify-content: flex-end;

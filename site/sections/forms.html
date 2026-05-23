@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Form Controls</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         Inputs, checkboxes, radios, and fieldsets share the visual family of
         <code>.btn</code>: same border, same focus ring, same disabled
         treatment. Inputs read as an <em>inset well</em> (you type into them)
@@ -12,12 +12,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Text Inputs</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Apply <code>.input</code> to any single-line form control. Layout
             (width, stretch) is owned by the surrounding container — the
             component sets only the chrome.
         </p>
-        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4">
             <label class="field-stack w-72">
                 <span class="field-label">Email</span>
                 <input class="input" type="email" placeholder="you@example.com">
@@ -39,7 +39,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Input Types</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>.input</code> works on every native text-like control —
             <code>email</code>, <code>number</code>, <code>search</code>,
             <code>date</code>, <code>file</code>, plus <code>&lt;textarea&gt;</code>
@@ -47,7 +47,7 @@
             <code>&lt;select&gt;</code> is rendered via <code>background-image</code>
             so it's consistent across browsers.
         </p>
-        <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-3">
+        <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-3">
             <label class="field-stack">
                 <span class="field-label">Number</span>
                 <input class="input" type="number" value="42">
@@ -90,7 +90,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Prefix &amp; Suffix Affixes</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Wrap an <code>.input</code> in <code>.input-group</code> to render
             non-interactive labels — currency, units, a per-period suffix —
             <em>inside</em> the field's border. The wrapper carries the chrome
@@ -102,7 +102,7 @@
             <code>&lt;button&gt;</code> if the affix should be interactive
             (e.g., a unit toggle).
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Price (prefix)</span>
                 <div class="input-group w-full">
@@ -176,7 +176,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Field States</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Six canonical states every text-like field supports — empty
             disabled, empty read-only, both filled equivalents, an
             invalid field showing the error helper, and a labelled
@@ -187,7 +187,7 @@
             native form validation toggles on submit) and pairs with a
             <code>.field-error</code> helper underneath.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Disabled (empty)</span>
                 <input class="input" type="text" placeholder="you@example.com" disabled>
@@ -221,7 +221,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Textarea &amp; Select States</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>textarea.input</code> and <code>select.input</code> pick
             up the same six-state vocabulary. Disabled freezes both;
             read-only flips a textarea to the muted surface while a
@@ -230,7 +230,7 @@
             <code>disabled</code> or render the chosen option as
             non-editable text.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark md:grid-cols-2">
+        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Textarea — disabled (empty)</span>
                 <textarea class="input" rows="3" placeholder="Multi-line content…" disabled></textarea>
@@ -269,13 +269,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Checkboxes</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Native <code>&lt;input type="checkbox"&gt;</code> with the UA
             chrome stripped and re-rendered as a small <code>.btn</code>-shaped
             square. Sized in <code>em</code> so the box tracks its label's
             font-size automatically.
         </p>
-        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4">
             <label class="field">
                 <input class="checkbox" type="checkbox">
                 <span>Unchecked</span>
@@ -296,7 +296,7 @@
                 <input class="checkbox" type="checkbox" checked disabled>
                 <span>Disabled, checked</span>
             </label>
-            <p class="mt-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+            <p class="mt-3 text-sm text-ink-secondary">
                 Checkboxes also scale with surrounding text:
             </p>
             <label class="field text-lg">
@@ -319,12 +319,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Radio Buttons</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Same shape as <code>.checkbox</code> but circular and with a dot
             instead of a tick. Group radios with a shared <code>name</code> in
             the usual native way.
         </p>
-        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4">
             <label class="field">
                 <input class="radio" type="radio" name="size-demo">
                 <span>Small</span>
@@ -346,12 +346,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Fieldset</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             <code>.fieldset</code> is a flat frame for grouping related
             fields. Pair it with native <code>&lt;legend&gt;</code> for an
             accessible group label that browsers expose to assistive tech.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="rounded-lg border border-border bg-surface-secondary p-4">
             <fieldset class="fieldset w-full max-w-md">
                 <legend>Notification preferences</legend>
                 <div class="flex flex-col gap-2">
@@ -374,12 +374,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Composed Form</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Inputs, checkboxes, radios, fieldsets, and buttons composed
             together — everything shares the same border, focus ring, and
             disabled treatment.
         </p>
-        <form class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark" onsubmit="event.preventDefault();">
+        <form class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4" onsubmit="event.preventDefault();">
             <div class="grid gap-3 md:grid-cols-2">
                 <label class="field-stack">
                     <span class="field-label">First name</span>

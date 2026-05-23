@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Tooltip</h1>
-    <p class="mb-3 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-3 text-ink-secondary">
         The <code>.tooltip</code> component is a styled wrapper around the
         native <code>popover</code> attribute. Because the browser puts
         every open popover into the <em>top layer</em>, tooltips always
@@ -9,7 +9,7 @@
         <code>overflow: hidden</code>, <code>transform</code>, or
         <code>filter</code> on ancestors.
     </p>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         Placement uses CSS anchor positioning. The trigger that invokes
         the popover via <code>popovertarget</code> becomes its implicit
         anchor, so the position tracks the trigger automatically as
@@ -18,13 +18,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Basic — Click / Keyboard</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Native <code>popovertarget</code> handles activation for
             free: click, <kbd class="kbd">Space</kbd>, and
             <kbd class="kbd">⏎</kbd> all toggle the popover. Click
             outside or press <kbd class="kbd">⎋</kbd> to dismiss.
         </p>
-        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
             <button class="btn" popovertarget="tip-basic" aria-describedby="tip-basic" type="button">
                 Click me
             </button>
@@ -45,14 +45,14 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Hover &amp; Focus</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Add <code>data-tooltip-hover</code> to any trigger to open
             its popover on hover and on keyboard focus. Open is delayed
             slightly so casual flyovers don't flash. The tooltip itself
             keeps the popover open while the pointer is over it, so
             rich content (links, buttons, copy fields) stays reachable.
         </p>
-        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
             <button class="btn" popovertarget="tip-hover-1" aria-describedby="tip-hover-1" data-tooltip-hover type="button">
                 Hover or focus
             </button>
@@ -73,13 +73,13 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Placement</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Four placement modifiers — <code>-top</code> (default),
             <code>-bottom</code>, <code>-left</code>,
             <code>-right</code> — driven by
             <code>position-area</code>.
         </p>
-        <div class="flex flex-wrap items-center justify-center gap-8 rounded-lg border border-border bg-surface-secondary p-12 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center justify-center gap-8 rounded-lg border border-border bg-surface-secondary p-12">
             <button class="btn" popovertarget="tip-place-top" aria-describedby="tip-place-top" data-tooltip-hover type="button">
                 Top
             </button>
@@ -116,7 +116,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Rich Content</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Because the popover is a regular block container while open,
             the body can hold any markup: a title with secondary copy,
             keyboard hints, badges, even interactive elements. Use the
@@ -125,7 +125,7 @@
             <code>.tooltip__meta</code> helpers, or compose with
             Tailwind utilities.
         </p>
-        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
             <button class="btn" popovertarget="tip-rich-shortcut" aria-describedby="tip-rich-shortcut" data-tooltip-hover type="button">
                 With a shortcut
             </button>
@@ -170,15 +170,15 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Stacking-Context Stress Test</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             The trigger below sits inside an ancestor that establishes a
             new stacking context (<code>transform</code>,
             <code>filter</code>, and clipping <code>overflow</code>). A
             non-popover tooltip would clip or paint behind siblings; the
             popover paints in the top layer regardless.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6 dark:border-border-dark dark:bg-surface-secondary-dark">
-            <div class="overflow-hidden rounded-md border border-border-secondary p-6 dark:border-border-dark" style="transform: translateZ(0); filter: saturate(1);">
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+            <div class="overflow-hidden rounded-md border border-border-secondary p-6" style="transform: translateZ(0); filter: saturate(1);">
                 <div class="flex items-center gap-4">
                     <button class="btn" popovertarget="tip-stack" aria-describedby="tip-stack" data-tooltip-hover type="button">
                         Trigger inside clipped + transformed parent
@@ -187,7 +187,7 @@
                         Still escapes the clip.
                         <div class="tooltip__arrow"></div>
                     </div>
-                    <span class="text-sm text-ink-secondary dark:text-ink-secondary-dark">
+                    <span class="text-sm text-ink-secondary">
                         ← hover or focus
                     </span>
                 </div>
@@ -197,11 +197,11 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Inline With Prose</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Tooltips work on any focusable inline element. A common
             pattern is an info-style trigger inside body copy.
         </p>
-        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4">
             <p>
                 Your plan renews on the
                 <button class="link" popovertarget="tip-prose-1" aria-describedby="tip-prose-1" data-tooltip-hover type="button">
@@ -231,7 +231,7 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Accessibility</h2>
-        <ul class="list-disc space-y-2 pl-6 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <ul class="list-disc space-y-2 pl-6 text-sm text-ink-secondary">
             <li>
                 For description-style tooltips, use
                 <code>role="tooltip"</code> on the popover and

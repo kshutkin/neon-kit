@@ -52,8 +52,8 @@
    border. Treats focus-within as the focus ring, like `.combobox.-multi`. */
 .datepicker__field {
     @apply panel
-        inset-shadow-pressed dark:inset-shadow-pressed-dark shadow-none
-        bg-surface dark:bg-surface-dark;
+        inset-shadow-pressed shadow-none
+        bg-surface;
 
     /* Override panel's whitespace/ellipsis defaults — fields hold form
        controls, not a single line of label text. */
@@ -69,7 +69,7 @@
 }
 
 .datepicker__field:focus-within {
-    @apply border-border-focus dark:border-border-focus-dark;
+    @apply border-border-focus;
 }
 
 .datepicker:has(.datepicker__input:disabled) > .datepicker__field {
@@ -80,22 +80,22 @@
    still focusable; consumers disable the trigger button via plain `disabled`
    so the calendar popover can't open. CSS only handles the visual. */
 .datepicker:has(.datepicker__input:read-only:not(:disabled)) > .datepicker__field {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 /* Invalid — same hook as `.input[aria-invalid="true"]`. Lives on the
    wrapper so the chrome (which is owned by the wrapper) flips. */
 .datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 .datepicker:has(.datepicker__input[aria-invalid="true"]:not(:disabled)) > .datepicker__field:focus-within {
-    @apply border-error dark:border-error-dark;
+    @apply border-error;
 }
 
 /* The typed-date <input> — chrome is owned by the wrapper. */
 .datepicker__input {
-    @apply placeholder:text-ink-muted dark:placeholder:text-ink-muted-dark;
+    @apply placeholder:text-ink-muted;
 
     flex: 1 1 auto;
     min-inline-size: 0;
@@ -139,12 +139,12 @@
 /* Calendar trigger — hugs the inline-end edge of the field. Borrows the
    quiet-button colour language and shares a divider with the input. */
 .datepicker__trigger {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
-        border-s border-border dark:border-border-dark
+    @apply text-ink-secondary
+        hover:text-ink-primary
+        hover:bg-surface-hover
+        active:bg-surface-active
+        focus-visible:bg-surface-hover
+        border-s border-border
         inline-flex items-center justify-center;
 
     appearance: none;
@@ -207,8 +207,8 @@
 /* ---------- Header (prev / view-switch / next) ---------------------------- */
 
 .datepicker__nav {
-    @apply border-b border-border dark:border-border-dark
-        bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply border-b border-border
+        bg-surface-secondary;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
@@ -217,12 +217,12 @@
 
 /* Prev/next chevron buttons — small square hit targets. */
 .datepicker__nav-btn {
-    @apply text-ink-secondary dark:text-ink-secondary-dark
-        hover:text-ink-primary dark:hover:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
-        disabled:text-ink-muted dark:disabled:text-ink-muted-dark
+    @apply text-ink-secondary
+        hover:text-ink-primary
+        hover:bg-surface-hover
+        active:bg-surface-active
+        focus-visible:bg-surface-hover
+        disabled:text-ink-muted
         disabled:pointer-events-none
         inline-flex items-center justify-center;
 
@@ -254,11 +254,11 @@
 
 /* The view-switch button — clicking cycles days → months → years. */
 .datepicker__view-switch {
-    @apply text-ink-primary dark:text-ink-primary-dark
-        hover:bg-surface-hover dark:hover:bg-surface-hover-dark
-        active:bg-surface-active dark:active:bg-surface-active-dark
-        focus-visible:bg-surface-hover dark:focus-visible:bg-surface-hover-dark
-        text-shadow-embossed dark:text-shadow-embossed-dark;
+    @apply text-ink-primary
+        hover:bg-surface-hover
+        active:bg-surface-active
+        focus-visible:bg-surface-hover
+        text-shadow-embossed;
 
     appearance: none;
     block-size: --spacing(8);
@@ -297,7 +297,7 @@
 
 /* Day-of-week header strip — non-interactive, spans the day grid's row. */
 .datepicker__weekday {
-    @apply text-ink-secondary dark:text-ink-secondary-dark text-xs font-semibold uppercase tracking-wide;
+    @apply text-ink-secondary text-xs font-semibold uppercase tracking-wide;
     text-align: center;
     padding-block: --spacing(1);
     user-select: none;
@@ -309,7 +309,7 @@
    keyboard nav (roving-tabindex etc.) is consumer-managed but the
    landing styles are baked in. Reuses interactive-row state colours. */
 .datepicker__cell {
-    @apply interactive-row text-ink-primary dark:text-ink-primary-dark;
+    @apply interactive-row text-ink-primary;
 
     appearance: none;
     border: 0;
@@ -340,7 +340,7 @@
    month reads cleanly while still letting the user click into adjacent
    months without changing views. */
 .datepicker__cell.-muted {
-    @apply text-ink-muted dark:text-ink-muted-dark;
+    @apply text-ink-muted;
 }
 
 /* Today indicator — subtle dotted underline, no surface fill so the
@@ -354,19 +354,19 @@
    `.btn.cta` so a picked date reads as committed in the same visual
    language as a checked option. */
 .datepicker__cell.-selected {
-    @apply bg-primary dark:bg-primary-dark
-        border-border-primary dark:border-border-primary-dark
-        text-ink-inverse dark:text-ink-inverse
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
-        text-shadow-debossed dark:text-shadow-debossed-dark
-        hover:bg-primary-hover dark:hover:bg-primary-hover
-        active:bg-primary-active dark:active:bg-primary-active;
+    @apply bg-primary
+        border-border-primary
+        text-ink-inverse
+        inset-shadow-highlight-pressed
+        text-shadow-debossed
+        hover:bg-primary-hover
+        active:bg-primary-active;
     border: 1px solid;
 }
 
 .datepicker__cell:disabled,
 .datepicker__cell[aria-disabled="true"] {
-    @apply text-ink-muted dark:text-ink-muted-dark;
+    @apply text-ink-muted;
     pointer-events: none;
 }
 
@@ -386,13 +386,13 @@
 
 .datepicker__cell.-range-start,
 .datepicker__cell.-range-end {
-    @apply bg-primary dark:bg-primary-dark
-        border-border-primary dark:border-border-primary-dark
-        text-ink-inverse dark:text-ink-inverse
-        inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark
-        text-shadow-debossed dark:text-shadow-debossed-dark
-        hover:bg-primary-hover dark:hover:bg-primary-hover
-        active:bg-primary-active dark:active:bg-primary-active;
+    @apply bg-primary
+        border-border-primary
+        text-ink-inverse
+        inset-shadow-highlight-pressed
+        text-shadow-debossed
+        hover:bg-primary-hover
+        active:bg-primary-active;
     border: 1px solid;
 }
 
@@ -421,7 +421,7 @@
 }
 
 .datepicker.-range-pending .datepicker__cell.-range-end:not(.-range-start) {
-    @apply text-ink-primary dark:text-ink-primary-dark;
+    @apply text-ink-primary;
     background: transparent;
     border: 1px dashed var(--color-primary);
     box-shadow: none;

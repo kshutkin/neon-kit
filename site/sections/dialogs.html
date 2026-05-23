@@ -1,6 +1,6 @@
 <main>
         <h1 class="mb-6">Dialog Component</h1>
-        <p class="mb-6 text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-6 text-ink-secondary">
             Modal dialogs built on the native <code>&lt;dialog&gt;</code> element. Header and footer
             are pinned, the body scrolls. Multiple size variants are available; on mobile screens
             (&le; 640px) every dialog becomes full-screen automatically.
@@ -8,7 +8,7 @@
 
         <section class="mb-8">
             <h2 class="mb-4">Sizes</h2>
-            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
                 <button class="btn" data-open="dlg-small">Open Small</button>
                 <button class="btn" data-open="dlg-medium">Open Medium</button>
                 <button class="btn" data-open="dlg-large">Open Large</button>
@@ -18,16 +18,16 @@
 
         <section class="mb-8">
             <h2 class="mb-4">Scrolling Body</h2>
-            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
                 <button class="btn cta" data-open="dlg-scroll">Open Long Content</button>
             </div>
         </section>
 
         <section class="mb-8">
             <h2 class="mb-4">Confirmation</h2>
-            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
                 <button class="btn" data-open="dlg-confirm">Delete item…</button>
-                <span id="confirm-result" class="text-sm text-ink-secondary dark:text-ink-secondary-dark"></span>
+                <span id="confirm-result" class="text-sm text-ink-secondary"></span>
             </div>
         </section>
     </main>
@@ -55,7 +55,7 @@
         </header>
         <div class="dialog__body">
             <p class="mb-3">The default size. Suits most form-style content and standard messaging.</p>
-            <p class="text-ink-secondary dark:text-ink-secondary-dark">Press <kbd>Esc</kbd> to dismiss.</p>
+            <p class="text-ink-secondary">Press <kbd>Esc</kbd> to dismiss.</p>
         </div>
         <footer class="dialog__footer">
             <button class="btn quiet" data-close>Cancel</button>

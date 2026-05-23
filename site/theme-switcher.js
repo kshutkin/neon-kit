@@ -211,14 +211,14 @@ class ThemeSwitcher extends HTMLElement {
   }
 
   #updateThemeStyles() {
-    // .btn and .btn.cta handle dark mode automatically via CSS dark: variants.
-    // Only update non-button elements that still use inline styles.
-    const isDark = document.documentElement.dataset.theme === "dark";
-    const surface = isDark ? "var(--color-surface-dark)" : "var(--color-surface)";
-    const inkPrimary = isDark ? "var(--color-ink-primary-dark)" : "var(--color-ink-primary)";
-    const inkSecondary = isDark ? "var(--color-ink-secondary-dark)" : "var(--color-ink-secondary)";
-    const border = isDark ? "var(--color-border-dark)" : "var(--color-border)";
-    const primary = isDark ? "var(--color-primary-dark)" : "var(--color-primary)";
+    // Tokens are themed at the CSS level — `var(--color-*)` resolves to the
+    // active theme's value via the `[data-theme="dark"]` override block. No
+    // per-theme JS branching needed.
+    const surface = "var(--color-surface)";
+    const inkPrimary = "var(--color-ink-primary)";
+    const inkSecondary = "var(--color-ink-secondary)";
+    const border = "var(--color-border)";
+    const primary = "var(--color-primary)";
 
     // Update panel background
     const panel = this.querySelector(".theme-panel");

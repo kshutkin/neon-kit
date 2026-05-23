@@ -27,7 +27,7 @@
 */
 
 .table {
-    @apply border-border dark:border-border-dark;
+    @apply border-border;
     width: 100%;
     caption-side: bottom;
     text-align: start;
@@ -35,7 +35,7 @@
 }
 
 .table caption {
-    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    @apply text-ink-secondary;
     font-size: 0.875rem;
     padding-block: 0.5rem;
     text-align: start;
@@ -43,21 +43,21 @@
 
 .table th,
 .table td {
-    @apply border-b border-border dark:border-border-dark;
+    @apply border-b border-border;
     padding: 0.5rem 0.75rem;
     vertical-align: top;
     text-align: inherit;
 }
 
 .table thead th {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
     font-weight: 600;
     text-align: start;
 }
 
 .table tfoot td,
 .table tfoot th {
-    @apply border-t border-border dark:border-border-dark;
+    @apply border-t border-border;
     font-weight: 500;
 }
 
@@ -75,7 +75,7 @@
    above the body via the cell bottom border. */
 .table.-striped > tbody > tr:nth-child(even) > td,
 .table.-striped > tbody > tr:nth-child(even) > th {
-    @apply bg-surface-secondary dark:bg-surface-secondary-dark;
+    @apply bg-surface-secondary;
 }
 
 /* Sortable headers — `<th aria-sort="none|ascending|descending">` with
@@ -120,7 +120,7 @@
 }
 
 .table thead th > button[type="button"]:hover {
-    @apply bg-border dark:bg-border-dark;
+    @apply bg-border;
 }
 
 .table thead th > button[type="button"]:focus-visible {
@@ -131,7 +131,7 @@
 .table thead th[aria-sort] > button[type="button"]::after {
     content: "\2195"; /* ↕ */
     margin-inline-start: auto;
-    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    @apply text-ink-secondary;
     opacity: 0.6;
     font-size: 0.875em;
     line-height: 1;

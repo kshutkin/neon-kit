@@ -1,6 +1,6 @@
 <main>
     <h1 class="mb-6">Badges</h1>
-    <p class="mb-8 text-ink-secondary dark:text-ink-secondary-dark">
+    <p class="mb-8 text-ink-secondary">
         The <code>.badge</code> component renders a compact pill label for
         counts, statuses, or categories. It shares the visual family of
         <code>.kbd</code> (rounded, bordered, top-edge highlight) but is
@@ -10,14 +10,14 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Variants</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Default is the neutral surface; <code>.-primary</code> mirrors
             the filled <code>.btn.cta</code> look. The four state
             modifiers — <code>.-success</code>, <code>.-warning</code>,
             <code>.-error</code>, <code>.-info</code> — use translucent
             tints from the matching theme tokens with full-strength borders.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
             <span class="badge">Default</span>
             <span class="badge -primary">Primary</span>
             <span class="badge -success">Success</span>
@@ -29,12 +29,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Counts</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Single-character contents render as a circle thanks to the
             shared <code>min-inline-size = block-size</code> rule;
             multi-digit counts grow inline.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
             <span class="badge">1</span>
             <span class="badge">7</span>
             <span class="badge">42</span>
@@ -46,11 +46,11 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Status with Dot</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Pair the optional <code>.badge__dot</code> pip with a state
             modifier for a status indicator.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
             <span class="badge -success"><span class="badge__dot"></span>Online</span>
             <span class="badge -warning"><span class="badge__dot"></span>Pending</span>
             <span class="badge -error"><span class="badge__dot"></span>Offline</span>
@@ -60,12 +60,12 @@
 
     <section class="mb-8">
         <h2 class="mb-4">Inline With Prose</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Badges sit on the surrounding text baseline and inherit
             font-size, so they scale naturally inside paragraphs and
             headings — every dimension is in <code>em</code>.
         </p>
-        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4">
             <p class="text-sm">
                 Smaller text — Inbox <span class="badge -primary">12</span> waiting messages.
             </p>
@@ -81,10 +81,10 @@
 
     <section class="mb-8">
         <h2 class="mb-4">On Headings &amp; Buttons</h2>
-        <p class="mb-3 text-sm text-ink-secondary dark:text-ink-secondary-dark">
+        <p class="mb-3 text-sm text-ink-secondary">
             Em-sized badges scale with their host element automatically.
         </p>
-        <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4 dark:border-border-dark dark:bg-surface-secondary-dark">
+        <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4">
             <h3 class="text-2xl font-semibold">
                 Settings <span class="badge -info">Beta</span>
             </h3>

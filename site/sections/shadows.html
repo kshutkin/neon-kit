@@ -2,7 +2,7 @@
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold mb-2">Shadow Tokens Showcase</h1>
-                <p class="text-ink-secondary dark:text-ink-secondary-dark">Composable slot-based shadows using Tailwind v4. <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">inset-shadow-*</code> sets <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">--tw-inset-shadow</code> and <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">shadow-*</code> sets <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">--tw-shadow</code>. Both slots are merged into a single <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">box-shadow</code> declaration automatically, so you can combine one of each to build composite effects.</p>
+                <p class="text-ink-secondary">Composable slot-based shadows using Tailwind v4. <code class="px-2 py-1 bg-surface-secondary rounded">inset-shadow-*</code> sets <code class="px-2 py-1 bg-surface-secondary rounded">--tw-inset-shadow</code> and <code class="px-2 py-1 bg-surface-secondary rounded">shadow-*</code> sets <code class="px-2 py-1 bg-surface-secondary rounded">--tw-shadow</code>. Both slots are merged into a single <code class="px-2 py-1 bg-surface-secondary rounded">box-shadow</code> declaration automatically, so you can combine one of each to build composite effects.</p>
             </div>
         </div>
 
@@ -10,43 +10,43 @@
         <!-- INSET SHADOW TOKENS                                                   -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Inset Shadow Tokens</h2>
-            <p class="text-sm text-ink-secondary dark:text-ink-secondary-dark mb-6">These tokens use the <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">inset-shadow-*</code> utility and populate the <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">--tw-inset-shadow</code> slot.</p>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border pb-2">Inset Shadow Tokens</h2>
+            <p class="text-sm text-ink-secondary mb-6">These tokens use the <code class="px-2 py-1 bg-surface-secondary rounded">inset-shadow-*</code> utility and populate the <code class="px-2 py-1 bg-surface-secondary rounded">--tw-inset-shadow</code> slot.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 <!-- inset-shadow-highlight -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg inset-shadow-highlight dark:inset-shadow-highlight-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Highlight</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg inset-shadow-highlight flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Highlight</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">inset-shadow-highlight</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--inset-shadow-highlight</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Neutral top-edge highlight for surfaces and buttons</p>
+                        <code class="text-xs text-ink-muted break-all">--inset-shadow-highlight</code>
+                        <p class="text-xs text-ink-secondary mt-2">Neutral top-edge highlight for surfaces and buttons</p>
                     </div>
                 </div>
 
                 <!-- inset-shadow-highlight-pressed -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-primary dark:bg-primary-dark rounded-lg inset-shadow-highlight-pressed dark:inset-shadow-highlight-pressed-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-inverse dark:text-ink-inverse-dark">Primary Highlight</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-primary rounded-lg inset-shadow-highlight-pressed flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-inverse">Primary Highlight</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">inset-shadow-highlight-pressed</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--inset-shadow-highlight-pressed</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Primary-tinted top-edge highlight for CTA buttons</p>
+                        <code class="text-xs text-ink-muted break-all">--inset-shadow-highlight-pressed</code>
+                        <p class="text-xs text-ink-secondary mt-2">Primary-tinted top-edge highlight for CTA buttons</p>
                     </div>
                 </div>
 
                 <!-- inset-shadow-pressed -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg inset-shadow-pressed dark:inset-shadow-pressed-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Pressed</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg inset-shadow-pressed flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Pressed</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">inset-shadow-pressed</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--inset-shadow-pressed</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Depressed/pressed inset shadow for active states</p>
+                        <code class="text-xs text-ink-muted break-all">--inset-shadow-pressed</code>
+                        <p class="text-xs text-ink-secondary mt-2">Depressed/pressed inset shadow for active states</p>
                     </div>
                 </div>
 
@@ -57,43 +57,43 @@
         <!-- OUTER SHADOW TOKENS                                                   -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Outer Shadow Tokens</h2>
-            <p class="text-sm text-ink-secondary dark:text-ink-secondary-dark mb-6">These tokens use the <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">shadow-*</code> utility and populate the <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">--tw-shadow</code> slot.</p>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border pb-2">Outer Shadow Tokens</h2>
+            <p class="text-sm text-ink-secondary mb-6">These tokens use the <code class="px-2 py-1 bg-surface-secondary rounded">shadow-*</code> utility and populate the <code class="px-2 py-1 bg-surface-secondary rounded">--tw-shadow</code> slot.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 <!-- shadow-drop -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-drop dark:shadow-drop-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Drop</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg shadow-drop flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Drop</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-drop</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--shadow-drop</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Standard 2px blur drop shadow for elevation</p>
+                        <code class="text-xs text-ink-muted break-all">--shadow-drop</code>
+                        <p class="text-xs text-ink-secondary mt-2">Standard 2px blur drop shadow for elevation</p>
                     </div>
                 </div>
 
                 <!-- shadow-drop-subtle -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-drop-subtle dark:shadow-drop-subtle-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Drop Subtle</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg shadow-drop-subtle flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Drop Subtle</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-drop-subtle</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--shadow-drop-subtle</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Lighter 1px blur drop shadow for hover states</p>
+                        <code class="text-xs text-ink-muted break-all">--shadow-drop-subtle</code>
+                        <p class="text-xs text-ink-secondary mt-2">Lighter 1px blur drop shadow for hover states</p>
                     </div>
                 </div>
 
                 <!-- shadow-focus-ring -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-focus-ring dark:shadow-focus-ring-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Focus Ring</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg shadow-focus-ring flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Focus Ring</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">shadow-focus-ring</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--shadow-focus-ring</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">2px focus ring for accessibility</p>
+                        <code class="text-xs text-ink-muted break-all">--shadow-focus-ring</code>
+                        <p class="text-xs text-ink-secondary mt-2">2px focus ring for accessibility</p>
                     </div>
                 </div>
 
@@ -104,55 +104,55 @@
         <!-- COMPOSITION EXAMPLES                                                  -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Composition Examples</h2>
-            <p class="text-sm text-ink-secondary dark:text-ink-secondary-dark mb-6">Combine one <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">inset-shadow-*</code> token with one <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">shadow-*</code> token on the same element. Tailwind v4 merges them into a single <code class="px-2 py-1 bg-surface-secondary dark:bg-surface-secondary-dark rounded">box-shadow</code> declaration.</p>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border pb-2">Composition Examples</h2>
+            <p class="text-sm text-ink-secondary mb-6">Combine one <code class="px-2 py-1 bg-surface-secondary rounded">inset-shadow-*</code> token with one <code class="px-2 py-1 bg-surface-secondary rounded">shadow-*</code> token on the same element. Tailwind v4 merges them into a single <code class="px-2 py-1 bg-surface-secondary rounded">box-shadow</code> declaration.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Elevated = highlight + drop -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Elevated</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg inset-shadow-highlight shadow-drop flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Elevated</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">Elevated = highlight + drop</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">inset-shadow-highlight shadow-drop</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Default button/card look — inset highlight for top shine combined with a standard drop shadow for depth</p>
+                        <code class="text-xs text-ink-muted break-all">inset-shadow-highlight shadow-drop</code>
+                        <p class="text-xs text-ink-secondary mt-2">Default button/card look — inset highlight for top shine combined with a standard drop shadow for depth</p>
                     </div>
                 </div>
 
                 <!-- Subtle = highlight + drop-subtle -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop-subtle dark:shadow-drop-subtle-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Subtle</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg inset-shadow-highlight shadow-drop-subtle flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Subtle</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">Subtle = highlight + drop-subtle</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">inset-shadow-highlight shadow-drop-subtle</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Very light elevation — inset highlight with a soft, minimal drop shadow</p>
+                        <code class="text-xs text-ink-muted break-all">inset-shadow-highlight shadow-drop-subtle</code>
+                        <p class="text-xs text-ink-secondary mt-2">Very light elevation — inset highlight with a soft, minimal drop shadow</p>
                     </div>
                 </div>
 
                 <!-- Flat Focus = focus-ring alone -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg shadow-focus-ring dark:shadow-focus-ring-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Flat Focus</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg shadow-focus-ring flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Flat Focus</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">Flat Focus = focus-ring alone</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">shadow-focus-ring</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Focus ring on a flat element with no inset shadow</p>
+                        <code class="text-xs text-ink-muted break-all">shadow-focus-ring</code>
+                        <p class="text-xs text-ink-secondary mt-2">Focus ring on a flat element with no inset shadow</p>
                     </div>
                 </div>
 
                 <!-- Elevated Focus = highlight + focus-ring -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-focus-ring dark:shadow-focus-ring-dark flex items-center justify-center">
-                        <span class="text-sm font-medium text-ink-secondary dark:text-ink-secondary-dark">Elevated Focus</span>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg inset-shadow-highlight shadow-focus-ring flex items-center justify-center">
+                        <span class="text-sm font-medium text-ink-secondary">Elevated Focus</span>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">Elevated Focus = highlight + focus-ring</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">inset-shadow-highlight shadow-focus-ring</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Focused elevated element — inset highlight paired with a focus ring for accessible interactive states</p>
+                        <code class="text-xs text-ink-muted break-all">inset-shadow-highlight shadow-focus-ring</code>
+                        <p class="text-xs text-ink-secondary mt-2">Focused elevated element — inset highlight paired with a focus ring for accessible interactive states</p>
                     </div>
                 </div>
 
@@ -163,30 +163,30 @@
         <!-- TEXT SHADOWS                                                           -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Text Shadow Tokens</h2>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border pb-2">Text Shadow Tokens</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 <!-- text-shadow-embossed -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-surface dark:bg-surface-dark">
-                    <div class="w-full h-32 bg-surface dark:bg-surface-dark rounded-lg flex items-center justify-center">
-                        <p class="text-5xl font-bold text-ink-primary dark:text-ink-primary-dark text-shadow-embossed dark:text-shadow-embossed-dark">Aa</p>
+                <div class="p-6 border border-border rounded-lg bg-surface">
+                    <div class="w-full h-32 bg-surface rounded-lg flex items-center justify-center">
+                        <p class="text-5xl font-bold text-ink-primary text-shadow-embossed">Aa</p>
                     </div>
                     <div class="mt-4">
                         <p class="font-bold text-sm mb-1">text-shadow-embossed</p>
-                        <code class="text-xs text-ink-muted dark:text-ink-muted-dark break-all">--text-shadow-embossed</code>
-                        <p class="text-xs text-ink-secondary dark:text-ink-secondary-dark mt-2">Embossed/raised text effect</p>
+                        <code class="text-xs text-ink-muted break-all">--text-shadow-embossed</code>
+                        <p class="text-xs text-ink-secondary mt-2">Embossed/raised text effect</p>
                     </div>
                 </div>
 
                 <!-- text-shadow-debossed -->
-                <div class="p-6 border border-border dark:border-border-dark rounded-lg bg-primary dark:bg-primary-dark">
-                    <div class="w-full h-32 bg-primary dark:bg-primary-dark rounded-lg flex items-center justify-center">
-                        <p class="text-5xl font-bold text-ink-inverse dark:text-ink-inverse-dark text-shadow-debossed dark:text-shadow-debossed-dark">Aa</p>
+                <div class="p-6 border border-border rounded-lg bg-primary">
+                    <div class="w-full h-32 bg-primary rounded-lg flex items-center justify-center">
+                        <p class="text-5xl font-bold text-ink-inverse text-shadow-debossed">Aa</p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-sm mb-1 text-ink-inverse dark:text-ink-inverse-dark">text-shadow-debossed</p>
-                        <code class="text-xs text-ink-inverse/70 dark:text-ink-inverse-dark/70 break-all">--text-shadow-debossed</code>
-                        <p class="text-xs text-ink-inverse/80 dark:text-ink-inverse-dark/80 mt-2">Debossed/pressed text effect</p>
+                        <p class="font-bold text-sm mb-1 text-ink-inverse">text-shadow-debossed</p>
+                        <code class="text-xs text-ink-inverse/70 break-all">--text-shadow-debossed</code>
+                        <p class="text-xs text-ink-inverse/80 mt-2">Debossed/pressed text effect</p>
                     </div>
                 </div>
 
@@ -197,74 +197,65 @@
         <!-- QUICK REFERENCE TABLE                                                 -->
         <!-- ===================================================================== -->
         <section class="mb-16">
-            <h2 class="text-2xl font-semibold mb-6 border-b border-border dark:border-border-dark pb-2">Quick Reference</h2>
+            <h2 class="text-2xl font-semibold mb-6 border-b border-border pb-2">Quick Reference</h2>
             <div class="overflow-x-auto">
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-surface-secondary dark:bg-surface-secondary-dark">
-                            <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Token</th>
-                            <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Slot</th>
-                            <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Tailwind Class (Light)</th>
-                            <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Tailwind Class (Dark)</th>
-                            <th class="border border-border dark:border-border-dark px-4 py-2 text-left">Use Case</th>
+                        <tr class="bg-surface-secondary">
+                            <th class="border border-border px-4 py-2 text-left">Token</th>
+                            <th class="border border-border px-4 py-2 text-left">Slot</th>
+                            <th class="border border-border px-4 py-2 text-left">Tailwind Class</th>
+                            <th class="border border-border px-4 py-2 text-left">Use Case</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--inset-shadow-highlight</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-inset-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>inset-shadow-highlight</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:inset-shadow-highlight-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Neutral top-edge highlight on surfaces</td>
+                            <td class="border border-border px-4 py-2"><code>--inset-shadow-highlight</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-inset-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>inset-shadow-highlight</code></td>
+                            <td class="border border-border px-4 py-2">Neutral top-edge highlight on surfaces</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--inset-shadow-highlight-pressed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-inset-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>inset-shadow-highlight-pressed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:inset-shadow-highlight-pressed-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Primary-tinted highlight on CTA buttons</td>
+                            <td class="border border-border px-4 py-2"><code>--inset-shadow-highlight-pressed</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-inset-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>inset-shadow-highlight-pressed</code></td>
+                            <td class="border border-border px-4 py-2">Primary-tinted highlight on CTA buttons</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--inset-shadow-pressed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-inset-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>inset-shadow-pressed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:inset-shadow-pressed-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Depressed/pressed active states</td>
+                            <td class="border border-border px-4 py-2"><code>--inset-shadow-pressed</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-inset-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>inset-shadow-pressed</code></td>
+                            <td class="border border-border px-4 py-2">Depressed/pressed active states</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--shadow-drop</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>shadow-drop</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:shadow-drop-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Standard 2px blur drop shadow</td>
+                            <td class="border border-border px-4 py-2"><code>--shadow-drop</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>shadow-drop</code></td>
+                            <td class="border border-border px-4 py-2">Standard 2px blur drop shadow</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--shadow-drop-subtle</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>shadow-drop-subtle</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:shadow-drop-subtle-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Lighter 1px blur drop shadow</td>
+                            <td class="border border-border px-4 py-2"><code>--shadow-drop-subtle</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>shadow-drop-subtle</code></td>
+                            <td class="border border-border px-4 py-2">Lighter 1px blur drop shadow</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--shadow-focus-ring</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--tw-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>shadow-focus-ring</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:shadow-focus-ring-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">2px focus ring for accessibility</td>
+                            <td class="border border-border px-4 py-2"><code>--shadow-focus-ring</code></td>
+                            <td class="border border-border px-4 py-2"><code>--tw-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>shadow-focus-ring</code></td>
+                            <td class="border border-border px-4 py-2">2px focus ring for accessibility</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--text-shadow-embossed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>text-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>text-shadow-embossed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:text-shadow-embossed-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Raised text on light surfaces</td>
+                            <td class="border border-border px-4 py-2"><code>--text-shadow-embossed</code></td>
+                            <td class="border border-border px-4 py-2"><code>text-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>text-shadow-embossed</code></td>
+                            <td class="border border-border px-4 py-2">Raised text on light surfaces</td>
                         </tr>
                         <tr>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>--text-shadow-debossed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>text-shadow</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>text-shadow-debossed</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2"><code>dark:text-shadow-debossed-dark</code></td>
-                            <td class="border border-border dark:border-border-dark px-4 py-2">Pressed text on dark surfaces</td>
+                            <td class="border border-border px-4 py-2"><code>--text-shadow-debossed</code></td>
+                            <td class="border border-border px-4 py-2"><code>text-shadow</code></td>
+                            <td class="border border-border px-4 py-2"><code>text-shadow-debossed</code></td>
+                            <td class="border border-border px-4 py-2">Pressed text on dark surfaces</td>
                         </tr>
                     </tbody>
                 </table>

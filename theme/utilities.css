@@ -1,6 +1,6 @@
 /* Core structural block for elevated box items like panels and buttons */
 @utility panel {
-    @apply text-ink-primary dark:text-ink-primary-dark bg-surface dark:bg-surface-dark inset-shadow-highlight dark:inset-shadow-highlight-dark shadow-drop dark:shadow-drop-dark border-border dark:border-border-dark relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed dark:text-shadow-embossed-dark;
+    @apply text-ink-primary bg-surface inset-shadow-highlight shadow-drop border-border relative inline-block rounded border bg-clip-padding px-4 py-2 align-top text-ellipsis whitespace-nowrap text-shadow-embossed;
 }
 
 /* Disabled state for controls that carry :disabled or aria-disabled on
@@ -11,10 +11,8 @@
    :has() selector instead.
 
    The two state hooks are folded into a single `:is()` selector rather
-   than a comma-separated pair, because Tailwind v4 mis-nests the
-   `dark:` variant suffix when a comma-separated parent meets a nested
-   utility that carries variants — producing malformed selectors with
-   stray parens. `:is(...)` keeps the parent shape as one selector. */
+   than a comma-separated pair so the parent shape stays as one selector
+   under nesting. */
 @utility disabled-control {
     &:is(:disabled, [aria-disabled="true"]) {
         @apply disabled-surface;
@@ -38,10 +36,10 @@
    anyone. `ink-secondary` lifts that to ~3:1 — still visibly demoted
    vs. an active control (`ink-primary` ≈ 6:1) but legible. */
 @utility disabled-surface {
-    @apply bg-surface-disabled dark:bg-surface-disabled-dark
-        text-ink-secondary dark:text-ink-secondary-dark
-        border-border-disabled dark:border-border-disabled-dark
-        shadow-drop-subtle dark:shadow-drop-subtle-dark
+    @apply bg-surface-disabled
+        text-ink-secondary
+        border-border-disabled
+        shadow-drop-subtle
         inset-shadow-none;
     pointer-events: none;
     cursor: default;
@@ -54,7 +52,7 @@
    outline rather than replacing it. */
 @utility focus-ring-swap {
     &:focus-visible {
-        @apply border-border-focus dark:border-border-focus-dark;
+        @apply border-border-focus;
     }
 }
 
@@ -66,19 +64,19 @@
 @utility quiet-control {
     background: transparent;
 
-    @apply text-ink-secondary dark:text-ink-secondary-dark;
+    @apply text-ink-secondary;
 
     &:hover {
-        @apply text-ink-primary dark:text-ink-primary-dark
-            bg-surface-hover dark:bg-surface-hover-dark;
+        @apply text-ink-primary
+            bg-surface-hover;
     }
 
     &:focus-visible {
-        @apply bg-surface-hover dark:bg-surface-hover-dark;
+        @apply bg-surface-hover;
     }
 
     &:active {
-        @apply bg-surface-active dark:bg-surface-active-dark;
+        @apply bg-surface-active;
     }
 }
 
@@ -98,16 +96,16 @@
 
     &:hover,
     &:focus-visible {
-        @apply bg-surface-hover dark:bg-surface-hover-dark;
+        @apply bg-surface-hover;
     }
 
     &:active {
-        @apply bg-surface-active dark:bg-surface-active-dark;
+        @apply bg-surface-active;
     }
 
     &:disabled,
     &[aria-disabled="true"] {
-        @apply text-ink-muted dark:text-ink-muted-dark;
+        @apply text-ink-muted;
         pointer-events: none;
     }
 }

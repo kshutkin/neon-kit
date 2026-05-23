@@ -13,5 +13,3 @@
    layer at output time (same cascade position as Tailwind's own
    utilities), so the unlayered import is correct. Do not wrap. */
 @import "./utilities.css";
-
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
