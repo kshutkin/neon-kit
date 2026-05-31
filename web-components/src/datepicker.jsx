@@ -27,12 +27,22 @@ import {
     onFormDisabled,
     onFormReset,
     onFormStateRestore,
-    stringAttribute,
+    onMount,
+    props,
     withInternals,
 } from '@slimlib/element';
-import { signal } from '@slimlib/store';
+import { effect, flushEffects, signal } from '@slimlib/store';
 
 import { SvgIcon } from './svg-icon.jsx';
+import {
+    defineBooleanProperty,
+    defineFormControlApi,
+    defineReadonlyProperty,
+    defineStringProperty,
+    defineWritableProperty,
+    parseString,
+    reflectStringAttr,
+} from './form-control-utils.js';
 import xMark from '@neon-kit/icons/outline/x-mark';
 import chevronLeft from '@neon-kit/icons/outline/chevron-left';
 import chevronRight from '@neon-kit/icons/outline/chevron-right';
@@ -82,30 +92,25 @@ const renderDatepicker = (host) => {
 
     if (!host.classList.contains('datepicker')) host.classList.add('datepicker');
 
-    // ---- Adopt any pre-set own data props ------------------------------
-    /** @type {Record<string, unknown>} */
-    const preset = {};
-    for (const key of [
-        'value', 'min', 'max', 'step', 'placeholder', 'disabled',
-        'readonly', 'required', 'name', 'autocomplete',
-    ]) {
-        if (Object.hasOwn(host, key)) {
-            preset[key] = /** @type {any} */ (host)[key];
-            delete /** @type {any} */ (host)[key];
-        }
-    }
-    if (Object.hasOwn(host, 'data-clearable')) {
-        preset['data-clearable'] = /** @type {any} */ (host)['data-clearable'];
-        delete /** @type {any} */ (host)['data-clearable'];
-    }
-
-    // ---- State -------------------------------------------------------
-    const value = signal(/** @type {string} */ (''));
+    // ---- Reactive props and state ------------------------------------
+    const state = props({
+        value: '',
+        min: '',
+        max: '',
+        step: '',
+        placeholder: '',
+        disabled: false,
+        readonly: false,
+        required: false,
+        name: '',
+        autocomplete: '',
+        'data-clearable': false,
+    });
     let lastCommittedValue = '';
-    /** @type {DatepickerView} */
-    let view = 'days';
-    let cursorDateMs = todayDateMs();
-    let formDisabled = false;
+    /** @type {import('@slimlib/store').Signal<DatepickerView>} */
+    const view = signal(/** @type {DatepickerView} */ ('days'));
+    const cursorDateMs = signal(todayDateMs());
+    const formDisabled = signal(false);
     /** @type {AbortController | null} */
     let listeners = null;
 
@@ -155,9 +160,9 @@ const renderDatepicker = (host) => {
 
     // ---- Helpers -----------------------------------------------------
 
-    const isEffectivelyDisabled = () => host.hasAttribute('disabled') || formDisabled;
-    const isMutable = () => !isEffectivelyDisabled() && !host.hasAttribute('readonly');
-    const willValidateNow = () => !isEffectivelyDisabled() && !host.hasAttribute('readonly')
+    const isEffectivelyDisabled = () => state.disabled || formDisabled();
+    const isMutable = () => !isEffectivelyDisabled() && !state.readonly;
+    const willValidateNow = () => !isEffectivelyDisabled() && !state.readonly
         && elementInternals.willValidate;
 
     const isPopoverOpen = () => popover.matches(':popover-open');
@@ -178,13 +183,13 @@ const renderDatepicker = (host) => {
         return ms == null ? null : formatDate(ms);
     };
 
-    const minDateMs = () => parseDate(host.getAttribute('min') ?? '');
-    const maxDateMs = () => parseDate(host.getAttribute('max') ?? '');
+    const minDateMs = () => parseDate(state.min);
+    const maxDateMs = () => parseDate(state.max);
 
     /** @returns {number | null} */
     const stepDays = () => {
-        const raw = host.getAttribute('step');
-        if (raw == null || raw === '') return DEFAULT_STEP_DAYS;
+        const raw = state.step;
+        if (raw === '') return DEFAULT_STEP_DAYS;
         if (raw === 'any') return null;
         const n = Number(raw);
         return Number.isFinite(n) && n > 0 ? n : DEFAULT_STEP_DAYS;
@@ -219,20 +224,20 @@ const renderDatepicker = (host) => {
         !isRangeUnderflow(dateMs) && !isRangeOverflow(dateMs) && !hasStepMismatch(dateMs);
 
     const syncClearVisibility = () => {
-        const text = input.value.trim() || value();
-        const visible = host.hasAttribute('data-clearable') && text !== '';
+        const text = input.value.trim() || state.value;
+        const visible = state['data-clearable'] && text !== '';
         clearEl.style.display = visible ? '' : 'none';
     };
 
     const syncInputAttributes = () => {
         const disabled = isEffectivelyDisabled();
-        const immutable = disabled || host.hasAttribute('readonly');
+        const immutable = disabled || state.readonly;
         input.disabled = disabled;
-        input.readOnly = host.hasAttribute('readonly');
-        input.required = host.hasAttribute('required');
-        input.placeholder = host.getAttribute('placeholder') ?? 'YYYY-MM-DD';
-        input.setAttribute('autocomplete', host.getAttribute('autocomplete') || 'off');
-        if (host.hasAttribute('required')) input.setAttribute('aria-required', 'true');
+        input.readOnly = state.readonly;
+        input.required = state.required;
+        input.placeholder = state.placeholder || 'YYYY-MM-DD';
+        input.setAttribute('autocomplete', state.autocomplete || 'off');
+        if (state.required) input.setAttribute('aria-required', 'true');
         else input.removeAttribute('aria-required');
 
         triggerEl.disabled = immutable;
@@ -251,6 +256,7 @@ const renderDatepicker = (host) => {
     };
 
     const updateValidity = () => {
+        if (!host.contains(input)) return;
         if (!willValidateNow()) {
             input.removeAttribute('aria-invalid');
             elementInternals.setValidity({});
@@ -263,19 +269,19 @@ const renderDatepicker = (host) => {
             return;
         }
 
-        if (host.hasAttribute('required') && value() === '') {
+        if (state.required && state.value === '') {
             setInvalid({ valueMissing: true }, 'Please fill out this field.');
             return;
         }
 
-        const ms = parseDate(value());
+        const ms = parseDate(state.value);
         if (ms != null) {
             if (isRangeUnderflow(ms)) {
-                setInvalid({ rangeUnderflow: true }, `Value must be ${host.getAttribute('min')} or later.`);
+                setInvalid({ rangeUnderflow: true }, `Value must be ${state.min} or later.`);
                 return;
             }
             if (isRangeOverflow(ms)) {
-                setInvalid({ rangeOverflow: true }, `Value must be ${host.getAttribute('max')} or earlier.`);
+                setInvalid({ rangeOverflow: true }, `Value must be ${state.max} or earlier.`);
                 return;
             }
             if (hasStepMismatch(ms)) {
@@ -291,17 +297,22 @@ const renderDatepicker = (host) => {
     // ---- Calendar rendering -----------------------------------------
 
     const navLabel = () => {
-        const { year, month } = partsFromDateMs(cursorDateMs);
-        if (view === 'days') return `${MONTH_LONG[month]} ${year}`;
-        if (view === 'months') return String(year);
+        const { year, month } = partsFromDateMs(cursorDateMs());
+        const currentView = view();
+        if (currentView === 'days') return `${MONTH_LONG[month]} ${year}`;
+        if (currentView === 'months') return String(year);
         const start = year - (year % 12);
         return `${start} - ${start + 11}`;
     };
 
-    const previousLabel = () =>
-        view === 'days' ? 'Previous month' : view === 'months' ? 'Previous year' : 'Previous years';
-    const nextLabel = () =>
-        view === 'days' ? 'Next month' : view === 'months' ? 'Next year' : 'Next years';
+    const previousLabel = () => {
+        const currentView = view();
+        return currentView === 'days' ? 'Previous month' : currentView === 'months' ? 'Previous year' : 'Previous years';
+    };
+    const nextLabel = () => {
+        const currentView = view();
+        return currentView === 'days' ? 'Next month' : currentView === 'months' ? 'Next year' : 'Next years';
+    };
 
     const renderNav = () => {
         const previous = document.createElement('button');
@@ -348,7 +359,7 @@ const renderDatepicker = (host) => {
             cell.classList.add('-today');
             cell.dataset.today = '';
         }
-        if (cell.dataset.date === value()) {
+        if (cell.dataset.date === state.value) {
             cell.classList.add('-selected');
             cell.setAttribute('aria-pressed', 'true');
         }
@@ -370,7 +381,7 @@ const renderDatepicker = (host) => {
             grid.appendChild(item);
         }
 
-        const { year, month } = partsFromDateMs(cursorDateMs);
+        const { year, month } = partsFromDateMs(cursorDateMs());
         const first = dateMsFromParts(year, month, 1);
         const firstWeekday = (new Date(first).getUTCDay() + 6) % 7;
         const daysInMonth = new Date(dateMsFromParts(year, month + 1, 0)).getUTCDate();
@@ -392,8 +403,8 @@ const renderDatepicker = (host) => {
     const renderMonths = () => {
         const grid = document.createElement('div');
         grid.className = `${GRID_CLASS} -months`;
-        const { year } = partsFromDateMs(cursorDateMs);
-        const sel = parseDate(value());
+        const { year } = partsFromDateMs(cursorDateMs());
+        const sel = parseDate(state.value);
         const selParts = sel == null ? null : partsFromDateMs(sel);
         const todayParts = partsFromDateMs(todayDateMs());
 
@@ -416,9 +427,9 @@ const renderDatepicker = (host) => {
     const renderYears = () => {
         const grid = document.createElement('div');
         grid.className = `${GRID_CLASS} -years`;
-        const { year } = partsFromDateMs(cursorDateMs);
+        const { year } = partsFromDateMs(cursorDateMs());
         const startYear = year - (year % 12) - 1;
-        const sel = parseDate(value());
+        const sel = parseDate(state.value);
         const selYear = sel == null ? null : partsFromDateMs(sel).year;
         const todayYear = partsFromDateMs(todayDateMs()).year;
 
@@ -441,7 +452,8 @@ const renderDatepicker = (host) => {
     };
 
     const renderCalendar = () => {
-        const body = view === 'days' ? renderDays() : view === 'months' ? renderMonths() : renderYears();
+        const currentView = view();
+        const body = currentView === 'days' ? renderDays() : currentView === 'months' ? renderMonths() : renderYears();
         popover.replaceChildren(renderNav(), body);
     };
 
@@ -453,14 +465,14 @@ const renderDatepicker = (host) => {
      * @returns {boolean} whether value changed
      */
     const applyValue = (next, { syncText, resetCommitted }) => {
-        const previous = value();
-        value.set(next);
+        const previous = state.value;
+        state.value = next;
         const ms = parseDate(next);
-        if (ms != null) cursorDateMs = firstOfMonth(ms);
+        if (ms != null) cursorDateMs.set(firstOfMonth(ms));
         if (syncText) input.value = next;
         elementInternals.setFormValue(next, next);
         syncClearVisibility();
-        renderCalendar();
+        flushEffects();
         updateValidity();
         if (resetCommitted) lastCommittedValue = next;
         return previous !== next;
@@ -477,8 +489,8 @@ const renderDatepicker = (host) => {
     };
 
     const dispatchChangeIfNeeded = () => {
-        if (lastCommittedValue === value()) return;
-        lastCommittedValue = value();
+        if (lastCommittedValue === state.value) return;
+        lastCommittedValue = state.value;
         host.dispatchEvent(new Event('change', { bubbles: true }));
     };
 
@@ -493,7 +505,7 @@ const renderDatepicker = (host) => {
     const stepBy = (amount) => {
         if (!Number.isFinite(amount)) amount = 1;
         const step = stepDays() ?? DEFAULT_STEP_DAYS;
-        const current = parseDate(value());
+        const current = parseDate(state.value);
         const base = current ?? minDateMs() ?? 0;
         const next = base + amount * step * DAY_MS;
         applyValue(formatDate(next), { syncText: true, resetCommitted: true });
@@ -503,10 +515,10 @@ const renderDatepicker = (host) => {
 
     const open = () => {
         if (!isMutable()) return;
-        view = 'days';
-        const sel = parseDate(value());
-        cursorDateMs = sel == null ? firstOfMonth(todayDateMs()) : firstOfMonth(sel);
-        renderCalendar();
+        view.set('days');
+        const sel = parseDate(state.value);
+        cursorDateMs.set(sel == null ? firstOfMonth(todayDateMs()) : firstOfMonth(sel));
+        flushEffects();
         try {
             if (!isPopoverOpen()) {
                 /** @type {any} */ (popover).showPopover({ source: fieldEl });
@@ -531,8 +543,8 @@ const renderDatepicker = (host) => {
     };
 
     const focusCalendarCell = () => {
-        const selectedCell = value()
-            ? popover.querySelector(`[data-date="${cssEscape(value())}"]`)
+        const selectedCell = state.value
+            ? popover.querySelector(`[data-date="${cssEscape(state.value)}"]`)
             : null;
         const target = selectedCell
             ?? popover.querySelector('[data-today]')
@@ -592,7 +604,7 @@ const renderDatepicker = (host) => {
         e.stopPropagation();
         if (!isMutable()) return;
         const hadText = input.value.trim() !== '';
-        if (!hadText && value() === '') return;
+        if (!hadText && state.value === '') return;
         applyValue('', { syncText: true });
         dispatchInput();
         dispatchChangeIfNeeded();
@@ -613,8 +625,9 @@ const renderDatepicker = (host) => {
             return;
         }
         if (target.closest('[data-dp-switch]')) {
-            view = view === 'days' ? 'months' : view === 'months' ? 'years' : 'days';
-            renderCalendar();
+            const currentView = view();
+            view.set(currentView === 'days' ? 'months' : currentView === 'months' ? 'years' : 'days');
+            flushEffects();
             return;
         }
 
@@ -635,10 +648,10 @@ const renderDatepicker = (host) => {
         const monthCell = /** @type {HTMLButtonElement | null} */ (target.closest('[data-month]'));
         if (monthCell) {
             const month = Number(monthCell.dataset.month);
-            const { year } = partsFromDateMs(cursorDateMs);
-            cursorDateMs = dateMsFromParts(year, month, 1);
-            view = 'days';
-            renderCalendar();
+            const { year } = partsFromDateMs(cursorDateMs());
+            cursorDateMs.set(dateMsFromParts(year, month, 1));
+            view.set('days');
+            flushEffects();
             queueMicrotask(() => focusCalendarCell());
             return;
         }
@@ -646,10 +659,10 @@ const renderDatepicker = (host) => {
         const yearCell = /** @type {HTMLButtonElement | null} */ (target.closest('[data-year]'));
         if (yearCell) {
             const year = Number(yearCell.dataset.year);
-            const { month } = partsFromDateMs(cursorDateMs);
-            cursorDateMs = dateMsFromParts(year, month, 1);
-            view = 'months';
-            renderCalendar();
+            const { month } = partsFromDateMs(cursorDateMs());
+            cursorDateMs.set(dateMsFromParts(year, month, 1));
+            view.set('months');
+            flushEffects();
         }
     };
 
@@ -699,175 +712,101 @@ const renderDatepicker = (host) => {
 
     /** @param {1 | -1} direction */
     const moveCursor = (direction) => {
-        const { year, month } = partsFromDateMs(cursorDateMs);
-        if (view === 'days') {
-            cursorDateMs = dateMsFromParts(year, month + direction, 1);
-        } else if (view === 'months') {
-            cursorDateMs = dateMsFromParts(year + direction, month, 1);
+        const { year, month } = partsFromDateMs(cursorDateMs());
+        const currentView = view();
+        if (currentView === 'days') {
+            cursorDateMs.set(dateMsFromParts(year, month + direction, 1));
+        } else if (currentView === 'months') {
+            cursorDateMs.set(dateMsFromParts(year + direction, month, 1));
         } else {
-            cursorDateMs = dateMsFromParts(year + direction * 12, month, 1);
+            cursorDateMs.set(dateMsFromParts(year + direction * 12, month, 1));
         }
-        renderCalendar();
+        flushEffects();
     };
 
-    // ---- Public host API -------------------------------------------
-    Object.defineProperty(host, 'type', {
-        configurable: true, enumerable: true,
-        get: () => 'date',
+    // ---- Reactive DOM effects --------------------------------------
+    effect(() => {
+        void state.value;
+        void state.min;
+        void state.max;
+        void state.step;
+        void view();
+        void cursorDateMs();
+        renderCalendar();
     });
-    Object.defineProperty(host, 'value', {
-        configurable: true, enumerable: true,
-        get: () => value(),
-        set: (v) => {
+
+    effect(() => {
+        void state.value;
+        void state.min;
+        void state.max;
+        void state.step;
+        void state.required;
+        void state.disabled;
+        void state.readonly;
+        void formDisabled();
+        syncInputAttributes();
+        updateValidity();
+    });
+
+    // ---- Public host API -------------------------------------------
+    defineReadonlyProperty(host, 'type', () => 'date');
+    defineWritableProperty(
+        host,
+        'value',
+        () => state.value,
+        (v) => {
             setValueFromString(v == null ? '' : String(v), {
                 syncText: true, resetCommitted: true,
             });
         },
-    });
-    Object.defineProperty(host, 'defaultValue', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('value') ?? '',
-        set: (v) => {
-            if (v == null) host.removeAttribute('value');
-            else host.setAttribute('value', String(v));
+    );
+    defineWritableProperty(
+        host,
+        'defaultValue',
+        () => host.getAttribute('value') ?? '',
+        (v) => {
+            reflectStringAttr(host, 'value', /** @type {any} */ (v));
         },
-    });
+    );
 
-    /**
-     * @param {string} name
-     * @param {string | number | null | undefined} v
-     */
-    const reflectStringAttr = (name, v) => {
-        const next = v == null || v === '' ? null : String(v);
-        if (next === null) {
-            if (host.hasAttribute(name)) host.removeAttribute(name);
-        } else if (host.getAttribute(name) !== next) {
-            host.setAttribute(name, next);
-        }
-    };
-    /**
-     * @param {string} name
-     * @param {unknown} v
-     */
-    const reflectBoolAttr = (name, v) => {
-        const want = !!v;
-        if (host.hasAttribute(name) !== want) {
-            if (want) host.setAttribute(name, '');
-            else host.removeAttribute(name);
-        }
-    };
+    const flushAfterPropertySet = () => flushEffects();
+    defineStringProperty(host, state, 'min', flushAfterPropertySet);
+    defineStringProperty(host, state, 'max', flushAfterPropertySet);
+    defineStringProperty(host, state, 'step', flushAfterPropertySet);
+    defineStringProperty(host, state, 'placeholder', flushAfterPropertySet);
+    defineStringProperty(host, state, 'name');
+    defineStringProperty(host, state, 'autocomplete', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'disabled', 'disabled', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'readOnly', 'readonly', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'required', 'required', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'data-clearable', 'data-clearable', flushAfterPropertySet);
+    defineWritableProperty(
+        host,
+        'readonly',
+        () => state.readonly,
+        (v) => { /** @type {any} */ (host).readOnly = v; },
+    );
 
-    Object.defineProperty(host, 'min', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('min') ?? '',
-        set: (v) => {
-            reflectStringAttr('min', v);
-            renderCalendar();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'max', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('max') ?? '',
-        set: (v) => {
-            reflectStringAttr('max', v);
-            renderCalendar();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'step', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('step') ?? '',
-        set: (v) => {
-            reflectStringAttr('step', v);
-            renderCalendar();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'placeholder', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('placeholder') ?? '',
-        set: (v) => {
-            reflectStringAttr('placeholder', v);
-            syncInputAttributes();
-        },
-    });
-    Object.defineProperty(host, 'name', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('name') ?? '',
-        set: (v) => {
-            reflectStringAttr('name', v);
-        },
-    });
-    Object.defineProperty(host, 'autocomplete', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('autocomplete') ?? '',
-        set: (v) => {
-            reflectStringAttr('autocomplete', v);
-            syncInputAttributes();
-        },
-    });
-    Object.defineProperty(host, 'disabled', {
-        configurable: true, enumerable: true,
-        get: () => host.hasAttribute('disabled'),
-        set: (v) => {
-            reflectBoolAttr('disabled', v);
-            syncInputAttributes();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'readOnly', {
-        configurable: true, enumerable: true,
-        get: () => host.hasAttribute('readonly'),
-        set: (v) => {
-            reflectBoolAttr('readonly', v);
-            syncInputAttributes();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'required', {
-        configurable: true, enumerable: true,
-        get: () => host.hasAttribute('required'),
-        set: (v) => {
-            reflectBoolAttr('required', v);
-            syncInputAttributes();
-            updateValidity();
-        },
-    });
-    Object.defineProperty(host, 'data-clearable', {
-        configurable: true, enumerable: true,
-        get: () => host.hasAttribute('data-clearable'),
-        set: (v) => {
-            reflectBoolAttr('data-clearable', v);
-            syncClearVisibility();
-        },
-    });
-    Object.defineProperty(host, 'readonly', {
-        configurable: true, enumerable: true,
-        get: () => host.hasAttribute('readonly'),
-        set: (v) => {
-            /** @type {any} */ (host).readOnly = v;
-        },
-    });
-
-    Object.defineProperty(host, 'valueAsNumber', {
-        configurable: true, enumerable: true,
-        get: () => {
-            const ms = parseDate(value());
+    defineWritableProperty(
+        host,
+        'valueAsNumber',
+        () => {
+            const ms = parseDate(state.value);
             return ms == null ? Number.NaN : ms;
         },
-        set: (v) => {
+        (v) => {
             const n = Number(v);
             /** @type {any} */ (host).value = !Number.isFinite(n) ? '' : formatDate(startOfUtcDay(n));
         },
-    });
-    Object.defineProperty(host, 'valueAsDate', {
-        configurable: true, enumerable: true,
-        get: () => {
-            const ms = parseDate(value());
+    );
+    defineWritableProperty(
+        host,
+        'valueAsDate',
+        () => {
+            const ms = parseDate(state.value);
             return ms == null ? null : new Date(ms);
         },
-        set: (v) => {
+        (v) => {
             if (v == null || !(v instanceof Date) || Number.isNaN(v.getTime())) {
                 /** @type {any} */ (host).value = '';
                 return;
@@ -876,51 +815,22 @@ const renderDatepicker = (host) => {
                 v.getUTCFullYear(), v.getUTCMonth(), v.getUTCDate(),
             ));
         },
+    );
+    defineReadonlyProperty(host, 'open', () => isPopoverOpen());
+    defineFormControlApi(host, {
+        internals: elementInternals,
+        focusTarget: input,
+        willValidate: () => willValidateNow(),
+        stepBy,
     });
-    Object.defineProperty(host, 'labels', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.labels,
-    });
-    Object.defineProperty(host, 'form', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.form,
-    });
-    Object.defineProperty(host, 'validity', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validity,
-    });
-    Object.defineProperty(host, 'validationMessage', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validationMessage,
-    });
-    Object.defineProperty(host, 'willValidate', {
-        configurable: true, enumerable: true,
-        get: () => {
-            if (host.hasAttribute('disabled') || formDisabled || host.hasAttribute('readonly')) return false;
-            return elementInternals.willValidate;
-        },
-    });
-    Object.defineProperty(host, 'open', {
-        configurable: true, enumerable: true,
-        get: () => isPopoverOpen(),
-    });
-    /** @type {any} */ (host).checkValidity = () => elementInternals.checkValidity();
-    /** @type {any} */ (host).reportValidity = () => elementInternals.reportValidity();
-    /** @type {any} */ (host).focus = (/** @type {FocusOptions} */ options) => input.focus(options);
-    /** @type {any} */ (host).blur = () => input.blur();
-    /** @type {any} */ (host).select = () => input.select();
-    /** @type {any} */ (host).stepUp = (n = 1) => stepBy(Number(n));
-    /** @type {any} */ (host).stepDown = (n = 1) => stepBy(-Number(n));
 
     // ---- Initial paint ---------------------------------------------
-    host.append(fieldEl, popover);
-    const initialValueRaw = typeof preset.value === 'string'
-        ? /** @type {string} */ (preset.value)
-        : (host.getAttribute('value') ?? '');
-    setValueFromString(initialValueRaw, { syncText: true, resetCommitted: true });
-    syncInputAttributes();
-    renderCalendar();
-    updateValidity();
+    setValueFromString(state.value, { syncText: true, resetCommitted: true });
+
+    onMount(() => {
+        flushEffects();
+        updateValidity();
+    });
 
     // ---- Lifecycle wiring -----------------------------------------
     onConnect(() => {
@@ -950,9 +860,8 @@ const renderDatepicker = (host) => {
     });
 
     onFormDisabled((disabled) => {
-        formDisabled = disabled;
-        syncInputAttributes();
-        updateValidity();
+        formDisabled.set(disabled);
+        flushEffects();
     });
 
     onFormStateRestore((state) => {
@@ -961,7 +870,7 @@ const renderDatepicker = (host) => {
         }
     });
 
-    return null;
+    return [fieldEl, popover];
 };
 
 // ---- Date helpers --------------------------------------------------
@@ -1096,16 +1005,16 @@ defineElement(
     'neon-datepicker',
     [
         attributes({
-            value: [stringAttribute[0]],
-            min: [stringAttribute[0]],
-            max: [stringAttribute[0]],
-            step: [stringAttribute[0]],
-            placeholder: [stringAttribute[0]],
+            value: parseString,
+            min: parseString,
+            max: parseString,
+            step: parseString,
+            placeholder: parseString,
             disabled: [booleanAttribute[0]],
             readonly: [booleanAttribute[0]],
             required: [booleanAttribute[0]],
-            name: [stringAttribute[0]],
-            autocomplete: [stringAttribute[0]],
+            name: parseString,
+            autocomplete: parseString,
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),
