@@ -27,10 +27,22 @@ import {
     onFormDisabled,
     onFormReset,
     onFormStateRestore,
+    props,
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
+
+/**
+ * `name` reflection: empty string removes the attribute (matches the
+ * legacy setter). `stringAttribute` would write `name=""` instead.
+ *
+ * @type {[ (raw: string | null) => string | null, (value: unknown) => string | null ]}
+ */
+const reflectedName = [
+    (raw) => raw,
+    (value) => (value == null || value === '' ? null : String(value)),
+];
 
 import { SvgIcon } from './svg-icon.jsx';
 import xMark from '@neon-kit/icons/outline/x-mark';
@@ -90,42 +102,32 @@ const renderMulticombobox = (host) => {
     if (!host.classList.contains('combobox')) host.classList.add('combobox');
     if (!host.classList.contains('-multi')) host.classList.add('-multi');
 
-    // ---- Adopt any pre-set own data props ------------------------------
-    /** @type {Record<string, unknown>} */
-    const preset = {};
-    for (const key of ['values', 'placeholder', 'disabled', 'required', 'name']) {
-        if (Object.hasOwn(host, key)) {
-            preset[key] = /** @type {any} */ (host)[key];
-            delete /** @type {any} */ (host)[key];
-        }
+    // ---- Adopt pre-set `values` ---------------------------------------
+    // `values` keeps a hand-written accessor (the getter is derived from
+    // `selected`, not stored), so the snapshot+strip pattern still
+    // applies to capture a pre-upgrade `el.values = [...]` write before
+    // `Object.defineProperty` replaces the slot. All other props are
+    // declared via `props()` below, which auto-adopts pre-upgrade values.
+    /** @type {string[] | null} */
+    let presetValues = null;
+    if (Object.hasOwn(host, 'values')) {
+        const raw = /** @type {any} */ (host).values;
+        delete /** @type {any} */ (host).values;
+        if (Array.isArray(raw)) presetValues = raw.map((x) => String(x));
     }
-    if (Object.hasOwn(host, 'data-clearable')) {
-        preset['data-clearable'] = /** @type {any} */ (host)['data-clearable'];
-        delete /** @type {any} */ (host)['data-clearable'];
-    }
+
+    // ---- Reactive props (auto-adopt pre-upgrade values) ---------------
+    const state = props({
+        placeholder: '',
+        disabled: false,
+        required: false,
+        name: '',
+        'data-clearable': false,
+    });
 
     // ---- Reactive state ------------------------------------------------
     const options = signal(/** @type {HTMLOptionElement[]} */ ([]));
     const selected = signal(/** @type {Set<string>} */ (new Set()));
-
-    const initialPlaceholder = typeof preset.placeholder === 'string'
-        ? preset.placeholder
-        : (host.getAttribute('placeholder') ?? '');
-    const placeholderSig = signal(initialPlaceholder);
-    const disabledSig = signal(
-        typeof preset.disabled === 'boolean' ? preset.disabled : host.hasAttribute('disabled'),
-    );
-    const requiredSig = signal(
-        typeof preset.required === 'boolean' ? preset.required : host.hasAttribute('required'),
-    );
-    const nameSig = signal(
-        typeof preset.name === 'string' ? preset.name : (host.getAttribute('name') ?? ''),
-    );
-    const clearableSig = signal(
-        typeof preset['data-clearable'] === 'boolean'
-            ? /** @type {boolean} */ (preset['data-clearable'])
-            : host.hasAttribute('data-clearable'),
-    );
 
     // ---- Imperative state ---------------------------------------------
     /** @type {HTMLLabelElement[]} */
@@ -141,7 +143,7 @@ const renderMulticombobox = (host) => {
 
     // ---- DOM -----------------------------------------------------------
     const placeholderEl = /** @type {HTMLSpanElement} */ (
-        <span class={PLACEHOLDER_CLASS}>{initialPlaceholder}</span>
+        <span class={PLACEHOLDER_CLASS}>{state.placeholder}</span>
     );
     const valuesEl = /** @type {HTMLSpanElement} */ (
         <span class={`tag-list ${VALUES_CLASS}`} />
@@ -224,7 +226,7 @@ const renderMulticombobox = (host) => {
     function onTagRemoveClick(e) {
         e.preventDefault();
         e.stopPropagation();
-        if (disabledSig()) return;
+        if (state.disabled) return;
         const target = /** @type {HTMLElement | null} */ (e.currentTarget);
         const v = target?.dataset.value ?? '';
         const sel = selected();
@@ -386,7 +388,7 @@ const renderMulticombobox = (host) => {
     };
 
     const updateFormValue = () => {
-        const name = nameSig();
+        const name = state.name;
         const sel = selected();
         if (!name || sel.size === 0) {
             elementInternals.setFormValue(null);
@@ -400,12 +402,12 @@ const renderMulticombobox = (host) => {
     };
 
     const syncClearVisibility = () => {
-        const visible = clearableSig() && selected().size > 0;
+        const visible = state['data-clearable'] && selected().size > 0;
         clearEl.style.display = visible ? '' : 'none';
     };
 
     const updateValidity = () => {
-        if (requiredSig() && selected().size === 0) {
+        if (state.required && selected().size === 0) {
             elementInternals.setValidity(
                 { valueMissing: true },
                 'Please select at least one option.',
@@ -461,6 +463,8 @@ const renderMulticombobox = (host) => {
     };
 
     // ---- Public host API ----------------------------------------------
+    // placeholder, disabled, required, name, data-clearable are declared
+    // via props() above (reactive accessors installed on host).
     Object.defineProperty(host, 'values', {
         configurable: true, enumerable: true,
         get: () => options().filter((o) => selected().has(o.value)).map((o) => o.value),
@@ -472,26 +476,6 @@ const renderMulticombobox = (host) => {
     Object.defineProperty(host, 'value', {
         configurable: true, enumerable: true,
         get: () => /** @type {any} */ (host).values.join(','),
-    });
-    Object.defineProperty(host, 'placeholder', {
-        configurable: true, enumerable: true,
-        get: () => placeholderSig(),
-        set: (v) => placeholderSig.set(v == null ? '' : String(v)),
-    });
-    Object.defineProperty(host, 'disabled', {
-        configurable: true, enumerable: true,
-        get: () => disabledSig(),
-        set: (v) => disabledSig.set(!!v),
-    });
-    Object.defineProperty(host, 'required', {
-        configurable: true, enumerable: true,
-        get: () => requiredSig(),
-        set: (v) => requiredSig.set(!!v),
-    });
-    Object.defineProperty(host, 'name', {
-        configurable: true, enumerable: true,
-        get: () => nameSig(),
-        set: (v) => nameSig.set(v == null ? '' : String(v)),
     });
     Object.defineProperty(host, 'selectedOptions', {
         configurable: true, enumerable: true,
@@ -525,51 +509,41 @@ const renderMulticombobox = (host) => {
     /** @type {any} */ (host).reportValidity = () => elementInternals.reportValidity();
 
     // ---- Attribute-driven effects -------------------------------------
+    // Bidirectional reflection (disabled, required, name) is handled by
+    // the attributes() middleware below; these effects only touch DOM
+    // and side-effect logic.
     effect(() => {
-        placeholderEl.textContent = placeholderSig();
+        placeholderEl.textContent = state.placeholder;
     });
     effect(() => {
-        const d = disabledSig();
+        const d = state.disabled;
         fieldButton.disabled = d;
         if (d) close();
-        if (d) {
-            if (!host.hasAttribute('disabled')) host.setAttribute('disabled', '');
-        } else if (host.hasAttribute('disabled')) {
-            host.removeAttribute('disabled');
-        }
     });
     effect(() => {
-        const r = requiredSig();
+        const r = state.required;
         if (r) fieldButton.setAttribute('aria-required', 'true');
         else fieldButton.removeAttribute('aria-required');
-        if (r) {
-            if (!host.hasAttribute('required')) host.setAttribute('required', '');
-        } else if (host.hasAttribute('required')) {
-            host.removeAttribute('required');
-        }
         updateValidity();
     });
     effect(() => {
-        const n = nameSig();
-        if (n === '') {
-            if (host.hasAttribute('name')) host.removeAttribute('name');
-        } else if (host.getAttribute('name') !== n) {
-            host.setAttribute('name', n);
-        }
+        void state.name;
         updateFormValue();
     });
     effect(() => {
-        void clearableSig();
+        void state['data-clearable'];
         syncClearVisibility();
     });
 
     // ---- Initial paint -------------------------------------------------
+    // fieldButton must be a descendant of the host before initial
+    // `updateValidity()` — ElementInternals.setValidity rejects an
+    // anchor outside the host's tree. So mount imperatively here and
+    // return `null` from render rather than returning JSX nodes whose
+    // mount happens AFTER this function returns.
     host.append(fieldButton, popover);
     collectOptions();
     initialValues = resolveInitialValues();
-    const presetValues = Array.isArray(preset.values)
-        ? /** @type {string[]} */ (preset.values).map((x) => String(x))
-        : null;
     applyValues(presetValues ?? initialValues, { silent: true });
     renderRows('');
     updateValidity();
@@ -577,7 +551,7 @@ const renderMulticombobox = (host) => {
     // ---- Event handlers ------------------------------------------------
     /** @param {KeyboardEvent} e */
     const onFieldKeydown = (e) => {
-        if (disabledSig()) return;
+        if (state.disabled) return;
         switch (e.key) {
             case 'ArrowDown':
             case 'ArrowUp':
@@ -602,7 +576,7 @@ const renderMulticombobox = (host) => {
     const onClearClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (disabledSig()) return;
+        if (state.disabled) return;
         if (selected().size === 0) return;
         applyValues([], { silent: false });
     };
@@ -768,12 +742,12 @@ const renderMulticombobox = (host) => {
     });
 
     onFormDisabled((disabled) => {
-        disabledSig.set(disabled);
+        state.disabled = disabled;
     });
 
-    onFormStateRestore((state) => {
-        if (state instanceof FormData) {
-            const all = nameSig() ? state.getAll(nameSig()) : [];
+    onFormStateRestore((state2) => {
+        if (state2 instanceof FormData) {
+            const all = state.name ? state2.getAll(state.name) : [];
             applyValues(all.map((x) => String(x)), { silent: true });
         }
     });
@@ -808,9 +782,9 @@ defineElement(
     [
         attributes({
             placeholder: [stringAttribute[0]],
-            disabled: [booleanAttribute[0]],
-            required: [booleanAttribute[0]],
-            name: [stringAttribute[0]],
+            disabled: booleanAttribute,
+            required: booleanAttribute,
+            name: reflectedName,
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),

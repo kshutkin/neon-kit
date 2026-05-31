@@ -16,10 +16,10 @@
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  *
- * Attribute changes propagate synchronously: each attr is bound to a
- * direct host setter via `attributes()` middleware (no signal/effect
- * indirection), so `tip.setAttribute('data-placement', 'bottom')`
- * commits the class change before the call returns.
+ * Attribute changes propagate synchronously: the two data-attrs are
+ * declared via `props()` and observed by EAGER `effect()`s, so
+ * `tip.setAttribute('data-placement', 'bottom')` commits the class
+ * change before the call returns.
  */
 import { DEV } from 'esm-env';
 
@@ -28,7 +28,7 @@ import {
     defineElement,
     onConnect,
     onDisconnect,
-    stringAttribute,
+    props,
 } from '@slimlib/element';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
@@ -101,6 +101,11 @@ function isFocusable(el) {
  * @param {HTMLElement} host
  */
 const renderTooltip = (host) => {
+    props({
+        'data-placement': /** @type {string | null} */ (null),
+        'data-trigger': /** @type {string | null} */ (null),
+    });
+
     /** @type {HTMLElement | null} */
     let parent = null;
     /** @type {ReturnType<typeof setTimeout> | null} */
@@ -111,16 +116,6 @@ const renderTooltip = (host) => {
     let appliedPlacement = 'top';
     let setAriaDescribedBy = false;
     let anchorName = '';
-
-    // Snapshot any own-data-props the middleware wrote pre-render.
-    /** @type {Record<string, unknown>} */
-    const preset = {};
-    for (const key of ['data-placement', 'data-trigger']) {
-        if (Object.hasOwn(host, key)) {
-            preset[key] = /** @type {any} */ (host)[key];
-            delete /** @type {any} */ (host)[key];
-        }
-    }
 
     const clearTimer = () => {
         if (timer) {
@@ -220,25 +215,30 @@ const renderTooltip = (host) => {
     /** @type {any} */ (host).showTooltip = showNow;
     /** @type {any} */ (host).hideTooltip = hideNow;
 
-    // Direct setters fed by attributes() middleware. No signals — these
-    // run synchronously inside attributeChangedCallback so DOM updates
-    // commit before setAttribute() returns.
-    Object.defineProperty(host, 'data-placement', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('data-placement'),
-        set: (v) => {
-            if (!parent) return;
-            applyPlacementClass(readPlacement(v == null ? null : String(v)));
-        },
-    });
-    Object.defineProperty(host, 'data-trigger', {
-        configurable: true, enumerable: true,
-        get: () => host.getAttribute('data-trigger'),
-        set: (v) => {
-            if (!parent) return;
-            applyTriggers(readTriggerSet(v == null ? null : String(v)));
-        },
-    });
+    // The two data-attrs only drive imperative side effects (class
+    // toggle, listener rewiring); nothing in a reactive view consumes
+    // them. `props()` gives us pre-upgrade adoption and a clean
+    // declaration site, but we wrap its setters with a sync hook so
+    // attribute writes commit before setAttribute() returns (the
+    // store's effect scheduler is microtask-deferred).
+    /** @param {string} name @param {(value: string | null) => void} sideEffect */
+    const wrapPropSetter = (name, sideEffect) => {
+        const descriptor = Object.getOwnPropertyDescriptor(host, name);
+        if (!descriptor || !descriptor.set || !descriptor.get) return;
+        const { get, set } = descriptor;
+        Object.defineProperty(host, name, {
+            configurable: true,
+            enumerable: true,
+            get,
+            set(value) {
+                set.call(host, value);
+                if (!parent) return;
+                sideEffect(value == null ? null : String(value));
+            },
+        });
+    };
+    wrapPropSetter('data-placement', (v) => applyPlacementClass(readPlacement(v)));
+    wrapPropSetter('data-trigger', (v) => applyTriggers(readTriggerSet(v)));
 
     onConnect(() => {
         parent = host.parentElement;
@@ -304,7 +304,6 @@ const renderTooltip = (host) => {
         anchorName = '';
     });
 
-    void preset;
     return null;
 };
 
@@ -321,8 +320,8 @@ defineElement(
     'neon-tooltip',
     [
         attributes({
-            'data-placement': [stringAttribute[0]],
-            'data-trigger': [stringAttribute[0]],
+            'data-placement': [(raw) => raw],
+            'data-trigger': [(raw) => raw],
         }),
     ],
     renderTooltip,

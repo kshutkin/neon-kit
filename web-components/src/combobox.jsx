@@ -41,10 +41,24 @@ import {
     onFormDisabled,
     onFormReset,
     onFormStateRestore,
-    stringAttribute,
+    onMount,
+    props,
     withInternals,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
+
+/**
+ * @type {[(raw: string | null) => string, (value: unknown) => string | null]}
+ */
+const reflectedRequiredString = [
+    (raw) => raw ?? '',
+    (value) => (value == null || value === '' ? null : String(value)),
+];
+
+/**
+ * @type {[(raw: string | null) => string]}
+ */
+const parseString = [(raw) => raw ?? ''];
 
 import { SvgIcon } from './svg-icon.jsx';
 import xMark from '@neon-kit/icons/outline/x-mark';
@@ -95,49 +109,24 @@ const renderCombobox = (host) => {
 
     if (!host.classList.contains('combobox')) host.classList.add('combobox');
 
-    // ---- Adopt any pre-set own data props ------------------------------
-    // The attributes() middleware writes `host[key] = parsed` from
-    // attributeChangedCallback, which fires for initial attributes
-    // BEFORE render runs. Any pre-connect property assignment by user
-    // code also lands as a plain own property. Snapshot then strip
-    // before defineProperty replaces the slots.
-    /** @type {Record<string, unknown>} */
-    const preset = {};
-    for (const key of ['value', 'placeholder', 'disabled', 'required', 'name']) {
-        if (Object.hasOwn(host, key)) {
-            preset[key] = /** @type {any} */ (host)[key];
-            delete /** @type {any} */ (host)[key];
-        }
-    }
-    // 'data-clearable' uses dashed-case; middleware writes that exact key.
-    if (Object.hasOwn(host, 'data-clearable')) {
-        preset['data-clearable'] = /** @type {any} */ (host)['data-clearable'];
-        delete /** @type {any} */ (host)['data-clearable'];
-    }
+    // ---- Reactive props (synchronously declared at render top) --------
+    // `props()` installs reactive accessors for these keys on `host` and
+    // auto-adopts any pre-upgrade own-property values written by the
+    // attributes() middleware before render ran.
+    const state = props({
+        value: '',
+        placeholder: '',
+        disabled: false,
+        required: false,
+        name: '',
+        'data-clearable': false,
+    });
 
     // ---- Reactive state ------------------------------------------------
     const options = signal(/** @type {HTMLOptionElement[]} */ ([]));
     const selected = signal(/** @type {HTMLOptionElement | null} */ (null));
 
-    /** @type {string} */
-    const initialPlaceholder = typeof preset.placeholder === 'string'
-        ? preset.placeholder
-        : (host.getAttribute('placeholder') ?? '');
-    const placeholderSig = signal(initialPlaceholder);
-    const disabledSig = signal(
-        typeof preset.disabled === 'boolean' ? preset.disabled : host.hasAttribute('disabled'),
-    );
-    const requiredSig = signal(
-        typeof preset.required === 'boolean' ? preset.required : host.hasAttribute('required'),
-    );
-    const nameSig = signal(
-        typeof preset.name === 'string' ? preset.name : (host.getAttribute('name') ?? ''),
-    );
-    const clearableSig = signal(
-        typeof preset['data-clearable'] === 'boolean'
-            ? /** @type {boolean} */ (preset['data-clearable'])
-            : host.hasAttribute('data-clearable'),
-    );
+    const initialPlaceholder = state.placeholder;
 
     // ---- Imperative state ---------------------------------------------
     /** @type {HTMLButtonElement[]} */
@@ -352,14 +341,18 @@ const renderCombobox = (host) => {
     };
 
     const syncClearVisibility = () => {
-        const visible = clearableSig() && selected() !== null;
+        const visible = state['data-clearable'] && selected() !== null;
         // Inline `display` (not the `hidden` attribute) — the theme's
         // `.combobox__clear { display: inline-flex }` outranks `[hidden]`.
         clearEl.style.display = visible ? '' : 'none';
     };
 
     const updateValidity = () => {
-        if (requiredSig() && !selected()) {
+        // The validation anchor must be a descendant of the host.
+        // Skip while the returned JSX hasn't been mounted yet — the
+        // initial validity gets committed explicitly from onMount().
+        if (!host.contains(fieldButton)) return;
+        if (state.required && !selected()) {
             elementInternals.setValidity(
                 { valueMissing: true },
                 'Please select an option.',
@@ -383,26 +376,43 @@ const renderCombobox = (host) => {
                 // eslint-disable-next-line no-console
                 console.debug(`<neon-combobox>: value "${v}" does not match any <option>`);
             }
+            // The value prop is reactive via props(); a write of an
+            // unknown value would otherwise leave state.value stuck on
+            // a bogus string while `selected` stays on the real option.
+            const curValue = selected()?.value ?? '';
+            if (state.value !== curValue) state.value = curValue;
             return;
         }
 
         const prev = selected();
         // Re-entrant guard: the value-attribute reflection below writes
         // `host.value = …` through the attributes() middleware, which
-        // calls back into this function via the value setter. Once
-        // initialized and stable, short-circuit.
-        if (initialized && opt === prev) return;
+        // re-enters via the value setter. Once initialized and stable,
+        // short-circuit.
+        if (initialized && opt === prev) {
+            const newValue = opt?.value ?? '';
+            if (state.value !== newValue) state.value = newValue;
+            return;
+        }
         initialized = true;
 
         selected.set(opt);
 
         // Reflect to attribute. Empty value removes the attribute to
-        // match the legacy behavior.
+        // match the legacy behavior. Kept manual because the
+        // re-entrancy guard above straddles attribute, prop and
+        // `selected` signal updates that a [parse, serialize] tuple
+        // cannot express.
         if (opt) {
             if (host.getAttribute('value') !== opt.value) host.setAttribute('value', opt.value);
         } else if (host.hasAttribute('value')) {
             host.removeAttribute('value');
         }
+
+        // Sync the reactive `value` prop with the resolved selection so
+        // `host.value` reads back what was actually accepted.
+        const newValue = opt?.value ?? '';
+        if (state.value !== newValue) state.value = newValue;
 
         renderValueText();
         syncClearVisibility();
@@ -424,31 +434,8 @@ const renderCombobox = (host) => {
     };
 
     // ---- Public host API ----------------------------------------------
-    Object.defineProperty(host, 'value', {
-        configurable: true, enumerable: true,
-        get: () => selected()?.value ?? '',
-        set: (v) => applyValue(v == null ? '' : String(v), { silent: true, focusField: false }),
-    });
-    Object.defineProperty(host, 'placeholder', {
-        configurable: true, enumerable: true,
-        get: () => placeholderSig(),
-        set: (v) => placeholderSig.set(v == null ? '' : String(v)),
-    });
-    Object.defineProperty(host, 'disabled', {
-        configurable: true, enumerable: true,
-        get: () => disabledSig(),
-        set: (v) => disabledSig.set(!!v),
-    });
-    Object.defineProperty(host, 'required', {
-        configurable: true, enumerable: true,
-        get: () => requiredSig(),
-        set: (v) => requiredSig.set(!!v),
-    });
-    Object.defineProperty(host, 'name', {
-        configurable: true, enumerable: true,
-        get: () => nameSig(),
-        set: (v) => nameSig.set(v == null ? '' : String(v)),
-    });
+    // `value`, `placeholder`, `disabled`, `required`, `name` and
+    // `data-clearable` are installed by `props()` above.
     Object.defineProperty(host, 'selectedOption', {
         configurable: true, enumerable: true,
         get: () => selected(),
@@ -483,67 +470,56 @@ const renderCombobox = (host) => {
     // ---- Attribute-driven effects -------------------------------------
     // placeholder → DOM
     effect(() => {
-        const ph = placeholderSig();
+        const ph = state.placeholder;
         placeholderEl.textContent = ph;
         searchInput.placeholder = ph || 'Search…';
     });
-    // disabled → DOM + attribute reflection (mirrors prop change to
-    // host attribute, matching the legacy setter behavior).
+    // disabled → DOM. Attribute reflection is handled by the
+    // booleanAttribute serializer in attributes() below.
     effect(() => {
-        const d = disabledSig();
+        const d = state.disabled;
         fieldButton.disabled = d;
         if (d) close();
-        if (d) {
-            if (!host.hasAttribute('disabled')) host.setAttribute('disabled', '');
-        } else if (host.hasAttribute('disabled')) {
-            host.removeAttribute('disabled');
-        }
     });
-    // required → aria + validity + attribute reflection.
+    // required → aria + validity. Attribute reflection is handled by
+    // the booleanAttribute serializer in attributes() below.
     effect(() => {
-        const r = requiredSig();
+        const r = state.required;
         if (r) fieldButton.setAttribute('aria-required', 'true');
         else fieldButton.removeAttribute('aria-required');
-        if (r) {
-            if (!host.hasAttribute('required')) host.setAttribute('required', '');
-        } else if (host.hasAttribute('required')) {
-            host.removeAttribute('required');
-        }
         updateValidity();
     });
-    // name → attribute reflection (ElementInternals reads the host
-    // attribute directly to populate FormData).
+    // data-clearable → clear button visibility. Attribute reflection
+    // not needed (this is read-only `data-*` from the author).
     effect(() => {
-        const n = nameSig();
-        if (n === '') {
-            if (host.hasAttribute('name')) host.removeAttribute('name');
-        } else if (host.getAttribute('name') !== n) {
-            host.setAttribute('name', n);
-        }
-    });
-    // data-clearable → clear button visibility.
-    effect(() => {
-        void clearableSig();
+        void state['data-clearable'];
         syncClearVisibility();
     });
 
     // ---- Initial paint -------------------------------------------------
-    host.append(fieldButton, popover);
     collectOptions();
-    initialValue = typeof preset.value === 'string' && preset.value !== ''
-        ? preset.value
-        : resolveInitialValue();
+    initialValue = state.value !== '' ? state.value : resolveInitialValue();
     applyValue(initialValue, { silent: true, focusField: false });
     renderRows('');
+    // Drive `selected` from external writes to the reactive `value`
+    // prop (e.g. attribute changes routed via attributeChangedCallback,
+    // or direct `host.value = …` assignments). Installed AFTER the
+    // initial applyValue so the first effect run is a no-op via the
+    // re-entrancy guard rather than a missed-options warning.
+    effect(() => {
+        applyValue(state.value, { silent: true, focusField: false });
+    });
     // Effects scheduled above flush on a microtask; ensure validity is
     // committed at least once now so a synchronous `checkValidity()`
     // call right after mount observes the correct flags.
-    updateValidity();
+    onMount(() => {
+        updateValidity();
+    });
 
     // ---- Event handlers ------------------------------------------------
     /** @param {KeyboardEvent} e */
     const onFieldKeydown = (e) => {
-        if (disabledSig()) return;
+        if (state.disabled) return;
         switch (e.key) {
             case 'ArrowDown':
             case 'ArrowUp':
@@ -568,7 +544,7 @@ const renderCombobox = (host) => {
     const onClearClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (disabledSig()) return;
+        if (state.disabled) return;
         if (!selected()) return;
         applyValue('', { silent: false, focusField: true });
     };
@@ -721,16 +697,16 @@ const renderCombobox = (host) => {
     });
 
     onFormDisabled((disabled) => {
-        disabledSig.set(disabled);
+        state.disabled = disabled;
     });
 
-    onFormStateRestore((state) => {
-        if (typeof state === 'string') {
-            applyValue(state, { silent: true, focusField: false });
+    onFormStateRestore((restored) => {
+        if (typeof restored === 'string') {
+            applyValue(restored, { silent: true, focusField: false });
         }
     });
 
-    return null;
+    return [fieldButton, popover];
 };
 
 /**
@@ -762,11 +738,15 @@ defineElement(
     'neon-combobox',
     [
         attributes({
-            value: [stringAttribute[0]],
-            placeholder: [stringAttribute[0]],
-            disabled: [booleanAttribute[0]],
-            required: [booleanAttribute[0]],
-            name: [stringAttribute[0]],
+            // Parse-only: value reflection is performed manually inside
+            // applyValue() because the re-entrancy guard across the
+            // value attribute, the `value` prop and the `selected`
+            // signal cannot be expressed as a [parse, serialize] pair.
+            value: parseString,
+            placeholder: parseString,
+            disabled: booleanAttribute,
+            required: booleanAttribute,
+            name: reflectedRequiredString,
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),
