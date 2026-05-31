@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import '../src/timepicker.js';
+import '../src/timepicker.jsx';
 
 /**
  * @template {Element} [T=HTMLElement]

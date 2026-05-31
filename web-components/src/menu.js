@@ -14,83 +14,61 @@
  * - Enter / Space activate the focused item via `click()`.
  * - `role="menu"` on the host, `role="menuitem"` on each focusable item.
  *
- * No popover wiring lives here — combine with the native `popover`
- * attribute and `popovertarget` on a trigger button as shown in the
- * theme docs.
+ * Per ADR 0001 the element renders into Light DOM (no shadow root).
  */
+import { defineElement, onMount } from '@slimlib/element';
 
 const ITEM_SELECTOR = '.menu__item';
 const TYPEAHEAD_TIMEOUT_MS = 500;
 
-export class NeonMenuElement extends HTMLElement {
-    #typeBuffer = '';
-    /** @type {ReturnType<typeof setTimeout> | null} */
-    #typeTimer = null;
-    /** @type {MutationObserver | null} */
-    #mo = null;
-    #onKeyDown = (/** @type {KeyboardEvent} */ e) => this.#handleKeyDown(e);
-    #onFocusIn = (/** @type {FocusEvent} */ e) => this.#handleFocusIn(e);
-    #onClick = (/** @type {MouseEvent} */ e) => this.#handleClick(e);
-    #onToggle = (/** @type {ToggleEvent} */ e) => this.#handleToggle(e);
+/**
+ * @param {Element} el
+ * @returns {boolean}
+ */
+function isDisabled(el) {
+    return el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true';
+}
 
-    connectedCallback() {
-        if (!this.hasAttribute('role')) this.setAttribute('role', 'menu');
-        this.addEventListener('keydown', this.#onKeyDown);
-        this.addEventListener('focusin', this.#onFocusIn);
-        this.addEventListener('click', this.#onClick);
-        this.addEventListener('toggle', /** @type {EventListener} */ (this.#onToggle));
-        this.#refreshItems();
-        this.#mo = new MutationObserver(() => this.#refreshItems());
-        this.#mo.observe(this, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['disabled', 'aria-disabled'],
-        });
-    }
-
-    disconnectedCallback() {
-        this.removeEventListener('keydown', this.#onKeyDown);
-        this.removeEventListener('focusin', this.#onFocusIn);
-        this.removeEventListener('click', this.#onClick);
-        this.removeEventListener('toggle', /** @type {EventListener} */ (this.#onToggle));
-        if (this.#typeTimer) clearTimeout(this.#typeTimer);
-        this.#mo?.disconnect();
-        this.#mo = null;
-    }
-
-    /**
-     * The currently focused item, if any.
-     * @returns {HTMLElement | null}
-     */
-    get activeItem() {
-        const active = this.ownerDocument?.activeElement;
-        if (active instanceof HTMLElement && this.contains(active) && active.matches(ITEM_SELECTOR)) {
+/**
+ * @param {HTMLElement} host
+ */
+const renderMenu = (host) => {
+    /** @returns {HTMLElement | null} */
+    const getActiveItem = () => {
+        const active = host.ownerDocument?.activeElement;
+        if (active instanceof HTMLElement && host.contains(active) && active.matches(ITEM_SELECTOR)) {
             return active;
         }
         return null;
-    }
+    };
+    /** @returns {HTMLElement[]} */
+    const getItems = () => /** @type {HTMLElement[]} */ (
+        Array.from(host.querySelectorAll(ITEM_SELECTOR))
+    );
+    /** @returns {HTMLElement[]} */
+    const getFocusableItems = () => getItems().filter((it) => !isDisabled(it));
 
-    /**
-     * All items in DOM order, including disabled ones.
-     * @returns {HTMLElement[]}
-     */
-    get items() {
-        return /** @type {HTMLElement[]} */ (Array.from(this.querySelectorAll(ITEM_SELECTOR)));
-    }
+    Object.defineProperty(host, 'activeItem', {
+        configurable: true, enumerable: true,
+        get: getActiveItem,
+    });
+    Object.defineProperty(host, 'items', {
+        configurable: true, enumerable: true,
+        get: getItems,
+    });
+    Object.defineProperty(host, 'focusableItems', {
+        configurable: true, enumerable: true,
+        get: getFocusableItems,
+    });
 
-    /**
-     * Focusable items (disabled excluded), in DOM order.
-     * @returns {HTMLElement[]}
-     */
-    get focusableItems() {
-        return this.items.filter((it) => !isDisabled(it));
-    }
+    let typeBuffer = '';
+    /** @type {ReturnType<typeof setTimeout> | null} */
+    let typeTimer = null;
 
-    #refreshItems() {
-        const items = this.items;
+    const refreshItems = () => {
+        const items = getItems();
         if (items.length === 0) return;
-        const active = this.activeItem;
+        const active = getActiveItem();
         let assignedRover = false;
         for (const it of items) {
             if (!it.hasAttribute('role')) it.setAttribute('role', 'menuitem');
@@ -106,44 +84,64 @@ export class NeonMenuElement extends HTMLElement {
             }
         }
         if (!assignedRover) {
-            const first = this.focusableItems[0];
+            const first = getFocusableItems()[0];
             if (first) first.setAttribute('tabindex', '0');
         }
-    }
+    };
 
-    /**
-     * @param {HTMLElement} item
-     */
-    #focusItem(item) {
-        for (const it of this.items) it.setAttribute('tabindex', it === item ? '0' : '-1');
+    /** @param {HTMLElement} item */
+    const focusItem = (item) => {
+        for (const it of getItems()) it.setAttribute('tabindex', it === item ? '0' : '-1');
         item.focus();
-    }
+    };
 
     /**
-     * @param {KeyboardEvent} e
+     * @param {string} key
+     * @param {HTMLElement[]} items
+     * @param {number} from
      */
-    #handleKeyDown(e) {
-        const items = this.focusableItems;
+    const typeAhead = (key, items, from) => {
+        typeBuffer = (typeBuffer + key).toLowerCase();
+        if (typeTimer) clearTimeout(typeTimer);
+        typeTimer = setTimeout(() => {
+            typeBuffer = '';
+        }, TYPEAHEAD_TIMEOUT_MS);
+
+        const buf = typeBuffer;
+        const start = from < 0 ? -1 : from;
+        for (let i = 1; i <= items.length; i++) {
+            const idx = (start + i + items.length) % items.length;
+            const label = (items[idx].textContent ?? '').trim().toLowerCase();
+            if (label.startsWith(buf)) {
+                focusItem(items[idx]);
+                return;
+            }
+        }
+    };
+
+    /** @param {KeyboardEvent} e */
+    const onKeyDown = (e) => {
+        const items = getFocusableItems();
         if (items.length === 0) return;
-        const current = this.activeItem;
+        const current = getActiveItem();
         const idx = current ? items.indexOf(current) : -1;
 
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                this.#focusItem(items[(idx + 1 + items.length) % items.length] ?? items[0]);
+                focusItem(items[(idx + 1 + items.length) % items.length] ?? items[0]);
                 return;
             case 'ArrowUp':
                 e.preventDefault();
-                this.#focusItem(items[(idx - 1 + items.length) % items.length] ?? items[items.length - 1]);
+                focusItem(items[(idx - 1 + items.length) % items.length] ?? items[items.length - 1]);
                 return;
             case 'Home':
                 e.preventDefault();
-                this.#focusItem(items[0]);
+                focusItem(items[0]);
                 return;
             case 'End':
                 e.preventDefault();
-                this.#focusItem(items[items.length - 1]);
+                focusItem(items[items.length - 1]);
                 return;
             case 'Enter':
             case ' ':
@@ -154,42 +152,32 @@ export class NeonMenuElement extends HTMLElement {
                 return;
             default:
                 if (e.key.length === 1 && /\S/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                    this.#typeAhead(e.key, items, idx);
+                    typeAhead(e.key, items, idx);
                 }
         }
-    }
+    };
 
-    /**
-     * @param {FocusEvent} e
-     */
-    #handleFocusIn(e) {
+    /** @param {FocusEvent} e */
+    const onFocusIn = (e) => {
         const target = e.target;
         if (!(target instanceof HTMLElement)) return;
         if (!target.matches(ITEM_SELECTOR)) return;
         if (isDisabled(target)) return;
-        for (const it of this.items) it.setAttribute('tabindex', it === target ? '0' : '-1');
-    }
+        for (const it of getItems()) it.setAttribute('tabindex', it === target ? '0' : '-1');
+    };
 
-    /**
-     * @param {ToggleEvent} e
-     */
-    #handleToggle(e) {
+    /** @param {ToggleEvent} e */
+    const onToggle = (e) => {
         if (e.newState !== 'open') return;
-        // Focus the first focusable item on open. Modern browsers'
-        // `:focus-visible` heuristic suppresses the focus ring when the
-        // popover was opened by a pointer click and shows it when opened
-        // via keyboard — no manual modality tracking needed.
-        const first = this.focusableItems[0];
+        const first = getFocusableItems()[0];
         if (first) {
-            for (const it of this.items) it.setAttribute('tabindex', it === first ? '0' : '-1');
+            for (const it of getItems()) it.setAttribute('tabindex', it === first ? '0' : '-1');
             first.focus();
         }
-    }
+    };
 
-    /**
-     * @param {MouseEvent} e
-     */
-    #handleClick(e) {
+    /** @param {MouseEvent} e */
+    const onClick = (e) => {
         const target = e.target;
         if (!(target instanceof Element)) return;
         const item = target.closest(ITEM_SELECTOR);
@@ -197,55 +185,46 @@ export class NeonMenuElement extends HTMLElement {
             e.preventDefault();
             e.stopImmediatePropagation();
         }
-    }
+    };
 
-    /**
-     * @param {string} key
-     * @param {HTMLElement[]} items
-     * @param {number} from
-     */
-    #typeAhead(key, items, from) {
-        this.#typeBuffer = (this.#typeBuffer + key).toLowerCase();
-        if (this.#typeTimer) clearTimeout(this.#typeTimer);
-        this.#typeTimer = setTimeout(() => {
-            this.#typeBuffer = '';
-        }, TYPEAHEAD_TIMEOUT_MS);
+    onMount(() => {
+        if (!host.hasAttribute('role')) host.setAttribute('role', 'menu');
+        host.addEventListener('keydown', onKeyDown);
+        host.addEventListener('focusin', onFocusIn);
+        host.addEventListener('click', onClick);
+        host.addEventListener('toggle', /** @type {EventListener} */ (onToggle));
+        refreshItems();
+        const mo = new MutationObserver(() => refreshItems());
+        mo.observe(host, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['disabled', 'aria-disabled'],
+        });
 
-        const buf = this.#typeBuffer;
-        // When nothing is focused yet, start the search at index 0 so that
-        // the very first item is examined first. With a focused item we
-        // start one past it so repeated key presses cycle through matches.
-        const start = from < 0 ? -1 : from;
-        for (let i = 1; i <= items.length; i++) {
-            const idx = (start + i + items.length) % items.length;
-            const label = (items[idx].textContent ?? '').trim().toLowerCase();
-            if (label.startsWith(buf)) {
-                this.#focusItem(items[idx]);
-                return;
-            }
-        }
-    }
-}
+        return () => {
+            host.removeEventListener('keydown', onKeyDown);
+            host.removeEventListener('focusin', onFocusIn);
+            host.removeEventListener('click', onClick);
+            host.removeEventListener('toggle', /** @type {EventListener} */ (onToggle));
+            if (typeTimer) clearTimeout(typeTimer);
+            mo.disconnect();
+        };
+    });
 
-/**
- * @param {Element} el
- * @returns {boolean}
- */
-function isDisabled(el) {
-    return el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true';
-}
+    return null;
+};
 
 /**
- * Define `<neon-menu>` if it has not been registered yet. Idempotent.
+ * Public instance type of the `<neon-menu>` element.
  *
- * @param {string} [tagName] Optional override tag name. Defaults to `neon-menu`.
+ * @typedef {HTMLElement & {
+ *   readonly activeItem: HTMLElement | null,
+ *   readonly items: HTMLElement[],
+ *   readonly focusableItems: HTMLElement[],
+ * }} NeonMenuElement
  */
-export function registerMenu(tagName = 'neon-menu') {
-    if (typeof globalThis.customElements === 'undefined') return;
-    if (!globalThis.customElements.get(tagName)) {
-        globalThis.customElements.define(tagName, NeonMenuElement);
-    }
-}
 
-// Side-effect register on import.
-registerMenu();
+defineElement('neon-menu', [], renderMenu);
+
+export {};

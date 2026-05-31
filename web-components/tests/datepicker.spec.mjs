@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import '../src/datepicker.js';
+import '../src/datepicker.jsx';
 
 /**
  * @template {Element} [T=HTMLElement]

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import '../src/multicombobox.js';
+import '../src/multicombobox.jsx';
 
 /**
  * @template {Element} [T=HTMLElement]

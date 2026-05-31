@@ -13,8 +13,10 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "@slimlib/jsx"
     },
-    "include": ["src/**/*.js"],
+    "include": ["src/**/*.js", "src/**/*.jsx"],
     "exclude": ["node_modules", "dist", "coverage", "types"]
 }

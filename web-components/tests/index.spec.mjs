@@ -1,20 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import * as wc from '../src/index.js';
+import '../src/index.js';
 
 describe('@neon-kit/web-components', () => {
-    it('exposes register helpers', () => {
-        expect(typeof wc.registerTooltip).toBe('function');
-        expect(typeof wc.registerMenu).toBe('function');
-        expect(typeof wc.registerCombobox).toBe('function');
-        expect(typeof wc.registerMulticombobox).toBe('function');
-        expect(typeof wc.registerDatepicker).toBe('function');
-        expect(typeof wc.registerTimepicker).toBe('function');
-        expect(typeof wc.NeonMenuElement).toBe('function');
-        expect(typeof wc.NeonTooltipElement).toBe('function');
-        expect(typeof wc.NeonComboboxElement).toBe('function');
-        expect(typeof wc.NeonMulticomboboxElement).toBe('function');
-        expect(typeof wc.NeonDatepickerElement).toBe('function');
-        expect(typeof wc.NeonTimepickerElement).toBe('function');
+    it('registers every component on import', () => {
+        expect(customElements.get('neon-tooltip')).toBeTruthy();
+        expect(customElements.get('neon-menu')).toBeTruthy();
+        expect(customElements.get('neon-combobox')).toBeTruthy();
+        expect(customElements.get('neon-multicombobox')).toBeTruthy();
+        expect(customElements.get('neon-datepicker')).toBeTruthy();
+        expect(customElements.get('neon-timepicker')).toBeTruthy();
+        expect(customElements.get('neon-icon')).toBeTruthy();
     });
 });

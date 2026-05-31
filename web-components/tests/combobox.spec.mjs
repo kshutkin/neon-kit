@@ -1,6 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import '../src/combobox.js';
+import '../src/combobox.jsx';
+
+/**
+ * Wait one microtask. `@slimlib/store` effects flush on a microtask,
+ * so any assertion that observes DOM/state produced by an effect must
+ * follow at least one `await tick()` after the public write that
+ * triggered it. (Some tests need two ticks because the reflection
+ * cascade — prop -> attribute -> middleware -> setter — spans two
+ * scheduler turns.)
+ */
+const tick = () => Promise.resolve();
 
 /**
  * @template {Element} [T=HTMLElement]
@@ -115,7 +125,8 @@ describe('<neon-combobox>', () => {
         // First row is United States. Move once to United Kingdom.
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-        await nextFrame();
+        await tick();
+        await tick();
         expect(changes).toBe(1);
         expect(detail).toEqual({ value: 'uk', option: cb.querySelector('option[value="uk"]') });
         expect(/** @type {any} */ (cb).value).toBe('uk');
@@ -132,39 +143,47 @@ describe('<neon-combobox>', () => {
         await nextFrame();
         const rows = cb.querySelectorAll('.combobox__option');
         /** @type {HTMLButtonElement} */ (rows[2]).click();
+        await tick();
+        await tick();
         expect(/** @type {any} */ (cb).value).toBe('de');
         expect(changes).toBe(1);
     });
 
-    it('programmatic value setter updates display but does NOT dispatch change', () => {
+    it('programmatic value setter updates display but does NOT dispatch change', async () => {
         const cb = mount(`<neon-combobox>${COUNTRIES}</neon-combobox>`);
         let changes = 0;
         cb.addEventListener('change', () => changes++);
         /** @type {any} */ (cb).value = 'fr';
+        await tick();
+        await tick();
         expect(/** @type {any} */ (cb).value).toBe('fr');
         expect(cb.querySelector('.combobox__value')?.textContent).toBe('France');
         expect(changes).toBe(0);
     });
 
-    it('setting an unknown value is a no-op (matches native <select>)', () => {
+    it('setting an unknown value is a no-op (matches native <select>)', async () => {
         const cb = mount(`<neon-combobox value="us">${COUNTRIES}</neon-combobox>`);
         /** @type {any} */ (cb).value = 'zz';
+        await tick();
+        await tick();
         expect(/** @type {any} */ (cb).value).toBe('us');
         expect(cb.querySelector('.combobox__value')?.textContent).toBe('United States');
     });
 
-    it('participates in form submission via ElementInternals', () => {
+    it('participates in form submission via ElementInternals', async () => {
         const wrapper = mount(`
             <form>
                 <neon-combobox name="country" value="de">${COUNTRIES}</neon-combobox>
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
+        await tick();
+        await tick();
         const data = new FormData(form);
         expect(data.get('country')).toBe('de');
     });
 
-    it('required + empty value → checkValidity() returns false', () => {
+    it('required + empty value → checkValidity() returns false', async () => {
         const wrapper = mount(`
             <form>
                 <neon-combobox name="country" required>${COUNTRIES}</neon-combobox>
@@ -173,10 +192,12 @@ describe('<neon-combobox>', () => {
         const cb = /** @type {any} */ (wrapper.querySelector('neon-combobox'));
         expect(cb.checkValidity()).toBe(false);
         cb.value = 'us';
+        await tick();
+        await tick();
         expect(cb.checkValidity()).toBe(true);
     });
 
-    it('form.reset() restores the initial value', () => {
+    it('form.reset() restores the initial value', async () => {
         const wrapper = mount(`
             <form>
                 <neon-combobox name="country" value="de">${COUNTRIES}</neon-combobox>
@@ -185,8 +206,12 @@ describe('<neon-combobox>', () => {
         const form = /** @type {HTMLFormElement} */ (wrapper);
         const cb = /** @type {any} */ (wrapper.querySelector('neon-combobox'));
         cb.value = 'fr';
+        await tick();
+        await tick();
         expect(cb.value).toBe('fr');
         form.reset();
+        await tick();
+        await tick();
         expect(cb.value).toBe('de');
     });
 
@@ -197,6 +222,8 @@ describe('<neon-combobox>', () => {
         const clear = /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__clear'));
         expect(clear.style.display).not.toBe('none');
         clear.click();
+        await tick();
+        await tick();
         expect(/** @type {any} */ (cb).value).toBe('');
         expect(changes).toBe(1);
         expect(clear.style.display).toBe('none');

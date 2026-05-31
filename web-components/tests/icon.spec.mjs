@@ -7,7 +7,9 @@ import check from '@neon-kit/icons/solid/check';
 import { serialize } from '@neon-kit/icons';
 
 // Side-effect import registers `<neon-icon>`.
-import { NeonIconElement, registerIcon } from '../src/icon.js';
+import '../src/icon.jsx';
+
+/** @typedef {import('../src/icon.jsx').NeonIconElement} NeonIconElement */
 
 /** @typedef {import('@neon-kit/icons').IconDef} IconDef */
 
@@ -173,13 +175,6 @@ describe('<neon-icon>', () => {
         expect(svg.getAttribute('role')).toBe('img');
         expect(svg.hasAttribute('aria-hidden')).toBe(false);
         expect(svg.querySelector('title')?.textContent).toBe('Open menu');
-    });
-
-    it('registerIcon() is idempotent', () => {
-        expect(() => {
-            registerIcon();
-            registerIcon();
-        }).not.toThrow();
     });
 
     it('matches serialize() output structurally', async () => {

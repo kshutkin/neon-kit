@@ -1,15 +1,16 @@
 /**
- * Aggregate entry — re-exports the public API of every component.
+ * Aggregate entry — registers all `<neon-*>` custom elements as a side
+ * effect of importing this module.
  *
- * Importing this module does NOT register any custom elements. Import the
- * subpath module (e.g. `@neon-kit/web-components/tooltip`) to side-effect
- * register, or call the named `register*` exports here explicitly.
+ * Each component self-registers on import via `defineElement(...)`.
+ * To opt into a single component, import its subpath module instead
+ * (e.g. `@neon-kit/web-components/tooltip`).
  */
 
-export { NeonTooltipElement, registerTooltip } from './tooltip.js';
-export { NeonMenuElement, registerMenu } from './menu.js';
-export { NeonComboboxElement, registerCombobox } from './combobox.js';
-export { NeonMulticomboboxElement, registerMulticombobox } from './multicombobox.js';
-export { NeonDatepickerElement, registerDatepicker } from './datepicker.js';
-export { NeonTimepickerElement, registerTimepicker } from './timepicker.js';
-export { NeonIconElement, registerIcon } from './icon.js';
+import './tooltip.jsx';
+import './menu.js';
+import './combobox.jsx';
+import './multicombobox.jsx';
+import './datepicker.jsx';
+import './timepicker.jsx';
+import './icon.jsx';

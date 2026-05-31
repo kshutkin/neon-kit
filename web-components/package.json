@@ -8,42 +8,42 @@
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./src/index.js"
+            "default": "./dist/index.js"
         },
         "./tooltip": {
             "types": "./types/index.d.ts",
-            "default": "./src/tooltip.js"
+            "default": "./dist/tooltip.js"
         },
         "./menu": {
             "types": "./types/index.d.ts",
-            "default": "./src/menu.js"
+            "default": "./dist/menu.js"
         },
         "./combobox": {
             "types": "./types/index.d.ts",
-            "default": "./src/combobox.js"
+            "default": "./dist/combobox.js"
         },
         "./multicombobox": {
             "types": "./types/index.d.ts",
-            "default": "./src/multicombobox.js"
+            "default": "./dist/multicombobox.js"
         },
         "./datepicker": {
             "types": "./types/index.d.ts",
-            "default": "./src/datepicker.js"
+            "default": "./dist/datepicker.js"
         },
         "./timepicker": {
             "types": "./types/index.d.ts",
-            "default": "./src/timepicker.js"
+            "default": "./dist/timepicker.js"
         },
         "./icon": {
             "types": "./types/index.d.ts",
-            "default": "./src/icon.js"
+            "default": "./dist/icon.js"
         },
         "./package.json": "./package.json"
     },
-    "main": "./src/index.js",
-    "module": "./src/index.js",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
     "files": [
-        "src",
+        "dist",
         "types"
     ],
     "engines": {
@@ -65,15 +65,22 @@
         "theme"
     ],
     "scripts": {
-        "build": "dts-buddy",
-        "prepack": "pkgprn --flatten types,src --strip-comments",
+        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/web-components:.dts/index.d.ts -m @neon-kit/web-components/tooltip:.dts/tooltip.d.ts -m @neon-kit/web-components/menu:.dts/menu.d.ts -m @neon-kit/web-components/combobox:.dts/combobox.d.ts -m @neon-kit/web-components/multicombobox:.dts/multicombobox.d.ts -m @neon-kit/web-components/datepicker:.dts/datepicker.d.ts -m @neon-kit/web-components/timepicker:.dts/timepicker.d.ts -m @neon-kit/web-components/icon:.dts/icon.d.ts && node scripts/append-globals.mjs",
+        "prepack": "pkgprn --flatten types,dist",
         "test": "vitest run --coverage --config ../vitest.config.js",
         "test:types": "tsc -p tsconfig.types.json"
     },
     "dependencies": {
+        "@slimlib/element": "^0.1.1",
+        "@slimlib/jsx": "^0.1.0",
+        "@slimlib/store": "^2.1.0",
         "esm-env": "^1.2.2"
     },
     "devDependencies": {
-        "@neon-kit/icons": "workspace:*"
+        "@neon-kit/icons": "workspace:*",
+        "@rollup-extras/plugin-clean": "^2.0.1",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "rollup": "^4.60.4",
+        "rollup-plugin-esbuild": "^6.2.1"
     }
 }

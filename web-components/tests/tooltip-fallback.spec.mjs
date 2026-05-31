@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 // Side-effect import registers `<neon-tooltip>`.
-import '../src/tooltip.js';
+import '../src/tooltip.jsx';
 
 // Tooltip fallback tests need real anchor positioning + CSS flip rules.
 // Make sure a stylesheet that wires `position-area`,
