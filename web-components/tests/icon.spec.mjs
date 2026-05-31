@@ -89,11 +89,12 @@ describe('<neon-icon>', () => {
         expect(customElements.get('neon-icon')).toBeTruthy();
     });
 
-    it('renders the assigned `icon` property synchronously', async () => {
+    it('renders the assigned `icon` property', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
         el.icon = bars;
-        // Property setter is synchronous; no await needed.
+        // Paint settles on a microtask.
+        await settle();
         const svg = el.querySelector('svg');
         expect(svg).not.toBeNull();
         expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
@@ -181,6 +182,7 @@ describe('<neon-icon>', () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
         el.icon = barsSolid;
+        await settle();
         const live = /** @type {SVGSVGElement} */ (el.querySelector('svg'));
         const str = serialize(barsSolid);
         const parsed = new DOMParser().parseFromString(str, 'image/svg+xml').documentElement;
@@ -197,5 +199,27 @@ describe('<neon-icon>', () => {
             const pa = Object.fromEntries(Array.from(parsedPaths[i].attributes).map((a) => [a.name, a.value]));
             expect(pa).toEqual(la);
         }
+    });
+
+    it('reflects name/aria-label/title properties to attributes', async () => {
+        const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
+        document.body.appendChild(el);
+
+        el.name = 'outline/x-mark';
+        /** @type {any} */ (el)['aria-label'] = 'Close';
+        el.title = 'Dismiss';
+        await settle();
+        expect(el.getAttribute('name')).toBe('outline/x-mark');
+        expect(el.getAttribute('aria-label')).toBe('Close');
+        expect(el.getAttribute('title')).toBe('Dismiss');
+
+        // Empty string removes the attribute (legacy behavior).
+        el.name = '';
+        /** @type {any} */ (el)['aria-label'] = '';
+        el.title = '';
+        await settle();
+        expect(el.hasAttribute('name')).toBe(false);
+        expect(el.hasAttribute('aria-label')).toBe(false);
+        expect(el.hasAttribute('title')).toBe(false);
     });
 });

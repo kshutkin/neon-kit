@@ -12,8 +12,7 @@
  *
  * For tree-shake-friendly use (or when the runtime can't resolve the
  * subpath dynamically), assign an `IconDef` to the `icon` property
- * directly — that takes precedence over `name`. The `icon` setter
- * commits synchronously.
+ * directly — that takes precedence over `name`.
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  *
@@ -22,12 +21,23 @@
 import {
     attributes,
     defineElement,
-    onConnect,
-    stringAttribute,
+    props,
 } from '@slimlib/element';
 import { svg } from '@slimlib/jsx';
+import { effect, signal } from '@slimlib/store';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/**
+ * Like `stringAttribute`, but reflects an empty string as attribute
+ * removal (the legacy `<neon-icon>` behavior).
+ *
+ * @type {[ (raw: string | null) => string | null, (value: unknown) => string | null ]}
+ */
+const reflectedString = [
+    (raw) => raw,
+    (value) => (value == null || value === '' ? null : String(value)),
+];
 
 /**
  * @param {IconDef} def
@@ -66,149 +76,50 @@ function IconSvg(def, label) {
  * @param {HTMLElement} host
  */
 const renderIcon = (host) => {
-    // ---- Adopt any pre-set own data props ------------------------------
-    // attributes() middleware writes `host[key] = parsed` from
-    // attributeChangedCallback for initial attributes BEFORE render runs.
-    // Snapshot then strip so defineProperty wins.
-    /** @type {Record<string, unknown>} */
-    const preset = {};
-    for (const key of ['name', 'aria-label', 'title', 'icon']) {
-        if (Object.hasOwn(host, key)) {
-            preset[key] = /** @type {any} */ (host)[key];
-            delete /** @type {any} */ (host)[key];
-        }
-    }
+    const state = props({
+        name: '',
+        'aria-label': '',
+        title: '',
+        icon: /** @type {IconDef | null} */ (null),
+    });
 
-    let nameVal = typeof preset.name === 'string'
-        ? preset.name
-        : (host.getAttribute('name') ?? '');
-    let labelVal = typeof preset['aria-label'] === 'string'
-        ? /** @type {string} */ (preset['aria-label'])
-        : (host.getAttribute('aria-label') ?? '');
-    let titleVal = typeof preset.title === 'string'
-        ? preset.title
-        : (host.getAttribute('title') ?? '');
-    /** @type {IconDef | null} */
-    let override = /** @type {IconDef | null} */ (preset.icon ?? null);
-    /** @type {IconDef | null} */
-    let loaded = null;
+    /** @type {import('@slimlib/store').Signal<IconDef | null>} */
+    const loadedSig = signal(/** @type {IconDef | null} */ (null));
     let token = 0;
 
-    const paint = () => {
-        const def = override || loaded;
-        if (!def) {
-            host.replaceChildren();
+    effect(() => {
+        const override = state.icon;
+        const name = state.name;
+        if (override) {
+            loadedSig.set(null);
             return;
         }
-        const label = labelVal || titleVal || null;
-        host.replaceChildren(IconSvg(def, label));
-    };
-
-    /** @param {string} name */
-    const loadName = (name) => {
         const current = ++token;
-        if (override) return;
         if (!name) {
-            loaded = null;
-            paint();
+            loadedSig.set(null);
             return;
         }
         import(/* @vite-ignore */ `@neon-kit/icons/${name}`).then(
             (mod) => {
-                if (token !== current) return;
-                loaded = mod.default;
-                paint();
+                if (token === current) loadedSig.set(mod.default);
             },
             (error) => {
                 if (token !== current) return;
                 // eslint-disable-next-line no-console
                 console.warn(`<neon-icon>: failed to load "${name}"`, error);
-                loaded = null;
-                paint();
+                loadedSig.set(null);
             },
         );
-    };
-
-    // ---- Public host API ----------------------------------------------
-    Object.defineProperty(host, 'icon', {
-        configurable: true, enumerable: true,
-        get: () => override,
-        set: (v) => {
-            const next = /** @type {IconDef | null} */ (v || null);
-            override = next;
-            if (next) {
-                // property wins; cancel any pending name load
-                token++;
-                loaded = null;
-            }
-            paint();
-            if (!next) {
-                // re-trigger name load if any
-                loadName(nameVal);
-            }
-        },
-    });
-    Object.defineProperty(host, 'name', {
-        configurable: true, enumerable: true,
-        get: () => nameVal,
-        set: (v) => {
-            const next = v == null ? '' : String(v);
-            if (next === nameVal) {
-                // still ensure attribute reflection idempotency
-                if (next === '') {
-                    if (host.hasAttribute('name')) host.removeAttribute('name');
-                } else if (host.getAttribute('name') !== next) {
-                    host.setAttribute('name', next);
-                }
-                return;
-            }
-            nameVal = next;
-            if (next === '') {
-                if (host.hasAttribute('name')) host.removeAttribute('name');
-            } else if (host.getAttribute('name') !== next) {
-                host.setAttribute('name', next);
-            }
-            loadName(next);
-        },
-    });
-    Object.defineProperty(host, 'aria-label', {
-        configurable: true, enumerable: true,
-        get: () => labelVal,
-        set: (v) => {
-            const next = v == null ? '' : String(v);
-            if (next === labelVal) return;
-            labelVal = next;
-            if (next === '') {
-                if (host.hasAttribute('aria-label')) host.removeAttribute('aria-label');
-            } else if (host.getAttribute('aria-label') !== next) {
-                host.setAttribute('aria-label', next);
-            }
-            paint();
-        },
-    });
-    Object.defineProperty(host, 'title', {
-        configurable: true, enumerable: true,
-        get: () => titleVal,
-        set: (v) => {
-            const next = v == null ? '' : String(v);
-            if (next === titleVal) return;
-            titleVal = next;
-            if (next === '') {
-                if (host.hasAttribute('title')) host.removeAttribute('title');
-            } else if (host.getAttribute('title') !== next) {
-                host.setAttribute('title', next);
-            }
-            paint();
-        },
     });
 
-    // ---- Initial paint -------------------------------------------------
-    onConnect(() => {
-        if (override) {
-            paint();
-        } else {
-            loadName(nameVal);
+    effect(() => {
+        const def = state.icon || loadedSig();
+        if (!def) {
+            host.replaceChildren();
+            return;
         }
+        const label = state['aria-label'] || state.title || null;
+        host.replaceChildren(IconSvg(def, label));
     });
 
     return null;
@@ -219,6 +130,7 @@ const renderIcon = (host) => {
  *
  * @typedef {HTMLElement & {
  *   name: string,
+ *   'aria-label': string,
  *   title: string,
  *   icon: IconDef | null,
  * }} NeonIconElement
@@ -228,9 +140,9 @@ defineElement(
     'neon-icon',
     [
         attributes({
-            name: [stringAttribute[0]],
-            'aria-label': [stringAttribute[0]],
-            title: [stringAttribute[0]],
+            name: reflectedString,
+            'aria-label': reflectedString,
+            title: reflectedString,
         }),
     ],
     renderIcon,
