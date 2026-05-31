@@ -72,10 +72,7 @@ function IconSvg(def, label) {
     )));
 }
 
-/**
- * @param {HTMLElement} host
- */
-const renderIcon = (host) => {
+const renderIcon = () => {
     const state = props({
         name: '',
         'aria-label': '',
@@ -112,17 +109,12 @@ const renderIcon = (host) => {
         );
     });
 
-    effect(() => {
+    return () => {
         const def = state.icon || loadedSig();
-        if (!def) {
-            host.replaceChildren();
-            return;
-        }
+        if (!def) return null;
         const label = state['aria-label'] || state.title || null;
-        host.replaceChildren(IconSvg(def, label));
-    });
-
-    return null;
+        return IconSvg(def, label);
+    };
 };
 
 /**

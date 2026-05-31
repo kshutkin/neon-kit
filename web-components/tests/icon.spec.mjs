@@ -222,4 +222,28 @@ describe('<neon-icon>', () => {
         expect(el.hasAttribute('aria-label')).toBe(false);
         expect(el.hasAttribute('title')).toBe(false);
     });
+
+    it('renders nothing when neither `name` nor `icon` is set', async () => {
+        const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
+        document.body.appendChild(el);
+        await settle();
+        expect(el.querySelector('svg')).toBeNull();
+    });
+
+    it('renders an `IconDef` that omits `attrs` on the def and on its paths', async () => {
+        const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
+        document.body.appendChild(el);
+        el.icon = /** @type {IconDef} */ ({
+            viewBox: '0 0 24 24',
+            paths: [{ d: 'M4 4h16v16H4z' }],
+        });
+        await settle();
+        const svg = el.querySelector('svg');
+        expect(svg).not.toBeNull();
+        expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
+        const path = svg?.querySelector('path');
+        expect(path?.getAttribute('d')).toBe('M4 4h16v16H4z');
+        // The path has no `attrs`, so only `d` is set on it.
+        expect(path?.getAttributeNames()).toEqual(['d']);
+    });
 });
