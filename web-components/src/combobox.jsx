@@ -46,6 +46,11 @@ import {
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
+import { SvgIcon } from './svg-icon.jsx';
+import xMark from '@neon-kit/icons/outline/x-mark';
+import chevronDown from '@neon-kit/icons/outline/chevron-down';
+import check from '@neon-kit/icons/outline/check';
+
 let nextId = 0;
 
 const FIELD_CLASS = 'combobox__field';
@@ -61,36 +66,10 @@ const CLEAR_CLASS = 'combobox__clear';
 const CHEVRON_CLASS = 'combobox__chevron';
 const EMPTY_CLASS = 'combobox__empty';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
 /**
  * @typedef {{ value: string, option: HTMLOptionElement | null }} ChangeDetail
  * @typedef {{ query: string }} InputDetail
  */
-
-/**
- * Build a tiny inline SVG icon in the SVG namespace.
- *
- * @param {string} d
- * @param {string} className
- * @param {string} [strokeWidth]
- * @returns {SVGSVGElement}
- */
-function makeSvgIcon(d, className, strokeWidth = '2') {
-    const svgEl = document.createElementNS(SVG_NS, 'svg');
-    svgEl.setAttribute('class', className);
-    svgEl.setAttribute('viewBox', '0 0 24 24');
-    svgEl.setAttribute('fill', 'none');
-    svgEl.setAttribute('stroke', 'currentColor');
-    svgEl.setAttribute('stroke-width', strokeWidth);
-    svgEl.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', d);
-    svgEl.appendChild(path);
-    return svgEl;
-}
 
 /**
  * CSS.escape with a safe fallback for old environments.
@@ -180,10 +159,9 @@ const renderCombobox = (host) => {
         <button type="button" class={CLEAR_CLASS} aria-label="Clear selection" tabindex="-1" />
     );
     clearEl.style.display = 'none';
-    clearEl.appendChild(makeSvgIcon('M6 6l12 12M18 6L6 18', ''));
-    /** @type {SVGSVGElement} */ (clearEl.firstElementChild).removeAttribute('class');
+    clearEl.appendChild(SvgIcon({ def: xMark }));
 
-    const chevronEl = makeSvgIcon('m19.5 8.25-7.5 7.5-7.5-7.5', CHEVRON_CLASS);
+    const chevronEl = SvgIcon({ class: CHEVRON_CLASS, def: chevronDown });
 
     const fieldButton = /** @type {HTMLButtonElement} */ (
         <button
@@ -284,7 +262,7 @@ const renderCombobox = (host) => {
                 row.disabled = true;
                 row.setAttribute('aria-disabled', 'true');
             }
-            row.appendChild(makeSvgIcon('M4.5 12.75l6 6 9-13.5', OPTION_CHECK_CLASS, '2.5'));
+            row.appendChild(SvgIcon({ class: OPTION_CHECK_CLASS, strokeWidth: '2.5', def: check }));
             row.setAttribute('aria-selected', sel && opt === sel ? 'true' : 'false');
 
             listEl.insertBefore(row, emptyEl);

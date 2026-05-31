@@ -32,6 +32,12 @@ import {
 } from '@slimlib/element';
 import { signal } from '@slimlib/store';
 
+import { SvgIcon } from './svg-icon.jsx';
+import xMark from '@neon-kit/icons/outline/x-mark';
+import chevronLeft from '@neon-kit/icons/outline/chevron-left';
+import chevronRight from '@neon-kit/icons/outline/chevron-right';
+import calendar from '@neon-kit/icons/outline/calendar';
+
 let nextId = 0;
 
 const FIELD_CLASS = 'datepicker__field';
@@ -47,7 +53,6 @@ const GRID_CLASS = 'datepicker__grid';
 const WEEKDAY_CLASS = 'datepicker__weekday';
 const CELL_CLASS = 'datepicker__cell';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_STEP_DAYS = 1;
 const STEP_EPSILON = 1e-7;
@@ -1027,50 +1032,22 @@ function pad2(value) {
 // ---- Icon helpers --------------------------------------------------
 
 function createCalendarIcon() {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('class', ICON_CLASS);
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '1.75');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5');
-    svg.appendChild(path);
-    return svg;
+    return SvgIcon({
+        class: ICON_CLASS,
+        strokeWidth: '1.75',
+        def: calendar,
+    });
 }
 
 function createXIcon() {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'M6 6l12 12M18 6L6 18');
-    svg.appendChild(path);
-    return svg;
+    return SvgIcon({ def: xMark });
 }
 
 /** @param {'prev' | 'next'} direction */
 function createChevronIcon(direction) {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', direction === 'prev' ? 'M15.75 19.5 8.25 12l7.5-7.5' : 'm8.25 4.5 7.5 7.5-7.5 7.5');
-    svg.appendChild(path);
-    return svg;
+    return SvgIcon({
+        def: direction === 'prev' ? chevronLeft : chevronRight,
+    });
 }
 
 /**

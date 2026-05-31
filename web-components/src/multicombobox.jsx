@@ -32,6 +32,10 @@ import {
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
+import { SvgIcon } from './svg-icon.jsx';
+import xMark from '@neon-kit/icons/outline/x-mark';
+import chevronDown from '@neon-kit/icons/outline/chevron-down';
+
 let nextId = 0;
 
 const FIELD_CLASS = 'combobox__field';
@@ -49,33 +53,10 @@ const TAG_CLASS = 'tag';
 const TAG_REMOVE_CLASS = 'tag__remove';
 const CHECKBOX_CLASS = 'checkbox';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
 /**
  * @typedef {{ values: string[], options: HTMLOptionElement[] }} ChangeDetail
  * @typedef {{ query: string }} InputDetail
  */
-
-/**
- * @param {string} d
- * @param {string} [className]
- * @returns {SVGSVGElement}
- */
-function makeSvgIcon(d, className) {
-    const svgEl = document.createElementNS(SVG_NS, 'svg');
-    if (className) svgEl.setAttribute('class', className);
-    svgEl.setAttribute('viewBox', '0 0 24 24');
-    svgEl.setAttribute('fill', 'none');
-    svgEl.setAttribute('stroke', 'currentColor');
-    svgEl.setAttribute('stroke-width', '2');
-    svgEl.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', d);
-    svgEl.appendChild(path);
-    return svgEl;
-}
 
 /**
  * @param {string} id
@@ -169,9 +150,9 @@ const renderMulticombobox = (host) => {
         <button type="button" class={CLEAR_CLASS} aria-label="Clear all selections" tabindex="-1" />
     );
     clearEl.style.display = 'none';
-    clearEl.appendChild(makeSvgIcon('M6 6l12 12M18 6L6 18'));
+    clearEl.appendChild(SvgIcon({ def: xMark }));
 
-    const chevronEl = makeSvgIcon('m19.5 8.25-7.5 7.5-7.5-7.5', CHEVRON_CLASS);
+    const chevronEl = SvgIcon({ class: CHEVRON_CLASS, def: chevronDown });
 
     const fieldButton = /** @type {HTMLButtonElement} */ (
         <button
@@ -379,7 +360,7 @@ const renderMulticombobox = (host) => {
                     on:click={onTagRemoveClick}
                 />
             );
-            remove.appendChild(makeSvgIcon('M6 6l12 12M18 6L6 18'));
+            remove.appendChild(SvgIcon({ def: xMark }));
 
             const tag = /** @type {HTMLSpanElement} */ (
                 <span class={TAG_CLASS} data-value={opt.value} />

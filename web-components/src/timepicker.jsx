@@ -34,6 +34,10 @@ import {
 } from '@slimlib/element';
 import { signal } from '@slimlib/store';
 
+import { SvgIcon } from './svg-icon.jsx';
+import xMark from '@neon-kit/icons/outline/x-mark';
+import check from '@neon-kit/icons/outline/check';
+
 let nextId = 0;
 
 const FIELD_CLASS = 'timepicker__field';
@@ -48,7 +52,6 @@ const OPTION_LABEL_CLASS = 'combobox__option-label';
 const OPTION_CHECK_CLASS = 'combobox__option-check';
 const EMPTY_CLASS = 'combobox__empty';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEFAULT_STEP_SECONDS = 60;
 const DAY_SECONDS = 24 * 60 * 60;
 const DAY_MILLISECONDS = DAY_SECONDS * 1000;
@@ -964,54 +967,26 @@ function pad2(value) {
 // ---- Icon helpers --------------------------------------------------
 
 function createClockIcon() {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('class', ICON_CLASS);
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '1.75');
-    svg.setAttribute('aria-hidden', 'true');
-    const circle = document.createElementNS(SVG_NS, 'circle');
-    circle.setAttribute('cx', '12');
-    circle.setAttribute('cy', '12');
-    circle.setAttribute('r', '9');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'M12 7v5l3 2');
-    svg.append(circle, path);
-    return svg;
+    return SvgIcon({
+        class: ICON_CLASS,
+        strokeWidth: '1.75',
+        children: () => [
+            <circle cx="12" cy="12" r="9" />,
+            <path d="M12 7v5l3 2" />,
+        ],
+    });
 }
 
 function createXIcon() {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'M6 6l12 12M18 6L6 18');
-    svg.appendChild(path);
-    return svg;
+    return SvgIcon({ def: xMark });
 }
 
 function createCheckIcon() {
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('class', OPTION_CHECK_CLASS);
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2.5');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'M4.5 12.75l6 6 9-13.5');
-    svg.appendChild(path);
-    return svg;
+    return SvgIcon({
+        class: OPTION_CHECK_CLASS,
+        strokeWidth: '2.5',
+        def: check,
+    });
 }
 
 /**

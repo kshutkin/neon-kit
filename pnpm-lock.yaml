@@ -71,6 +71,9 @@ importers:
 
   web-components:
     dependencies:
+      '@neon-kit/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@slimlib/element':
         specifier: ^0.1.1
         version: 0.1.1(@slimlib/jsx@0.1.0(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
@@ -84,9 +87,6 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
     devDependencies:
-      '@neon-kit/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@rollup-extras/plugin-clean':
         specifier: ^2.0.1
         version: 2.0.1(rollup@4.60.4)
