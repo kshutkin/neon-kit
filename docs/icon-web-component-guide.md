@@ -133,9 +133,9 @@ Used for reactive props and async-loaded icon state.
 - `state(object)` returns a proxy with fine-grained property tracking.
 - `effect(fn)` tracks reads and reruns after the scheduler flushes.
 - Default effect scheduling is microtask-based and batched.
-- `flushEffects()` forces pending effects to run now. Existing notes say to use
-  this at synchronous public boundaries when a setter/method must repaint before
-  the next line.
+- Avoid `flushEffects()` in components. Let normal effect scheduling run and
+  adapt tests around user-observable settled state unless a truly synchronous
+  public contract requires otherwise.
 - `EffectOptions.EAGER` can make the first run synchronous, but later reruns
   still use the scheduler.
 

@@ -32,8 +32,9 @@ describe('<neon-datepicker>', () => {
         expect(customElements.get('neon-datepicker')).toBeTruthy();
     });
 
-    it('renders the theme datepicker field and day grid', () => {
+    it('renders the theme datepicker field and day grid', async () => {
         const picker = mount(`<neon-datepicker value="2026-04-15" placeholder="Start date"></neon-datepicker>`);
+        await nextFrame();
         expect(picker.classList.contains('datepicker')).toBe(true);
         const input = /** @type {HTMLInputElement} */ (picker.querySelector('.datepicker__input'));
         const trigger = picker.querySelector('.datepicker__trigger');
@@ -68,22 +69,26 @@ describe('<neon-datepicker>', () => {
         expect(data.get('startsOn')).toBe('');
     });
 
-    it('supports required, min, max and step validation', () => {
+    it('supports required, min, max and step validation', async () => {
         const picker = /** @type {any} */ (mount(`
             <neon-datepicker required min="2026-01-01" max="2026-12-31" step="7"></neon-datepicker>
         `));
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.valueMissing).toBe(true);
 
         picker.value = '2025-12-31';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.rangeUnderflow).toBe(true);
 
         picker.value = '2026-01-02';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.stepMismatch).toBe(true);
 
         picker.value = '2026-01-08';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(true);
     });
 
@@ -105,12 +110,14 @@ describe('<neon-datepicker>', () => {
         expect(input.value).toBe('2026-04-05');
     });
 
-    it('keeps invalid typed text visible while exposing an empty value and badInput validity', () => {
+    it('keeps invalid typed text visible while exposing an empty value and badInput validity', async () => {
         const picker = /** @type {any} */ (mount(`<neon-datepicker value="2026-04-15"></neon-datepicker>`));
+        await nextFrame();
         const input = /** @type {HTMLInputElement} */ (picker.querySelector('.datepicker__input'));
 
         input.value = '2026-99-99';
         input.dispatchEvent(new Event('input', { bubbles: true }));
+        await nextFrame();
         expect(picker.value).toBe('');
         expect(input.value).toBe('2026-99-99');
         expect(picker.checkValidity()).toBe(false);
@@ -146,20 +153,25 @@ describe('<neon-datepicker>', () => {
         await nextFrame();
 
         /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        await nextFrame();
         expect(picker.querySelector('.datepicker__grid')?.classList.contains('-months')).toBe(true);
         expect(picker.querySelector('.datepicker__view-switch')?.textContent).toBe('2026');
 
         /** @type {HTMLButtonElement} */ (picker.querySelector('[data-month="4"]')).click();
+        await nextFrame();
         expect(picker.querySelector('.datepicker__grid')?.classList.contains('-days')).toBe(true);
         expect(picker.querySelector('.datepicker__view-switch')?.textContent).toBe('May 2026');
 
         /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        await nextFrame();
         /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        await nextFrame();
         expect(picker.querySelector('.datepicker__grid')?.classList.contains('-years')).toBe(true);
     });
 
-    it('data-clearable clears value and dispatches input/change', () => {
+    it('data-clearable clears value and dispatches input/change', async () => {
         const picker = /** @type {any} */ (mount(`<neon-datepicker value="2026-04-15" data-clearable></neon-datepicker>`));
+        await nextFrame();
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -168,18 +180,20 @@ describe('<neon-datepicker>', () => {
 
         expect(clear.style.display).not.toBe('none');
         clear.click();
+        await nextFrame();
         expect(picker.value).toBe('');
         expect(inputs).toBe(1);
         expect(changes).toBe(1);
         expect(clear.style.display).toBe('none');
     });
 
-    it('form.reset() restores defaultValue', () => {
+    it('form.reset() restores defaultValue', async () => {
         const form = /** @type {HTMLFormElement} */ (mount(`
             <form>
                 <neon-datepicker name="startsOn" value="2026-04-15"></neon-datepicker>
             </form>
         `));
+        await nextFrame();
         const picker = /** @type {any} */ (form.querySelector('neon-datepicker'));
         picker.value = '2026-05-20';
         expect(picker.value).toBe('2026-05-20');
@@ -187,8 +201,9 @@ describe('<neon-datepicker>', () => {
         expect(picker.value).toBe('2026-04-15');
     });
 
-    it('supports valueAsNumber, valueAsDate, stepUp and stepDown', () => {
+    it('supports valueAsNumber, valueAsDate, stepUp and stepDown', async () => {
         const picker = /** @type {any} */ (mount(`<neon-datepicker step="7"></neon-datepicker>`));
+        await nextFrame();
         picker.valueAsDate = new Date(Date.UTC(2026, 0, 1));
         expect(picker.value).toBe('2026-01-01');
         expect(picker.valueAsNumber).toBe(Date.UTC(2026, 0, 1));
@@ -200,8 +215,9 @@ describe('<neon-datepicker>', () => {
         expect(picker.value).toBe('2025-12-25');
     });
 
-    it('disables out-of-range days in the calendar grid', () => {
+    it('disables out-of-range days in the calendar grid', async () => {
         const picker = mount(`<neon-datepicker value="2026-04-15" min="2026-04-10" max="2026-04-20"></neon-datepicker>`);
+        await nextFrame();
         expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-09"]')).disabled).toBe(true);
         expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-10"]')).disabled).toBe(false);
         expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-21"]')).disabled).toBe(true);

@@ -31,7 +31,7 @@ import {
     props,
     withInternals,
 } from '@slimlib/element';
-import { effect, flushEffects, signal } from '@slimlib/store';
+import { effect, signal } from '@slimlib/store';
 
 import { SvgIcon } from './svg-icon.jsx';
 import {
@@ -472,7 +472,6 @@ const renderDatepicker = (host) => {
         if (syncText) input.value = next;
         elementInternals.setFormValue(next, next);
         syncClearVisibility();
-        flushEffects();
         updateValidity();
         if (resetCommitted) lastCommittedValue = next;
         return previous !== next;
@@ -518,7 +517,6 @@ const renderDatepicker = (host) => {
         view.set('days');
         const sel = parseDate(state.value);
         cursorDateMs.set(sel == null ? firstOfMonth(todayDateMs()) : firstOfMonth(sel));
-        flushEffects();
         try {
             if (!isPopoverOpen()) {
                 /** @type {any} */ (popover).showPopover({ source: fieldEl });
@@ -627,7 +625,6 @@ const renderDatepicker = (host) => {
         if (target.closest('[data-dp-switch]')) {
             const currentView = view();
             view.set(currentView === 'days' ? 'months' : currentView === 'months' ? 'years' : 'days');
-            flushEffects();
             return;
         }
 
@@ -651,7 +648,6 @@ const renderDatepicker = (host) => {
             const { year } = partsFromDateMs(cursorDateMs());
             cursorDateMs.set(dateMsFromParts(year, month, 1));
             view.set('days');
-            flushEffects();
             queueMicrotask(() => focusCalendarCell());
             return;
         }
@@ -662,7 +658,6 @@ const renderDatepicker = (host) => {
             const { month } = partsFromDateMs(cursorDateMs());
             cursorDateMs.set(dateMsFromParts(year, month, 1));
             view.set('months');
-            flushEffects();
         }
     };
 
@@ -721,7 +716,6 @@ const renderDatepicker = (host) => {
         } else {
             cursorDateMs.set(dateMsFromParts(year + direction * 12, month, 1));
         }
-        flushEffects();
     };
 
     // ---- Reactive DOM effects --------------------------------------
@@ -769,17 +763,16 @@ const renderDatepicker = (host) => {
         },
     );
 
-    const flushAfterPropertySet = () => flushEffects();
-    defineStringProperty(host, state, 'min', flushAfterPropertySet);
-    defineStringProperty(host, state, 'max', flushAfterPropertySet);
-    defineStringProperty(host, state, 'step', flushAfterPropertySet);
-    defineStringProperty(host, state, 'placeholder', flushAfterPropertySet);
+    defineStringProperty(host, state, 'min');
+    defineStringProperty(host, state, 'max');
+    defineStringProperty(host, state, 'step');
+    defineStringProperty(host, state, 'placeholder');
     defineStringProperty(host, state, 'name');
-    defineStringProperty(host, state, 'autocomplete', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'disabled', 'disabled', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'readOnly', 'readonly', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'required', 'required', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'data-clearable', 'data-clearable', flushAfterPropertySet);
+    defineStringProperty(host, state, 'autocomplete');
+    defineBooleanProperty(host, state, 'disabled', 'disabled');
+    defineBooleanProperty(host, state, 'readOnly', 'readonly');
+    defineBooleanProperty(host, state, 'required', 'required');
+    defineBooleanProperty(host, state, 'data-clearable', 'data-clearable');
     defineWritableProperty(
         host,
         'readonly',
@@ -828,7 +821,6 @@ const renderDatepicker = (host) => {
     setValueFromString(state.value, { syncText: true, resetCommitted: true });
 
     onMount(() => {
-        flushEffects();
         updateValidity();
     });
 
@@ -861,7 +853,6 @@ const renderDatepicker = (host) => {
 
     onFormDisabled((disabled) => {
         formDisabled.set(disabled);
-        flushEffects();
     });
 
     onFormStateRestore((state) => {

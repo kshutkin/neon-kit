@@ -32,8 +32,9 @@ describe('<neon-timepicker>', () => {
         expect(customElements.get('neon-timepicker')).toBeTruthy();
     });
 
-    it('renders the theme timepicker field and generated option list', () => {
+    it('renders the theme timepicker field and generated option list', async () => {
         const picker = mount(`<neon-timepicker step="3600" placeholder="Start time"></neon-timepicker>`);
+        await nextFrame();
         expect(picker.classList.contains('timepicker')).toBe(true);
         const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
         const trigger = picker.querySelector('.timepicker__trigger');
@@ -67,37 +68,44 @@ describe('<neon-timepicker>', () => {
         expect(data.get('startsAt')).toBe('');
     });
 
-    it('supports required, min, max and step validation', () => {
+    it('supports required, min, max and step validation', async () => {
         const picker = /** @type {any} */ (mount(`
             <neon-timepicker required min="09:00" max="17:00" step="900"></neon-timepicker>
         `));
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.valueMissing).toBe(true);
 
         picker.value = '08:45';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.rangeUnderflow).toBe(true);
 
         picker.value = '09:10';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(false);
         expect(picker.validity.stepMismatch).toBe(true);
 
         picker.value = '09:15';
+        await nextFrame();
         expect(picker.checkValidity()).toBe(true);
     });
 
-    it('defaults to HH:MM and rejects seconds until seconds mode is enabled', () => {
+    it('defaults to HH:MM and rejects seconds until seconds mode is enabled', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker value="09:30:15"></neon-timepicker>`));
+        await nextFrame();
         expect(picker.value).toBe('');
         picker.seconds = true;
         picker.value = '09:30:15';
+        await nextFrame();
         expect(picker.value).toBe('09:30:15');
         const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
         expect(input.placeholder).toBe('HH:MM:SS');
     });
 
-    it('normalizes HH:MM to HH:MM:SS when seconds mode is enabled', () => {
+    it('normalizes HH:MM to HH:MM:SS when seconds mode is enabled', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker seconds value="09:30"></neon-timepicker>`));
+        await nextFrame();
         expect(picker.value).toBe('09:30:00');
         expect(new FormData(mount(`<form><neon-timepicker seconds name="time" value="09:30"></neon-timepicker></form>`)).get('time')).toBe('09:30:00');
     });
@@ -120,12 +128,14 @@ describe('<neon-timepicker>', () => {
         expect(input.value).toBe('09:05');
     });
 
-    it('keeps invalid typed text visible while exposing an empty value and badInput validity', () => {
+    it('keeps invalid typed text visible while exposing an empty value and badInput validity', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker value="10:00"></neon-timepicker>`));
+        await nextFrame();
         const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
 
         input.value = '25:00';
         input.dispatchEvent(new Event('input', { bubbles: true }));
+        await nextFrame();
         expect(picker.value).toBe('');
         expect(input.value).toBe('25:00');
         expect(picker.checkValidity()).toBe(false);
@@ -156,8 +166,9 @@ describe('<neon-timepicker>', () => {
         expect(changes).toBe(1);
     });
 
-    it('data-clearable clears value and dispatches input/change', () => {
+    it('data-clearable clears value and dispatches input/change', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker value="12:30" data-clearable></neon-timepicker>`));
+        await nextFrame();
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -166,18 +177,20 @@ describe('<neon-timepicker>', () => {
 
         expect(clear.style.display).not.toBe('none');
         clear.click();
+        await nextFrame();
         expect(picker.value).toBe('');
         expect(inputs).toBe(1);
         expect(changes).toBe(1);
         expect(clear.style.display).toBe('none');
     });
 
-    it('form.reset() restores defaultValue', () => {
+    it('form.reset() restores defaultValue', async () => {
         const form = /** @type {HTMLFormElement} */ (mount(`
             <form>
                 <neon-timepicker name="startsAt" value="08:00"></neon-timepicker>
             </form>
         `));
+        await nextFrame();
         const picker = /** @type {any} */ (form.querySelector('neon-timepicker'));
         picker.value = '11:30';
         expect(picker.value).toBe('11:30');
@@ -185,8 +198,9 @@ describe('<neon-timepicker>', () => {
         expect(picker.value).toBe('08:00');
     });
 
-    it('supports valueAsNumber, valueAsDate, stepUp and stepDown', () => {
+    it('supports valueAsNumber, valueAsDate, stepUp and stepDown', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker step="900"></neon-timepicker>`));
+        await nextFrame();
         picker.valueAsNumber = 9 * 60 * 60 * 1000;
         expect(picker.value).toBe('09:00');
         expect(picker.valueAsNumber).toBe(9 * 60 * 60 * 1000);
@@ -198,10 +212,7 @@ describe('<neon-timepicker>', () => {
         expect(picker.value).toBe('08:45');
     });
 
-    it('uses datalist options when list is provided', () => {
-        const picker = mount(`
-            <neon-timepicker list="slot-times"></neon-timepicker>
-        `);
+    it('uses datalist options when list is provided', async () => {
         const datalist = document.createElement('datalist');
         datalist.id = 'slot-times';
         datalist.innerHTML = `
@@ -210,7 +221,11 @@ describe('<neon-timepicker>', () => {
             <option value="25:00" label="Invalid"></option>
         `;
         document.body.appendChild(datalist);
-        picker.setAttribute('list', 'slot-times');
+
+        const picker = mount(`
+            <neon-timepicker list="slot-times"></neon-timepicker>
+        `);
+        await nextFrame();
 
         const labels = Array.from(picker.querySelectorAll('.combobox__option-label')).map((row) => row.textContent);
         expect(labels).toEqual(['Opening', 'Closing']);

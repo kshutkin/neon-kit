@@ -33,7 +33,7 @@ import {
     props,
     withInternals,
 } from '@slimlib/element';
-import { effect, flushEffects, signal } from '@slimlib/store';
+import { effect, signal } from '@slimlib/store';
 
 import { SvgIcon } from './svg-icon.jsx';
 import {
@@ -457,7 +457,6 @@ const renderTimepicker = (host) => {
         if (syncText) input.value = next;
         elementInternals.setFormValue(next, next);
         syncClearVisibility();
-        flushEffects();
         updateValidity();
         if (resetCommitted) lastCommittedValue = next;
         return previous !== next;
@@ -696,22 +695,21 @@ const renderTimepicker = (host) => {
         },
     );
 
-    const flushAfterPropertySet = () => flushEffects();
-    defineStringProperty(host, state, 'min', flushAfterPropertySet);
-    defineStringProperty(host, state, 'max', flushAfterPropertySet);
-    defineStringProperty(host, state, 'step', flushAfterPropertySet);
-    defineStringProperty(host, state, 'placeholder', flushAfterPropertySet);
+    defineStringProperty(host, state, 'min');
+    defineStringProperty(host, state, 'max');
+    defineStringProperty(host, state, 'step');
+    defineStringProperty(host, state, 'placeholder');
     defineStringProperty(host, state, 'name');
-    defineStringProperty(host, state, 'autocomplete', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'disabled', 'disabled', flushAfterPropertySet);
-    defineBooleanProperty(host, state, 'readOnly', 'readonly', flushAfterPropertySet);
+    defineStringProperty(host, state, 'autocomplete');
+    defineBooleanProperty(host, state, 'disabled', 'disabled');
+    defineBooleanProperty(host, state, 'readOnly', 'readonly');
     defineWritableProperty(
         host,
         'readonly',
         () => state.readonly,
         (v) => { /** @type {any} */ (host).readOnly = v; },
     );
-    defineBooleanProperty(host, state, 'required', 'required', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'required', 'required');
     defineBooleanProperty(
         host,
         state,
@@ -720,10 +718,9 @@ const renderTimepicker = (host) => {
         () => {
             coerceCurrentValueToFormat();
             lastCommittedValue = state.value;
-            flushEffects();
         },
     );
-    defineBooleanProperty(host, state, 'data-clearable', 'data-clearable', flushAfterPropertySet);
+    defineBooleanProperty(host, state, 'data-clearable', 'data-clearable');
     defineWritableProperty(
         host,
         'list',
@@ -734,9 +731,6 @@ const renderTimepicker = (host) => {
                 'list',
                 typeof v === 'string' ? v : (/** @type {{ id?: string } | null} */ (v))?.id || '',
             );
-            flushEffects();
-            renderRows();
-            updateValidity();
         },
     );
 
@@ -793,7 +787,6 @@ const renderTimepicker = (host) => {
     setValueFromString(state.value, { syncText: true, resetCommitted: true });
 
     onMount(() => {
-        flushEffects();
         updateValidity();
     });
 
@@ -825,7 +818,6 @@ const renderTimepicker = (host) => {
 
     onFormDisabled((disabled) => {
         formDisabled.set(disabled);
-        flushEffects();
     });
 
     onFormStateRestore((state) => {
