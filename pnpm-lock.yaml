@@ -71,15 +71,12 @@ importers:
 
   web-components:
     dependencies:
-      '@neon-kit/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@slimlib/element':
-        specifier: ^0.1.1
-        version: 0.1.1(@slimlib/jsx@0.1.1(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
+        specifier: ^0.1.2
+        version: 0.1.2(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
       '@slimlib/jsx':
-        specifier: ^0.1.1
-        version: 0.1.1(@slimlib/store@2.1.0)
+        specifier: ^0.1.2
+        version: 0.1.2(@slimlib/store@2.1.0)
       '@slimlib/store':
         specifier: ^2.1.0
         version: 2.1.0
@@ -87,6 +84,9 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
     devDependencies:
+      '@neon-kit/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@rollup-extras/plugin-clean':
         specifier: ^2.0.1
         version: 2.0.1(rollup@4.60.4)
@@ -695,14 +695,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@slimlib/element@0.1.1':
-    resolution: {integrity: sha512-qL6pOe9Yv2kb0TEq2i7QAEr47RoIzggXPw4wWTwCLy5T1PjDI2enTT3kKSfig7KYWyp+XB31JgIql3UYbsKFZw==}
+  '@slimlib/element@0.1.2':
+    resolution: {integrity: sha512-KRPxcRX7XXbowAiOMihmeqcrwDn4g2Yeb0TXDysP5HXaszJIfI7LGz3rk44kA6Pl/Ff5hoN0ZZae55wXoVjs3A==}
     peerDependencies:
-      '@slimlib/jsx': ^0.1.0
+      '@slimlib/jsx': ^0.1.1
       '@slimlib/store': ^2.1.0
 
-  '@slimlib/jsx@0.1.1':
-    resolution: {integrity: sha512-AtY5dKcg119BSL30XmMxLa4Yn/cbIExtelrqQXdi2FBKskqjpCddd80gMd0RCl3l+JMFJTf2dfWULMbMeS/pag==}
+  '@slimlib/jsx@0.1.2':
+    resolution: {integrity: sha512-//Nv+GFTG4x2DPXgMs1ffX0QX7Chn9UL7tKfJhwDf3zEqnIeuvdD7vxujfwIV4fEooSt3Xvt/yNZTcKHYovD9g==}
     peerDependencies:
       '@slimlib/store': ^2.1.0
 
@@ -2212,13 +2212,13 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.4':
     optional: true
 
-  '@slimlib/element@0.1.1(@slimlib/jsx@0.1.1(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)':
+  '@slimlib/element@0.1.2(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)':
     dependencies:
-      '@slimlib/jsx': 0.1.1(@slimlib/store@2.1.0)
+      '@slimlib/jsx': 0.1.2(@slimlib/store@2.1.0)
       '@slimlib/store': 2.1.0
       esm-env: 1.2.2
 
-  '@slimlib/jsx@0.1.1(@slimlib/store@2.1.0)':
+  '@slimlib/jsx@0.1.2(@slimlib/store@2.1.0)':
     dependencies:
       '@slimlib/store': 2.1.0
       esm-env: 1.2.2
