@@ -30,6 +30,7 @@ import {
     props,
     stringAttribute,
     withInternals,
+    withValidation,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
@@ -489,24 +490,6 @@ const renderMulticombobox = (host) => {
         configurable: true, enumerable: true,
         get: () => popover.matches(':popover-open'),
     });
-    Object.defineProperty(host, 'form', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.form,
-    });
-    Object.defineProperty(host, 'validity', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validity,
-    });
-    Object.defineProperty(host, 'validationMessage', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validationMessage,
-    });
-    Object.defineProperty(host, 'willValidate', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.willValidate,
-    });
-    /** @type {any} */ (host).checkValidity = () => elementInternals.checkValidity();
-    /** @type {any} */ (host).reportValidity = () => elementInternals.reportValidity();
 
     // ---- Attribute-driven effects -------------------------------------
     // Bidirectional reflection (disabled, required, name) is handled by
@@ -788,6 +771,7 @@ defineElement(
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),
+        withValidation(),
         formAssociated(),
     ],
     renderMulticombobox,

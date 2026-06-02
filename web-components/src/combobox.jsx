@@ -44,6 +44,7 @@ import {
     onMount,
     props,
     withInternals,
+    withValidation,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
@@ -448,24 +449,6 @@ const renderCombobox = (host) => {
         configurable: true, enumerable: true,
         get: () => popover.matches(':popover-open'),
     });
-    Object.defineProperty(host, 'form', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.form,
-    });
-    Object.defineProperty(host, 'validity', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validity,
-    });
-    Object.defineProperty(host, 'validationMessage', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.validationMessage,
-    });
-    Object.defineProperty(host, 'willValidate', {
-        configurable: true, enumerable: true,
-        get: () => elementInternals.willValidate,
-    });
-    /** @type {any} */ (host).checkValidity = () => elementInternals.checkValidity();
-    /** @type {any} */ (host).reportValidity = () => elementInternals.reportValidity();
 
     // ---- Attribute-driven effects -------------------------------------
     // placeholder → DOM
@@ -750,6 +733,7 @@ defineElement(
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),
+        withValidation(),
         formAssociated(),
     ],
     renderCombobox,

@@ -108,21 +108,14 @@ export function defineBooleanProperty(host, state, propName, attrName, afterSet 
 /**
  * @param {HTMLElement} host
  * @param {{
- *   internals: ElementInternals,
  *   focusTarget: HTMLInputElement,
  *   willValidate: () => boolean,
  *   stepBy: (amount: number) => void,
  * }} options
  */
-export function defineFormControlApi(host, { internals, focusTarget, willValidate, stepBy }) {
-    defineReadonlyProperty(host, 'labels', () => internals.labels);
-    defineReadonlyProperty(host, 'form', () => internals.form);
-    defineReadonlyProperty(host, 'validity', () => internals.validity);
-    defineReadonlyProperty(host, 'validationMessage', () => internals.validationMessage);
+export function defineFormControlApi(host, { focusTarget, willValidate, stepBy }) {
     defineReadonlyProperty(host, 'willValidate', willValidate);
 
-    /** @type {any} */ (host).checkValidity = () => internals.checkValidity();
-    /** @type {any} */ (host).reportValidity = () => internals.reportValidity();
     /** @type {any} */ (host).focus = (/** @type {FocusOptions} */ options) => focusTarget.focus(options);
     /** @type {any} */ (host).blur = () => focusTarget.blur();
     /** @type {any} */ (host).select = () => focusTarget.select();

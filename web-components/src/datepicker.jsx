@@ -30,6 +30,7 @@ import {
     onMount,
     props,
     withInternals,
+    withValidation,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
@@ -811,7 +812,6 @@ const renderDatepicker = (host) => {
     );
     defineReadonlyProperty(host, 'open', () => isPopoverOpen());
     defineFormControlApi(host, {
-        internals: elementInternals,
         focusTarget: input,
         willValidate: () => willValidateNow(),
         stepBy,
@@ -1009,6 +1009,7 @@ defineElement(
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),
+        withValidation(),
         formAssociated(),
     ],
     renderDatepicker,

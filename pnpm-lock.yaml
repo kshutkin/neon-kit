@@ -72,8 +72,8 @@ importers:
   web-components:
     dependencies:
       '@slimlib/element':
-        specifier: ^0.1.2
-        version: 0.1.2(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
+        specifier: ^0.2.0
+        version: 0.2.0(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
       '@slimlib/jsx':
         specifier: ^0.1.2
         version: 0.1.2(@slimlib/store@2.1.0)
@@ -695,10 +695,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@slimlib/element@0.1.2':
-    resolution: {integrity: sha512-KRPxcRX7XXbowAiOMihmeqcrwDn4g2Yeb0TXDysP5HXaszJIfI7LGz3rk44kA6Pl/Ff5hoN0ZZae55wXoVjs3A==}
+  '@slimlib/element@0.2.0':
+    resolution: {integrity: sha512-/slvJmuZl+qjf4Ti7lqtpMNQF54Nva1xVV2DAtYEMS9bdqM200eEPM4iOG0tamzUKHG3xZ+1byCemQAoidnQ9A==}
     peerDependencies:
-      '@slimlib/jsx': ^0.1.1
+      '@slimlib/jsx': ^0.1.2
       '@slimlib/store': ^2.1.0
 
   '@slimlib/jsx@0.1.2':
@@ -2212,7 +2212,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.4':
     optional: true
 
-  '@slimlib/element@0.1.2(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)':
+  '@slimlib/element@0.2.0(@slimlib/jsx@0.1.2(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)':
     dependencies:
       '@slimlib/jsx': 0.1.2(@slimlib/store@2.1.0)
       '@slimlib/store': 2.1.0
