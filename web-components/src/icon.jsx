@@ -26,8 +26,6 @@ import {
 import { svg } from '@slimlib/jsx';
 import { effect, signal } from '@slimlib/store';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
 /**
  * Like `stringAttribute`, but reflects an empty string as attribute
  * removal (the legacy `<neon-icon>` behavior).
@@ -47,7 +45,6 @@ const reflectedString = [
 function svgAttrEntries(def, ariaLabel) {
     /** @type {[string, string][]} */
     const entries = [
-        ['xmlns', SVG_NS],
         ['viewBox', def.viewBox],
     ];
     if (def.attrs) for (const [k, v] of Object.entries(def.attrs)) entries.push([k, v]);

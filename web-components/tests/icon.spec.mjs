@@ -189,6 +189,7 @@ describe('<neon-icon>', () => {
 
         const liveAttrs = Object.fromEntries(Array.from(live.attributes).map((a) => [a.name, a.value]));
         const parsedAttrs = Object.fromEntries(Array.from(parsed.attributes).map((a) => [a.name, a.value]));
+        delete parsedAttrs.xmlns;
         expect(parsedAttrs).toEqual(liveAttrs);
 
         const livePaths = Array.from(live.querySelectorAll('path'));
