@@ -42,6 +42,7 @@ let nextId = 0;
 /**
  * @typedef {'hover' | 'focus' | 'click'} Trigger
  * @typedef {{ target: 'parent' | 'self', event: string, action: 'show' | 'hide' | 'toggle' | 'cancelHide' }} Binding
+ * @typedef {HTMLElement & { showPopover?: () => void, hidePopover?: () => void }} TooltipHost
  */
 
 /** @type {Record<Trigger, Binding[]>} */
@@ -75,72 +76,77 @@ function readPlacement(value) {
  */
 function readTriggerSet(value) {
     /** @type {Set<Trigger>} */
-    const set = new Set();
+    const triggerSet = new Set();
     if (value === null) {
-        set.add('hover').add('focus');
-        return set;
+        triggerSet.add('hover');
+        triggerSet.add('focus');
+    } else {
+        for (const part of value.trim().split(/\s+/)) {
+            if (part === 'hover' || part === 'focus' || part === 'click') {
+                triggerSet.add(part);
+            }
+        }
     }
-    for (const part of value.trim().split(/\s+/)) {
-        if (part === 'hover' || part === 'focus' || part === 'click') set.add(part);
-    }
-    return set;
+    return triggerSet;
 }
 
 /**
- * @param {Element} el
+ * @param {Element} element
  */
-function isFocusable(el) {
-    const disabled = /** @type {any} */ (el).disabled === true;
-    const tabindex = el.getAttribute('tabindex');
+function isFocusable(element) {
+    const disabled = /** @type {any} */ (element).disabled === true;
+    const tabindex = element.getAttribute('tabindex');
     return !disabled
         && tabindex !== '-1'
         && (tabindex !== null
-            || el.matches('button, a[href], input, select, textarea, summary, [contenteditable=""], [contenteditable="true"]'));
+            || element.matches('button, a[href], input, select, textarea, summary, [contenteditable=""], [contenteditable="true"]'));
 }
 
 /**
  * @param {HTMLElement} host
  */
 const renderTooltip = (host) => {
+    const popoverHost = /** @type {TooltipHost} */ (host);
+
     props({
         placement: /** @type {string | null} */ (null),
         trigger: /** @type {string | null} */ (null),
     });
 
     /** @type {HTMLElement | null} */
-    let parent = null;
+    let triggerElement = null;
     /** @type {ReturnType<typeof setTimeout> | null} */
-    let timer = null;
+    let delayTimer = null;
     /** @type {AbortController | null} */
-    let listeners = null;
+    let listenerController = null;
     /** @type {'top' | 'bottom' | 'left' | 'right'} */
     let appliedPlacement = 'top';
-    let setAriaDescribedBy = false;
+    let ownsAriaDescribedBy = false;
     let anchorName = '';
 
     const clearTimer = () => {
-        if (timer) {
-            clearTimeout(timer);
-            timer = null;
+        if (delayTimer) {
+            clearTimeout(delayTimer);
+            delayTimer = null;
         }
     };
 
-    const showNow = () => {
+    const showTooltipNow = () => {
         clearTimer();
         try {
-            if (typeof (/** @type {any} */ (host)).showPopover === 'function' && !host.matches(':popover-open')) {
-                /** @type {any} */ (host).showPopover();
+            if (typeof popoverHost.showPopover === 'function' && !host.matches(':popover-open')) {
+                popoverHost.showPopover();
             }
         } catch {
             /* already open or unsupported */
         }
     };
 
-    const hideNow = () => {
+    const hideTooltipNow = () => {
         clearTimer();
         try {
-            if (typeof (/** @type {any} */ (host)).hidePopover === 'function' && host.matches(':popover-open')) {
-                /** @type {any} */ (host).hidePopover();
+            if (typeof popoverHost.hidePopover === 'function' && host.matches(':popover-open')) {
+                popoverHost.hidePopover();
             }
         } catch {
             /* already closed */
@@ -149,33 +155,40 @@ const renderTooltip = (host) => {
 
     /** @param {number} delay */
     const scheduleShow = (delay = OPEN_DELAY_MS) => {
-        if (typeof (/** @type {any} */ (host)).showPopover !== 'function') return;
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-            try {
-                if (host.matches(':popover-open')) return;
-                /** @type {any} */ (host).showPopover();
-            } catch {
-                /* already open or detached */
-            }
-        }, delay);
+        if (typeof popoverHost.showPopover === 'function') {
+            clearTimer();
+            delayTimer = setTimeout(() => {
+                try {
+                    if (!host.matches(':popover-open')) {
+                        popoverHost.showPopover?.();
+                    }
+                } catch {
+                    /* already open or detached */
+                }
+            }, delay);
+        }
     };
 
     /** @param {number} delay */
     const scheduleHide = (delay = CLOSE_DELAY_MS) => {
-        if (typeof (/** @type {any} */ (host)).hidePopover !== 'function') return;
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-            if (host.matches(':hover')) return;
-            if (parent?.matches(':hover')) return;
-            if (document.activeElement === parent) return;
-            if (host.contains(document.activeElement)) return;
-            try {
-                if (host.matches(':popover-open')) /** @type {any} */ (host).hidePopover();
-            } catch {
-                /* already closed */
-            }
-        }, delay);
+        if (typeof popoverHost.hidePopover === 'function') {
+            clearTimer();
+            delayTimer = setTimeout(() => {
+                const shouldStayOpen = host.matches(':hover')
+                    || triggerElement?.matches(':hover') === true
+                    || document.activeElement === triggerElement
+                    || host.contains(document.activeElement);
+                if (!shouldStayOpen) {
+                    try {
+                        if (host.matches(':popover-open')) {
+                            popoverHost.hidePopover?.();
+                        }
+                    } catch {
+                        /* already closed */
+                    }
+                }
+            }, delay);
+        }
     };
 
     /** @type {Record<'show' | 'hide' | 'toggle' | 'cancelHide', () => void>} */
@@ -183,38 +196,43 @@ const renderTooltip = (host) => {
         show: () => scheduleShow(),
         hide: () => scheduleHide(),
         toggle: () => {
-            if (host.matches(':popover-open')) hideNow();
-            else showNow();
+            if (host.matches(':popover-open')) {
+                hideTooltipNow();
+            } else {
+                showTooltipNow();
+            }
         },
         cancelHide: () => clearTimer(),
     };
 
     /** @param {'top' | 'bottom' | 'left' | 'right'} value */
     const applyPlacementClass = (value) => {
-        if (appliedPlacement === value && host.classList.contains(`-${value}`)) return;
-        host.classList.remove('-top', '-bottom', '-left', '-right');
-        host.classList.add(`-${value}`);
-        appliedPlacement = value;
+        if (appliedPlacement !== value || !host.classList.contains(`-${value}`)) {
+            host.classList.remove('-top', '-bottom', '-left', '-right');
+            host.classList.add(`-${value}`);
+            appliedPlacement = value;
+        }
     };
 
     /** @param {Set<Trigger>} triggers */
     const applyTriggers = (triggers) => {
-        listeners?.abort();
-        if (!parent) return;
-        const ctrl = new AbortController();
-        listeners = ctrl;
-        const opts = { signal: ctrl.signal };
-        for (const trigger of triggers) {
-            for (const binding of TRIGGER_BINDINGS[trigger]) {
-                const target = binding.target === 'parent' ? parent : host;
-                target.addEventListener(binding.event, actions[binding.action], opts);
+        listenerController?.abort();
+        if (triggerElement) {
+            const nextListenerController = new AbortController();
+            listenerController = nextListenerController;
+            const listenerOptions = { signal: nextListenerController.signal };
+            for (const trigger of triggers) {
+                for (const binding of TRIGGER_BINDINGS[trigger]) {
+                    const target = binding.target === 'parent' ? triggerElement : host;
+                    target.addEventListener(binding.event, actions[binding.action], listenerOptions);
+                }
             }
         }
     };
 
     // ---- Public host API ----------------------------------------------
-    /** @type {any} */ (host).showTooltip = showNow;
-    /** @type {any} */ (host).hideTooltip = hideNow;
+    /** @type {any} */ (host).showTooltip = showTooltipNow;
+    /** @type {any} */ (host).hideTooltip = hideTooltipNow;
 
     // The two API attributes only drive imperative side effects (class
     // toggle, listener rewiring); nothing in a reactive view consumes
@@ -225,87 +243,90 @@ const renderTooltip = (host) => {
     /** @param {string} name @param {(value: string | null) => void} sideEffect */
     const wrapPropSetter = (name, sideEffect) => {
         const descriptor = Object.getOwnPropertyDescriptor(host, name);
-        if (!descriptor || !descriptor.set || !descriptor.get) return;
-        const { get, set } = descriptor;
-        Object.defineProperty(host, name, {
-            configurable: true,
-            enumerable: true,
-            get,
-            set(value) {
-                set.call(host, value);
-                if (!parent) return;
-                sideEffect(value == null ? null : String(value));
-            },
-        });
+        if (descriptor?.set && descriptor.get) {
+            const { get, set } = descriptor;
+            Object.defineProperty(host, name, {
+                configurable: true,
+                enumerable: true,
+                get,
+                set(value) {
+                    set.call(host, value);
+                    if (triggerElement) {
+                        sideEffect(value == null ? null : String(value));
+                    }
+                },
+            });
+        }
     };
-    wrapPropSetter('placement', (v) => applyPlacementClass(readPlacement(v)));
-    wrapPropSetter('trigger', (v) => applyTriggers(readTriggerSet(v)));
+    wrapPropSetter('placement', (value) => applyPlacementClass(readPlacement(value)));
+    wrapPropSetter('trigger', (value) => applyTriggers(readTriggerSet(value)));
 
     onConnect(() => {
-        parent = host.parentElement;
-        if (!parent) return;
-
-        if (!host.id) host.id = `neon-tooltip-${++nextId}`;
-        if (!host.hasAttribute('popover')) host.setAttribute('popover', 'manual');
-        host.classList.add('tooltip');
-
-        if (!host.querySelector(':scope > .tooltip__arrow')) {
-            host.appendChild(<div class="tooltip__arrow" />);
-        }
-
-        if (!host.hasAttribute('role') && !host.querySelector(':scope > :not(.tooltip__arrow)')) {
-            host.setAttribute('role', 'tooltip');
-        }
-
-        const existingAnchor = parent.style.getPropertyValue('anchor-name');
-        if (existingAnchor) {
-            anchorName = '';
-            if (!host.style.getPropertyValue('position-anchor')) {
-                host.style.setProperty('position-anchor', existingAnchor);
+        triggerElement = host.parentElement;
+        if (triggerElement) {
+            if (!host.id) {
+                host.id = `neon-tooltip-${++nextId}`;
             }
-        } else {
-            anchorName = `--neon-tooltip-anchor-${host.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
-            parent.style.setProperty('anchor-name', anchorName);
-            if (!host.style.getPropertyValue('position-anchor')) {
-                host.style.setProperty('position-anchor', anchorName);
+            if (!host.hasAttribute('popover')) {
+                host.setAttribute('popover', 'manual');
             }
-        }
+            host.classList.add('tooltip');
 
-        if (!parent.hasAttribute('aria-describedby')) {
-            parent.setAttribute('aria-describedby', host.id);
-            setAriaDescribedBy = true;
-        }
+            if (!host.hasAttribute('role') && !host.querySelector(':scope > :not(.tooltip__arrow)')) {
+                host.setAttribute('role', 'tooltip');
+            }
 
-        applyPlacementClass(readPlacement(host.getAttribute('placement')));
-        applyTriggers(readTriggerSet(host.getAttribute('trigger')));
+            const existingAnchorName = triggerElement.style.getPropertyValue('anchor-name');
+            if (existingAnchorName) {
+                anchorName = '';
+                if (!host.style.getPropertyValue('position-anchor')) {
+                    host.style.setProperty('position-anchor', existingAnchorName);
+                }
+            } else {
+                anchorName = `--neon-tooltip-anchor-${host.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                triggerElement.style.setProperty('anchor-name', anchorName);
+                if (!host.style.getPropertyValue('position-anchor')) {
+                    host.style.setProperty('position-anchor', anchorName);
+                }
+            }
 
-        if (DEV && readTriggerSet(host.getAttribute('trigger')).has('focus') && !isFocusable(parent)) {
-            // eslint-disable-next-line no-console
-            console.debug(
-                '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
-                parent,
-            );
+            if (!triggerElement.hasAttribute('aria-describedby')) {
+                triggerElement.setAttribute('aria-describedby', host.id);
+                ownsAriaDescribedBy = true;
+            }
+
+            const triggerSet = readTriggerSet(host.getAttribute('trigger'));
+            applyPlacementClass(readPlacement(host.getAttribute('placement')));
+            applyTriggers(triggerSet);
+
+            if (DEV && triggerSet.has('focus') && !isFocusable(triggerElement)) {
+                // eslint-disable-next-line no-console
+                console.debug(
+                    '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
+                    triggerElement,
+                );
+            }
         }
     });
 
     onDisconnect(() => {
         clearTimer();
-        listeners?.abort();
-        listeners = null;
-        if (parent) {
-            if (setAriaDescribedBy && parent.getAttribute('aria-describedby') === host.id) {
-                parent.removeAttribute('aria-describedby');
+        listenerController?.abort();
+        listenerController = null;
+        if (triggerElement) {
+            if (ownsAriaDescribedBy && triggerElement.getAttribute('aria-describedby') === host.id) {
+                triggerElement.removeAttribute('aria-describedby');
             }
-            if (anchorName && parent.style.getPropertyValue('anchor-name') === anchorName) {
-                parent.style.removeProperty('anchor-name');
+            if (anchorName && triggerElement.style.getPropertyValue('anchor-name') === anchorName) {
+                triggerElement.style.removeProperty('anchor-name');
             }
         }
-        parent = null;
-        setAriaDescribedBy = false;
+        triggerElement = null;
+        ownsAriaDescribedBy = false;
         anchorName = '';
     });
 
-    return null;
+    return <div class="tooltip__arrow" />;
 };
 
 /**

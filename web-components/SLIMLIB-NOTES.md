@@ -85,11 +85,10 @@ the combobox/datepicker/timepicker `value` setters.
   `createElementArray`). You can use a JSX expression standalone as an
   `appendChild` argument — `host.appendChild(<div class="…" />)` — no
   `render()` needed. `tooltip`'s arrow uses this.
-- **Do not let `render()` own a host that already has consumer
-  children.** `tooltip` is the popover and its children are user
-  content; its render returns `null` and the arrow is appended
-  imperatively. Returning JSX children there would wipe the user's
-  markup.
+- **Returned JSX is appended to the host, not used to replace existing
+  children.** This means `tooltip` can return its owned arrow element
+  while preserving author-provided tooltip content already inside the
+  host.
 - SVG needs the `svg()` namespace factory (`icon`).
 
 ## Attributes

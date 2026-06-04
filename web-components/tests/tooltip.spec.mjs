@@ -87,7 +87,8 @@ describe('<neon-tooltip>', () => {
         expect(tip.classList.contains('-top')).toBe(false);
     });
 
-    it('does not overwrite consumer-set aria-describedby', () => {        document.body.innerHTML = `
+    it('does not overwrite consumer-set aria-describedby', () => {
+        document.body.innerHTML = `
             <p id="external">External description.</p>
             <button aria-describedby="external">x<neon-tooltip>y</neon-tooltip></button>
         `;
