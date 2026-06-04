@@ -34,14 +34,14 @@ defineElement(
         const elementInternals = internals();
         const state = props({
             name: undefined,
-            label: undefined,
+            label: null,
             icon: /** @type {IconDef | undefined} */ (undefined),
         });
 
         /** @type {import('@slimlib/store').Signal<IconDef | undefined>} */
         const loadedIconDef = signal(/** @type {IconDef | undefined} */ (undefined));
 
-        effect(async () => {
+        effect(() => {
             const override = state.icon;
             const name = state.name;
             if (override || !name) {
@@ -54,7 +54,7 @@ defineElement(
                         loadedIconDef.set(mod.default);
                     }
                 },
-                (error) => {
+                () => {
                     if (name === state.name) {
                         loadedIconDef.set(undefined);
                     }
@@ -66,7 +66,7 @@ defineElement(
             const label = state.label;
             elementInternals.ariaLabel = label;
             elementInternals.ariaHidden = label ? null : 'true';
-            elementInternals.ariaRole = label ? 'img' : null;
+            elementInternals.role = label ? 'img' : null;
         });
 
         return () => {
@@ -75,5 +75,3 @@ defineElement(
         };
     },
 );
-
-export {};
