@@ -43,7 +43,7 @@ let nextId = 0;
 /**
  * @typedef {'hover' | 'focus' | 'click'} Trigger
  * @typedef {{ target: 'parent' | 'self', event: string, action: 'show' | 'hide' | 'toggle' | 'cancelHide' }} Binding
- * @typedef {HTMLElement & { showPopover?: () => void, hidePopover?: () => void }} TooltipHost
+ * @typedef {HTMLElement & { showPopover: () => void, hidePopover: () => void }} TooltipHost
  */
 
 /** @type {Record<Trigger, Binding[]>} */
@@ -62,6 +62,8 @@ const TRIGGER_BINDINGS = {
         { target: 'parent', event: 'click', action: 'toggle' },
     ],
 };
+
+const isPopoverSupported = () => 'popover' in HTMLElement.prototype;
 
 /**
  * Local middleware prototype for static host attributes that should
@@ -157,23 +159,15 @@ const renderTooltip = (host) => {
 
     const showTooltipNow = () => {
         clearTimer();
-        try {
-            if (typeof popoverHost.showPopover === 'function' && !host.matches(':popover-open')) {
-                popoverHost.showPopover();
-            }
-        } catch {
-            /* already open or unsupported */
+        if (!host.matches(':popover-open')) {
+            popoverHost.showPopover();
         }
     };
 
     const hideTooltipNow = () => {
         clearTimer();
-        try {
-            if (typeof popoverHost.hidePopover === 'function' && host.matches(':popover-open')) {
-                popoverHost.hidePopover();
-            }
-        } catch {
-            /* already closed */
+        if (host.matches(':popover-open')) {
+            popoverHost.hidePopover();
         }
     };
 
@@ -186,40 +180,28 @@ const renderTooltip = (host) => {
 
     /** @param {number} delay */
     const scheduleShow = (delay = OPEN_DELAY_MS) => {
-        if (typeof popoverHost.showPopover === 'function') {
-            clearTimer();
-            delayTimer = setTimeout(() => {
-                try {
-                    if (!host.matches(':popover-open')) {
-                        popoverHost.showPopover?.();
-                    }
-                } catch {
-                    /* already open or detached */
-                }
-            }, delay);
-        }
+        clearTimer();
+        delayTimer = setTimeout(() => {
+            if (!host.matches(':popover-open')) {
+                popoverHost.showPopover();
+            }
+        }, delay);
     };
 
     /** @param {number} delay */
     const scheduleHide = (delay = CLOSE_DELAY_MS) => {
-        if (typeof popoverHost.hidePopover === 'function') {
-            clearTimer();
-            delayTimer = setTimeout(() => {
-                const shouldStayOpen = host.matches(':hover')
-                    || triggerElement?.matches(':hover') === true
-                    || document.activeElement === triggerElement
-                    || host.contains(document.activeElement);
-                if (!shouldStayOpen) {
-                    try {
-                        if (host.matches(':popover-open')) {
-                            popoverHost.hidePopover?.();
-                        }
-                    } catch {
-                        /* already closed */
-                    }
+        clearTimer();
+        delayTimer = setTimeout(() => {
+            const shouldStayOpen = host.matches(':hover')
+                || triggerElement?.matches(':hover') === true
+                || document.activeElement === triggerElement
+                || host.contains(document.activeElement);
+            if (!shouldStayOpen) {
+                if (host.matches(':popover-open')) {
+                    popoverHost.hidePopover();
                 }
-            }, delay);
-        }
+            }
+        }, delay);
     };
 
     /** @type {Record<'show' | 'hide' | 'toggle' | 'cancelHide', () => void>} */
@@ -346,19 +328,19 @@ const renderTooltip = (host) => {
  * }} NeonTooltipElement
  */
 
-defineElement(
-    'neon-tooltip',
-    [
-        withInternals(),
-        staticAttributes({
-            popover: 'manual',
-        }),
-        attributes({
-            placement: [stringAttribute[0]],
-            trigger: [stringAttribute[0]],
-        }),
-    ],
-    renderTooltip,
-);
-
-export {};
+if (isPopoverSupported()) {
+    defineElement(
+        'neon-tooltip',
+        [
+            withInternals(),
+            staticAttributes({
+                popover: 'manual',
+            }),
+            attributes({
+                placement: [stringAttribute[0]],
+                trigger: [stringAttribute[0]],
+            }),
+        ],
+        renderTooltip,
+    );
+}
