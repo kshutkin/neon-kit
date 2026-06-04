@@ -12,6 +12,8 @@ import bars3Outline from '@neon-kit/icons/outline/bars-3';
 
 const icon = document.createElement('neon-icon');
 icon.icon = bars3Outline;
+icon.icon = undefined;
+// @ts-expect-error - icon clears with undefined, not null
 icon.icon = null;
 void icon;
 

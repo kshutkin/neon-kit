@@ -128,18 +128,18 @@ describe('<neon-icon>', () => {
         el.icon = xMark;
         await settle();
         const path = el.querySelector('svg > path');
-        expect(path?.getAttribute('d')).toBe(xMark.paths[0].d);
+        expect(path?.getAttribute('d')).toBe(xMark[4]);
     });
 
     it('clearing the property falls back to `name` loading', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
         el.icon = xMark;
-        el.icon = null;
+        el.icon = undefined;
         el.setAttribute('name', 'outline/bars-3');
         await settle();
         const path = el.querySelector('svg > path');
-        expect(path?.getAttribute('d')).toBe(bars.paths[0].d);
+        expect(path?.getAttribute('d')).toBe(bars[4]);
     });
 
     it('only the latest name renders on rapid changes', async () => {
@@ -153,7 +153,7 @@ describe('<neon-icon>', () => {
         const svg = el.querySelector('svg');
         expect(svg?.getAttribute('fill')).toBe('currentColor');
         const path = svg?.querySelector('path');
-        expect(path?.getAttribute('d')).toBe(check.paths[0].d);
+        expect(path?.getAttribute('d')).toBe(check[4]);
     });
 
     it('renders nothing for a bad name', async () => {
@@ -294,20 +294,16 @@ describe('<neon-icon>', () => {
         expect(el.querySelector('svg')).toBeNull();
     });
 
-    it('renders an `IconDef` that omits `attrs` on the def and on its paths', async () => {
+    it('renders an `IconDef` with empty shared attrs', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
-        el.icon = /** @type {IconDef} */ ({
-            viewBox: '0 0 24 24',
-            paths: [{ d: 'M4 4h16v16H4z' }],
-        });
+        el.icon = [24, 24, {}, {}, 'M4 4h16v16H4z'];
         await settle();
         const svg = el.querySelector('svg');
         expect(svg).not.toBeNull();
         expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
         const path = svg?.querySelector('path');
         expect(path?.getAttribute('d')).toBe('M4 4h16v16H4z');
-        // The path has no `attrs`, so only `d` is set on it.
         expect(path?.getAttributeNames()).toEqual(['d']);
     });
 });

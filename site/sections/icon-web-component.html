@@ -53,7 +53,7 @@ import '@neon-kit/web-components/icon';</code></pre>
 
 const el = document.querySelector('neon-icon');
 el.icon = bars;            // synchronous render; wins over `name`
-el.icon = null;            // clear; falls back to `name` loading</code></pre>
+el.icon = undefined;       // clear; falls back to `name` loading</code></pre>
     </section>
 
     <section class="mb-8">
@@ -90,8 +90,8 @@ el.icon = null;            // clear; falls back to `name` loading</code></pre>
                     </tr>
                     <tr>
                         <td class="border border-border px-4 py-2"><code>icon</code></td>
-                        <td class="border border-border px-4 py-2"><code>IconDef | null</code></td>
-                        <td class="border border-border px-4 py-2">Property-only override. Assign an imported icon definition for synchronous rendering; set to <code>null</code> to resume <code>name</code> loading.</td>
+                        <td class="border border-border px-4 py-2"><code>IconDef | undefined</code></td>
+                        <td class="border border-border px-4 py-2">Property-only override. Assign an imported icon definition for synchronous rendering; set to <code>undefined</code> to resume <code>name</code> loading.</td>
                     </tr>
                     <tr>
                         <td class="border border-border px-4 py-2"><code>label</code></td>

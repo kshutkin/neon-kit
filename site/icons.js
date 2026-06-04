@@ -23,7 +23,7 @@ for (const [path, load] of Object.entries(modules)) {
     lookup.set(`${m[1]}/${m[2]}`, load);
 }
 
-/** @type {Map<string, Promise<IconDef | null>>} */
+/** @type {Map<string, Promise<IconDef | undefined>>} */
 const cache = new Map();
 
 /** @param {string} name */
@@ -31,8 +31,8 @@ function loadIcon(name) {
     const cached = cache.get(name);
     if (cached) return cached;
     const load = lookup.get(name);
-    if (!load) return Promise.resolve(null);
-    const promise = load().then((mod) => mod.default).catch(() => null);
+    if (!load) return Promise.resolve(undefined);
+    const promise = load().then((mod) => mod.default).catch(() => undefined);
     cache.set(name, promise);
     return promise;
 }
@@ -49,7 +49,7 @@ function hydrate(el, force) {
     if (el.tagName !== 'NEON-ICON') return;
     const name = el.getAttribute('name');
     if (!name) return;
-    if (force) /** @type {any} */ (el).icon = null;
+    if (force) /** @type {any} */ (el).icon = undefined;
     Promise.all([ensureIconElement(), loadIcon(name)]).then(([, def]) => {
         if (def && el.getAttribute('name') === name && !(/** @type {any} */ (el).icon)) {
             /** @type {any} */ (el).icon = def;

@@ -184,7 +184,7 @@ export const NeonTooltipElement = createCustomElement([], render, NeonTooltipBas
 
 // element with a dynamic prop (icon): intersect the impl instance type
 const Impl = createCustomElement([attributes({ /* … */ })], render);
-/** @typedef {InstanceType<typeof Impl> & { icon: IconDef | null }} NeonIconElement */
+/** @typedef {InstanceType<typeof Impl> & { icon: IconDef | undefined }} NeonIconElement */
 /** @type {new (...params: any[]) => NeonIconElement} */
 export const NeonIconElement = Impl;
 ```
@@ -198,5 +198,4 @@ gated by the build today.
 `tests/types.ts` is the contract to keep green (`icon.icon`,
 `menu.items`, `NeonTooltipElement` as a type with `showTooltip` /
 `hideTooltip`, `combobox.value` / `.options` / `.checkValidity()`).
-
 

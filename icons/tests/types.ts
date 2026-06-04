@@ -17,9 +17,15 @@ void bars3Mini;
 void bars3Micro;
 
 const serializedIcon: string = serialize(bars3Outline, { size: 20, ariaLabel: 'Menu' });
-const svgFill: string = bars3Outline.attrs.fill;
-const pathLinecap: string = bars3Outline.paths[0].attrs['stroke-linecap'];
+const iconWidth: number = bars3Outline[0];
+const iconHeight: number = bars3Outline[1];
+const svgFill: string = bars3Outline[2].fill;
+const pathLinecap: string = bars3Outline[3]['stroke-linecap'];
+const firstPath: string = bars3Outline[4];
 void serializedIcon;
+void iconWidth;
+void iconHeight;
 void svgFill;
 void pathLinecap;
+void firstPath;
 void root.serialize;

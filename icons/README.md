@@ -35,9 +35,11 @@ import menuSolid from '@neon-kit/icons/solid/bars-3';   // 24×24 filled
 import menuMini from '@neon-kit/icons/mini/bars-3';     // 20×20 filled
 import menuMicro from '@neon-kit/icons/micro/bars-3';   // 16×16 filled
 
-menu.viewBox;   // '0 0 24 24'
-menu.attrs;     // { fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5' }
-menu.paths;     // [{ d, attrs }, ...]
+menu[0];   // width: 24
+menu[1];   // height: 24
+menu[2];   // SVG attrs: { fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5' }
+menu[3];   // shared path attrs: { 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+menu[4];   // first path data string
 ```
 
 Need a stringified `<svg>` for direct HTML injection? Use the shared
@@ -134,6 +136,14 @@ attrs, and per-path attrs for that variant. To change a variant-wide
 default (e.g. heroicons bumps outline `stroke-width`), edit the
 `VARIANT_SPEC` entry in `scripts/build-icons.mjs` and re-run `gen`;
 all 18 icons inherit the new defaults via the factory.
+
+The exported runtime `IconDef` is a compact tuple:
+
+```js
+[width, height, svgAttrs, pathAttrs, ...paths]
+```
+
+All paths in a generated icon share the same `pathAttrs` object.
 
 The `_variant.js` modules are package-internal — they are not exposed
 via `exports` in `package.json` and consumers should not import them.

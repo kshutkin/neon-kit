@@ -4,7 +4,7 @@
  * element (in `@neon-kit/web-components/icon`) renders for the same
  * inputs, modulo attribute ordering.
  *
- * @import { IconDef, IconPath } from './types.js'
+ * @import { IconDef } from './types.js'
  */
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -29,18 +29,20 @@ function parseSize(rawSize) {
 }
 
 /**
- * @param {IconDef} iconDef
+ * @param {number} width
+ * @param {number} height
+ * @param {Record<string, string>} svgAttrs
  * @param {string} size
  * @param {string | null} ariaLabel
  * @returns {[string, string][]}
  */
-function svgAttrEntries(iconDef, size, ariaLabel) {
+function svgAttrEntries(width, height, svgAttrs, size, ariaLabel) {
     /** @type {[string, string][]} */
     const entries = [
         ['xmlns', SVG_NS],
-        ['viewBox', iconDef.viewBox],
+        ['viewBox', `0 0 ${width} ${height}`],
     ];
-    for (const [attributeName, attributeValue] of Object.entries(iconDef.attrs)) {
+    for (const [attributeName, attributeValue] of Object.entries(svgAttrs)) {
         entries.push([attributeName, attributeValue]);
     }
     entries.push(['width', size], ['height', size]);
@@ -53,13 +55,14 @@ function svgAttrEntries(iconDef, size, ariaLabel) {
 }
 
 /**
- * @param {IconPath} iconPath
+ * @param {string} pathData
+ * @param {Record<string, string>} pathAttrs
  * @returns {[string, string][]}
  */
-function pathAttrEntries(iconPath) {
+function pathAttrEntries(pathData, pathAttrs) {
     /** @type {[string, string][]} */
-    const entries = [['d', iconPath.d]];
-    for (const [attributeName, attributeValue] of Object.entries(iconPath.attrs)) {
+    const entries = [['d', pathData]];
+    for (const [attributeName, attributeValue] of Object.entries(pathAttrs)) {
         entries.push([attributeName, attributeValue]);
     }
     return entries;
@@ -89,17 +92,18 @@ function escapeText(text) {
  * @returns {string}
  */
 export function serialize(iconDef, options) {
+    const [width, height, svgAttrs, pathAttrs, ...paths] = iconDef;
     const size = parseSize(options?.size == null ? null : String(options.size));
     const label = options?.ariaLabel ?? null;
-    const svgAttrStr = svgAttrEntries(iconDef, size, label)
+    const svgAttrStr = svgAttrEntries(width, height, svgAttrs, size, label)
         .map(([attributeName, attributeValue]) => `${attributeName}="${escapeAttr(attributeValue)}"`)
         .join(' ');
     const title = label ? `<title>${escapeText(label)}</title>` : '';
-    const paths = iconDef.paths.map((iconPath) => {
-        const attrStr = pathAttrEntries(iconPath)
+    const pathElements = paths.map((pathData) => {
+        const attrStr = pathAttrEntries(pathData, pathAttrs)
             .map(([attributeName, attributeValue]) => `${attributeName}="${escapeAttr(attributeValue)}"`)
             .join(' ');
         return `<path ${attrStr}/>`;
     }).join('');
-    return `<svg ${svgAttrStr}>${title}${paths}</svg>`;
+    return `<svg ${svgAttrStr}>${title}${pathElements}</svg>`;
 }

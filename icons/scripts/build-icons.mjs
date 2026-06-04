@@ -226,13 +226,28 @@ function parseAttrs(chunk) {
  * @returns {string}
  */
 function renderIconModule(name, variant, pathData) {
-    const body = pathData.length === 1
-        ? `[${JSON.stringify(pathData[0])}]`
-        : `[\n    ${pathData.map((pathDataValue) => JSON.stringify(pathDataValue)).join(',\n    ')},\n]`;
+    if (variant !== 'outline' && pathData.length !== 1) {
+        throw new Error(`${variant}/${name}: expected exactly one path, got ${pathData.length}`);
+    }
+
+    const body = variant === 'outline'
+        ? renderPathArray(pathData)
+        : JSON.stringify(pathData[0]);
     return `// \`${name}\` (${variant}) — generated from heroicons. Do not edit by hand.
 import { icon } from './_variant.js';
 export default icon(${body});
 `;
+}
+
+/**
+ * @param {string[]} pathData
+ * @returns {string}
+ */
+function renderPathArray(pathData) {
+    const body = pathData.length === 1
+        ? `[${JSON.stringify(pathData[0])}]`
+        : `[\n    ${pathData.map((pathDataValue) => JSON.stringify(pathDataValue)).join(',\n    ')},\n]`;
+    return body;
 }
 
 /**
@@ -287,7 +302,7 @@ function renderRootIndex() {
  *     outline['bars-3'];   // IconDef
  *
  * Also re-exports the shared \`serialize\` helper from \`./serialize.js\`
- * and the shared \`IconPath\` / \`IconDef\` typedefs.
+ * and the shared \`IconDef\` typedef.
  *
  * Subpath imports remain the recommended path for tree-shaking.
  *
@@ -295,7 +310,6 @@ function renderRootIndex() {
  */
 
 /**
- * @typedef {import('./types.js').IconPath} IconPath
  * @typedef {import('./types.js').IconDef} IconDef
  */
 

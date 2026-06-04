@@ -22,7 +22,8 @@ import { svg } from '@slimlib/jsx';
  * @returns {SVGElement}
  */
 export function SvgIcon({ def, class: className, viewBox, strokeWidth, children }) {
-    const attrs = def?.attrs ? { ...def.attrs } : {
+    const [width, height, iconAttrs, pathAttrs, ...paths] = def ?? [];
+    const attrs = iconAttrs ? { ...iconAttrs } : {
         fill: 'none',
         stroke: 'currentColor',
         'stroke-width': String(strokeWidth ?? '2'),
@@ -34,13 +35,13 @@ export function SvgIcon({ def, class: className, viewBox, strokeWidth, children 
     return /** @type {SVGElement} */ (svg(() => (
         <svg
             class={className}
-            viewBox={viewBox ?? def?.viewBox ?? '0 0 24 24'}
+            viewBox={viewBox ?? (width && height ? `0 0 ${width} ${height}` : '0 0 24 24')}
             {...attrs}
             width="1em"
             height="1em"
             aria-hidden="true"
         >
-            {children ? children() : def?.paths.map((p) => <path d={p.d} {...(p.attrs ?? {})} />)}
+            {children ? children() : paths.map((pathData) => <path d={pathData} {...pathAttrs} />)}
         </svg>
     )));
 }

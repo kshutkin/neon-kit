@@ -12,6 +12,8 @@
  */
 
 export const VIEWBOX = '0 0 24 24';
+export const WIDTH = 24;
+export const HEIGHT = 24;
 export const SVG_ATTRS = { fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5' };
 export const PATH_ATTRS = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
 
@@ -20,12 +22,5 @@ export const PATH_ATTRS = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round
  * @returns {IconDef}
  */
 export function icon(paths) {
-    return {
-        viewBox: VIEWBOX,
-        attrs: SVG_ATTRS,
-        paths: paths.map((pathData) => ({
-            d: pathData,
-            attrs: PATH_ATTRS,
-        })),
-    };
+    return [WIDTH, HEIGHT, SVG_ATTRS, PATH_ATTRS, ...paths];
 }

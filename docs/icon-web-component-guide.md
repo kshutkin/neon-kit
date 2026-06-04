@@ -43,7 +43,7 @@ SVG output:
 
 - DOM-rendered root attributes start with `viewBox`; `svg()` already creates
   the element in the SVG namespace.
-- Variant-level `def.attrs` are copied next.
+- Variant-level `def[2]` attrs are copied next.
 - `width="1em"` and `height="1em"` are always added. Size via CSS
   `font-size` on the host or ancestor.
 - With the `label` property or attribute, the host gets `role="img"` and an accessible
@@ -52,7 +52,7 @@ SVG output:
   `ElementInternals`. An author-supplied `aria-label` attribute overrides that
   default, but it must be paired with `role="img"` on the host.
 - The inner SVG is emitted without its own label or role.
-- Each `def.paths[]` entry becomes a `<path d="...">` with optional path attrs.
+- Each path string from `def.slice(4)` becomes a `<path d="...">` with shared attrs from `def[3]`.
 
 `web-components/src/svg-icon.jsx` is a smaller helper for internal component
 icons. It also uses `svg()` but does not define a custom element, does not
@@ -60,15 +60,16 @@ lazy-load icon modules, and always emits `aria-hidden="true"`.
 
 ## `@neon-kit/icons`
 
-The icon package is generated from Heroicons. The runtime data shape is:
+The icon package is generated from Heroicons. The runtime data shape is a
+compact tuple:
 
 ```js
-{
-  viewBox: '0 0 24 24',
-  attrs: { fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5' },
-  paths: [{ d: '...', attrs: { ... } }]
-}
+[width, height, svgAttrs, pathAttrs, ...paths]
 ```
+
+For example, outline icons start with `[24, 24, { fill: 'none', stroke:
+'currentColor', 'stroke-width': '1.5' }, { 'stroke-linecap': 'round',
+'stroke-linejoin': 'round' }, 'M...']`.
 
 Important package behavior:
 
@@ -105,7 +106,7 @@ browser tests and the docs site, the repo uses an adapter pattern instead:
 - Assign `el.icon = mod.default`.
 
 See `site/icons.js` and `web-components/tests/icon.spec.mjs` for the current
-hydrator. When `name` changes on an existing element, clear `el.icon = null`
+hydrator. When `name` changes on an existing element, clear `el.icon = undefined`
 before resolving the new icon, otherwise the property override keeps winning.
 
 ## Slimlib Libraries
@@ -186,7 +187,7 @@ building the SVG with JSX.
 - structural parity with `serialize()`;
 - property-to-attribute reflection and empty-string removal;
 - no output when neither `name` nor `icon` is set;
-- icon defs with omitted `attrs` still render.
+- icon defs with empty shared attrs still render.
 
 Useful verification commands:
 

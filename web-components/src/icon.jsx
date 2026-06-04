@@ -34,10 +34,11 @@ import { effect, signal } from '@slimlib/store';
  * @returns {[string, string][]}
  */
 function svgAttrEntries(def) {
+    const [width, height, svgAttrs] = def;
     /** @type {[string, string][]} */
     return [
-        ['viewBox', def.viewBox],
-        ...def.attrs ? Object.entries(def.attrs) : [],
+        ['viewBox', `0 0 ${width} ${height}`],
+        ...Object.entries(svgAttrs),
         ['width', '1em'],
         ['height', '1em']
     ];
@@ -48,10 +49,11 @@ function svgAttrEntries(def) {
  * @returns {SVGElement}
  */
 function IconSvg(def) {
+    const [, , , pathAttrs, ...paths] = def;
     const attrs = Object.fromEntries(svgAttrEntries(def));
     return /** @type {SVGElement} */ (svg(() => (
         <svg {...attrs}>
-            {def.paths.map((p) => <path d={p.d} {...(p.attrs ?? {})} />)}
+            {paths.map((pathData) => <path d={pathData} {...pathAttrs} />)}
         </svg>
     )));
 }
