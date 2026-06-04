@@ -64,6 +64,28 @@ const TRIGGER_BINDINGS = {
 };
 
 /**
+ * Local middleware prototype for static host attributes that should
+ * exist before the component render can expose imperative methods.
+ *
+ * @param {Record<string, string>} attributeDefaults
+ * @returns {import('@slimlib/element').Middleware}
+ */
+function staticAttributes(attributeDefaults) {
+    return /** @type {import('@slimlib/element').Middleware} */ (
+        (ElementBase) =>
+            class extends ElementBase {
+                constructor() {
+                    super();
+
+                    for (const [attributeName, value] of Object.entries(attributeDefaults)) {
+                        this.setAttribute(attributeName, value);
+                    }
+                }
+            }
+    );
+}
+
+/**
  * @param {string | null} value
  * @returns {'top' | 'bottom' | 'left' | 'right'}
  */
@@ -110,7 +132,7 @@ const renderTooltip = (host) => {
     const popoverHost = /** @type {TooltipHost} */ (host);
     const elementInternals = internals();
 
-    const state = props({
+    const componentState = props({
         placement: /** @type {string | null} */ (null),
         trigger: /** @type {string | null} */ (null),
     });
@@ -245,11 +267,11 @@ const renderTooltip = (host) => {
     /** @type {any} */ (host).hideTooltip = hideTooltipNow;
 
     effect(() => {
-        applyPlacementClass(readPlacement(state.placement));
+        applyPlacementClass(readPlacement(componentState.placement));
     });
 
     effect(() => {
-        applyTriggers(readTriggerSet(state.trigger));
+        applyTriggers(readTriggerSet(componentState.trigger));
     });
 
     onConnect(() => {
@@ -257,9 +279,6 @@ const renderTooltip = (host) => {
         if (triggerElement) {
             if (!host.id) {
                 host.id = `neon-tooltip-${++nextId}`;
-            }
-            if (!host.hasAttribute('popover')) {
-                host.setAttribute('popover', 'manual');
             }
             host.classList.add('tooltip');
 
@@ -284,8 +303,8 @@ const renderTooltip = (host) => {
                 ownsAriaDescribedBy = true;
             }
 
-            const triggerSet = readTriggerSet(state.trigger);
-            applyPlacementClass(readPlacement(state.placement));
+            const triggerSet = readTriggerSet(componentState.trigger);
+            applyPlacementClass(readPlacement(componentState.placement));
             applyTriggers(triggerSet);
 
             if (DEV && triggerSet.has('focus') && !isFocusable(triggerElement)) {
@@ -331,6 +350,9 @@ defineElement(
     'neon-tooltip',
     [
         withInternals(),
+        staticAttributes({
+            popover: 'manual',
+        }),
         attributes({
             placement: [stringAttribute[0]],
             trigger: [stringAttribute[0]],

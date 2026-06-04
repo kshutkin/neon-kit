@@ -64,6 +64,14 @@ describe('<neon-tooltip>', () => {
         expect(tip.classList.contains('-top')).toBe(false);
     });
 
+    it('enforces manual popover mode', () => {
+        const btn = mount(
+            `<button>x<neon-tooltip popover="auto">y</neon-tooltip></button>`,
+        );
+        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        expect(tip.getAttribute('popover')).toBe('manual');
+    });
+
     it('does not reflect role=tooltip when the body contains stylized markup', () => {
         const btn = mount(
             `<button>x<neon-tooltip><strong>Rich</strong> body</neon-tooltip></button>`,
