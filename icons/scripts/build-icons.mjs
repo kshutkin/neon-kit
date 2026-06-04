@@ -217,55 +217,18 @@ function parseAttrs(chunk) {
 }
 
 /**
- * Two-key shallow equality.
- *
- * @param {Record<string,string>} actualAttrs
- * @param {Record<string,string>} expectedAttrs
- */
-function attrsEqual(actualAttrs, expectedAttrs) {
-    const actualAttrNames = Object.keys(actualAttrs);
-    const expectedAttrNames = Object.keys(expectedAttrs);
-    let areEqual = actualAttrNames.length === expectedAttrNames.length;
-
-    for (const attrName of actualAttrNames) {
-        if (actualAttrs[attrName] !== expectedAttrs[attrName]) {
-            areEqual = false;
-        }
-    }
-
-    return areEqual;
-}
-
-/**
- * Emit a per-icon module. Paths whose attrs match the variant default
- * collapse to bare strings; otherwise they're expressed as objects
- * (the factory still merges variant defaults underneath).
+ * Emit a per-icon module. Variant factories own all shell and path
+ * attrs, so generated modules only carry path data.
  *
  * @param {string} name
  * @param {typeof VARIANTS[number]} variant
- * @param {{ d: string, attrs: Record<string, string> }[]} paths
+ * @param {string[]} pathData
  * @returns {string}
  */
-function renderIconModule(name, variant, paths) {
-    const defaults = VARIANT_SPEC[variant].pathAttrs;
-    /** @param {{ d: string, attrs: Record<string,string> }} iconPath */
-    const renderPath = (iconPath) => {
-        let renderedPath;
-
-        if (attrsEqual(iconPath.attrs, defaults)) {
-            renderedPath = JSON.stringify(iconPath.d);
-        } else {
-            const entries = Object.entries(iconPath.attrs)
-                .map(([attrName, attrValue]) => `${JSON.stringify(attrName)}: ${JSON.stringify(attrValue)}`)
-                .join(', ');
-            renderedPath = `{ d: ${JSON.stringify(iconPath.d)}, attrs: { ${entries} } }`;
-        }
-
-        return renderedPath;
-    };
-    const body = paths.length === 1
-        ? `[${renderPath(paths[0])}]`
-        : `[\n    ${paths.map(renderPath).join(',\n    ')},\n]`;
+function renderIconModule(name, variant, pathData) {
+    const body = pathData.length === 1
+        ? `[${JSON.stringify(pathData[0])}]`
+        : `[\n    ${pathData.map((pathDataValue) => JSON.stringify(pathDataValue)).join(',\n    ')},\n]`;
     return `// \`${name}\` (${variant}) — generated from heroicons. Do not edit by hand.
 import { icon } from './_variant.js';
 export default icon(${body});
@@ -427,18 +390,16 @@ async function main() {
             if (parsed.viewBox !== spec.viewBox) {
                 throw new Error(`${variant}/${name}: expected viewBox "${spec.viewBox}", got "${parsed.viewBox}"`);
             }
-            const keptAttrNames = Object.keys(spec.pathAttrs);
-            const slimPaths = parsed.paths.map((parsedPath) => {
-                /** @type {Record<string, string>} */
-                const attrs = {};
-                for (const attrName of keptAttrNames) {
-                    if (parsedPath.sourceAttrs[attrName] != null) {
-                        attrs[attrName] = parsedPath.sourceAttrs[attrName];
+            for (const parsedPath of parsed.paths) {
+                for (const [attrName, attrValue] of Object.entries(spec.pathAttrs)) {
+                    const sourceAttrValue = parsedPath.sourceAttrs[attrName];
+                    if (sourceAttrValue != null && sourceAttrValue !== attrValue) {
+                        throw new Error(`${variant}/${name}: expected ${attrName}="${attrValue}", got "${sourceAttrValue}"`);
                     }
                 }
-                return { d: parsedPath.d, attrs };
-            });
-            const module_ = renderIconModule(name, variant, slimPaths);
+            }
+            const pathData = parsed.paths.map((parsedPath) => parsedPath.d);
+            const module_ = renderIconModule(name, variant, pathData);
             await writeFile(resolve(SOURCE_DIR, variant, `${name}.js`), module_);
         }
         await writeFile(resolve(SOURCE_DIR, variant, 'index.js'), renderVariantIndex(variant, names));
