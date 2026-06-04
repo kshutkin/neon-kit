@@ -10,15 +10,15 @@
  *
  * Attributes:
  *
- *   data-placement   `top` (default) | `bottom` | `left` | `right`.
- *   data-trigger     Space-separated: `hover` `focus` `click`. Defaults
- *                    to `hover focus` when the attribute is absent.
+ *   placement   `top` (default) | `bottom` | `left` | `right`.
+ *   trigger     Space-separated: `hover` `focus` `click`. Defaults
+ *               to `hover focus` when the attribute is absent.
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  *
- * Attribute changes propagate synchronously: the two data-attrs are
+ * Attribute changes propagate synchronously: the two API attributes are
  * declared via `props()` and observed by EAGER `effect()`s, so
- * `tip.setAttribute('data-placement', 'bottom')` commits the class
+ * `tip.setAttribute('placement', 'bottom')` commits the class
  * change before the call returns.
  */
 import { DEV } from 'esm-env';
@@ -103,8 +103,8 @@ function isFocusable(el) {
  */
 const renderTooltip = (host) => {
     props({
-        'data-placement': /** @type {string | null} */ (null),
-        'data-trigger': /** @type {string | null} */ (null),
+        placement: /** @type {string | null} */ (null),
+        trigger: /** @type {string | null} */ (null),
     });
 
     /** @type {HTMLElement | null} */
@@ -216,7 +216,7 @@ const renderTooltip = (host) => {
     /** @type {any} */ (host).showTooltip = showNow;
     /** @type {any} */ (host).hideTooltip = hideNow;
 
-    // The two data-attrs only drive imperative side effects (class
+    // The two API attributes only drive imperative side effects (class
     // toggle, listener rewiring); nothing in a reactive view consumes
     // them. `props()` gives us pre-upgrade adoption and a clean
     // declaration site, but we wrap its setters with a sync hook so
@@ -238,8 +238,8 @@ const renderTooltip = (host) => {
             },
         });
     };
-    wrapPropSetter('data-placement', (v) => applyPlacementClass(readPlacement(v)));
-    wrapPropSetter('data-trigger', (v) => applyTriggers(readTriggerSet(v)));
+    wrapPropSetter('placement', (v) => applyPlacementClass(readPlacement(v)));
+    wrapPropSetter('trigger', (v) => applyTriggers(readTriggerSet(v)));
 
     onConnect(() => {
         parent = host.parentElement;
@@ -276,10 +276,10 @@ const renderTooltip = (host) => {
             setAriaDescribedBy = true;
         }
 
-        applyPlacementClass(readPlacement(host.getAttribute('data-placement')));
-        applyTriggers(readTriggerSet(host.getAttribute('data-trigger')));
+        applyPlacementClass(readPlacement(host.getAttribute('placement')));
+        applyTriggers(readTriggerSet(host.getAttribute('trigger')));
 
-        if (DEV && readTriggerSet(host.getAttribute('data-trigger')).has('focus') && !isFocusable(parent)) {
+        if (DEV && readTriggerSet(host.getAttribute('trigger')).has('focus') && !isFocusable(parent)) {
             // eslint-disable-next-line no-console
             console.debug(
                 '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
@@ -321,8 +321,8 @@ defineElement(
     'neon-tooltip',
     [
         attributes({
-            'data-placement': [stringAttribute[0]],
-            'data-trigger': [stringAttribute[0]],
+            placement: [stringAttribute[0]],
+            trigger: [stringAttribute[0]],
         }),
     ],
     renderTooltip,

@@ -105,7 +105,7 @@ describe('<neon-tooltip> placement fallback', () => {
 
     it.skipIf(!supportsNamedTry)('flips to right when there is no room on the left', async () => {
         const btn = mount(
-            `<button>x<neon-tooltip data-placement="left">Hint with some text content.</neon-tooltip></button>`,
+            `<button>x<neon-tooltip placement="left">Hint with some text content.</neon-tooltip></button>`,
             { position: 'fixed', left: '0px', top: '200px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
@@ -122,7 +122,7 @@ describe('<neon-tooltip> placement fallback', () => {
 
     it.skipIf(!supportsNamedTry)('flips to bottom when there is no room on top', async () => {
         const btn = mount(
-            `<button>x<neon-tooltip data-placement="top">Hint with some text content.</neon-tooltip></button>`,
+            `<button>x<neon-tooltip placement="top">Hint with some text content.</neon-tooltip></button>`,
             { position: 'fixed', left: '200px', top: '0px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
@@ -137,7 +137,7 @@ describe('<neon-tooltip> placement fallback', () => {
 
     it('keeps top placement when there is room on top', async () => {
         const btn = mount(
-            `<button>x<neon-tooltip data-placement="top">Hint.</neon-tooltip></button>`,
+            `<button>x<neon-tooltip placement="top">Hint.</neon-tooltip></button>`,
             { position: 'fixed', left: '200px', top: '300px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));

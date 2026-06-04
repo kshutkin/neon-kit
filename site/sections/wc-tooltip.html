@@ -34,14 +34,14 @@ import '@neon-kit/web-components/tooltip';</code></pre>
     <section class="mb-8">
         <h2 class="mb-4">Placement</h2>
         <p class="mb-4 text-ink-secondary">
-            Set <code>data-placement</code> to one of <code>top</code> (default),
+            Set <code>placement</code> to one of <code>top</code> (default),
             <code>right</code>, <code>bottom</code>, or <code>left</code>.
         </p>
         <div class="flex flex-wrap gap-3 rounded-lg border border-border bg-surface-secondary p-6">
-            <button type="button" class="btn">Top<neon-tooltip data-placement="top">Top placement</neon-tooltip></button>
-            <button type="button" class="btn">Right<neon-tooltip data-placement="right">Right placement</neon-tooltip></button>
-            <button type="button" class="btn">Bottom<neon-tooltip data-placement="bottom">Bottom placement</neon-tooltip></button>
-            <button type="button" class="btn">Left<neon-tooltip data-placement="left">Left placement</neon-tooltip></button>
+            <button type="button" class="btn">Top<neon-tooltip placement="top">Top placement</neon-tooltip></button>
+            <button type="button" class="btn">Right<neon-tooltip placement="right">Right placement</neon-tooltip></button>
+            <button type="button" class="btn">Bottom<neon-tooltip placement="bottom">Bottom placement</neon-tooltip></button>
+            <button type="button" class="btn">Left<neon-tooltip placement="left">Left placement</neon-tooltip></button>
         </div>
     </section>
 
@@ -53,7 +53,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </p>
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button type="button" class="btn">
-                Show rich tooltip<neon-tooltip data-placement="bottom">
+                Show rich tooltip<neon-tooltip placement="bottom">
                     <strong>Keyboard shortcut</strong>
                     <div class="kbd-keys">
                         <kbd class="kbd">⌘</kbd>
@@ -75,7 +75,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
                 Focus me<neon-tooltip>Tooltips work on links too.</neon-tooltip>
             </a>
             <span tabindex="0">
-                Focusable span<neon-tooltip data-placement="bottom">
+                Focusable span<neon-tooltip placement="bottom">
                     Add <code>tabindex="0"</code> to make a non-focusable element
                     keyboard-reachable.
                 </neon-tooltip>
@@ -103,16 +103,16 @@ import '@neon-kit/web-components/tooltip';</code></pre>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>data-placement</code></td>
+                        <td class="border border-border px-4 py-2"><code>placement</code></td>
                         <td class="border border-border px-4 py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
                         <td class="border border-border px-4 py-2"><code>top</code></td>
                         <td class="border border-border px-4 py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>data-trigger</code></td>
+                        <td class="border border-border px-4 py-2"><code>trigger</code></td>
                         <td class="border border-border px-4 py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
                         <td class="border border-border px-4 py-2"><code>hover focus</code></td>
-                        <td class="border border-border px-4 py-2">Set to an empty string (<code>data-trigger=""</code>) to opt out of all automatic triggers and drive the tooltip programmatically.</td>
+                        <td class="border border-border px-4 py-2">Set to an empty string (<code>trigger=""</code>) to opt out of all automatic triggers and drive the tooltip programmatically.</td>
                     </tr>
                 </tbody>
             </table>
@@ -188,7 +188,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             (it uses <code>popover="manual"</code>). The hover and focus close
             paths handle dismissal naturally — moving the pointer or focus away
             closes the tooltip after a short delay. For click-driven tooltips
-            (<code>data-trigger="click"</code>), clicking the trigger again
+            (<code>trigger="click"</code>), clicking the trigger again
             toggles it closed.
         </p>
     </section>

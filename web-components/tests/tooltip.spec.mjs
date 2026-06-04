@@ -42,9 +42,9 @@ describe('<neon-tooltip>', () => {
         expect(tip.getAttribute('role')).toBe('tooltip');
     });
 
-    it('respects the data-placement attribute', () => {
+    it('respects the placement attribute', () => {
         const btn = mount(
-            `<button>x<neon-tooltip data-placement="right">y</neon-tooltip></button>`,
+            `<button>x<neon-tooltip placement="right">y</neon-tooltip></button>`,
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
         expect(tip.classList.contains('-right')).toBe(true);
@@ -82,7 +82,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
         expect(tip.classList.contains('-top')).toBe(true);
-        tip.setAttribute('data-placement', 'bottom');
+        tip.setAttribute('placement', 'bottom');
         expect(tip.classList.contains('-bottom')).toBe(true);
         expect(tip.classList.contains('-top')).toBe(false);
     });
@@ -100,9 +100,9 @@ describe('<neon-tooltip>', () => {
         expect(btn.getAttribute('aria-describedby')).toBe('external');
     });
 
-    it('toggles on click for any parent with data-trigger="click"', () => {
+    it('toggles on click for any parent with trigger="click"', () => {
         const span = mount(
-            `<span tabindex="0">x<neon-tooltip data-trigger="click">y</neon-tooltip></span>`,
+            `<span tabindex="0">x<neon-tooltip trigger="click">y</neon-tooltip></span>`,
         );
         const tip = /** @type {HTMLElement} */ (span.querySelector('neon-tooltip'));
         expect(span.hasAttribute('popovertarget')).toBe(false);
@@ -116,7 +116,7 @@ describe('<neon-tooltip>', () => {
 
     it('hideTooltip() closes the popover synchronously', () => {
         const btn = mount(
-            `<button>x<neon-tooltip data-trigger="">y</neon-tooltip></button>`,
+            `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
         const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
         expect(btn.hasAttribute('popovertarget')).toBe(false);

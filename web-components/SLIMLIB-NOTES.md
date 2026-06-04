@@ -70,7 +70,7 @@ the boundary**:
    component. Keep the sync commit local to our own setters.
 
 Used by `icon` (the `icon` property setter) and `tooltip` (the
-`data-placement` / `data-trigger` bridge). Expect to need it again for
+`placement` / `trigger` bridge). Expect to need it again for
 the combobox/datepicker/timepicker `value` setters.
 
 ## `@slimlib/jsx` gotchas
@@ -198,4 +198,3 @@ gated by the build today.
 `tests/types.ts` is the contract to keep green (`icon.icon`,
 `menu.items`, `NeonTooltipElement` as a type with `showTooltip` /
 `hideTooltip`, `combobox.value` / `.options` / `.checkValidity()`).
-
