@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import axe from 'axe-core';
 
 // Side-effect import registers `<neon-tooltip>`.
 import '../src/tooltip.jsx';
@@ -13,6 +14,16 @@ function mount(html) {
     const root = /** @type {HTMLElement} */ (wrap.firstElementChild);
     document.body.appendChild(root);
     return root;
+}
+
+/** @param {import('axe-core').AxeResults} results */
+function formatAxeViolations(results) {
+    return results.violations
+        .map((violation) => {
+            const targets = violation.nodes.map((node) => node.target.join(', ')).join('; ');
+            return `${violation.id}: ${violation.help} (${targets})`;
+        })
+        .join('\n');
 }
 
 describe('<neon-tooltip>', () => {
@@ -39,7 +50,7 @@ describe('<neon-tooltip>', () => {
         expect(tip.id).toMatch(/^neon-tooltip-\d+$/);
         expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
         expect(tip.querySelector('.tooltip__arrow')).not.toBeNull();
-        expect(tip.getAttribute('role')).toBe('tooltip');
+        expect(tip.getAttribute('role')).toBeNull();
     });
 
     it('respects the placement attribute', () => {
@@ -51,12 +62,21 @@ describe('<neon-tooltip>', () => {
         expect(tip.classList.contains('-top')).toBe(false);
     });
 
-    it('does not set role=tooltip when the body contains structural markup', () => {
+    it('does not reflect role=tooltip when the body contains stylized markup', () => {
         const btn = mount(
             `<button>x<neon-tooltip><strong>Rich</strong> body</neon-tooltip></button>`,
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
         expect(tip.hasAttribute('role')).toBe(false);
+    });
+
+    it('has no axe violations for a described trigger', async () => {
+        mount(
+            `<button type="button">Save<neon-tooltip>Saves the document.</neon-tooltip></button>`,
+        );
+
+        const results = await axe.run(document.body);
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
     });
 
     it('does not steal the click from button parents (no popovertarget hand-off)', () => {

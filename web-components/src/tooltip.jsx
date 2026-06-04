@@ -26,10 +26,12 @@ import { DEV } from 'esm-env';
 import {
     attributes,
     defineElement,
+    internals,
     onConnect,
     onDisconnect,
     props,
     stringAttribute,
+    withInternals,
 } from '@slimlib/element';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
@@ -107,6 +109,7 @@ function isFocusable(element) {
  */
 const renderTooltip = (host) => {
     const popoverHost = /** @type {TooltipHost} */ (host);
+    const elementInternals = internals();
 
     props({
         placement: /** @type {string | null} */ (null),
@@ -272,9 +275,7 @@ const renderTooltip = (host) => {
             }
             host.classList.add('tooltip');
 
-            if (!host.hasAttribute('role') && !host.querySelector(':scope > :not(.tooltip__arrow)')) {
-                host.setAttribute('role', 'tooltip');
-            }
+            elementInternals.role = 'tooltip';
 
             const existingAnchorName = triggerElement.style.getPropertyValue('anchor-name');
             if (existingAnchorName) {
@@ -341,6 +342,7 @@ const renderTooltip = (host) => {
 defineElement(
     'neon-tooltip',
     [
+        withInternals(),
         attributes({
             placement: [stringAttribute[0]],
             trigger: [stringAttribute[0]],
