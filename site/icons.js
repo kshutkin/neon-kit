@@ -1,12 +1,14 @@
-// Side-effect import registers `<neon-icon>`. The component's own
-// dynamic `import('@neon-kit/icons/<name>')` is unresolvable by
-// Vite's production build, so we eagerly assign `el.icon` from an
-// `import.meta.glob`-driven lookup before the component's fallback
-// fires (and even if it does fire first and reject, the subsequent
-// assignment re-renders correctly).
-import '@neon-kit/web-components/icon';
+import { SvgIcon } from '../web-components/src/svg-icon.jsx';
 
 /** @typedef {import('@neon-kit/icons').IconDef} IconDef */
+
+/** @type {Promise<unknown> | null} */
+let iconElementReady = null;
+
+function ensureIconElement() {
+    iconElementReady ??= import('@neon-kit/web-components/icon');
+    return iconElementReady;
+}
 
 const modules = /** @type {Record<string, () => Promise<{ default: IconDef }>>} */ (
     import.meta.glob('../icons/src/{outline,solid,mini,micro}/*.js')
@@ -48,7 +50,7 @@ function hydrate(el, force) {
     const name = el.getAttribute('name');
     if (!name) return;
     if (force) /** @type {any} */ (el).icon = null;
-    loadIcon(name).then((def) => {
+    Promise.all([ensureIconElement(), loadIcon(name)]).then(([, def]) => {
         if (def && el.getAttribute('name') === name && !(/** @type {any} */ (el).icon)) {
             /** @type {any} */ (el).icon = def;
         }
@@ -61,6 +63,7 @@ function scan(root = document.body) {
     if (root.querySelectorAll) {
         for (const el of root.querySelectorAll('neon-icon')) hydrate(el);
     }
+    hydrateSvgIconMarkers(root);
 }
 
 if (document.readyState === 'loading') {
@@ -86,6 +89,32 @@ observer.observe(document.body, {
     attributeFilter: ['name'],
 });
 
+/**
+ * @param {ParentNode | Element} root
+ */
+function hydrateSvgIconMarkers(root) {
+    const markers = root instanceof Element && root.matches('[data-svg-icon]')
+        ? [root]
+        : [];
+    if (root.querySelectorAll) markers.push(...root.querySelectorAll('[data-svg-icon]'));
+    for (const el of markers) hydrateSvgIconMarker(el);
+}
+
+/**
+ * @param {Element} el
+ */
+function hydrateSvgIconMarker(el) {
+    const name = el.getAttribute('data-svg-icon');
+    if (!name) return;
+    loadIcon(name).then((def) => {
+        if (!def || el.getAttribute('data-svg-icon') !== name) return;
+        el.replaceChildren(SvgIcon({
+            def,
+            class: el.getAttribute('data-icon-class') ?? '',
+        }));
+    });
+}
+
 // Variant switcher on the Icons docs page. Delegated at document
 // level because section HTML is injected via innerHTML on soft-nav,
 // so inline scripts inside the section would never run.
@@ -102,6 +131,9 @@ document.addEventListener('click', (event) => {
     }
     for (const el of document.querySelectorAll('[data-icon-base]')) {
         const base = el.getAttribute('data-icon-base');
-        if (base) el.setAttribute('name', `${variant}/${base}`);
+        if (!base) continue;
+        const name = `${variant}/${base}`;
+        el.setAttribute('data-svg-icon', name);
+        hydrateSvgIconMarker(el);
     }
 });

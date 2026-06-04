@@ -8,7 +8,7 @@
  * `<variant>/<icon-name>`:
  *
  *     <neon-icon name="outline/bars-3"></neon-icon>
- *     <neon-icon name="solid/x-mark" aria-label="Close"></neon-icon>
+ *     <neon-icon name="solid/x-mark" role="img" aria-label="Close"></neon-icon>
  *
  * For tree-shake-friendly use (or when the runtime can't resolve the
  * subpath dynamically), assign an `IconDef` to the `icon` property
@@ -21,86 +21,86 @@
 import {
     attributes,
     defineElement,
+    internals,
     props,
     stringAttribute,
+    withInternals,
 } from '@slimlib/element';
 import { svg } from '@slimlib/jsx';
 import { effect, signal } from '@slimlib/store';
 
 /**
  * @param {IconDef} def
- * @param {string | null} ariaLabel
  * @returns {[string, string][]}
  */
-function svgAttrEntries(def, ariaLabel) {
+function svgAttrEntries(def) {
     /** @type {[string, string][]} */
-    const entries = [
+    return [
         ['viewBox', def.viewBox],
+        ...def.attrs ? Object.entries(def.attrs) : [],
+        ['width', '1em'],
+        ['height', '1em']
     ];
-    if (def.attrs) for (const [k, v] of Object.entries(def.attrs)) entries.push([k, v]);
-    entries.push(['width', '1em'], ['height', '1em']);
-    if (ariaLabel) entries.push(['role', 'img']);
-    else entries.push(['aria-hidden', 'true']);
-    return entries;
 }
 
 /**
  * @param {IconDef} def
- * @param {string | null} label
  * @returns {SVGElement}
  */
-function IconSvg(def, label) {
-    const attrs = Object.fromEntries(svgAttrEntries(def, label));
+function IconSvg(def) {
+    const attrs = Object.fromEntries(svgAttrEntries(def));
     return /** @type {SVGElement} */ (svg(() => (
         <svg {...attrs}>
-            {label ? <title>{label}</title> : null}
             {def.paths.map((p) => <path d={p.d} {...(p.attrs ?? {})} />)}
         </svg>
     )));
 }
 
-const renderIcon = () => {
+/**
+ * @param {HTMLElement} host
+ */
+const renderIcon = (host) => {
+    const elementInternals = internals();
     const state = props({
-        name: '',
-        'aria-label': '',
-        title: '',
-        icon: /** @type {IconDef | null} */ (null),
+        name: undefined,
+        label: undefined,
+        icon: /** @type {IconDef | undefined} */ (undefined),
     });
 
-    /** @type {import('@slimlib/store').Signal<IconDef | null>} */
-    const loadedSig = signal(/** @type {IconDef | null} */ (null));
-    let token = 0;
+    /** @type {import('@slimlib/store').Signal<IconDef | undefined>} */
+    const loadedIconDef = signal(/** @type {IconDef | undefined} */ (undefined));
 
-    effect(() => {
+    effect(async () => {
         const override = state.icon;
         const name = state.name;
-        if (override) {
-            loadedSig.set(null);
-            return;
-        }
-        const current = ++token;
-        if (!name) {
-            loadedSig.set(null);
+        if (override || !name) {
+            loadedIconDef.set(undefined);
             return;
         }
         import(/* @vite-ignore */ `@neon-kit/icons/${name}`).then(
             (mod) => {
-                if (token === current) loadedSig.set(mod.default);
+                if (name === state.name) {
+                    loadedIconDef.set(mod.default);
+                }
             },
             (error) => {
-                if (token !== current) return;
-                // eslint-disable-next-line no-console
-                console.warn(`<neon-icon>: failed to load "${name}"`, error);
-                loadedSig.set(null);
+                if (name === state.name) {
+                    loadedIconDef.set(undefined);
+                }
             },
         );
     });
 
+    effect(() => {
+        const label = state.label;
+        elementInternals.ariaLabel = label;
+        elementInternals.ariaHidden = label ? null : 'true';
+        elementInternals.ariaRole = label ? 'img' : null;
+    });
+
     return () => {
-        const def = state.icon || loadedSig();
-        if (!def) return null;
-        const label = state['aria-label'] || state.title || null;
-        return IconSvg(def, label);
+        const def = state.icon || loadedIconDef();
+        return def ? IconSvg(def) : null;
     };
 };
 
@@ -109,19 +109,18 @@ const renderIcon = () => {
  *
  * @typedef {HTMLElement & {
  *   name: string,
- *   'aria-label': string,
- *   title: string,
- *   icon: IconDef | null,
+ *   label: string,
+ *   icon: IconDef | undefined,
  * }} NeonIconElement
  */
 
 defineElement(
     'neon-icon',
     [
+        withInternals(),
         attributes({
+            label: stringAttribute,
             name: stringAttribute,
-            'aria-label': stringAttribute,
-            title: stringAttribute,
         }),
     ],
     renderIcon,

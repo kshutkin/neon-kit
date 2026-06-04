@@ -14,25 +14,29 @@ elements.
   `docs/adr/0001-rendering-mode.md` and keeps styling/inheritance simple.
 - The component uses `defineElement('neon-icon', [attributes(...)], renderIcon)`.
   That means the tag name is fixed at module import time.
+- The component uses `withInternals()` plus `internals()` to expose the host's
+  accessible name and decorative hidden state.
 - The public reactive props are created with `props()`:
-  `name`, `aria-label`, `title`, and `icon`.
-- `name`, `aria-label`, and `title` reflect to attributes with Slimlib's
-  `stringAttribute` descriptor. Assigning `''` reflects an empty attribute;
-  assigning `null` or `undefined` removes the attribute.
+  `name`, `label`, and `icon`.
+- `name` and `label` reflect to attributes with Slimlib's `stringAttribute`
+  descriptor. Assigning `''` reflects an empty attribute; assigning `null` or
+  `undefined` removes the attribute.
+- `label` is the first-class accessible-name convenience. It sets
+  ElementInternals defaults on the host while keeping ARIA attributes out of
+  the DOM.
 - `icon` is a property-only override. It is not reflected to an attribute.
   If `icon` is non-null, it wins over `name`.
 
 Rendering flow:
 
-1. `renderIcon()` creates reflected props and a private `loadedSig`.
+1. `renderIcon()` creates reflected props and a private `loadedIconDef` signal.
 2. An effect watches `state.icon` and `state.name`.
-3. If `state.icon` exists, async loading is ignored and `loadedSig` is cleared.
+3. If `state.icon` exists, async loading is ignored and `loadedIconDef` is cleared.
 4. If `name` exists, the component calls
    `import(/* @vite-ignore */ \`@neon-kit/icons/${name}\`)`.
-5. A monotonically increasing `token` prevents stale async imports from winning
-   after rapid `name` changes.
-6. The returned render function chooses `state.icon || loadedSig()`.
-7. `IconSvg(def, label)` builds a real SVG node with `@slimlib/jsx`'s `svg()`
+5. The import result is ignored if `name` changed before it resolved.
+6. The returned render function chooses `state.icon || loadedIconDef()`.
+7. `IconSvg(def)` builds a real SVG node with `@slimlib/jsx`'s `svg()`
    namespace helper.
 
 SVG output:
@@ -42,9 +46,12 @@ SVG output:
 - Variant-level `def.attrs` are copied next.
 - `width="1em"` and `height="1em"` are always added. Size via CSS
   `font-size` on the host or ancestor.
-- With `aria-label` or `title`, the SVG gets `role="img"` and an inline
-  `<title>`.
-- Without a label, the SVG gets `aria-hidden="true"`.
+- With the `label` property or attribute, the host gets `role="img"` and an accessible
+  name through `ElementInternals`.
+- Without `label`, the host is hidden from assistive tech by default through
+  `ElementInternals`. An author-supplied `aria-label` attribute overrides that
+  default, but it must be paired with `role="img"` on the host.
+- The inner SVG is emitted without its own label or role.
 - Each `def.paths[]` entry becomes a `<path d="...">` with optional path attrs.
 
 `web-components/src/svg-icon.jsx` is a smaller helper for internal component

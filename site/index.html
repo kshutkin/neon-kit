@@ -73,6 +73,7 @@
             about: { title: 'About' },
             'getting-started': { title: 'Getting Started' },
             icons: { title: 'Icons' },
+            'icon-web-component': { title: 'Icon Web Component' },
             buttons: { title: 'Buttons', section: 'css', item: 'buttons' },
             panels: { title: 'Panels', section: 'css', item: 'panels' },
             details: { title: 'Details', section: 'css', item: 'details' },
@@ -135,6 +136,7 @@
         const BASE = import.meta.env.BASE_URL || '/';
         const pathFor = (slug) => slug === DEFAULT_SLUG ? BASE : `${BASE}${slug}/`;
         const isComponentRoute = (slug) => Boolean(routes[slug]?.item);
+        const isIconRoute = (slug) => slug === 'icons' || slug === 'icon-web-component';
         const sidebarSlugFor = (item, section) => {
             const sidebarItem = sidebarItemsById[item];
             return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
@@ -143,13 +145,13 @@
         const docsNavSlugFor = (slug, section) => {
             if (section === 'components') return isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG;
             if (section === 'about') return 'about';
-            if (section === 'icons') return 'icons';
+            if (section === 'icons') return isIconRoute(slug) ? slug : 'icons';
             return 'getting-started';
         };
         const activeDocsSection = (slug) => {
             if (isComponentRoute(slug)) return 'components';
             if (slug === 'about') return 'about';
-            if (slug === 'icons') return 'icons';
+            if (isIconRoute(slug)) return 'icons';
             return 'getting-started';
         };
 

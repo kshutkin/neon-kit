@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import axe from 'axe-core';
 
 import bars from '@neon-kit/icons/outline/bars-3';
@@ -156,20 +156,12 @@ describe('<neon-icon>', () => {
         expect(path?.getAttribute('d')).toBe(check.paths[0].d);
     });
 
-    it('warns and renders nothing for a bad name', async () => {
-        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-        try {
-            document.body.innerHTML = `<neon-icon name="nonexistent/does-not-exist"></neon-icon>`;
-            await settle();
-            await settle();
-            const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
-            expect(host.querySelector('svg')).toBeNull();
-            expect(warn).toHaveBeenCalled();
-            const firstArg = warn.mock.calls[0]?.[0];
-            expect(String(firstArg)).toContain('nonexistent/does-not-exist');
-        } finally {
-            warn.mockRestore();
-        }
+    it('renders nothing for a bad name', async () => {
+        document.body.innerHTML = `<neon-icon name="nonexistent/does-not-exist"></neon-icon>`;
+        await settle();
+        await settle();
+        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
+        expect(host.querySelector('svg')).toBeNull();
     });
 
     it('renders SVG at 1em × 1em', async () => {
@@ -180,13 +172,59 @@ describe('<neon-icon>', () => {
         expect(svg.getAttribute('height')).toBe('1em');
     });
 
-    it('uses `aria-label` to emit a <title> and role="img"', async () => {
+    it('uses ElementInternals for the `label` property and leaves the SVG unlabeled', async () => {
+        const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
+        el.name = 'outline/bars-3';
+        document.body.appendChild(el);
+        el.label = 'Open menu';
+        await settle();
+
+        const svg = /** @type {SVGSVGElement} */ (el.querySelector('svg'));
+        expect(el.getAttribute('role')).toBeNull();
+        expect(el.getAttribute('aria-label')).toBeNull();
+        expect(svg.hasAttribute('aria-hidden')).toBe(false);
+        expect(svg.hasAttribute('role')).toBe(false);
+        expect(svg.querySelector('title')).toBeNull();
+
+        const results = await axe.run(document.body);
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
+    it('uses ElementInternals for the `label` attribute', async () => {
+        document.body.innerHTML = `<main><neon-icon name="outline/bars-3" label="Open menu"></neon-icon></main>`;
+        await settle();
+        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
+        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
+        expect(host.label).toBe('Open menu');
+        expect(host.getAttribute('role')).toBeNull();
+        expect(host.getAttribute('aria-label')).toBeNull();
+        expect(svg.hasAttribute('aria-hidden')).toBe(false);
+        expect(svg.querySelector('title')).toBeNull();
+
+        const results = await axe.run(document.body);
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
+    it('accepts host aria-label when the author also supplies a role', async () => {
+        document.body.innerHTML = `<main><neon-icon name="outline/bars-3" role="img" aria-label="Open menu"></neon-icon></main>`;
+        await settle();
+        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
+        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
+        expect(host.getAttribute('role')).toBe('img');
+        expect(host.getAttribute('aria-label')).toBe('Open menu');
+        expect(svg.hasAttribute('aria-hidden')).toBe(false);
+        expect(svg.querySelector('title')).toBeNull();
+
+        const results = await axe.run(document.body);
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
+    it('reports an axe violation for host aria-label without a role', async () => {
         document.body.innerHTML = `<neon-icon name="outline/bars-3" aria-label="Open menu"></neon-icon>`;
         await settle();
-        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
-        expect(svg.getAttribute('role')).toBe('img');
-        expect(svg.hasAttribute('aria-hidden')).toBe(false);
-        expect(svg.querySelector('title')?.textContent).toBe('Open menu');
+
+        const results = await axe.run(document.body);
+        expect(results.violations.map((violation) => violation.id)).toContain('aria-prohibited-attr');
     });
 
     it('has no axe violations for decorative and labelled icons', async () => {
@@ -196,7 +234,7 @@ describe('<neon-icon>', () => {
                     <neon-icon name="outline/bars-3"></neon-icon>
                     <span>Menu</span>
                 </p>
-                <neon-icon name="solid/check" aria-label="Confirmed"></neon-icon>
+                <neon-icon name="solid/check" role="img" aria-label="Confirmed"></neon-icon>
             </main>
         `;
         await settle();
@@ -217,6 +255,7 @@ describe('<neon-icon>', () => {
         const liveAttrs = Object.fromEntries(Array.from(live.attributes).map((a) => [a.name, a.value]));
         const parsedAttrs = Object.fromEntries(Array.from(parsed.attributes).map((a) => [a.name, a.value]));
         delete parsedAttrs.xmlns;
+        delete parsedAttrs['aria-hidden'];
         expect(parsedAttrs).toEqual(liveAttrs);
 
         const livePaths = Array.from(live.querySelectorAll('path'));
@@ -229,26 +268,23 @@ describe('<neon-icon>', () => {
         }
     });
 
-    it('reflects name/aria-label/title properties to attributes', async () => {
+    it('reflects name and label properties to attributes', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
 
         el.name = 'outline/x-mark';
-        /** @type {any} */ (el)['aria-label'] = 'Close';
-        el.title = 'Dismiss';
+        el.label = 'Close';
         await settle();
         expect(el.getAttribute('name')).toBe('outline/x-mark');
-        expect(el.getAttribute('aria-label')).toBe('Close');
-        expect(el.getAttribute('title')).toBe('Dismiss');
+        expect(el.getAttribute('label')).toBe('Close');
+        expect(el.getAttribute('aria-label')).toBeNull();
 
         // Built-in stringAttribute reflects empty strings as empty attributes.
         el.name = '';
-        /** @type {any} */ (el)['aria-label'] = '';
-        el.title = '';
+        el.label = '';
         await settle();
         expect(el.getAttribute('name')).toBe('');
-        expect(el.getAttribute('aria-label')).toBe('');
-        expect(el.getAttribute('title')).toBe('');
+        expect(el.getAttribute('label')).toBe('');
     });
 
     it('renders nothing when neither `name` nor `icon` is set', async () => {

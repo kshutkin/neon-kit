@@ -5,13 +5,37 @@ import { resolve, dirname } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, 'site');
 const OUT = resolve(import.meta.dirname, 'dist-docs');
+const WC_SRC = resolve(import.meta.dirname, 'web-components/src');
 const BASE = '/neon-kit/';
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
+
+const WEB_COMPONENT_MODULES = [
+  '@neon-kit/web-components',
+  '@neon-kit/web-components/tooltip',
+  '@neon-kit/web-components/menu',
+  '@neon-kit/web-components/combobox',
+  '@neon-kit/web-components/multicombobox',
+  '@neon-kit/web-components/datepicker',
+  '@neon-kit/web-components/timepicker',
+  '@neon-kit/web-components/icon',
+];
+
+const WEB_COMPONENT_ALIASES = [
+  { find: /^@neon-kit\/web-components$/, replacement: resolve(WC_SRC, 'index.js') },
+  { find: /^@neon-kit\/web-components\/tooltip$/, replacement: resolve(WC_SRC, 'tooltip.jsx') },
+  { find: /^@neon-kit\/web-components\/menu$/, replacement: resolve(WC_SRC, 'menu.js') },
+  { find: /^@neon-kit\/web-components\/combobox$/, replacement: resolve(WC_SRC, 'combobox.jsx') },
+  { find: /^@neon-kit\/web-components\/multicombobox$/, replacement: resolve(WC_SRC, 'multicombobox.jsx') },
+  { find: /^@neon-kit\/web-components\/datepicker$/, replacement: resolve(WC_SRC, 'datepicker.jsx') },
+  { find: /^@neon-kit\/web-components\/timepicker$/, replacement: resolve(WC_SRC, 'timepicker.jsx') },
+  { find: /^@neon-kit\/web-components\/icon$/, replacement: resolve(WC_SRC, 'icon.jsx') },
+];
 
 const ROUTES = {
   about: { title: 'About', desc: 'Neon Kit is a Tailwind-based theme paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
   'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
-  icons:            { title: 'Icons',           desc: 'A curated set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules with an optional <neon-icon> web component wrapper.' },
+  icons:            { title: 'Icons',           desc: 'A curated set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules.' },
+  'icon-web-component': { title: 'Icon Web Component', desc: '<neon-icon> - Light-DOM custom element for rendering @neon-kit/icons definitions as inline SVG.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
   details:    { title: 'Details',    desc: 'Native <details> disclosures with Neon panel styling, custom summary chevrons, focus states, and disabled-looking states.', section: 'css', item: 'details' },
@@ -81,6 +105,7 @@ const ACTIVE_CLASSES = 'nav__item -active';
 const pathFor = (slug) => slug === DEFAULT_SLUG ? BASE : `${BASE}${slug}/`;
 
 const isComponentRoute = (slug) => Boolean(ROUTES[slug]?.item);
+const isIconRoute = (slug) => slug === 'icons' || slug === 'icon-web-component';
 
 const sidebarSlugFor = (item, section) => {
   const sidebarItem = SIDEBAR_ITEMS_BY_ID[item];
@@ -92,14 +117,14 @@ const topNavSlugFor = (item, section) => SIDEBAR_ITEMS_BY_ID[item]?.[section];
 const docsNavSlugFor = (slug, section) => {
   if (section === 'components') return isComponentRoute(slug) ? slug : DEFAULT_COMPONENT_SLUG;
   if (section === 'about') return 'about';
-  if (section === 'icons') return 'icons';
+  if (section === 'icons') return isIconRoute(slug) ? slug : 'icons';
   return 'getting-started';
 };
 
 const activeDocsSection = (slug) => {
   if (isComponentRoute(slug)) return 'components';
   if (slug === 'about') return 'about';
-  if (slug === 'icons') return 'icons';
+  if (isIconRoute(slug)) return 'icons';
   return 'getting-started';
 };
 
@@ -250,6 +275,21 @@ export default defineConfig({
   root: ROOT,
   base: BASE,
   plugins: [tailwindcss(), prerenderPlugin()],
+  resolve: {
+    alias: WEB_COMPONENT_ALIASES,
+  },
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: '@slimlib/jsx',
+  },
+  optimizeDeps: {
+    exclude: WEB_COMPONENT_MODULES,
+  },
+  server: {
+    fs: {
+      allow: [import.meta.dirname],
+    },
+  },
   build: {
     outDir: OUT,
     emptyOutDir: true,

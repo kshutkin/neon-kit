@@ -1,6 +1,13 @@
 <main>
     <h1 class="mb-6">Icons</h1>
 
+    <nav aria-label="Icon documentation" class="docs-tabs mb-6">
+        <ul class="nav -tabs">
+            <li><a href="../icons/" data-slug="icons" class="nav__item -active">Library</a></li>
+            <li><a href="../icon-web-component/" data-slug="icon-web-component" class="nav__item">Web Component</a></li>
+        </ul>
+    </nav>
+
     <p class="mb-8 text-ink-secondary">
         <code>@neon-kit/icons</code> is a curated set of heroicon-derived SVG
         icons. Each heroicon ships in four variants
@@ -11,7 +18,9 @@
         subpath segment:
         <code>@neon-kit/icons/outline/bars-3</code>,
         <code>@neon-kit/icons/solid/bars-3</code>, etc. Each icon is its
-        own ESM module so bundlers tree-shake unused ones.
+        own ESM module so bundlers tree-shake unused ones. The gallery below
+        renders the same icon definitions through the lightweight internal
+        <code>SvgIcon</code> renderer used by Neon web components.
     </p>
 
     <section class="mb-8">
@@ -24,24 +33,24 @@
         </div>
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <ul class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6" data-icon-grid>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="arrow-path" name="outline/arrow-path" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">arrow-path</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="bars-3" name="outline/bars-3" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">bars-3</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="calendar" name="outline/calendar" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">calendar</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="check" name="outline/check" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">check</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="chevron-down" name="outline/chevron-down" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">chevron-down</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="chevron-left" name="outline/chevron-left" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">chevron-left</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="chevron-right" name="outline/chevron-right" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">chevron-right</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="chevron-up" name="outline/chevron-up" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">chevron-up</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="clock" name="outline/clock" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">clock</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="cog-6-tooth" name="outline/cog-6-tooth" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">cog-6-tooth</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="exclamation-triangle" name="outline/exclamation-triangle" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">exclamation-triangle</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="information-circle" name="outline/information-circle" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">information-circle</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="magnifying-glass" name="outline/magnifying-glass" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">magnifying-glass</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="minus" name="outline/minus" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">minus</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="pencil" name="outline/pencil" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">pencil</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="plus" name="outline/plus" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">plus</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="trash" name="outline/trash" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">trash</span></li>
-                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><neon-icon data-icon-base="x-mark" name="outline/x-mark" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">x-mark</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="arrow-path" data-svg-icon="outline/arrow-path" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">arrow-path</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="bars-3" data-svg-icon="outline/bars-3" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">bars-3</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="calendar" data-svg-icon="outline/calendar" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">calendar</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="check" data-svg-icon="outline/check" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">check</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="chevron-down" data-svg-icon="outline/chevron-down" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">chevron-down</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="chevron-left" data-svg-icon="outline/chevron-left" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">chevron-left</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="chevron-right" data-svg-icon="outline/chevron-right" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">chevron-right</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="chevron-up" data-svg-icon="outline/chevron-up" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">chevron-up</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="clock" data-svg-icon="outline/clock" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">clock</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="cog-6-tooth" data-svg-icon="outline/cog-6-tooth" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">cog-6-tooth</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="exclamation-triangle" data-svg-icon="outline/exclamation-triangle" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">exclamation-triangle</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="information-circle" data-svg-icon="outline/information-circle" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">information-circle</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="magnifying-glass" data-svg-icon="outline/magnifying-glass" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">magnifying-glass</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="minus" data-svg-icon="outline/minus" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">minus</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="pencil" data-svg-icon="outline/pencil" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">pencil</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="plus" data-svg-icon="outline/plus" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">plus</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="trash" data-svg-icon="outline/trash" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">trash</span></li>
+                <li class="flex h-24 flex-col items-center justify-center gap-2 rounded-md border border-border bg-surface p-3"><span data-icon-base="x-mark" data-svg-icon="outline/x-mark" data-icon-class="text-[32px]"></span><span class="font-mono text-xs text-ink-secondary">x-mark</span></li>
             </ul>
         </div>
     </section>
@@ -55,10 +64,10 @@
             you intend to render.
         </p>
         <div class="flex flex-wrap items-end gap-8 rounded-lg border border-border bg-surface-secondary p-6">
-            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/cog-6-tooth" style="font-size:24px"></neon-icon><span class="font-mono text-xs text-ink-secondary">outline · 24</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="solid/cog-6-tooth" style="font-size:24px"></neon-icon><span class="font-mono text-xs text-ink-secondary">solid · 24</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="mini/cog-6-tooth" style="font-size:20px"></neon-icon><span class="font-mono text-xs text-ink-secondary">mini · 20</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="micro/cog-6-tooth" style="font-size:16px"></neon-icon><span class="font-mono text-xs text-ink-secondary">micro · 16</span></span>
+            <span class="flex flex-col items-center gap-2"><span data-svg-icon="outline/cog-6-tooth" data-icon-class="text-[24px]"></span><span class="font-mono text-xs text-ink-secondary">outline · 24</span></span>
+            <span class="flex flex-col items-center gap-2"><span data-svg-icon="solid/cog-6-tooth" data-icon-class="text-[24px]"></span><span class="font-mono text-xs text-ink-secondary">solid · 24</span></span>
+            <span class="flex flex-col items-center gap-2"><span data-svg-icon="mini/cog-6-tooth" data-icon-class="text-[20px]"></span><span class="font-mono text-xs text-ink-secondary">mini · 20</span></span>
+            <span class="flex flex-col items-center gap-2"><span data-svg-icon="micro/cog-6-tooth" data-icon-class="text-[16px]"></span><span class="font-mono text-xs text-ink-secondary">micro · 16</span></span>
         </div>
     </section>
 
@@ -94,56 +103,20 @@ outlineIcons['bars-3'];</code></pre>
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">&lt;neon-icon&gt; element</h2>
-        <p class="mb-4 text-ink-secondary">
-            The icon data lives in <code>@neon-kit/icons</code> and the
-            <code>&lt;neon-icon&gt;</code> element lives in
-            <code>@neon-kit/web-components</code>. Set the
-            <code>name</code> attribute to
-            <code>&lt;variant&gt;/&lt;icon&gt;</code> (matching the
-            package subpath layout) and the element dynamic-imports the
-            icon on demand. Repeated requests for the same name share a
-            single import. The element renders into Light DOM and
-            inherits <code>currentColor</code> from its host context.
-        </p>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>// Side-effect register the &lt;neon-icon&gt; element.
-import '@neon-kit/web-components/icon';</code></pre>
-        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;neon-icon name="outline/bars-3"&gt;&lt;/neon-icon&gt;
-&lt;neon-icon name="solid/x-mark" aria-label="Close"&gt;&lt;/neon-icon&gt;</code></pre>
-        <p class="mb-4 mt-6 text-ink-secondary">
-            For maximum tree-shaking, statically import the icon and
-            assign it to the <code>icon</code> property — that path
-            skips the dynamic import and gives your bundler an exact
-            module reference to analyze.
-        </p>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>import bars from '@neon-kit/icons/outline/bars-3';
-
-const el = document.querySelector('neon-icon');
-el.icon = bars;            // synchronous render; takes precedence over `name`
-el.icon = null;            // clear; falls back to `name`-based loading</code></pre>
-        <div class="mt-4 flex items-end gap-6 rounded-lg border border-border bg-surface-secondary p-6">
-            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:16px"></neon-icon><span class="font-mono text-xs text-ink-secondary">16</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:24px"></neon-icon><span class="font-mono text-xs text-ink-secondary">24</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">32</span></span>
-            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:48px"></neon-icon><span class="font-mono text-xs text-ink-secondary">48</span></span>
-        </div>
-    </section>
-
-    <section class="mb-8">
         <h2 class="mb-4">Sizing &amp; color</h2>
         <p class="mb-4 text-ink-secondary">
             The SVG inherits <code>currentColor</code>, so any Tailwind
             text-color utility colors the icon. The rendered SVG is
-            always <code>1em × 1em</code>; size it via CSS
-            <code>font-size</code> on the host (or any ancestor).
+            sized in <code>em</code>; size it via CSS
+            <code>font-size</code> on the SVG or any ancestor.
         </p>
         <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-6">
-            <span class="flex items-center gap-2 text-ink-primary"><neon-icon name="outline/information-circle" style="font-size:28px"></neon-icon><span class="font-mono text-xs">ink-primary</span></span>
-            <span class="flex items-center gap-2 text-ink-secondary"><neon-icon name="outline/information-circle" style="font-size:28px"></neon-icon><span class="font-mono text-xs">ink-secondary</span></span>
-            <span class="flex items-center gap-2 text-neon-blue"><neon-icon name="outline/information-circle" style="font-size:28px"></neon-icon><span class="font-mono text-xs">neon-blue</span></span>
-            <span class="flex items-center gap-2 text-neon-green"><neon-icon name="outline/check" style="font-size:28px"></neon-icon><span class="font-mono text-xs">neon-green</span></span>
-            <span class="flex items-center gap-2 text-neon-orange"><neon-icon name="outline/exclamation-triangle" style="font-size:28px"></neon-icon><span class="font-mono text-xs">neon-orange</span></span>
-            <span class="flex items-center gap-2 text-neon-pink"><neon-icon name="outline/x-mark" style="font-size:28px"></neon-icon><span class="font-mono text-xs">neon-pink</span></span>
+            <span class="flex items-center gap-2 text-ink-primary"><span data-svg-icon="outline/information-circle" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">ink-primary</span></span>
+            <span class="flex items-center gap-2 text-ink-secondary"><span data-svg-icon="outline/information-circle" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">ink-secondary</span></span>
+            <span class="flex items-center gap-2 text-neon-blue"><span data-svg-icon="outline/information-circle" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">neon-blue</span></span>
+            <span class="flex items-center gap-2 text-neon-green"><span data-svg-icon="outline/check" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">neon-green</span></span>
+            <span class="flex items-center gap-2 text-neon-orange"><span data-svg-icon="outline/exclamation-triangle" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">neon-orange</span></span>
+            <span class="flex items-center gap-2 text-neon-pink"><span data-svg-icon="outline/x-mark" data-icon-class="text-[28px]"></span><span class="font-mono text-xs">neon-pink</span></span>
         </div>
     </section>
 

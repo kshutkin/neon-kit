@@ -1,0 +1,136 @@
+<main>
+    <h1 class="mb-6">Icon - Web Component</h1>
+
+    <nav aria-label="Icon documentation" class="docs-tabs mb-6">
+        <ul class="nav -tabs">
+            <li><a href="../icons/" data-slug="icons" class="nav__item">Library</a></li>
+            <li><a href="../icon-web-component/" data-slug="icon-web-component" class="nav__item -active">Web Component</a></li>
+        </ul>
+    </nav>
+
+    <p class="mb-6 text-ink-secondary">
+        <code>&lt;neon-icon&gt;</code> is a Light-DOM custom element that renders
+        <code>@neon-kit/icons</code> definitions as inline SVG. Use it when
+        authoring HTML directly or when a component boundary makes a custom
+        element more convenient than importing and placing SVG yourself. For
+        package-only usage, see the <a class="link" href="../icons/" data-slug="icons">Icons library</a>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/icons @neon-kit/web-components
+
+// Side-effect register the &lt;neon-icon&gt; element.
+import '@neon-kit/web-components/icon';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Name loading</h2>
+        <p class="mb-4 text-ink-secondary">
+            Set <code>name</code> to <code>&lt;variant&gt;/&lt;icon&gt;</code>, matching
+            the icon package subpath layout. The element dynamic-imports the
+            requested module and renders into Light DOM so it inherits
+            <code>currentColor</code>.
+        </p>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;neon-icon name="outline/bars-3"&gt;&lt;/neon-icon&gt;
+&lt;neon-icon name="solid/check" label="Confirmed"&gt;&lt;/neon-icon&gt;</code></pre>
+        <div class="mt-4 flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-6">
+            <span class="flex items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:28px"></neon-icon><span class="font-mono text-xs">outline/bars-3</span></span>
+            <span class="flex items-center gap-2 text-neon-green"><neon-icon name="solid/check" style="font-size:28px" label="Confirmed"></neon-icon><span class="font-mono text-xs">solid/check</span></span>
+            <span class="flex items-center gap-2 text-neon-pink"><neon-icon name="mini/x-mark" style="font-size:24px"></neon-icon><span class="font-mono text-xs">mini/x-mark</span></span>
+            <span class="flex items-center gap-2 text-ink-secondary"><neon-icon name="micro/chevron-down" style="font-size:18px"></neon-icon><span class="font-mono text-xs">micro/chevron-down</span></span>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Property override</h2>
+        <p class="mb-4 text-ink-secondary">
+            For maximum tree-shaking, statically import an icon definition and
+            assign it to the <code>icon</code> property. That path skips dynamic
+            loading and takes precedence over <code>name</code> until cleared.
+        </p>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>import bars from '@neon-kit/icons/outline/bars-3';
+
+const el = document.querySelector('neon-icon');
+el.icon = bars;            // synchronous render; wins over `name`
+el.icon = null;            // clear; falls back to `name` loading</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Sizing &amp; color</h2>
+        <p class="mb-4 text-ink-secondary">
+            The rendered SVG uses <code>width="1em"</code> and
+            <code>height="1em"</code>, so set <code>font-size</code> on the
+            host or an ancestor. Icon color follows <code>currentColor</code>.
+        </p>
+        <div class="flex items-end gap-6 rounded-lg border border-border bg-surface-secondary p-6">
+            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:16px"></neon-icon><span class="font-mono text-xs text-ink-secondary">16</span></span>
+            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:24px"></neon-icon><span class="font-mono text-xs text-ink-secondary">24</span></span>
+            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:32px"></neon-icon><span class="font-mono text-xs text-ink-secondary">32</span></span>
+            <span class="flex flex-col items-center gap-2"><neon-icon name="outline/bars-3" style="font-size:48px"></neon-icon><span class="font-mono text-xs text-ink-secondary">48</span></span>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">API</h2>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-surface-secondary">
+                        <th class="border border-border px-4 py-2 text-left">Member</th>
+                        <th class="border border-border px-4 py-2 text-left">Type</th>
+                        <th class="border border-border px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-border px-4 py-2"><code>name</code></td>
+                        <td class="border border-border px-4 py-2"><code>string</code></td>
+                        <td class="border border-border px-4 py-2">Attribute/property in <code>&lt;variant&gt;/&lt;icon&gt;</code> form, such as <code>outline/bars-3</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border px-4 py-2"><code>icon</code></td>
+                        <td class="border border-border px-4 py-2"><code>IconDef | null</code></td>
+                        <td class="border border-border px-4 py-2">Property-only override. Assign an imported icon definition for synchronous rendering; set to <code>null</code> to resume <code>name</code> loading.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border px-4 py-2"><code>label</code></td>
+                        <td class="border border-border px-4 py-2"><code>string</code></td>
+                        <td class="border border-border px-4 py-2">Attribute/property label for meaningful icons. Sets the host element's <code>ElementInternals</code> accessible name and default <code>role="img"</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Accessibility</h2>
+        <p class="mb-4 text-ink-secondary">
+            Without a label, icons render as decorative content hidden by
+            default through <code>ElementInternals</code>. For a meaningful
+            icon, set the <code>label</code> attribute or property. Raw ARIA
+            attributes are also supported, but host <code>aria-label</code>
+            must be paired with <code>role="img"</code>. Add a label only when
+            the icon itself carries information that is not already present in
+            nearby text.
+        </p>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;button class="btn"&gt;
+    &lt;neon-icon name="outline/trash"&gt;&lt;/neon-icon&gt;
+    Delete
+&lt;/button&gt;
+
+&lt;button class="btn" aria-label="Delete"&gt;
+    &lt;neon-icon name="outline/trash"&gt;&lt;/neon-icon&gt;
+&lt;/button&gt;
+
+&lt;neon-icon name="solid/check" label="Confirmed"&gt;
+&lt;/neon-icon&gt;
+
+&lt;neon-icon name="solid/check" role="img" aria-label="Confirmed"&gt;
+&lt;/neon-icon&gt;
+
+&lt;script&gt;
+    document.querySelector('neon-icon').label = 'Confirmed';
+&lt;/script&gt;</code></pre>
+    </section>
+</main>
