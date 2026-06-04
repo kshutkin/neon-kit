@@ -24,16 +24,16 @@ export function icon(paths, overrides) {
     return {
         viewBox: overrides?.viewBox ?? VIEWBOX,
         attrs: { ...SVG_ATTRS, ...(overrides?.attrs ?? {}) },
-        paths: paths.map((p) => {
-            const isStr = typeof p === 'string';
-            const d = isStr ? p : p.d;
-            const own = isStr ? undefined : p.attrs;
+        paths: paths.map((pathDefinition) => {
+            const isPathData = typeof pathDefinition === 'string';
+            const pathData = isPathData ? pathDefinition : pathDefinition.d;
+            const pathAttrs = isPathData ? undefined : pathDefinition.attrs;
             return {
-                d,
+                d: pathData,
                 attrs: {
                     ...PATH_ATTRS,
                     ...(overrides?.pathAttrs ?? {}),
-                    ...(own ?? {}),
+                    ...(pathAttrs ?? {}),
                 },
             };
         }),

@@ -19,13 +19,13 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const TYPES = resolve(__dirname, '..', 'types', 'index.d.ts');
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const typesPath = resolve(scriptDir, '..', 'types', 'index.d.ts');
 
-const raw = await readFile(TYPES, 'utf8');
+const typeDeclarations = await readFile(typesPath, 'utf8');
 
 let fixed = 0;
-let out = raw.replace(/^(\s*)export default IconDef;/gm, (_match, indent) => {
+let rewrittenDeclarations = typeDeclarations.replace(/^(\s*)export default IconDef;/gm, (_match, indent) => {
     fixed += 1;
     return `${indent}const _default: IconDef;\n${indent}export default _default;`;
 });
@@ -36,7 +36,7 @@ let out = raw.replace(/^(\s*)export default IconDef;/gm, (_match, indent) => {
 //     const _default: { "name": IconDef; … };
 //     export default _default;
 let aggregated = 0;
-out = out.replace(/^(\s*)export default (\{[\s\S]*?^\1\});/gm, (_match, indent, block) => {
+rewrittenDeclarations = rewrittenDeclarations.replace(/^(\s*)export default (\{[\s\S]*?^\1\});/gm, (_match, indent, block) => {
     aggregated += 1;
     return `${indent}const _default: ${block};\n${indent}export default _default;`;
 });
@@ -44,6 +44,6 @@ out = out.replace(/^(\s*)export default (\{[\s\S]*?^\1\});/gm, (_match, indent, 
 if (fixed === 0 && aggregated === 0) {
     console.log('fix-types: nothing to fix');
 } else {
-    await writeFile(TYPES, out);
+    await writeFile(typesPath, rewrittenDeclarations);
     console.log(`fix-types: rewrote ${fixed} default export(s) and ${aggregated} aggregate(s)`);
 }

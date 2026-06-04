@@ -22,9 +22,9 @@ import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PKG_ROOT = resolve(__dirname, '..');
-const SRC = resolve(PKG_ROOT, 'src');
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const PACKAGE_ROOT = resolve(scriptDir, '..');
+const SOURCE_DIR = resolve(PACKAGE_ROOT, 'src');
 const require_ = createRequire(import.meta.url);
 
 const VARIANTS = /** @type {const} */ (['outline', 'solid', 'mini', 'micro']);
@@ -158,14 +158,14 @@ const MANIFEST = {
 const VARIANT_SPEC = /** @type {any} */ ({});
 for (const variant of VARIANTS) {
     const factoryUrl = new URL(`../src/${variant}/_variant.js`, import.meta.url).href;
-    const mod = await import(factoryUrl);
-    if (typeof mod.VIEWBOX !== 'string' || !mod.SVG_ATTRS || !mod.PATH_ATTRS) {
+    const variantModule = await import(factoryUrl);
+    if (typeof variantModule.VIEWBOX !== 'string' || !variantModule.SVG_ATTRS || !variantModule.PATH_ATTRS) {
         throw new Error(`src/${variant}/_variant.js must export VIEWBOX, SVG_ATTRS, PATH_ATTRS`);
     }
     VARIANT_SPEC[variant] = {
-        viewBox: mod.VIEWBOX,
-        shellAttrs: mod.SVG_ATTRS,
-        pathAttrs: mod.PATH_ATTRS,
+        viewBox: variantModule.VIEWBOX,
+        shellAttrs: variantModule.SVG_ATTRS,
+        pathAttrs: variantModule.PATH_ATTRS,
     };
 }
 
@@ -176,22 +176,28 @@ function heroiconsDir() {
 }
 
 /**
- * @param {string} svg
- * @returns {{ viewBox: string, paths: { d: string, raw: Record<string, string> }[] }}
+ * @param {string} svgText
+ * @returns {{ viewBox: string, paths: { d: string, sourceAttrs: Record<string, string> }[] }}
  */
-function parseSvg(svg) {
-    const viewBoxMatch = svg.match(/viewBox="([^"]+)"/);
-    if (!viewBoxMatch) throw new Error('missing viewBox');
+function parseSvg(svgText) {
+    const viewBoxMatch = svgText.match(/viewBox="([^"]+)"/);
+    if (!viewBoxMatch) {
+        throw new Error('missing viewBox');
+    }
     const paths = [];
     const pathRe = /<path\s+([^>]*?)\/?>(?:<\/path>)?/g;
     let match;
-    while ((match = pathRe.exec(svg)) !== null) {
+    while ((match = pathRe.exec(svgText)) !== null) {
         const attrs = parseAttrs(match[1]);
-        const d = attrs.d;
-        if (!d) continue;
-        paths.push({ d, raw: attrs });
+        const pathData = attrs.d;
+        if (!pathData) {
+            continue;
+        }
+        paths.push({ d: pathData, sourceAttrs: attrs });
     }
-    if (paths.length === 0) throw new Error('no <path> elements found');
+    if (paths.length === 0) {
+        throw new Error('no <path> elements found');
+    }
     return { viewBox: viewBoxMatch[1], paths };
 }
 
@@ -201,25 +207,33 @@ function parseSvg(svg) {
  */
 function parseAttrs(chunk) {
     /** @type {Record<string, string>} */
-    const out = {};
-    const re = /([\w:-]+)="([^"]*)"/g;
+    const attrs = {};
+    const attrRe = /([\w:-]+)="([^"]*)"/g;
     let match;
-    while ((match = re.exec(chunk)) !== null) out[match[1]] = match[2];
-    return out;
+    while ((match = attrRe.exec(chunk)) !== null) {
+        attrs[match[1]] = match[2];
+    }
+    return attrs;
 }
 
 /**
  * Two-key shallow equality.
  *
- * @param {Record<string,string>} a
- * @param {Record<string,string>} b
+ * @param {Record<string,string>} actualAttrs
+ * @param {Record<string,string>} expectedAttrs
  */
-function attrsEqual(a, b) {
-    const ak = Object.keys(a);
-    const bk = Object.keys(b);
-    if (ak.length !== bk.length) return false;
-    for (const k of ak) if (a[k] !== b[k]) return false;
-    return true;
+function attrsEqual(actualAttrs, expectedAttrs) {
+    const actualAttrNames = Object.keys(actualAttrs);
+    const expectedAttrNames = Object.keys(expectedAttrs);
+    let areEqual = actualAttrNames.length === expectedAttrNames.length;
+
+    for (const attrName of actualAttrNames) {
+        if (actualAttrs[attrName] !== expectedAttrs[attrName]) {
+            areEqual = false;
+        }
+    }
+
+    return areEqual;
 }
 
 /**
@@ -234,15 +248,20 @@ function attrsEqual(a, b) {
  */
 function renderIconModule(name, variant, paths) {
     const defaults = VARIANT_SPEC[variant].pathAttrs;
-    /** @param {{ d: string, attrs: Record<string,string> }} p */
-    const renderPath = (p) => {
-        if (attrsEqual(p.attrs, defaults)) {
-            return JSON.stringify(p.d);
+    /** @param {{ d: string, attrs: Record<string,string> }} iconPath */
+    const renderPath = (iconPath) => {
+        let renderedPath;
+
+        if (attrsEqual(iconPath.attrs, defaults)) {
+            renderedPath = JSON.stringify(iconPath.d);
+        } else {
+            const entries = Object.entries(iconPath.attrs)
+                .map(([attrName, attrValue]) => `${JSON.stringify(attrName)}: ${JSON.stringify(attrValue)}`)
+                .join(', ');
+            renderedPath = `{ d: ${JSON.stringify(iconPath.d)}, attrs: { ${entries} } }`;
         }
-        const entries = Object.entries(p.attrs)
-            .map(([k, v]) => `${JSON.stringify(k)}: ${JSON.stringify(v)}`)
-            .join(', ');
-        return `{ d: ${JSON.stringify(p.d)}, attrs: { ${entries} } }`;
+
+        return renderedPath;
     };
     const body = paths.length === 1
         ? `[${renderPath(paths[0])}]`
@@ -263,9 +282,9 @@ export default icon(${body});
  * @returns {string}
  */
 function renderVariantIndex(variant, names) {
-    const importLines = names.map((n) => `import ${toIdentifier(n)} from './${n}.js';`);
-    const idents = names.map(toIdentifier);
-    const mapEntries = names.map((n) => `    ${JSON.stringify(n)}: ${toIdentifier(n)},`);
+    const importLines = names.map((iconName) => `import ${toIdentifier(iconName)} from './${iconName}.js';`);
+    const identifiers = names.map(toIdentifier);
+    const mapEntries = names.map((iconName) => `    ${JSON.stringify(iconName)}: ${toIdentifier(iconName)},`);
     return `/**
  * \`@neon-kit/icons/${variant}\` — aggregate of all ${variant} icons.
  *
@@ -278,7 +297,7 @@ function renderVariantIndex(variant, names) {
 
 ${importLines.join('\n')}
 
-export { ${idents.join(', ')} };
+export { ${identifiers.join(', ')} };
 
 export default {
 ${mapEntries.join('\n')}
@@ -292,7 +311,7 @@ ${mapEntries.join('\n')}
  * @param {string} name
  */
 function toIdentifier(name) {
-    return name.replace(/-([a-z0-9])/g, (_, ch) => ch.toUpperCase());
+    return name.replace(/-([a-z0-9])/g, (_match, character) => character.toUpperCase());
 }
 
 /** @returns {string} */
@@ -326,27 +345,27 @@ export { serialize } from './serialize.js';
 }
 
 /**
- * @param {Record<string, unknown>} pkg
+ * @param {Record<string, unknown>} packageJson
  * @param {string[]} names
  */
-function updatePackageExports(pkg, names) {
+function updatePackageExports(packageJson, names) {
     /** @type {Record<string, unknown>} */
-    const exports_ = {};
-    exports_['.'] = { types: './types/index.d.ts', default: './src/index.js' };
+    const packageExports = {};
+    packageExports['.'] = { types: './types/index.d.ts', default: './src/index.js' };
     for (const variant of VARIANTS) {
-        exports_[`./${variant}`] = {
+        packageExports[`./${variant}`] = {
             types: './types/index.d.ts',
             default: `./src/${variant}/index.js`,
         };
         for (const name of [...names].sort()) {
-            exports_[`./${variant}/${name}`] = {
+            packageExports[`./${variant}/${name}`] = {
                 types: './types/index.d.ts',
                 default: `./src/${variant}/${name}.js`,
             };
         }
     }
-    exports_['./package.json'] = './package.json';
-    pkg.exports = exports_;
+    packageExports['./package.json'] = './package.json';
+    packageJson.exports = packageExports;
 }
 
 /**
@@ -356,7 +375,7 @@ function updatePackageExports(pkg, names) {
  */
 async function cleanSrc() {
     for (const variant of VARIANTS) {
-        const dir = resolve(SRC, variant);
+        const dir = resolve(SOURCE_DIR, variant);
         let entries;
         try {
             entries = await readdir(dir);
@@ -364,21 +383,27 @@ async function cleanSrc() {
             continue;
         }
         for (const entry of entries) {
-            if (entry === '_variant.js') continue;
+            if (entry === '_variant.js') {
+                continue;
+            }
             await rm(resolve(dir, entry), { force: true });
         }
     }
-    const keep = new Set(['serialize.js', 'types.js', 'index.js']);
+    const keptFiles = new Set(['serialize.js', 'types.js', 'index.js']);
     let entries;
     try {
-        entries = await readdir(SRC);
+        entries = await readdir(SOURCE_DIR);
     } catch {
         return;
     }
     for (const entry of entries) {
-        if (!entry.endsWith('.js')) continue;
-        if (keep.has(entry)) continue;
-        await rm(resolve(SRC, entry), { force: true });
+        if (!entry.endsWith('.js')) {
+            continue;
+        }
+        if (keptFiles.has(entry)) {
+            continue;
+        }
+        await rm(resolve(SOURCE_DIR, entry), { force: true });
     }
 }
 
@@ -388,44 +413,48 @@ async function main() {
 
     await cleanSrc();
     for (const variant of VARIANTS) {
-        await mkdir(resolve(SRC, variant), { recursive: true });
+        await mkdir(resolve(SOURCE_DIR, variant), { recursive: true });
     }
 
     for (const variant of VARIANTS) {
         const spec = VARIANT_SPEC[variant];
 
         for (const name of names) {
-            const rel = MANIFEST[name][variant];
-            const src = resolve(heroDir, rel);
-            const raw = await readFile(src, 'utf8');
-            const parsed = parseSvg(raw);
+            const relativeHeroiconsPath = MANIFEST[name][variant];
+            const svgPath = resolve(heroDir, relativeHeroiconsPath);
+            const svgText = await readFile(svgPath, 'utf8');
+            const parsed = parseSvg(svgText);
             if (parsed.viewBox !== spec.viewBox) {
                 throw new Error(`${variant}/${name}: expected viewBox "${spec.viewBox}", got "${parsed.viewBox}"`);
             }
-            const keep = Object.keys(spec.pathAttrs);
-            const slimPaths = parsed.paths.map((p) => {
+            const keptAttrNames = Object.keys(spec.pathAttrs);
+            const slimPaths = parsed.paths.map((parsedPath) => {
                 /** @type {Record<string, string>} */
                 const attrs = {};
-                for (const k of keep) if (p.raw[k] != null) attrs[k] = p.raw[k];
-                return { d: p.d, attrs };
+                for (const attrName of keptAttrNames) {
+                    if (parsedPath.sourceAttrs[attrName] != null) {
+                        attrs[attrName] = parsedPath.sourceAttrs[attrName];
+                    }
+                }
+                return { d: parsedPath.d, attrs };
             });
             const module_ = renderIconModule(name, variant, slimPaths);
-            await writeFile(resolve(SRC, variant, `${name}.js`), module_);
+            await writeFile(resolve(SOURCE_DIR, variant, `${name}.js`), module_);
         }
-        await writeFile(resolve(SRC, variant, 'index.js'), renderVariantIndex(variant, names));
+        await writeFile(resolve(SOURCE_DIR, variant, 'index.js'), renderVariantIndex(variant, names));
     }
 
-    await writeFile(resolve(SRC, 'index.js'), renderRootIndex());
+    await writeFile(resolve(SOURCE_DIR, 'index.js'), renderRootIndex());
 
-    const pkgPath = resolve(PKG_ROOT, 'package.json');
-    const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
-    updatePackageExports(pkg, names);
-    await writeFile(pkgPath, JSON.stringify(pkg, null, 4) + '\n');
+    const packageJsonPath = resolve(PACKAGE_ROOT, 'package.json');
+    const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+    updatePackageExports(packageJson, names);
+    await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 4) + '\n');
 
     console.log(`generated ${names.length} icons × ${VARIANTS.length} variants = ${names.length * VARIANTS.length} icon modules`);
 }
 
-main().catch((err) => {
-    console.error(err);
+main().catch((error) => {
+    console.error(error);
     process.exit(1);
 });

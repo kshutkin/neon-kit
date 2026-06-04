@@ -5,3 +5,4 @@ dist-docs
 coverage
 types
 .DS_Store
+.codex
