@@ -29,6 +29,7 @@ import {
     onFormStateRestore,
     onMount,
     props,
+    stringAttribute,
     withInternals,
     withValidation,
 } from '@slimlib/element';
@@ -41,7 +42,6 @@ import {
     defineReadonlyProperty,
     defineStringProperty,
     defineWritableProperty,
-    parseString,
     reflectStringAttr,
 } from './form-control-utils.js';
 import xMark from '@neon-kit/icons/outline/x-mark';
@@ -996,16 +996,16 @@ defineElement(
     'neon-datepicker',
     [
         attributes({
-            value: parseString,
-            min: parseString,
-            max: parseString,
-            step: parseString,
-            placeholder: parseString,
+            value: [stringAttribute[0]],
+            min: [stringAttribute[0]],
+            max: [stringAttribute[0]],
+            step: [stringAttribute[0]],
+            placeholder: [stringAttribute[0]],
             disabled: [booleanAttribute[0]],
             readonly: [booleanAttribute[0]],
             required: [booleanAttribute[0]],
-            name: parseString,
-            autocomplete: parseString,
+            name: [stringAttribute[0]],
+            autocomplete: [stringAttribute[0]],
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),

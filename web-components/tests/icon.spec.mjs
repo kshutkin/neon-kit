@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import axe from 'axe-core';
 
 import bars from '@neon-kit/icons/outline/bars-3';
 import xMark from '@neon-kit/icons/outline/x-mark';
@@ -74,6 +75,16 @@ async function settle() {
     for (let i = 0; i < 20; i += 1) {
         await new Promise((resolve) => setTimeout(resolve, 5));
     }
+}
+
+/** @param {import('axe-core').AxeResults} results */
+function formatAxeViolations(results) {
+    return results.violations
+        .map((violation) => {
+            const targets = violation.nodes.map((node) => node.target.join(', ')).join('; ');
+            return `${violation.id}: ${violation.help} (${targets})`;
+        })
+        .join('\n');
 }
 
 describe('<neon-icon>', () => {
@@ -178,6 +189,22 @@ describe('<neon-icon>', () => {
         expect(svg.querySelector('title')?.textContent).toBe('Open menu');
     });
 
+    it('has no axe violations for decorative and labelled icons', async () => {
+        document.body.innerHTML = `
+            <main>
+                <p>
+                    <neon-icon name="outline/bars-3"></neon-icon>
+                    <span>Menu</span>
+                </p>
+                <neon-icon name="solid/check" aria-label="Confirmed"></neon-icon>
+            </main>
+        `;
+        await settle();
+
+        const results = await axe.run(document.body);
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
     it('matches serialize() output structurally', async () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
@@ -214,14 +241,14 @@ describe('<neon-icon>', () => {
         expect(el.getAttribute('aria-label')).toBe('Close');
         expect(el.getAttribute('title')).toBe('Dismiss');
 
-        // Empty string removes the attribute (legacy behavior).
+        // Built-in stringAttribute reflects empty strings as empty attributes.
         el.name = '';
         /** @type {any} */ (el)['aria-label'] = '';
         el.title = '';
         await settle();
-        expect(el.hasAttribute('name')).toBe(false);
-        expect(el.hasAttribute('aria-label')).toBe(false);
-        expect(el.hasAttribute('title')).toBe(false);
+        expect(el.getAttribute('name')).toBe('');
+        expect(el.getAttribute('aria-label')).toBe('');
+        expect(el.getAttribute('title')).toBe('');
     });
 
     it('renders nothing when neither `name` nor `icon` is set', async () => {

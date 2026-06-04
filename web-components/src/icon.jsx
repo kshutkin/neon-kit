@@ -22,20 +22,10 @@ import {
     attributes,
     defineElement,
     props,
+    stringAttribute,
 } from '@slimlib/element';
 import { svg } from '@slimlib/jsx';
 import { effect, signal } from '@slimlib/store';
-
-/**
- * Like `stringAttribute`, but reflects an empty string as attribute
- * removal (the legacy `<neon-icon>` behavior).
- *
- * @type {[ (raw: string | null) => string | null, (value: unknown) => string | null ]}
- */
-const reflectedString = [
-    (raw) => raw,
-    (value) => (value == null || value === '' ? null : String(value)),
-];
 
 /**
  * @param {IconDef} def
@@ -129,9 +119,9 @@ defineElement(
     'neon-icon',
     [
         attributes({
-            name: reflectedString,
-            'aria-label': reflectedString,
-            title: reflectedString,
+            name: stringAttribute,
+            'aria-label': stringAttribute,
+            title: stringAttribute,
         }),
     ],
     renderIcon,

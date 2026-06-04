@@ -3,13 +3,6 @@
  */
 
 /**
- * Parse-only string attribute descriptor for `@slimlib/element`.
- *
- * @type {[(raw: string | null) => string]}
- */
-export const parseString = [(raw) => raw ?? ''];
-
-/**
  * @param {HTMLElement} host
  * @param {string} name
  * @param {string | number | null | undefined} value

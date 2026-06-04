@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import '../src/multicombobox.jsx';
 
+const tick = () => Promise.resolve();
+
 /**
  * @template {Element} [T=HTMLElement]
  * @param {string} html
@@ -172,6 +174,17 @@ describe('<neon-multicombobox>', () => {
         } finally {
             warn.mockRestore();
         }
+    });
+
+    it('reflects empty name property as an empty attribute', async () => {
+        const cb = mount(`<neon-multicombobox>${COUNTRIES}</neon-multicombobox>`);
+        /** @type {any} */ (cb).name = 'country';
+        await tick();
+        expect(cb.getAttribute('name')).toBe('country');
+
+        /** @type {any} */ (cb).name = '';
+        await tick();
+        expect(cb.getAttribute('name')).toBe('');
     });
 
     it('participates in form submission with one FormData entry per value', () => {

@@ -43,23 +43,11 @@ import {
     onFormStateRestore,
     onMount,
     props,
+    stringAttribute,
     withInternals,
     withValidation,
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
-
-/**
- * @type {[(raw: string | null) => string, (value: unknown) => string | null]}
- */
-const reflectedRequiredString = [
-    (raw) => raw ?? '',
-    (value) => (value == null || value === '' ? null : String(value)),
-];
-
-/**
- * @type {[(raw: string | null) => string]}
- */
-const parseString = [(raw) => raw ?? ''];
 
 import { SvgIcon } from './svg-icon.jsx';
 import xMark from '@neon-kit/icons/outline/x-mark';
@@ -725,11 +713,11 @@ defineElement(
             // applyValue() because the re-entrancy guard across the
             // value attribute, the `value` prop and the `selected`
             // signal cannot be expressed as a [parse, serialize] pair.
-            value: parseString,
-            placeholder: parseString,
+            value: [stringAttribute[0]],
+            placeholder: [stringAttribute[0]],
             disabled: booleanAttribute,
             required: booleanAttribute,
-            name: reflectedRequiredString,
+            name: stringAttribute,
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),

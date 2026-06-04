@@ -29,6 +29,7 @@ import {
     onConnect,
     onDisconnect,
     props,
+    stringAttribute,
 } from '@slimlib/element';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
@@ -320,8 +321,8 @@ defineElement(
     'neon-tooltip',
     [
         attributes({
-            'data-placement': [(raw) => raw],
-            'data-trigger': [(raw) => raw],
+            'data-placement': [stringAttribute[0]],
+            'data-trigger': [stringAttribute[0]],
         }),
     ],
     renderTooltip,

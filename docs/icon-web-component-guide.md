@@ -16,9 +16,9 @@ elements.
   That means the tag name is fixed at module import time.
 - The public reactive props are created with `props()`:
   `name`, `aria-label`, `title`, and `icon`.
-- `name`, `aria-label`, and `title` reflect to attributes with a local
-  `reflectedString` descriptor. Unlike Slimlib's normal `stringAttribute`,
-  assigning `''` removes the attribute to preserve legacy behavior.
+- `name`, `aria-label`, and `title` reflect to attributes with Slimlib's
+  `stringAttribute` descriptor. Assigning `''` reflects an empty attribute;
+  assigning `null` or `undefined` removes the attribute.
 - `icon` is a property-only override. It is not reflected to an attribute.
   If `icon` is non-null, it wins over `name`.
 

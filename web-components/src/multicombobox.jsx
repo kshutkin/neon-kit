@@ -34,17 +34,6 @@ import {
 } from '@slimlib/element';
 import { effect, signal } from '@slimlib/store';
 
-/**
- * `name` reflection: empty string removes the attribute (matches the
- * legacy setter). `stringAttribute` would write `name=""` instead.
- *
- * @type {[ (raw: string | null) => string | null, (value: unknown) => string | null ]}
- */
-const reflectedName = [
-    (raw) => raw,
-    (value) => (value == null || value === '' ? null : String(value)),
-];
-
 import { SvgIcon } from './svg-icon.jsx';
 import xMark from '@neon-kit/icons/outline/x-mark';
 import chevronDown from '@neon-kit/icons/outline/chevron-down';
@@ -767,7 +756,7 @@ defineElement(
             placeholder: [stringAttribute[0]],
             disabled: booleanAttribute,
             required: booleanAttribute,
-            name: reflectedName,
+            name: stringAttribute,
             'data-clearable': [booleanAttribute[0]],
         }),
         withInternals(),

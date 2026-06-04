@@ -161,6 +161,17 @@ describe('<neon-combobox>', () => {
         expect(changes).toBe(0);
     });
 
+    it('reflects empty name property as an empty attribute', async () => {
+        const cb = mount(`<neon-combobox>${COUNTRIES}</neon-combobox>`);
+        /** @type {any} */ (cb).name = 'country';
+        await tick();
+        expect(cb.getAttribute('name')).toBe('country');
+
+        /** @type {any} */ (cb).name = '';
+        await tick();
+        expect(cb.getAttribute('name')).toBe('');
+    });
+
     it('setting an unknown value is a no-op (matches native <select>)', async () => {
         const cb = mount(`<neon-combobox value="us">${COUNTRIES}</neon-combobox>`);
         /** @type {any} */ (cb).value = 'zz';
