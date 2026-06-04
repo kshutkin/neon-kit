@@ -186,12 +186,12 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             <code>tabindex</code>).
         </p>
         <p class="mb-4 text-ink-secondary">
-            Keyboard: <kbd class="kbd">Esc</kbd> does not auto-close the tooltip
-            (it uses <code>popover="manual"</code>). The hover and focus close
-            paths handle dismissal naturally — moving the pointer or focus away
-            closes the tooltip after a short delay. For click-driven tooltips
-            (<code>trigger="click"</code>), clicking the trigger again
-            toggles it closed.
+            Keyboard: <kbd class="kbd">Esc</kbd> closes an open tooltip when
+            pressed from the trigger. Hover and focus close paths also handle
+            dismissal naturally — moving the pointer or focus away closes the
+            tooltip after a short delay. For click-driven tooltips
+            (<code>trigger="click"</code>), clicking the trigger again toggles
+            it closed.
         </p>
     </section>
 </main>

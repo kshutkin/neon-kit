@@ -69,9 +69,9 @@ the boundary**:
    that would change scheduling for the whole app embedding the
    component. Keep the sync commit local to our own setters.
 
-Used by `icon` (the `icon` property setter) and `tooltip` (the
-`placement` / `trigger` bridge). Expect to need it again for
-the combobox/datepicker/timepicker `value` setters.
+Used by `icon` (the `icon` property setter). Expect to need it again for
+the combobox/datepicker/timepicker `value` setters when they need
+synchronous public writes.
 
 ## `@slimlib/jsx` gotchas
 

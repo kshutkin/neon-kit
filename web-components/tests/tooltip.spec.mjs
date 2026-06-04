@@ -16,6 +16,8 @@ function mount(html) {
     return root;
 }
 
+const tick = () => Promise.resolve();
+
 /** @param {import('axe-core').AxeResults} results */
 function formatAxeViolations(results) {
     return results.violations
@@ -98,11 +100,12 @@ describe('<neon-tooltip>', () => {
         expect(btn.hasAttribute('aria-describedby')).toBe(false);
     });
 
-    it('updates placement when the attribute changes', () => {
+    it('updates placement when the attribute changes', async () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
         expect(tip.classList.contains('-top')).toBe(true);
         tip.setAttribute('placement', 'bottom');
+        await tick();
         expect(tip.classList.contains('-bottom')).toBe(true);
         expect(tip.classList.contains('-top')).toBe(false);
     });
@@ -135,6 +138,19 @@ describe('<neon-tooltip>', () => {
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
+    it('closes on Escape from the trigger', () => {
+        const span = mount(
+            `<span tabindex="0">x<neon-tooltip trigger="click">y</neon-tooltip></span>`,
+        );
+        const tip = /** @type {HTMLElement} */ (span.querySelector('neon-tooltip'));
+
+        span.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(tip.matches(':popover-open')).toBe(true);
+
+        span.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        expect(tip.matches(':popover-open')).toBe(false);
+    });
+
     it('hideTooltip() closes the popover synchronously', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
@@ -144,6 +160,19 @@ describe('<neon-tooltip>', () => {
         tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
         tip.hideTooltip();
+        expect(tip.matches(':popover-open')).toBe(false);
+    });
+
+    it('closes on Escape when opened programmatically', () => {
+        const btn = mount(
+            `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
+        );
+        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+
+        tip.showTooltip();
+        expect(tip.matches(':popover-open')).toBe(true);
+
+        btn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         expect(tip.matches(':popover-open')).toBe(false);
     });
 });

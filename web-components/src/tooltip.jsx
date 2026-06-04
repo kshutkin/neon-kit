@@ -16,10 +16,8 @@
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  *
- * Attribute changes propagate synchronously: the two API attributes are
- * declared via `props()` and observed by EAGER `effect()`s, so
- * `tip.setAttribute('placement', 'bottom')` commits the class
- * change before the call returns.
+ * Attribute changes flow through `props()` and normal reactive effects,
+ * so placement / trigger changes commit on Slimlib's effect schedule.
  */
 import { DEV } from 'esm-env';
 
@@ -33,6 +31,7 @@ import {
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
+import { effect } from '@slimlib/store';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
@@ -111,7 +110,7 @@ const renderTooltip = (host) => {
     const popoverHost = /** @type {TooltipHost} */ (host);
     const elementInternals = internals();
 
-    props({
+    const state = props({
         placement: /** @type {string | null} */ (null),
         trigger: /** @type {string | null} */ (null),
     });
@@ -153,6 +152,13 @@ const renderTooltip = (host) => {
             }
         } catch {
             /* already closed */
+        }
+    };
+
+    /** @param {KeyboardEvent} event */
+    const hideOnEscape = (event) => {
+        if (event.key === 'Escape') {
+            hideTooltipNow();
         }
     };
 
@@ -224,6 +230,7 @@ const renderTooltip = (host) => {
             const nextListenerController = new AbortController();
             listenerController = nextListenerController;
             const listenerOptions = { signal: nextListenerController.signal };
+            triggerElement.addEventListener('keydown', hideOnEscape, listenerOptions);
             for (const trigger of triggers) {
                 for (const binding of TRIGGER_BINDINGS[trigger]) {
                     const target = binding.target === 'parent' ? triggerElement : host;
@@ -237,32 +244,13 @@ const renderTooltip = (host) => {
     /** @type {any} */ (host).showTooltip = showTooltipNow;
     /** @type {any} */ (host).hideTooltip = hideTooltipNow;
 
-    // The two API attributes only drive imperative side effects (class
-    // toggle, listener rewiring); nothing in a reactive view consumes
-    // them. `props()` gives us pre-upgrade adoption and a clean
-    // declaration site, but we wrap its setters with a sync hook so
-    // attribute writes commit before setAttribute() returns (the
-    // store's effect scheduler is microtask-deferred).
-    /** @param {string} name @param {(value: string | null) => void} sideEffect */
-    const wrapPropSetter = (name, sideEffect) => {
-        const descriptor = Object.getOwnPropertyDescriptor(host, name);
-        if (descriptor?.set && descriptor.get) {
-            const { get, set } = descriptor;
-            Object.defineProperty(host, name, {
-                configurable: true,
-                enumerable: true,
-                get,
-                set(value) {
-                    set.call(host, value);
-                    if (triggerElement) {
-                        sideEffect(value == null ? null : String(value));
-                    }
-                },
-            });
-        }
-    };
-    wrapPropSetter('placement', (value) => applyPlacementClass(readPlacement(value)));
-    wrapPropSetter('trigger', (value) => applyTriggers(readTriggerSet(value)));
+    effect(() => {
+        applyPlacementClass(readPlacement(state.placement));
+    });
+
+    effect(() => {
+        applyTriggers(readTriggerSet(state.trigger));
+    });
 
     onConnect(() => {
         triggerElement = host.parentElement;
@@ -296,8 +284,8 @@ const renderTooltip = (host) => {
                 ownsAriaDescribedBy = true;
             }
 
-            const triggerSet = readTriggerSet(host.getAttribute('trigger'));
-            applyPlacementClass(readPlacement(host.getAttribute('placement')));
+            const triggerSet = readTriggerSet(state.trigger);
+            applyPlacementClass(readPlacement(state.placement));
             applyTriggers(triggerSet);
 
             if (DEV && triggerSet.has('focus') && !isFocusable(triggerElement)) {
