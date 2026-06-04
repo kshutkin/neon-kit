@@ -137,9 +137,9 @@ const renderCombobox = (host) => {
         <button type="button" class={CLEAR_CLASS} aria-label="Clear selection" tabindex="-1" />
     );
     clearEl.style.display = 'none';
-    clearEl.appendChild(SvgIcon({ def: xMark }));
+    clearEl.appendChild(SvgIcon(xMark, { 'aria-hidden': 'true' }));
 
-    const chevronEl = SvgIcon({ class: CHEVRON_CLASS, def: chevronDown });
+    const chevronEl = SvgIcon(chevronDown, { class: CHEVRON_CLASS, 'aria-hidden': 'true' });
 
     const fieldButton = /** @type {HTMLButtonElement} */ (
         <button
@@ -240,7 +240,7 @@ const renderCombobox = (host) => {
                 row.disabled = true;
                 row.setAttribute('aria-disabled', 'true');
             }
-            row.appendChild(SvgIcon({ class: OPTION_CHECK_CLASS, strokeWidth: '2.5', def: check }));
+            row.appendChild(SvgIcon(check, { class: OPTION_CHECK_CLASS, 'stroke-width': '2.5', 'aria-hidden': 'true' }));
             row.setAttribute('aria-selected', sel && opt === sel ? 'true' : 'false');
 
             listEl.insertBefore(row, emptyEl);

@@ -36,7 +36,7 @@ Rendering flow:
    `import(/* @vite-ignore */ \`@neon-kit/icons/${name}\`)`.
 5. The import result is ignored if `name` changed before it resolved.
 6. The returned render function chooses `state.icon || loadedIconDef()`.
-7. `IconSvg(def)` builds a real SVG node with `@slimlib/jsx`'s `svg()`
+7. `SvgIcon(def)` builds a real SVG node with `@slimlib/jsx`'s `svg()`
    namespace helper.
 
 SVG output:
@@ -54,9 +54,10 @@ SVG output:
 - The inner SVG is emitted without its own label or role.
 - Each path string from `def.slice(4)` becomes a `<path d="...">` with shared attrs from `def[3]`.
 
-`web-components/src/svg-icon.jsx` is a smaller helper for internal component
-icons. It also uses `svg()` but does not define a custom element, does not
-lazy-load icon modules, and always emits `aria-hidden="true"`.
+`web-components/src/svg-icon.jsx` is the shared SVG renderer for `<neon-icon>`
+and internal component icons. It also uses `svg()` but does not define a custom
+element or lazy-load icon modules. Consumers pass any extra SVG attrs, such as
+`aria-hidden`, through its second argument.
 
 ## `@neon-kit/icons`
 

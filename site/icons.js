@@ -108,9 +108,9 @@ function hydrateSvgIconMarker(el) {
     if (!name) return;
     loadIcon(name).then((def) => {
         if (!def || el.getAttribute('data-svg-icon') !== name) return;
-        el.replaceChildren(SvgIcon({
-            def,
+        el.replaceChildren(SvgIcon(def, {
             class: el.getAttribute('data-icon-class') ?? '',
+            'aria-hidden': 'true',
         }));
     });
 }

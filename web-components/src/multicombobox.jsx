@@ -142,9 +142,9 @@ const renderMulticombobox = (host) => {
         <button type="button" class={CLEAR_CLASS} aria-label="Clear all selections" tabindex="-1" />
     );
     clearEl.style.display = 'none';
-    clearEl.appendChild(SvgIcon({ def: xMark }));
+    clearEl.appendChild(SvgIcon(xMark, { 'aria-hidden': 'true' }));
 
-    const chevronEl = SvgIcon({ class: CHEVRON_CLASS, def: chevronDown });
+    const chevronEl = SvgIcon(chevronDown, { class: CHEVRON_CLASS, 'aria-hidden': 'true' });
 
     const fieldButton = /** @type {HTMLButtonElement} */ (
         <button
@@ -352,7 +352,7 @@ const renderMulticombobox = (host) => {
                     on:click={onTagRemoveClick}
                 />
             );
-            remove.appendChild(SvgIcon({ def: xMark }));
+            remove.appendChild(SvgIcon(xMark, { 'aria-hidden': 'true' }));
 
             const tag = /** @type {HTMLSpanElement} */ (
                 <span class={TAG_CLASS} data-value={opt.value} />

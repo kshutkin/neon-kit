@@ -932,22 +932,20 @@ function pad2(value) {
 // ---- Icon helpers --------------------------------------------------
 
 function createCalendarIcon() {
-    return SvgIcon({
+    return SvgIcon(calendar, {
         class: ICON_CLASS,
-        strokeWidth: '1.75',
-        def: calendar,
+        'stroke-width': '1.75',
+        'aria-hidden': 'true',
     });
 }
 
 function createXIcon() {
-    return SvgIcon({ def: xMark });
+    return SvgIcon(xMark, { 'aria-hidden': 'true' });
 }
 
 /** @param {'prev' | 'next'} direction */
 function createChevronIcon(direction) {
-    return SvgIcon({
-        def: direction === 'prev' ? chevronLeft : chevronRight,
-    });
+    return SvgIcon(direction === 'prev' ? chevronLeft : chevronRight, { 'aria-hidden': 'true' });
 }
 
 /**

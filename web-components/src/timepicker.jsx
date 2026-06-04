@@ -48,6 +48,7 @@ import {
 } from './form-control-utils.js';
 import xMark from '@neon-kit/icons/outline/x-mark';
 import check from '@neon-kit/icons/outline/check';
+import clock from '@neon-kit/icons/outline/clock';
 
 let nextId = 0;
 
@@ -872,25 +873,22 @@ function pad2(value) {
 // ---- Icon helpers --------------------------------------------------
 
 function createClockIcon() {
-    return SvgIcon({
+    return SvgIcon(clock, {
         class: ICON_CLASS,
-        strokeWidth: '1.75',
-        children: () => [
-            <circle cx="12" cy="12" r="9" />,
-            <path d="M12 7v5l3 2" />,
-        ],
+        'stroke-width': '1.75',
+        'aria-hidden': 'true',
     });
 }
 
 function createXIcon() {
-    return SvgIcon({ def: xMark });
+    return SvgIcon(xMark, { 'aria-hidden': 'true' });
 }
 
 function createCheckIcon() {
-    return SvgIcon({
+    return SvgIcon(check, {
         class: OPTION_CHECK_CLASS,
-        strokeWidth: '2.5',
-        def: check,
+        'stroke-width': '2.5',
+        'aria-hidden': 'true',
     });
 }
 

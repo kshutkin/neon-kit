@@ -26,37 +26,8 @@ import {
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
-import { svg } from '@slimlib/jsx';
 import { effect, signal } from '@slimlib/store';
-
-/**
- * @param {IconDef} def
- * @returns {[string, string][]}
- */
-function svgAttrEntries(def) {
-    const [width, height, svgAttrs] = def;
-    /** @type {[string, string][]} */
-    return [
-        ['viewBox', `0 0 ${width} ${height}`],
-        ...Object.entries(svgAttrs),
-        ['width', '1em'],
-        ['height', '1em']
-    ];
-}
-
-/**
- * @param {IconDef} def
- * @returns {SVGElement}
- */
-function IconSvg(def) {
-    const [, , , pathAttrs, ...paths] = def;
-    const attrs = Object.fromEntries(svgAttrEntries(def));
-    return /** @type {SVGElement} */ (svg(() => (
-        <svg {...attrs}>
-            {paths.map((pathData) => <path d={pathData} {...pathAttrs} />)}
-        </svg>
-    )));
-}
+import { SvgIcon } from './svg-icon.jsx';
 
 /**
  * @param {HTMLElement} host
@@ -102,7 +73,7 @@ const renderIcon = (host) => {
 
     return () => {
         const def = state.icon || loadedIconDef();
-        return def ? IconSvg(def) : null;
+        return def ? SvgIcon(def) : null;
     };
 };
 
