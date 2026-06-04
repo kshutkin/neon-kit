@@ -66,28 +66,6 @@ const TRIGGER_BINDINGS = {
 const isPopoverSupported = () => 'popover' in HTMLElement.prototype;
 
 /**
- * Local middleware prototype for static host attributes that should
- * exist before the component render can expose imperative methods.
- *
- * @param {Record<string, string>} attributeDefaults
- * @returns {import('@slimlib/element').Middleware}
- */
-function staticAttributes(attributeDefaults) {
-    return /** @type {import('@slimlib/element').Middleware} */ (
-        (ElementBase) =>
-            class extends ElementBase {
-                constructor() {
-                    super();
-
-                    for (const [attributeName, value] of Object.entries(attributeDefaults)) {
-                        this.setAttribute(attributeName, value);
-                    }
-                }
-            }
-    );
-}
-
-/**
  * @param {string | null} value
  * @returns {'top' | 'bottom' | 'left' | 'right'}
  */
@@ -130,7 +108,16 @@ function isFocusable(element) {
 /**
  * @param {HTMLElement} host
  */
+function isTooltipOpen(host) {
+    return host.matches(':popover-open');
+}
+
+/**
+ * @param {HTMLElement} host
+ */
 const renderTooltip = (host) => {
+    host.setAttribute('popover', 'manual');
+
     const popoverHost = /** @type {TooltipHost} */ (host);
     const elementInternals = internals();
 
@@ -159,14 +146,14 @@ const renderTooltip = (host) => {
 
     const showTooltipNow = () => {
         clearTimer();
-        if (!host.matches(':popover-open')) {
+        if (!isTooltipOpen(host)) {
             popoverHost.showPopover();
         }
     };
 
     const hideTooltipNow = () => {
         clearTimer();
-        if (host.matches(':popover-open')) {
+        if (isTooltipOpen(host)) {
             popoverHost.hidePopover();
         }
     };
@@ -182,7 +169,7 @@ const renderTooltip = (host) => {
     const scheduleShow = (delay = OPEN_DELAY_MS) => {
         clearTimer();
         delayTimer = setTimeout(() => {
-            if (!host.matches(':popover-open')) {
+            if (!isTooltipOpen(host)) {
                 popoverHost.showPopover();
             }
         }, delay);
@@ -197,7 +184,7 @@ const renderTooltip = (host) => {
                 || document.activeElement === triggerElement
                 || host.contains(document.activeElement);
             if (!shouldStayOpen) {
-                if (host.matches(':popover-open')) {
+                if (isTooltipOpen(host)) {
                     popoverHost.hidePopover();
                 }
             }
@@ -209,7 +196,7 @@ const renderTooltip = (host) => {
         show: () => scheduleShow(),
         hide: () => scheduleHide(),
         toggle: () => {
-            if (host.matches(':popover-open')) {
+            if (isTooltipOpen(host)) {
                 hideTooltipNow();
             } else {
                 showTooltipNow();
@@ -333,9 +320,6 @@ if (isPopoverSupported()) {
         'neon-tooltip',
         [
             withInternals(),
-            staticAttributes({
-                popover: 'manual',
-            }),
             attributes({
                 placement: [stringAttribute[0]],
                 trigger: [stringAttribute[0]],
