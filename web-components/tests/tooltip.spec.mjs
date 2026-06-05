@@ -207,21 +207,32 @@ describe('<neon-tooltip>', () => {
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
-    it('ignores duplicate public show and hide calls', () => {
+    it('ignores non-Escape keys while the tooltip is open', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
         const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
 
-        tip.showTooltip();
-        tip.showTooltip();
+        tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
 
         btn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
         expect(tip.matches(':popover-open')).toBe(true);
 
-        tip.hideTooltip();
-        tip.hideTooltip();
+        tip.hidePopover();
+        expect(tip.matches(':popover-open')).toBe(false);
+    });
+
+    it('ignores trigger show and hide events that match the current popover state', () => {
+        const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
+        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+
+        tip.showPopover();
+        btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+        expect(tip.matches(':popover-open')).toBe(true);
+
+        tip.hidePopover();
+        btn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
@@ -245,7 +256,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
         const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
 
-        tip.showTooltip();
+        tip.showPopover();
         btn.dispatchEvent(new Event('pointerenter'));
         vi.advanceTimersByTime(120);
         expect(tip.matches(':popover-open')).toBe(true);
@@ -256,7 +267,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
 
-        /** @type {any} */ (tip).showTooltip();
+        /** @type {any} */ (tip).showPopover();
         btn.dispatchEvent(new Event('pointerleave'));
         tip.dispatchEvent(new Event('pointerenter'));
         vi.advanceTimersByTime(100);
@@ -278,7 +289,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
         const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
 
-        tip.showTooltip();
+        tip.showPopover();
         btn.focus();
         btn.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
         vi.advanceTimersByTime(100);
@@ -308,7 +319,7 @@ describe('<neon-tooltip>', () => {
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
-    it('hideTooltip() closes the popover synchronously', () => {
+    it('exposes the native manual popover API', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
@@ -316,7 +327,7 @@ describe('<neon-tooltip>', () => {
         expect(btn.hasAttribute('popovertarget')).toBe(false);
         tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
-        tip.hideTooltip();
+        tip.hidePopover();
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
@@ -326,7 +337,7 @@ describe('<neon-tooltip>', () => {
         );
         const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
 
-        tip.showTooltip();
+        tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
 
         btn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));

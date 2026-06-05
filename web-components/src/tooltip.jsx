@@ -144,14 +144,12 @@ const renderTooltip = (host) => {
         }
     };
 
-    const showTooltipNow = () => {
+    const showPopoverNow = () => {
         clearTimer();
-        if (!isTooltipOpen(host)) {
-            popoverHost.showPopover();
-        }
+        popoverHost.showPopover();
     };
 
-    const hideTooltipNow = () => {
+    const hidePopoverNow = () => {
         clearTimer();
         if (isTooltipOpen(host)) {
             popoverHost.hidePopover();
@@ -161,7 +159,7 @@ const renderTooltip = (host) => {
     /** @param {KeyboardEvent} event */
     const hideOnEscape = (event) => {
         if (event.key === 'Escape') {
-            hideTooltipNow();
+            hidePopoverNow();
         }
     };
 
@@ -197,9 +195,9 @@ const renderTooltip = (host) => {
         hide: () => scheduleHide(),
         toggle: () => {
             if (isTooltipOpen(host)) {
-                hideTooltipNow();
+                hidePopoverNow();
             } else {
-                showTooltipNow();
+                showPopoverNow();
             }
         },
         cancelHide: () => clearTimer(),
@@ -230,10 +228,6 @@ const renderTooltip = (host) => {
             }
         }
     };
-
-    // ---- Public host API ----------------------------------------------
-    /** @type {any} */ (host).showTooltip = showTooltipNow;
-    /** @type {any} */ (host).hideTooltip = hideTooltipNow;
 
     effect(() => {
         applyPlacementClass(readPlacement(componentState.placement));
@@ -309,10 +303,7 @@ const renderTooltip = (host) => {
 /**
  * Public instance type of the `<neon-tooltip>` element.
  *
- * @typedef {HTMLElement & {
- *   showTooltip(): void,
- *   hideTooltip(): void,
- * }} NeonTooltipElement
+ * @typedef {HTMLElement} NeonTooltipElement
  */
 
 if (isPopoverSupported()) {

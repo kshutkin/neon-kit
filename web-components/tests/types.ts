@@ -22,8 +22,8 @@ const items: HTMLElement[] = menu.items;
 void items;
 
 const tooltip = document.createElement('neon-tooltip');
-tooltip.showTooltip();
-tooltip.hideTooltip();
+tooltip.showPopover();
+tooltip.hidePopover();
 
 const combobox = document.createElement('neon-combobox');
 const v: string = combobox.value;

@@ -119,7 +119,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             </table>
         </div>
 
-        <h3 class="mb-2">Methods</h3>
+        <h3 class="mb-2">Popover methods</h3>
         <div class="overflow-x-auto mb-6">
             <table class="w-full border-collapse">
                 <thead>
@@ -130,12 +130,12 @@ import '@neon-kit/web-components/tooltip';</code></pre>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>showTooltip()</code></td>
-                        <td class="border border-border px-4 py-2">Open the tooltip immediately, bypassing any open delay.</td>
+                        <td class="border border-border px-4 py-2"><code>showPopover()</code></td>
+                        <td class="border border-border px-4 py-2">Open the tooltip immediately using the native Popover API.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>hideTooltip()</code></td>
-                        <td class="border border-border px-4 py-2">Close the tooltip immediately.</td>
+                        <td class="border border-border px-4 py-2"><code>hidePopover()</code></td>
+                        <td class="border border-border px-4 py-2">Close the tooltip using the native Popover API.</td>
                     </tr>
                 </tbody>
             </table>
@@ -147,7 +147,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </p>
         <ul class="mb-4 list-disc pl-6 text-ink-secondary">
             <li>Generates an <code>id</code> if one is not set.</li>
-            <li>Adds <code>popover="manual"</code> (unless the consumer set <code>popover</code>).</li>
+            <li>Sets <code>popover="manual"</code>.</li>
             <li>Adds the <code>tooltip</code> class plus the placement class (<code>-top</code>, <code>-bottom</code>, <code>-left</code>, <code>-right</code>).</li>
             <li>Renders a <code>.tooltip__arrow</code> child.</li>
             <li>Sets a default tooltip role through <code>ElementInternals</code>.</li>

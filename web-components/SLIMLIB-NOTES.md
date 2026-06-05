@@ -105,19 +105,13 @@ synchronous public writes.
   the render/`onConnect`, and treat the callback as "changes after
   mount".
 
-## Keeping prototype API (getters / methods / `observedAttributes`)
+## Keeping prototype API (getters / `observedAttributes`)
 
 `createCustomElement(mw, render, Base)` extends `Base`. Put
 prototype-level surface there:
 
 - `menu` puts its read-only getters (`activeItem`, `items`,
   `focusableItems`) on a `NeonMenuBase extends HTMLElement`.
-- `tooltip` puts `static get observedAttributes`,
-  `attributeChangedCallback`, and the public `showTooltip()` /
-  `hideTooltip()` on `NeonTooltipBase`. Those delegate to per-instance
-  implementations the render installs on the host via private
-  `Symbol` keys (`this[SHOW]?.()`), bridging prototype API to the render
-  closure.
 
 ## When `@slimlib/store` is *not* worth it
 
@@ -172,14 +166,14 @@ This lets element entries be `.jsx` and produces valid declarations.
 MergeInstanceExts<M>`. It **drops the `ElementBase` members and any
 dynamically-added props** — only the `attributes()` middleware keys
 survive in the type. To keep the documented public API (`menu.items`,
-`tooltip.showTooltip()`, `icon.icon`, and the element name being usable
+`icon.icon`, and the element name being usable
 as a *type*), re-type each export explicitly:
 
 ```js
-// base-backed element (tooltip, menu): expose the base as the public type
-/** @typedef {NeonTooltipBase} NeonTooltipElement */
-/** @type {new (...params: any[]) => NeonTooltipElement} */
-export const NeonTooltipElement = createCustomElement([], render, NeonTooltipBase);
+// base-backed element (menu): expose the base as the public type
+/** @typedef {NeonMenuBase} NeonMenuElement */
+/** @type {new (...params: any[]) => NeonMenuElement} */
+export const NeonMenuElement = createCustomElement([], render, NeonMenuBase);
 
 // element with a dynamic prop (icon): intersect the impl instance type
 const Impl = createCustomElement([attributes({ /* … */ })], render);
@@ -195,5 +189,5 @@ latent gap inherited from `createCustomElement`'s loose typing; not
 gated by the build today.
 
 `tests/types.ts` is the contract to keep green (`icon.icon`,
-`menu.items`, `NeonTooltipElement` as a type with `showTooltip` /
-`hideTooltip`, `combobox.value` / `.options` / `.checkValidity()`).
+`menu.items`, `neon-tooltip` as an `HTMLElement` with native popover
+methods, `combobox.value` / `.options` / `.checkValidity()`).

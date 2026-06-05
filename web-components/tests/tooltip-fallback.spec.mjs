@@ -109,7 +109,7 @@ describe('<neon-tooltip> placement fallback', () => {
             { position: 'fixed', left: '0px', top: '200px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        /** @type {any} */ (tip).showTooltip();
+        /** @type {any} */ (tip).showPopover();
         await nextFrame();
         await nextFrame();
         expect(tip.matches(':popover-open')).toBe(true);
@@ -126,7 +126,7 @@ describe('<neon-tooltip> placement fallback', () => {
             { position: 'fixed', left: '200px', top: '0px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        /** @type {any} */ (tip).showTooltip();
+        /** @type {any} */ (tip).showPopover();
         await nextFrame();
         await nextFrame();
         expect(tip.matches(':popover-open')).toBe(true);
@@ -141,7 +141,7 @@ describe('<neon-tooltip> placement fallback', () => {
             { position: 'fixed', left: '200px', top: '300px' },
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        /** @type {any} */ (tip).showTooltip();
+        /** @type {any} */ (tip).showPopover();
         await nextFrame();
         await nextFrame();
         expect(tip.matches(':popover-open')).toBe(true);
