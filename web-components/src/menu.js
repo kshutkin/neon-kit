@@ -16,7 +16,7 @@
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  */
-import { defineElement, onMount } from '@slimlib/element';
+import { defineElement, internals, onMount, withInternals } from '@slimlib/element';
 
 import { getActiveElement } from './utils.js';
 
@@ -35,6 +35,9 @@ function isDisabled(element) {
  * @param {HTMLElement} host
  */
 const renderMenu = (host) => {
+    const elementInternals = internals();
+    elementInternals.role = 'menu';
+
     /** @returns {HTMLElement | undefined} */
     const getActiveItem = () => {
         const activeElement = getActiveElement(host);
@@ -220,13 +223,12 @@ const renderMenu = (host) => {
     };
 
     onMount(() => {
-        if (!host.hasAttribute('role')) {
-            host.setAttribute('role', 'menu');
-        }
-        host.addEventListener('keydown', onKeyDown);
-        host.addEventListener('focusin', onFocusIn);
-        host.addEventListener('click', onClick);
-        host.addEventListener('toggle', /** @type {EventListener} */ (onToggle));
+        const abortController = new AbortController();
+        const listenerOptions = { signal: abortController.signal };
+        host.addEventListener('keydown', onKeyDown, listenerOptions);
+        host.addEventListener('focusin', onFocusIn, listenerOptions);
+        host.addEventListener('click', onClick, listenerOptions);
+        host.addEventListener('toggle', /** @type {EventListener} */ (onToggle), listenerOptions);
         refreshItems();
         const mutationObserver = new MutationObserver(() => refreshItems());
         mutationObserver.observe(host, {
@@ -237,10 +239,7 @@ const renderMenu = (host) => {
         });
 
         return () => {
-            host.removeEventListener('keydown', onKeyDown);
-            host.removeEventListener('focusin', onFocusIn);
-            host.removeEventListener('click', onClick);
-            host.removeEventListener('toggle', /** @type {EventListener} */ (onToggle));
+            abortController.abort();
             if (typeTimer !== undefined) {
                 clearTimeout(typeTimer);
             }
@@ -261,4 +260,4 @@ const renderMenu = (host) => {
  * }} NeonMenuElement
  */
 
-defineElement('neon-menu', [], renderMenu);
+defineElement('neon-menu', [withInternals()], renderMenu);

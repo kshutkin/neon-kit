@@ -23,15 +23,8 @@ describe('<neon-menu>', () => {
         document.body.innerHTML = '';
     });
 
-    it('registers as a custom element and applies role=menu', () => {
+    it('registers as a custom element', () => {
         expect(customElements.get('neon-menu')).toBeTruthy();
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">One</button>
-                <button class="menu__item" type="button">Two</button>
-            </neon-menu>
-        `);
-        expect(menu.getAttribute('role')).toBe('menu');
     });
 
     it('preserves an existing host role and exposes undefined when no item is active', () => {
