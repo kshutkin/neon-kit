@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { FOCUSABLE_PROGRAMMATIC, isFocusable } from '../src/utils.js';
+import { FOCUSABLE_PROGRAMMATIC, generateId, isFocusable } from '../src/utils.js';
 
 /**
  * @param {string} html
@@ -11,6 +11,12 @@ function elementFromHtml(html) {
     wrap.innerHTML = html.trim();
     return /** @type {Element} */ (wrap.firstElementChild);
 }
+
+describe('generateId()', () => {
+    it('adds a short random suffix to a descriptive prefix', () => {
+        expect(generateId('neon-tooltip')).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
+    });
+});
 
 describe('isFocusable()', () => {
     it('accepts elements with a keyboard-reachable tabindex', () => {

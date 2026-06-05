@@ -33,14 +33,12 @@ import {
 } from '@slimlib/element';
 import { effect } from '@slimlib/store';
 
-import { isFocusable } from './utils.js';
+import { generateId, isFocusable } from './utils.js';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
 const OPEN_DELAY_MS = 120;
 const CLOSE_DELAY_MS = 100;
-
-let nextId = 0;
 
 /**
  * @typedef {'hover' | 'focus' | 'click'} Trigger
@@ -110,8 +108,10 @@ const renderTooltip = (host) => {
     const elementInternals = internals();
 
     host.setAttribute('popover', 'manual');
+    // Preserve author-provided IDs because parent aria-describedby and
+    // anchor names depend on this value staying stable.
     if (!host.id) {
-        host.id = `neon-tooltip-${++nextId}`;
+        host.id = generateId('neon-tooltip');
     }
     host.classList.add('tooltip');
     elementInternals.role = 'tooltip';

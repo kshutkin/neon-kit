@@ -51,7 +51,7 @@ describe('<neon-tooltip>', () => {
         expect(tip.hasAttribute('popover')).toBe(true);
         expect(tip.classList.contains('tooltip')).toBe(true);
         expect(tip.classList.contains('-top')).toBe(true);
-        expect(tip.id).toMatch(/^neon-tooltip-\d+$/);
+        expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
         expect(tip.querySelector('.tooltip__arrow')).not.toBeNull();
         expect(tip.getAttribute('role')).toBeNull();
@@ -165,7 +165,7 @@ describe('<neon-tooltip>', () => {
 
         shadow.appendChild(tip);
         expect(tip.classList.contains('tooltip')).toBe(true);
-        expect(tip.id).toMatch(/^neon-tooltip-\d+$/);
+        expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(tip.style.getPropertyValue('position-anchor')).toBe('');
 
         tip.remove();

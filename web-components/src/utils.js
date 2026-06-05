@@ -4,6 +4,13 @@
 export const FOCUSABLE_PROGRAMMATIC = 1;
 
 /**
+ * @param {string} name
+ */
+export function generateId(name) {
+    return `${name}-${Math.random().toString(36).slice(2, 11)}`;
+}
+
+/**
  * @param {Element} element
  * @param {FocusableFlags} [flags]
  */

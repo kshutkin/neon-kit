@@ -32,6 +32,26 @@ import '@neon-kit/web-components/tooltip';</code></pre>
     </section>
 
     <section class="mb-8">
+        <h2 class="mb-4">Generated ID</h2>
+        <p class="mb-4 text-ink-secondary">
+            If the tooltip has no <code>id</code>, the component generates one
+            and points the parent trigger at it with
+            <code>aria-describedby</code>. Author-provided IDs are preserved.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+            <button type="button" class="btn">
+                Inspect me<neon-tooltip>Generated IDs keep this relationship stable.</neon-tooltip>
+            </button>
+        </div>
+        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;button aria-describedby="neon-tooltip-k4p9x2m1a"&gt;
+  Inspect me
+  &lt;neon-tooltip id="neon-tooltip-k4p9x2m1a" popover="manual"&gt;
+    Generated IDs keep this relationship stable.
+  &lt;/neon-tooltip&gt;
+&lt;/button&gt;</code></pre>
+    </section>
+
+    <section class="mb-8">
         <h2 class="mb-4">Placement</h2>
         <p class="mb-4 text-ink-secondary">
             Set <code>placement</code> to one of <code>top</code> (default),
