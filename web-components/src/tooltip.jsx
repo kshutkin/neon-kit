@@ -104,7 +104,6 @@ function isTooltipOpen(host) {
  * @param {HTMLElement} host
  */
 const renderTooltip = (host) => {
-    const popoverHost = /** @type {TooltipHost} */ (host);
     const elementInternals = internals();
 
     host.setAttribute('popover', 'manual');
@@ -135,13 +134,13 @@ const renderTooltip = (host) => {
 
     const showPopoverNow = () => {
         clearTimer();
-        popoverHost.showPopover();
+        /** @type {TooltipHost} */ (host).showPopover();
     };
 
     const hidePopoverNow = () => {
         clearTimer();
         if (isTooltipOpen(host)) {
-            popoverHost.hidePopover();
+            /** @type {TooltipHost} */ (host).hidePopover();
         }
     };
 
@@ -157,7 +156,7 @@ const renderTooltip = (host) => {
         clearTimer();
         delayTimer = setTimeout(() => {
             if (!isTooltipOpen(host)) {
-                popoverHost.showPopover();
+                /** @type {TooltipHost} */ (host).showPopover();
             }
         }, delay);
     };
@@ -172,7 +171,7 @@ const renderTooltip = (host) => {
                 || host.contains(document.activeElement);
             if (!shouldStayOpen) {
                 if (isTooltipOpen(host)) {
-                    popoverHost.hidePopover();
+                    /** @type {TooltipHost} */ (host).hidePopover();
                 }
             }
         }, delay);
