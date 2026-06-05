@@ -127,8 +127,6 @@ const renderTooltip = (host) => {
     let delayTimer;
     /** @type {AbortController | undefined} */
     let listenerController = undefined;
-    /** @type {'top' | 'bottom' | 'left' | 'right'} */
-    let appliedPlacement = 'top';
     let ownsAriaDescribedBy = false;
     let anchorName = '';
 
@@ -200,11 +198,8 @@ const renderTooltip = (host) => {
 
     /** @param {'top' | 'bottom' | 'left' | 'right'} value */
     const applyPlacementClass = (value) => {
-        if (appliedPlacement !== value || !host.classList.contains(`-${value}`)) {
-            host.classList.remove('-top', '-bottom', '-left', '-right');
-            host.classList.add(`-${value}`);
-            appliedPlacement = value;
-        }
+        host.classList.remove('-top', '-bottom', '-left', '-right');
+        host.classList.add(`-${value}`);
     };
 
     /** @param {Set<Trigger>} triggers */
