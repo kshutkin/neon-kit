@@ -24,76 +24,91 @@ const ITEM_SELECTOR = '.menu__item';
 const TYPEAHEAD_TIMEOUT_MS = 500;
 
 /**
- * @param {Element} el
+ * @param {Element} element
  * @returns {boolean}
  */
-function isDisabled(el) {
-    return el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true';
+function isDisabled(element) {
+    return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true';
 }
 
 /**
  * @param {HTMLElement} host
  */
 const renderMenu = (host) => {
-    /** @returns {HTMLElement | null} */
+    /** @returns {HTMLElement | undefined} */
     const getActiveItem = () => {
-        const active = getActiveElement(host);
-        if (active instanceof HTMLElement && host.contains(active) && active.matches(ITEM_SELECTOR)) {
-            return active;
+        const activeElement = getActiveElement(host);
+        let activeItem;
+        if (
+            activeElement instanceof HTMLElement
+            && host.contains(activeElement)
+            && activeElement.matches(ITEM_SELECTOR)
+        ) {
+            activeItem = activeElement;
         }
-        return null;
+        return activeItem;
     };
     /** @returns {HTMLElement[]} */
-    const getItems = () => /** @type {HTMLElement[]} */ (
-        Array.from(host.querySelectorAll(ITEM_SELECTOR))
-    );
+    const getItems = () => Array.from(host.querySelectorAll(ITEM_SELECTOR), (item) => (
+        /** @type {HTMLElement} */ (item)
+    ));
     /** @returns {HTMLElement[]} */
-    const getFocusableItems = () => getItems().filter((it) => !isDisabled(it));
+    const getFocusableItems = () => getItems().filter((item) => !isDisabled(item));
 
     Object.defineProperty(host, 'activeItem', {
-        configurable: true, enumerable: true,
+        configurable: true,
+        enumerable: true,
         get: getActiveItem,
     });
     Object.defineProperty(host, 'items', {
-        configurable: true, enumerable: true,
+        configurable: true,
+        enumerable: true,
         get: getItems,
     });
     Object.defineProperty(host, 'focusableItems', {
-        configurable: true, enumerable: true,
+        configurable: true,
+        enumerable: true,
         get: getFocusableItems,
     });
 
     let typeBuffer = '';
-    /** @type {ReturnType<typeof setTimeout> | null} */
-    let typeTimer = null;
+    /** @type {ReturnType<typeof setTimeout> | undefined} */
+    let typeTimer;
 
     const refreshItems = () => {
         const items = getItems();
-        if (items.length === 0) return;
-        const active = getActiveItem();
-        let assignedRover = false;
-        for (const it of items) {
-            if (!it.hasAttribute('role')) it.setAttribute('role', 'menuitem');
-            if (isDisabled(it)) {
-                it.setAttribute('tabindex', '-1');
-                continue;
+        if (items.length > 0) {
+            const activeItem = getActiveItem();
+            let assignedRovingItem = false;
+            for (const item of items) {
+                if (!item.hasAttribute('role')) {
+                    item.setAttribute('role', 'menuitem');
+                }
+
+                if (isDisabled(item)) {
+                    item.setAttribute('tabindex', '-1');
+                } else if (activeItem === item) {
+                    item.setAttribute('tabindex', '0');
+                    assignedRovingItem = true;
+                } else {
+                    item.setAttribute('tabindex', '-1');
+                }
             }
-            if (active === it) {
-                it.setAttribute('tabindex', '0');
-                assignedRover = true;
-            } else {
-                it.setAttribute('tabindex', '-1');
+
+            if (!assignedRovingItem) {
+                const firstFocusableItem = getFocusableItems()[0];
+                if (firstFocusableItem !== undefined) {
+                    firstFocusableItem.setAttribute('tabindex', '0');
+                }
             }
-        }
-        if (!assignedRover) {
-            const first = getFocusableItems()[0];
-            if (first) first.setAttribute('tabindex', '0');
         }
     };
 
     /** @param {HTMLElement} item */
     const focusItem = (item) => {
-        for (const it of getItems()) it.setAttribute('tabindex', it === item ? '0' : '-1');
+        for (const menuItem of getItems()) {
+            menuItem.setAttribute('tabindex', menuItem === item ? '0' : '-1');
+        }
         item.focus();
     };
 
@@ -104,100 +119,117 @@ const renderMenu = (host) => {
      */
     const typeAhead = (key, items, from) => {
         typeBuffer = (typeBuffer + key).toLowerCase();
-        if (typeTimer) clearTimeout(typeTimer);
+        if (typeTimer !== undefined) {
+            clearTimeout(typeTimer);
+        }
         typeTimer = setTimeout(() => {
             typeBuffer = '';
         }, TYPEAHEAD_TIMEOUT_MS);
 
-        const buf = typeBuffer;
         const start = from < 0 ? -1 : from;
-        for (let i = 1; i <= items.length; i++) {
-            const idx = (start + i + items.length) % items.length;
-            const label = (items[idx].textContent ?? '').trim().toLowerCase();
-            if (label.startsWith(buf)) {
-                focusItem(items[idx]);
+        for (let offset = 1; offset <= items.length; offset++) {
+            const itemIndex = (start + offset + items.length) % items.length;
+            const label = (items[itemIndex].textContent ?? '').trim().toLowerCase();
+            if (label.startsWith(typeBuffer)) {
+                focusItem(items[itemIndex]);
                 return;
             }
         }
     };
 
-    /** @param {KeyboardEvent} e */
-    const onKeyDown = (e) => {
+    /** @param {KeyboardEvent} event */
+    const onKeyDown = (event) => {
         const items = getFocusableItems();
-        if (items.length === 0) return;
-        const current = getActiveItem();
-        const idx = current ? items.indexOf(current) : -1;
+        if (items.length > 0) {
+            const currentItem = getActiveItem();
+            const currentItemIndex = currentItem !== undefined ? items.indexOf(currentItem) : -1;
 
-        switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                focusItem(items[(idx + 1 + items.length) % items.length] ?? items[0]);
-                return;
-            case 'ArrowUp':
-                e.preventDefault();
-                focusItem(items[(idx - 1 + items.length) % items.length] ?? items[items.length - 1]);
-                return;
-            case 'Home':
-                e.preventDefault();
-                focusItem(items[0]);
-                return;
-            case 'End':
-                e.preventDefault();
-                focusItem(items[items.length - 1]);
-                return;
-            case 'Enter':
-            case ' ':
-                if (current) {
-                    e.preventDefault();
-                    current.click();
-                }
-                return;
-            default:
-                if (e.key.length === 1 && /\S/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                    typeAhead(e.key, items, idx);
-                }
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    focusItem(items[(currentItemIndex + 1 + items.length) % items.length] ?? items[0]);
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    focusItem(items[(currentItemIndex - 1 + items.length) % items.length] ?? items[items.length - 1]);
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    focusItem(items[0]);
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    focusItem(items[items.length - 1]);
+                    break;
+                case 'Enter':
+                case ' ':
+                    if (currentItem !== undefined) {
+                        event.preventDefault();
+                        currentItem.click();
+                    }
+                    break;
+                default:
+                    if (
+                        event.key.length === 1
+                        && /\S/.test(event.key)
+                        && !event.ctrlKey
+                        && !event.metaKey
+                        && !event.altKey
+                    ) {
+                        typeAhead(event.key, items, currentItemIndex);
+                    }
+            }
         }
     };
 
-    /** @param {FocusEvent} e */
-    const onFocusIn = (e) => {
-        const target = e.target;
-        if (!(target instanceof HTMLElement)) return;
-        if (!target.matches(ITEM_SELECTOR)) return;
-        if (isDisabled(target)) return;
-        for (const it of getItems()) it.setAttribute('tabindex', it === target ? '0' : '-1');
-    };
-
-    /** @param {ToggleEvent} e */
-    const onToggle = (e) => {
-        if (e.newState !== 'open') return;
-        const first = getFocusableItems()[0];
-        if (first) {
-            for (const it of getItems()) it.setAttribute('tabindex', it === first ? '0' : '-1');
-            first.focus();
+    /** @param {FocusEvent} event */
+    const onFocusIn = (event) => {
+        if (
+            event.target instanceof HTMLElement
+            && event.target.matches(ITEM_SELECTOR)
+            && !isDisabled(event.target)
+        ) {
+            for (const item of getItems()) {
+                item.setAttribute('tabindex', item === event.target ? '0' : '-1');
+            }
         }
     };
 
-    /** @param {MouseEvent} e */
-    const onClick = (e) => {
-        const target = e.target;
-        if (!(target instanceof Element)) return;
-        const item = target.closest(ITEM_SELECTOR);
-        if (item instanceof HTMLElement && isDisabled(item)) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
+    /** @param {ToggleEvent} event */
+    const onToggle = (event) => {
+        if (event.newState === 'open') {
+            const firstFocusableItem = getFocusableItems()[0];
+            if (firstFocusableItem !== undefined) {
+                for (const item of getItems()) {
+                    item.setAttribute('tabindex', item === firstFocusableItem ? '0' : '-1');
+                }
+                firstFocusableItem.focus();
+            }
+        }
+    };
+
+    /** @param {MouseEvent} event */
+    const onClick = (event) => {
+        if (event.target instanceof Element) {
+            const item = event.target.closest(ITEM_SELECTOR);
+            if (item instanceof HTMLElement && isDisabled(item)) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
         }
     };
 
     onMount(() => {
-        if (!host.hasAttribute('role')) host.setAttribute('role', 'menu');
+        if (!host.hasAttribute('role')) {
+            host.setAttribute('role', 'menu');
+        }
         host.addEventListener('keydown', onKeyDown);
         host.addEventListener('focusin', onFocusIn);
         host.addEventListener('click', onClick);
         host.addEventListener('toggle', /** @type {EventListener} */ (onToggle));
         refreshItems();
-        const mo = new MutationObserver(() => refreshItems());
-        mo.observe(host, {
+        const mutationObserver = new MutationObserver(() => refreshItems());
+        mutationObserver.observe(host, {
             childList: true,
             subtree: true,
             attributes: true,
@@ -209,8 +241,10 @@ const renderMenu = (host) => {
             host.removeEventListener('focusin', onFocusIn);
             host.removeEventListener('click', onClick);
             host.removeEventListener('toggle', /** @type {EventListener} */ (onToggle));
-            if (typeTimer) clearTimeout(typeTimer);
-            mo.disconnect();
+            if (typeTimer !== undefined) {
+                clearTimeout(typeTimer);
+            }
+            mutationObserver.disconnect();
         };
     });
 
@@ -221,7 +255,7 @@ const renderMenu = (host) => {
  * Public instance type of the `<neon-menu>` element.
  *
  * @typedef {HTMLElement & {
- *   readonly activeItem: HTMLElement | null,
+ *   readonly activeItem: HTMLElement | undefined,
  *   readonly items: HTMLElement[],
  *   readonly focusableItems: HTMLElement[],
  * }} NeonMenuElement

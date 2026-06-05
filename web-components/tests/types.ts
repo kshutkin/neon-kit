@@ -19,7 +19,9 @@ void icon;
 
 const menu = document.createElement('neon-menu');
 const items: HTMLElement[] = menu.items;
+const activeItem: HTMLElement | undefined = menu.activeItem;
 void items;
+void activeItem;
 
 const tooltip = document.createElement('neon-tooltip');
 tooltip.showPopover();
