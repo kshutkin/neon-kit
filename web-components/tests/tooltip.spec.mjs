@@ -57,13 +57,14 @@ describe('<neon-tooltip>', () => {
         expect(tip.getAttribute('role')).toBeNull();
     });
 
-    it('preserves a consumer-set tooltip id', () => {
+    it('uses a generated tooltip id even when the consumer provides one', () => {
         const btn = mount(
             `<button>Save<neon-tooltip id="save-tip">Saves the document.</neon-tooltip></button>`,
         );
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        expect(tip.id).toBe('save-tip');
-        expect(btn.getAttribute('aria-describedby')).toBe('save-tip');
+        expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
+        expect(tip.id).not.toBe('save-tip');
+        expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
     });
 
     it('respects the placement attribute', () => {

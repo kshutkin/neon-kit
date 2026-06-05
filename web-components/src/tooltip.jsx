@@ -108,11 +108,7 @@ const renderTooltip = (host) => {
     const elementInternals = internals();
 
     host.setAttribute('popover', 'manual');
-    // Preserve author-provided IDs because parent aria-describedby and
-    // anchor names depend on this value staying stable.
-    if (!host.id) {
-        host.id = generateId('neon-tooltip');
-    }
+    host.id = generateId('neon-tooltip');
     host.classList.add('tooltip');
     elementInternals.role = 'tooltip';
 
@@ -237,7 +233,7 @@ const renderTooltip = (host) => {
                     host.style.setProperty('position-anchor', existingAnchorName);
                 }
             } else {
-                anchorName = `--neon-tooltip-anchor-${host.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                anchorName = `--neon-tooltip-anchor-${host.id}`;
                 triggerElement.style.setProperty('anchor-name', anchorName);
                 if (!host.style.getPropertyValue('position-anchor')) {
                     host.style.setProperty('position-anchor', anchorName);
