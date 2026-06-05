@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { FOCUSABLE_PROGRAMMATIC, generateId, isFocusable } from '../src/utils.js';
+import {
+    FOCUSABLE_PROGRAMMATIC,
+    generateId,
+    getActiveElement,
+    isFocusable,
+} from '../src/utils.js';
 
 /**
  * @param {string} html
@@ -15,6 +20,32 @@ function elementFromHtml(html) {
 describe('generateId()', () => {
     it('adds a short random suffix to a descriptive prefix', () => {
         expect(generateId('neon-tooltip')).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
+    });
+});
+
+describe('getActiveElement()', () => {
+    it('reads the document active element for light DOM elements', () => {
+        const button = document.createElement('button');
+        document.body.appendChild(button);
+
+        button.focus();
+        expect(getActiveElement(button)).toBe(button);
+
+        button.remove();
+    });
+
+    it('reads the shadow root active element for open shadow DOM elements', () => {
+        const host = document.createElement('div');
+        const shadow = host.attachShadow({ mode: 'open' });
+        const button = document.createElement('button');
+        shadow.appendChild(button);
+        document.body.appendChild(host);
+
+        button.focus();
+        expect(document.activeElement).toBe(host);
+        expect(getActiveElement(button)).toBe(button);
+
+        host.remove();
     });
 });
 

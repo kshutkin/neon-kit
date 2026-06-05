@@ -72,6 +72,24 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(items[0]);
     });
 
+    it('reports the active item inside an open shadow root', () => {
+        const host = document.createElement('div');
+        const shadow = host.attachShadow({ mode: 'open' });
+        shadow.innerHTML = `
+            <neon-menu>
+                <button class="menu__item" type="button">Alpha</button>
+            </neon-menu>
+        `;
+        document.body.appendChild(host);
+        const menu = /** @type {any} */ (shadow.querySelector('neon-menu'));
+        const item = /** @type {HTMLElement} */ (shadow.querySelector('.menu__item'));
+
+        item.focus();
+        expect(document.activeElement).toBe(host);
+        expect(shadow.activeElement).toBe(item);
+        expect(menu.activeItem).toBe(item);
+    });
+
     it('Home/End jump to first/last focusable item', () => {
         const menu = mount(`
             <neon-menu>

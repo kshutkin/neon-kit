@@ -299,6 +299,25 @@ describe('<neon-tooltip>', () => {
         expect(tip.matches(':popover-open')).toBe(true);
     });
 
+    it('keeps focus-triggered tooltip open while focus remains on an open shadow root trigger', () => {
+        vi.useFakeTimers();
+        const host = document.createElement('div');
+        const shadow = host.attachShadow({ mode: 'open' });
+        shadow.innerHTML = '<button>x<neon-tooltip>y</neon-tooltip></button>';
+        document.body.appendChild(host);
+        const btn = /** @type {HTMLButtonElement} */ (shadow.querySelector('button'));
+        const tip = /** @type {any} */ (shadow.querySelector('neon-tooltip'));
+
+        tip.showPopover();
+        btn.focus();
+        expect(document.activeElement).toBe(host);
+        expect(shadow.activeElement).toBe(btn);
+
+        btn.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+        vi.advanceTimersByTime(100);
+        expect(tip.matches(':popover-open')).toBe(true);
+    });
+
     it('logs a development hint for focus trigger on non-focusable parents', () => {
         const debug = vi.spyOn(console, 'debug').mockImplementation(() => {});
         const span = mount(`<span>x<neon-tooltip>y</neon-tooltip></span>`);

@@ -33,7 +33,7 @@ import {
 } from '@slimlib/element';
 import { effect } from '@slimlib/store';
 
-import { generateId, isFocusable } from './utils.js';
+import { generateId, getActiveElement, isFocusable } from './utils.js';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
@@ -165,10 +165,11 @@ const renderTooltip = (host) => {
     const scheduleHide = (delay = CLOSE_DELAY_MS) => {
         clearTimer();
         delayTimer = setTimeout(() => {
+            const activeElement = getActiveElement(host);
             const shouldStayOpen = host.matches(':hover')
                 || triggerElement?.matches(':hover') === true
-                || document.activeElement === triggerElement
-                || host.contains(document.activeElement);
+                || activeElement === triggerElement
+                || (activeElement !== null && host.contains(activeElement));
             if (!shouldStayOpen) {
                 if (isTooltipOpen(host)) {
                     /** @type {TooltipHost} */ (host).hidePopover();

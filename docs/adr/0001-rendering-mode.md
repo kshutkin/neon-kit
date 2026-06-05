@@ -26,6 +26,11 @@ Start with **Light DOM only**. Consumers must include `@neon-kit/theme`
 correctly. Components manipulate their own children and document-level
 popovers but never attach a shadow root.
 
+Light-DOM components must still work when consumers place them inside an
+open shadow root. Code that reads document state (for example focus) must
+prefer the component's own root over `document` globals when the value can
+differ across shadow boundaries.
+
 A future Shadow-DOM / CDN-friendly mode is on the roadmap. When added it
 will be opt-in (likely via a parallel entry point such as
 `@neon-kit/web-components/cdn/tooltip` that bundles its CSS chunk) so the

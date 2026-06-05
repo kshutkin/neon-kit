@@ -18,6 +18,8 @@
  */
 import { defineElement, onMount } from '@slimlib/element';
 
+import { getActiveElement } from './utils.js';
+
 const ITEM_SELECTOR = '.menu__item';
 const TYPEAHEAD_TIMEOUT_MS = 500;
 
@@ -35,7 +37,7 @@ function isDisabled(el) {
 const renderMenu = (host) => {
     /** @returns {HTMLElement | null} */
     const getActiveItem = () => {
-        const active = host.ownerDocument?.activeElement;
+        const active = getActiveElement(host);
         if (active instanceof HTMLElement && host.contains(active) && active.matches(ITEM_SELECTOR)) {
             return active;
         }

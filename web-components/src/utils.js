@@ -12,6 +12,14 @@ export function generateId(name) {
 
 /**
  * @param {Element} element
+ */
+export function getActiveElement(element) {
+    const root = element.getRootNode();
+    return root instanceof ShadowRoot ? root.activeElement : element.ownerDocument.activeElement;
+}
+
+/**
+ * @param {Element} element
  * @param {FocusableFlags} [flags]
  */
 export function isFocusable(element, flags = 0) {
