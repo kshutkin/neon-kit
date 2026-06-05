@@ -116,10 +116,15 @@ function isTooltipOpen(host) {
  * @param {HTMLElement} host
  */
 const renderTooltip = (host) => {
-    host.setAttribute('popover', 'manual');
-
     const popoverHost = /** @type {TooltipHost} */ (host);
     const elementInternals = internals();
+
+    host.setAttribute('popover', 'manual');
+    if (!host.id) {
+        host.id = `neon-tooltip-${++nextId}`;
+    }
+    host.classList.add('tooltip');
+    elementInternals.role = 'tooltip';
 
     const componentState = props({
         placement: /** @type {string | null} */ (null),
@@ -240,13 +245,6 @@ const renderTooltip = (host) => {
     onConnect(() => {
         triggerElement = host.parentElement;
         if (triggerElement) {
-            if (!host.id) {
-                host.id = `neon-tooltip-${++nextId}`;
-            }
-            host.classList.add('tooltip');
-
-            elementInternals.role = 'tooltip';
-
             const existingAnchorName = triggerElement.style.getPropertyValue('anchor-name');
             if (existingAnchorName) {
                 anchorName = '';

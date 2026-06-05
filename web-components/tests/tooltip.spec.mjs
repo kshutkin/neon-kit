@@ -157,14 +157,16 @@ describe('<neon-tooltip>', () => {
         expect(tip.style.getPropertyValue('position-anchor')).toBe('--custom');
     });
 
-    it('does not wire itself when connected without a parent element', () => {
+    it('initializes the host without parent wiring when connected without a parent element', () => {
         const host = document.createElement('div');
         const shadow = host.attachShadow({ mode: 'open' });
         const tip = document.createElement('neon-tooltip');
         document.body.appendChild(host);
 
         shadow.appendChild(tip);
-        expect(tip.classList.contains('tooltip')).toBe(false);
+        expect(tip.classList.contains('tooltip')).toBe(true);
+        expect(tip.id).toMatch(/^neon-tooltip-\d+$/);
+        expect(tip.style.getPropertyValue('position-anchor')).toBe('');
 
         tip.remove();
     });
