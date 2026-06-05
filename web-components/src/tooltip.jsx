@@ -66,7 +66,7 @@ const TRIGGER_BINDINGS = {
 const isPopoverSupported = () => 'popover' in HTMLElement.prototype;
 
 /**
- * @param {string | null} value
+ * @param {string | undefined} value
  * @returns {'top' | 'bottom' | 'left' | 'right'}
  */
 function readPlacement(value) {
@@ -74,13 +74,13 @@ function readPlacement(value) {
 }
 
 /**
- * @param {string | null} value
+ * @param {string | undefined} value
  * @returns {Set<Trigger>}
  */
 function readTriggerSet(value) {
     /** @type {Set<Trigger>} */
     const triggerSet = new Set();
-    if (value === null) {
+    if (value === undefined) {
         triggerSet.add('hover');
         triggerSet.add('focus');
     } else {
@@ -126,17 +126,17 @@ const renderTooltip = (host) => {
     host.classList.add('tooltip');
     elementInternals.role = 'tooltip';
 
-    const componentState = props({
-        placement: /** @type {string | null} */ (null),
-        trigger: /** @type {string | null} */ (null),
+    const state = props({
+        placement: /** @type {string | undefined} */ (undefined),
+        trigger: /** @type {string | undefined} */ (undefined),
     });
 
-    /** @type {HTMLElement | null} */
-    let triggerElement = null;
-    /** @type {ReturnType<typeof setTimeout> | null} */
-    let delayTimer = null;
-    /** @type {AbortController | null} */
-    let listenerController = null;
+    /** @type {HTMLElement | null | undefined} */
+    let triggerElement;
+    /** @type {ReturnType<typeof setTimeout> | undefined} */
+    let delayTimer;
+    /** @type {AbortController | undefined} */
+    let listenerController = undefined;
     /** @type {'top' | 'bottom' | 'left' | 'right'} */
     let appliedPlacement = 'top';
     let ownsAriaDescribedBy = false;
@@ -145,7 +145,7 @@ const renderTooltip = (host) => {
     const clearTimer = () => {
         if (delayTimer) {
             clearTimeout(delayTimer);
-            delayTimer = null;
+            delayTimer = undefined;
         }
     };
 
@@ -235,11 +235,11 @@ const renderTooltip = (host) => {
     };
 
     effect(() => {
-        applyPlacementClass(readPlacement(componentState.placement));
+        applyPlacementClass(readPlacement(state.placement));
     });
 
     effect(() => {
-        applyTriggers(readTriggerSet(componentState.trigger));
+        applyTriggers(readTriggerSet(state.trigger));
     });
 
     onConnect(() => {
@@ -264,8 +264,8 @@ const renderTooltip = (host) => {
                 ownsAriaDescribedBy = true;
             }
 
-            const triggerSet = readTriggerSet(componentState.trigger);
-            applyPlacementClass(readPlacement(componentState.placement));
+            const triggerSet = readTriggerSet(state.trigger);
+            applyPlacementClass(readPlacement(state.placement));
             applyTriggers(triggerSet);
 
             if (DEV && triggerSet.has('focus') && !isFocusable(triggerElement)) {
@@ -281,7 +281,7 @@ const renderTooltip = (host) => {
     onDisconnect(() => {
         clearTimer();
         listenerController?.abort();
-        listenerController = null;
+        listenerController = undefined;
         if (triggerElement) {
             if (ownsAriaDescribedBy && triggerElement.getAttribute('aria-describedby') === host.id) {
                 triggerElement.removeAttribute('aria-describedby');
@@ -290,7 +290,7 @@ const renderTooltip = (host) => {
                 triggerElement.style.removeProperty('anchor-name');
             }
         }
-        triggerElement = null;
+        triggerElement = undefined;
         ownsAriaDescribedBy = false;
         anchorName = '';
     });
