@@ -42,24 +42,23 @@ const CLOSE_DELAY_MS = 100;
 
 /**
  * @typedef {'hover' | 'focus' | 'click'} Trigger
- * @typedef {{ target: 'parent' | 'self', event: string, action: 'show' | 'hide' | 'toggle' | 'cancelHide' }} Binding
  * @typedef {HTMLElement & { showPopover: () => void, hidePopover: () => void }} TooltipHost
  */
 
-/** @type {Record<Trigger, Binding[]>} */
+/** @type {Record<Trigger, Array<{ $_target: 'parent' | 'self', $_event: string, $_action: '$_show' | '$_hide' | '$_toggle' | '$_cancelHide' }>>} */
 const TRIGGER_BINDINGS = {
     hover: [
-        { target: 'parent', event: 'pointerenter', action: 'show' },
-        { target: 'parent', event: 'pointerleave', action: 'hide' },
-        { target: 'self', event: 'pointerenter', action: 'cancelHide' },
-        { target: 'self', event: 'pointerleave', action: 'hide' },
+        { $_target: 'parent', $_event: 'pointerenter', $_action: '$_show' },
+        { $_target: 'parent', $_event: 'pointerleave', $_action: '$_hide' },
+        { $_target: 'self', $_event: 'pointerenter', $_action: '$_cancelHide' },
+        { $_target: 'self', $_event: 'pointerleave', $_action: '$_hide' },
     ],
     focus: [
-        { target: 'parent', event: 'focusin', action: 'show' },
-        { target: 'parent', event: 'focusout', action: 'hide' },
+        { $_target: 'parent', $_event: 'focusin', $_action: '$_show' },
+        { $_target: 'parent', $_event: 'focusout', $_action: '$_hide' },
     ],
     click: [
-        { target: 'parent', event: 'click', action: 'toggle' },
+        { $_target: 'parent', $_event: 'click', $_action: '$_toggle' },
     ],
 };
 
@@ -178,18 +177,18 @@ const renderTooltip = (host) => {
         }, delay);
     };
 
-    /** @type {Record<'show' | 'hide' | 'toggle' | 'cancelHide', () => void>} */
+    /** @type {Record<'$_show' | '$_hide' | '$_toggle' | '$_cancelHide', () => void>} */
     const actions = {
-        show: () => scheduleShow(),
-        hide: () => scheduleHide(),
-        toggle: () => {
+        $_show: () => scheduleShow(),
+        $_hide: () => scheduleHide(),
+        $_toggle: () => {
             if (isTooltipOpen(host)) {
                 hidePopoverNow();
             } else {
                 showPopoverNow();
             }
         },
-        cancelHide: () => clearTimer(),
+        $_cancelHide: () => clearTimer(),
     };
 
     /** @param {'top' | 'bottom' | 'left' | 'right'} value */
@@ -202,14 +201,14 @@ const renderTooltip = (host) => {
     const applyTriggers = (triggers) => {
         listenerController?.abort();
         if (triggerElement) {
-            const nextListenerController = new AbortController();
-            listenerController = nextListenerController;
-            const listenerOptions = { signal: nextListenerController.signal };
+            const listenerControllerForTriggers = new AbortController();
+            listenerController = listenerControllerForTriggers;
+            const listenerOptions = { signal: listenerControllerForTriggers.signal };
             triggerElement.addEventListener('keydown', hideOnEscape, listenerOptions);
             for (const trigger of triggers) {
                 for (const binding of TRIGGER_BINDINGS[trigger]) {
-                    const target = binding.target === 'parent' ? triggerElement : host;
-                    target.addEventListener(binding.event, actions[binding.action], listenerOptions);
+                    const target = binding.$_target === 'parent' ? triggerElement : host;
+                    target.addEventListener(binding.$_event, actions[binding.$_action], listenerOptions);
                 }
             }
         }

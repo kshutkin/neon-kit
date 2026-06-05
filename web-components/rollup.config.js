@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import clean from '@rollup-extras/plugin-clean';
+import mangle from '@rollup-extras/plugin-mangle';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcDir = resolve(here, 'src');
@@ -36,5 +37,8 @@ export default {
         preserveModules: true,
         preserveModulesRoot: 'src',
         entryFileNames: '[name].js',
+        plugins: [
+            mangle(),
+        ],
     },
 };

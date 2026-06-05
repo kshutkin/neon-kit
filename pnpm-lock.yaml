@@ -93,6 +93,9 @@ importers:
       '@rollup-extras/plugin-clean':
         specifier: ^2.0.1
         version: 2.0.1(rollup@4.60.4)
+      '@rollup-extras/plugin-mangle':
+        specifier: ^0.1.2
+        version: 0.1.2(rollup@4.60.4)
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.60.4)
@@ -526,6 +529,15 @@ packages:
 
   '@rollup-extras/plugin-clean@2.0.1':
     resolution: {integrity: sha512-JuG6vVOJSUStjtchCrTyAlm8APK9RG1eRzIYIQ2LX++HjayfpYLHm8Pwd7S0rzPGhKHxenUYarywrUtatL4/hA==}
+    engines: {node: '>=15'}
+    peerDependencies:
+      rollup: ^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
+  '@rollup-extras/plugin-mangle@0.1.2':
+    resolution: {integrity: sha512-MHOebIMj79++Prd0KqcaT4fjlb8EgOEf9xUi047lyJWhnog6Qu4R+SbPdgemOIpp9+ZsWdIElcMk3KJMEAOB1Q==}
     engines: {node: '>=15'}
     peerDependencies:
       rollup: ^4.0.0
@@ -2117,6 +2129,15 @@ snapshots:
     dependencies:
       '@niceties/logger': 2.1.1
       '@rollup-extras/utils': 2.0.0(rollup@4.60.4)
+    optionalDependencies:
+      rollup: 4.60.4
+
+  '@rollup-extras/plugin-mangle@0.1.2(rollup@4.60.4)':
+    dependencies:
+      '@niceties/logger': 2.1.1
+      '@rollup-extras/utils': 2.0.0(rollup@4.60.4)
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
     optionalDependencies:
       rollup: 4.60.4
 
