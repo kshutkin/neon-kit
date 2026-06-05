@@ -33,6 +33,8 @@ import {
 } from '@slimlib/element';
 import { effect } from '@slimlib/store';
 
+import { isFocusable } from './utils.js';
+
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
 const OPEN_DELAY_MS = 120;
@@ -91,18 +93,6 @@ function readTriggerSet(value) {
         }
     }
     return triggerSet;
-}
-
-/**
- * @param {Element} element
- */
-function isFocusable(element) {
-    const disabled = /** @type {any} */ (element).disabled === true;
-    const tabindex = element.getAttribute('tabindex');
-    return !disabled
-        && tabindex !== '-1'
-        && (tabindex !== null
-            || element.matches('button, a[href], input, select, textarea, summary, [contenteditable=""], [contenteditable="true"]'));
 }
 
 /**
