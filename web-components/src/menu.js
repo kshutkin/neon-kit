@@ -228,5 +228,3 @@ const renderMenu = (host) => {
  */
 
 defineElement('neon-menu', [], renderMenu);
-
-export {};
