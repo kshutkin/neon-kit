@@ -18,10 +18,13 @@ icon.icon = null;
 void icon;
 
 const menu = document.createElement('neon-menu');
-const items: HTMLElement[] = menu.items;
-const activeItem: HTMLElement | undefined = menu.activeItem;
-void items;
-void activeItem;
+// @ts-expect-error - menu item collections are not public API yet
+void menu.items;
+// @ts-expect-error - the active menu item is not public API yet
+void menu.activeItem;
+// @ts-expect-error - focusable menu items are not public API yet
+void menu.focusableItems;
+void menu;
 
 const tooltip = document.createElement('neon-tooltip');
 tooltip.showPopover();

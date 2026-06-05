@@ -58,22 +58,6 @@ const renderMenu = (host) => {
     /** @returns {HTMLElement[]} */
     const getFocusableItems = () => getItems().filter((item) => !isDisabled(item));
 
-    Object.defineProperty(host, 'activeItem', {
-        configurable: true,
-        enumerable: true,
-        get: getActiveItem,
-    });
-    Object.defineProperty(host, 'items', {
-        configurable: true,
-        enumerable: true,
-        get: getItems,
-    });
-    Object.defineProperty(host, 'focusableItems', {
-        configurable: true,
-        enumerable: true,
-        get: getFocusableItems,
-    });
-
     let typeBuffer = '';
     /** @type {ReturnType<typeof setTimeout> | undefined} */
     let typeTimer;
@@ -253,11 +237,7 @@ const renderMenu = (host) => {
 /**
  * Public instance type of the `<neon-menu>` element.
  *
- * @typedef {HTMLElement & {
- *   readonly activeItem: HTMLElement | undefined,
- *   readonly items: HTMLElement[],
- *   readonly focusableItems: HTMLElement[],
- * }} NeonMenuElement
+ * @typedef {HTMLElement} NeonMenuElement
  */
 
 defineElement('neon-menu', [withInternals()], renderMenu);

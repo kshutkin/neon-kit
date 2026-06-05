@@ -27,7 +27,7 @@ describe('<neon-menu>', () => {
         expect(customElements.get('neon-menu')).toBeTruthy();
     });
 
-    it('preserves an existing host role and exposes undefined when no item is active', () => {
+    it('preserves an existing host role', () => {
         const menu = mount(`
             <neon-menu role="listbox">
                 <button class="menu__item" type="button">One</button>
@@ -35,7 +35,6 @@ describe('<neon-menu>', () => {
         `);
 
         expect(menu.getAttribute('role')).toBe('listbox');
-        expect(menu.activeItem).toBeUndefined();
     });
 
     it('ignores keyboard navigation when the menu has no focusable items', () => {
@@ -45,8 +44,7 @@ describe('<neon-menu>', () => {
         menu.dispatchEvent(event);
 
         expect(event.defaultPrevented).toBe(false);
-        expect(menu.items).toEqual([]);
-        expect(menu.focusableItems).toEqual([]);
+        expect(menu.querySelectorAll('.menu__item')).toHaveLength(0);
     });
 
     it('assigns roving tabindex with the first focusable item active', async () => {
@@ -80,7 +78,6 @@ describe('<neon-menu>', () => {
         await Promise.resolve();
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
 
-        expect(menu.focusableItems).toEqual([]);
         expect(items[0].getAttribute('tabindex')).toBe('-1');
         expect(items[1].getAttribute('tabindex')).toBe('-1');
     });
@@ -99,7 +96,7 @@ describe('<neon-menu>', () => {
 
         expect(items[0].getAttribute('tabindex')).toBe('-1');
         expect(items[1].getAttribute('tabindex')).toBe('0');
-        expect(menu.activeItem).toBe(items[1]);
+        expect(document.activeElement).toBe(items[1]);
     });
 
     it('moves focus with ArrowDown/ArrowUp skipping disabled items', () => {
@@ -133,7 +130,7 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(items[0]);
     });
 
-    it('reports the active item inside an open shadow root', () => {
+    it('moves focus inside an open shadow root', () => {
         const host = document.createElement('div');
         const shadow = host.attachShadow({ mode: 'open' });
         shadow.innerHTML = `
@@ -142,13 +139,11 @@ describe('<neon-menu>', () => {
             </neon-menu>
         `;
         document.body.appendChild(host);
-        const menu = /** @type {any} */ (shadow.querySelector('neon-menu'));
         const item = /** @type {HTMLElement} */ (shadow.querySelector('.menu__item'));
 
         item.focus();
         expect(document.activeElement).toBe(host);
         expect(shadow.activeElement).toBe(item);
-        expect(menu.activeItem).toBe(item);
     });
 
     it('Home/End jump to first/last focusable item', () => {

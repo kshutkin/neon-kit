@@ -87,42 +87,12 @@ import '@neon-kit/web-components/menu';</code></pre>
 
         <h3 class="mb-2">Behavior</h3>
         <ul class="mb-6 list-disc pl-6 text-ink-secondary">
-            <li>Sets <code>role="menu"</code> on the host (unless one is already set).</li>
+            <li>Provides a default <code>menu</code> role for the host.</li>
             <li>Sets <code>role="menuitem"</code> on each <code>.menu__item</code> (unless one is already set).</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
             <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first focusable item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
             <li>Watches the subtree (<code>MutationObserver</code>) so dynamically added/removed items and <code>disabled</code>/<code>aria-disabled</code> changes stay in sync.</li>
         </ul>
-
-        <h3 class="mb-2">Properties</h3>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse">
-                <thead>
-                    <tr class="bg-surface-secondary">
-                        <th class="border border-border px-4 py-2 text-left">Property</th>
-                        <th class="border border-border px-4 py-2 text-left">Type</th>
-                        <th class="border border-border px-4 py-2 text-left">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="border border-border px-4 py-2"><code>items</code></td>
-                        <td class="border border-border px-4 py-2"><code>HTMLElement[]</code></td>
-                        <td class="border border-border px-4 py-2">All <code>.menu__item</code> rows in DOM order, including disabled ones.</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-border px-4 py-2"><code>focusableItems</code></td>
-                        <td class="border border-border px-4 py-2"><code>HTMLElement[]</code></td>
-                        <td class="border border-border px-4 py-2">Items excluding disabled ones, in DOM order.</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-border px-4 py-2"><code>activeItem</code></td>
-                        <td class="border border-border px-4 py-2"><code>HTMLElement | undefined</code></td>
-                        <td class="border border-border px-4 py-2">The currently focused item, if any.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
         <h3 class="mb-2">Popover wiring</h3>
         <p class="mb-4 text-ink-secondary">
