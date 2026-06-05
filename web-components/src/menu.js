@@ -129,7 +129,7 @@ const renderMenu = (host) => {
         const start = from < 0 ? -1 : from;
         for (let offset = 1; offset <= items.length; offset++) {
             const itemIndex = (start + offset + items.length) % items.length;
-            const label = (items[itemIndex].textContent ?? '').trim().toLowerCase();
+            const label = (/** @type {string} */ (items[itemIndex].textContent)).trim().toLowerCase();
             if (label.startsWith(typeBuffer)) {
                 focusItem(items[itemIndex]);
                 return;
@@ -147,11 +147,11 @@ const renderMenu = (host) => {
             switch (event.key) {
                 case 'ArrowDown':
                     event.preventDefault();
-                    focusItem(items[(currentItemIndex + 1 + items.length) % items.length] ?? items[0]);
+                    focusItem(items[(currentItemIndex + 1 + items.length) % items.length]);
                     break;
                 case 'ArrowUp':
                     event.preventDefault();
-                    focusItem(items[(currentItemIndex - 1 + items.length) % items.length] ?? items[items.length - 1]);
+                    focusItem(items[(currentItemIndex - 1 + items.length) % items.length]);
                     break;
                 case 'Home':
                     event.preventDefault();
