@@ -226,17 +226,18 @@ const renderTooltip = (host) => {
         triggerElement = host.parentElement;
         if (triggerElement) {
             const existingAnchorName = triggerElement.style.getPropertyValue('anchor-name');
+            let positionAnchor = existingAnchorName;
+            
             if (existingAnchorName) {
                 anchorName = '';
-                if (!host.style.getPropertyValue('position-anchor')) {
-                    host.style.setProperty('position-anchor', existingAnchorName);
-                }
             } else {
                 anchorName = `--neon-tooltip-anchor-${host.id}`;
+                positionAnchor = anchorName;
                 triggerElement.style.setProperty('anchor-name', anchorName);
-                if (!host.style.getPropertyValue('position-anchor')) {
-                    host.style.setProperty('position-anchor', anchorName);
-                }
+            }
+
+            if (!host.style.getPropertyValue('position-anchor')) {
+                host.style.setProperty('position-anchor', positionAnchor);
             }
 
             if (!triggerElement.hasAttribute('aria-describedby')) {
