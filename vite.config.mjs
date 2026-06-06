@@ -34,7 +34,7 @@ const WEB_COMPONENT_ALIASES = [
 const ROUTES = {
   about: { title: 'About', desc: 'Neon Kit is a Tailwind-based theme paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
   'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
-  icons:            { title: 'Icons',           desc: 'A curated set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules.' },
+  icons:            { title: 'Icons',           desc: 'The full set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules.' },
   'icon-web-component': { title: 'Icon Web Component', desc: '<neon-icon> - Light-DOM custom element for rendering @neon-kit/icons definitions as inline SVG.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
