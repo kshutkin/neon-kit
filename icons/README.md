@@ -99,18 +99,10 @@ serialize(bars, { size: 24, ariaLabel: 'Open menu' });
 
 ## Available icons
 
-The starter set (18 icons × 4 variants = 72 modules):
-
-`arrow-path`, `bars-3`, `calendar`, `check`, `chevron-down`,
-`chevron-left`, `chevron-right`, `chevron-up`, `clock`, `cog-6-tooth`,
-`exclamation-triangle`, `information-circle`, `magnifying-glass`,
-`minus`, `pencil`, `plus`, `trash`, `x-mark`.
-
-## Extending the set
-
-Add an entry to the `MANIFEST` map in
-[`scripts/build-icons.mjs`](scripts/build-icons.mjs) with all four
-variant paths, then re-run:
+The icon set is generated from the installed `heroicons` package file
+tree. Each Neon variant emits every SVG present in its matching
+heroicons source directory, so variants do not need to have identical
+name sets:
 
 ```sh
 pnpm --filter @neon-kit/icons run gen
@@ -132,10 +124,9 @@ export default icon(['M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5']);
 ```
 
 The factory (`src/<variant>/_variant.js`) bakes in the viewBox, shell
-attrs, and per-path attrs for that variant. To change a variant-wide
-default (e.g. heroicons bumps outline `stroke-width`), edit the
-`VARIANT_SPEC` entry in `scripts/build-icons.mjs` and re-run `gen`;
-all 18 icons inherit the new defaults via the factory.
+attrs, and per-path attrs for that variant. The generator samples each
+factory, then validates heroicons source SVGs against those defaults
+while rebuilding.
 
 The exported runtime `IconDef` is a compact tuple:
 

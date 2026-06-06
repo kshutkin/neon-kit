@@ -2,7 +2,7 @@
  * `@neon-kit/icons/outline` — 24×24 line variant.
  *
  * Owns the per-variant viewBox + shell/path attribute defaults. Each
- * generated icon module imports `icon` and calls `icon([...])`. Keep
+ * generated icon module imports `icon` and calls `icon(...paths)`. Keep
  * only the helper exported so these defaults remain private module
  * details.
  *
@@ -10,10 +10,10 @@
  */
 
 /**
- * @param {ReadonlyArray<string>} paths
+ * @param {...string} paths
  * @returns {IconDef}
  */
-export function icon(paths) {
+export function icon(...paths) {
     return [
         24, // Natural icon width; paired with height to form `viewBox`.
         24, // Natural icon height; paired with width to form `viewBox`.

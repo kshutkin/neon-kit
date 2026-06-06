@@ -3,27 +3,6 @@ import { describe, expect, it } from 'vitest';
 import * as rootExports from '../src/index.js';
 import { serialize } from '../src/serialize.js';
 
-const NAMES = [
-    'arrow-path',
-    'bars-3',
-    'calendar',
-    'check',
-    'chevron-down',
-    'chevron-left',
-    'chevron-right',
-    'chevron-up',
-    'clock',
-    'cog-6-tooth',
-    'exclamation-triangle',
-    'information-circle',
-    'magnifying-glass',
-    'minus',
-    'pencil',
-    'plus',
-    'trash',
-    'x-mark',
-];
-
 /** @type {Record<string, { width: number, height: number, shellFill: string, shellStroke?: string, pathAttrs: Record<string,string> }>} */
 const VARIANT_META = {
     outline: {
@@ -71,9 +50,11 @@ for (const variant of Object.keys(VARIANT_META)) {
     const variantMeta = VARIANT_META[variant];
 
     describe(`@neon-kit/icons/${variant} aggregate`, () => {
-        it(`exposes all 18 ${variant} icons via default map`, async () => {
+        it(`exposes every generated ${variant} icon via default map`, async () => {
             const variantModule = await import(`../src/${variant}/index.js`);
-            for (const name of NAMES) {
+            const names = Object.keys(variantModule.default).sort();
+            expect(names.length).toBeGreaterThan(300);
+            for (const name of names) {
                 const icon = variantModule.default[name];
                 const [width, height, svgAttrs, pathAttrs, ...paths] = icon;
                 expect(icon, `missing "${name}" in ${variant} default map`).toBeTruthy();
@@ -116,6 +97,13 @@ describe('subpath import shape', () => {
         const [, , svgAttrs, pathAttrs] = barsIconModule.default;
         expect(svgAttrs).toEqual({ fill: 'currentColor' });
         expect(pathAttrs).toEqual({ 'fill-rule': 'evenodd', 'clip-rule': 'evenodd' });
+    });
+
+    it('includes icons even when another variant does not have that name', async () => {
+        const outlineIconModule = await import('../src/outline/arrow-small-down.js');
+        const miniIconModule = await import('../src/mini/arrow-small-down.js');
+        expect(outlineIconModule.default[0]).toBe(24);
+        expect(miniIconModule.default[0]).toBe(20);
     });
 
     it('mini/bars-3 has the 20×20 box', async () => {
