@@ -20,6 +20,7 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [x] `Space` activates the focused item by dispatching its click behavior.
 - [x] Disabled menu items do not activate on click.
 - [x] Elements that are not menu items, such as group headers and separators without `.menu__item`, are skipped by keyboard navigation.
+- [x] `Escape` closes an open popover menu and restores focus through browser popover behavior.
 - [x] Focus restore fills the native popover gap when focus remains inside a closing menu and a valid trigger or invoker is available.
 
 ## Partially Implemented
@@ -27,7 +28,6 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [ ] Disabled menu items should be focusable but not activatable according to APG; current behavior skips disabled items during keyboard navigation.
 - [ ] Menu item activation should usually close the menu; current behavior leaves close-on-activation to the consumer.
 - [ ] Submenus can be composed with nested popovers, but there is no dedicated submenu keyboard model.
-- [ ] `Escape` relies on native popover behavior instead of explicit component-level close and invoker focus handling.
 - [ ] Accessible names for menus are consumer-authored rather than managed by the component.
 
 ## Not Implemented
