@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import axe from 'axe-core';
 
 import '../src/menu.js';
 
@@ -17,6 +18,26 @@ function nextTask() {
     return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+/** @param {import('axe-core').AxeResults} results */
+function formatAxeViolations(results) {
+    return results.violations
+        .map((violation) => {
+            const targets = violation.nodes.map((node) => node.target.join(', ')).join('; ');
+            return `${violation.id}: ${violation.help} (${targets})`;
+        })
+        .join('\n');
+}
+
+function configureAxeElementInternals() {
+    axe._enableElementInternals = true;
+    axe.externalAPIs({
+        getElementInternals: async () => Array.from(document.querySelectorAll('neon-menu'), (menu) => ({
+            ancestry: axe.utils.getSelector(menu),
+            internals: { role: 'menu' },
+        })),
+    });
+}
+
 describe('<neon-menu>', () => {
     beforeEach(() => {
         document.body.innerHTML = '';
@@ -28,6 +49,75 @@ describe('<neon-menu>', () => {
 
     it('registers as a custom element', () => {
         expect(customElements.get('neon-menu')).toBeTruthy();
+    });
+
+    it('has no axe violations for an inline menu', async () => {
+        mount(`
+            <main>
+                <neon-menu aria-label="File actions">
+                <button class="menu__item" type="button">New file</button>
+                <button class="menu__item" type="button">Open</button>
+                <button class="menu__item" type="button" disabled>Save</button>
+                </neon-menu>
+            </main>
+        `);
+        await Promise.resolve();
+        configureAxeElementInternals();
+
+        const results = await axe.run(document.body);
+
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
+    it('has no axe violations for a popover menu with a trigger', async () => {
+        document.body.innerHTML = `
+            <main>
+                <button id="trigger" type="button" popovertarget="menu" aria-haspopup="menu">
+                    Open menu
+                </button>
+                <neon-menu id="menu" popover aria-label="File actions">
+                    <button class="menu__item" type="button">New file</button>
+                    <button class="menu__item" type="button">Open</button>
+                </neon-menu>
+            </main>
+        `;
+        await Promise.resolve();
+        configureAxeElementInternals();
+
+        const results = await axe.run(document.body);
+
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
+    });
+
+    it('has no axe violations for nested popover menus', async () => {
+        document.body.innerHTML = `
+            <main>
+                <button id="trigger" type="button" popovertarget="parent-menu" aria-haspopup="menu">
+                    Open menu
+                </button>
+                <neon-menu id="parent-menu" popover aria-label="File actions">
+                    <button class="menu__item" type="button">Rename</button>
+                    <button
+                        class="menu__item"
+                        type="button"
+                        popovertarget="child-menu"
+                        aria-haspopup="menu"
+                    >
+                        Export as
+                    </button>
+                </neon-menu>
+                <neon-menu id="child-menu" popover aria-label="Export formats">
+                    <button class="menu__item" type="button">PDF</button>
+                    <button class="menu__item" type="button">Markdown</button>
+                </neon-menu>
+            </main>
+        `;
+        await Promise.resolve();
+        configureAxeElementInternals();
+
+        const results = await axe.run(document.body);
+
+        expect(results.violations, formatAxeViolations(results)).toEqual([]);
     });
 
     it('preserves an existing host role', () => {
