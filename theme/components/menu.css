@@ -25,7 +25,7 @@
    Items are <button type="button"> so they're natively focusable and
    keyboard-activatable; group headers and the menu container itself are not.
    role="menu" / role="menuitem" are intentionally NOT baked in — those
-   ARIA roles imply roving-tabindex / typeahead semantics which are added
+   ARIA roles imply roving-tabindex semantics which are added
    dynamically by the consumer. The CSS works regardless of role.
 
    RTL is handled with CSS-grid's writing-mode awareness plus :dir(rtl) for

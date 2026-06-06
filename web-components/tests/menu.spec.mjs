@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import '../src/menu.js';
 
@@ -13,13 +13,16 @@ function mount(html) {
     return /** @type {HTMLElement} */ (host.firstElementChild);
 }
 
+function nextTask() {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 describe('<neon-menu>', () => {
     beforeEach(() => {
         document.body.innerHTML = '';
     });
 
     afterEach(() => {
-        vi.useRealTimers();
         document.body.innerHTML = '';
     });
 
@@ -229,74 +232,6 @@ describe('<neon-menu>', () => {
         expect(clicked).toBe(0);
     });
 
-    it('type-ahead focuses the next matching item', () => {
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">Apples</button>
-                <button class="menu__item" type="button">Bananas</button>
-                <button class="menu__item" type="button">Berries</button>
-            </neon-menu>
-        `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
-        items[0].focus();
-
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
-        expect(document.activeElement).toBe(items[1]);
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
-        // Buffer is now 'bb' — no match — stays put.
-        expect(document.activeElement).toBe(items[1]);
-    });
-
-    it('resets the type-ahead buffer after the timeout', () => {
-        vi.useFakeTimers();
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">Apricot</button>
-                <button class="menu__item" type="button">Banana</button>
-                <button class="menu__item" type="button">Blueberry</button>
-            </neon-menu>
-        `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
-        items[0].focus();
-
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
-        expect(document.activeElement).toBe(items[1]);
-
-        vi.advanceTimersByTime(500);
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
-
-        expect(document.activeElement).toBe(items[2]);
-    });
-
-    it('ignores modified and whitespace type-ahead keys', () => {
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Bravo</button>
-            </neon-menu>
-        `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
-        items[0].focus();
-
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true, ctrlKey: true }));
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, altKey: true }));
-
-        expect(document.activeElement).toBe(items[0]);
-    });
-
-    it('type-ahead matches the very first item when nothing is focused', () => {
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Beta</button>
-            </neon-menu>
-        `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
-        // No focus on entry — pressing 'a' should land on index 0.
-        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', bubbles: true }));
-        expect(document.activeElement).toBe(items[0]);
-    });
-
     it('un-disabling an item makes it focusable again', async () => {
         const menu = mount(`
             <neon-menu>
@@ -332,6 +267,28 @@ describe('<neon-menu>', () => {
         expect(items[1].getAttribute('tabindex')).toBe('-1');
     });
 
+    it('does not restore focus to an item that was already inside the opening menu', () => {
+        const menu = mount(`
+            <neon-menu>
+                <button class="menu__item" type="button">Alpha</button>
+                <button class="menu__item" type="button">Bravo</button>
+            </neon-menu>
+        `);
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const openEvent = new Event('toggle', { bubbles: true });
+        const closedEvent = new Event('toggle', { bubbles: true });
+        Object.defineProperty(openEvent, 'newState', { value: 'open' });
+        Object.defineProperty(closedEvent, 'newState', { value: 'closed' });
+        items[1].focus();
+
+        menu.dispatchEvent(openEvent);
+        expect(document.activeElement).toBe(items[0]);
+
+        menu.dispatchEvent(closedEvent);
+
+        expect(document.activeElement).toBe(items[0]);
+    });
+
     it('ignores closed popover toggles and open toggles without focusable items', () => {
         const menu = mount(`
             <neon-menu>
@@ -349,6 +306,83 @@ describe('<neon-menu>', () => {
 
         expect(document.activeElement).not.toBe(item);
         expect(item.getAttribute('tabindex')).toBe('-1');
+    });
+
+    it('lets the platform restore focus to a top-level popover trigger', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="menu">Open</button>
+            <neon-menu id="menu" popover>
+                <button class="menu__item" type="button">Alpha</button>
+            </neon-menu>
+        `;
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const menu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#menu'));
+        const item = /** @type {HTMLElement} */ (document.querySelector('.menu__item'));
+
+        trigger.focus();
+        trigger.click();
+        await nextTask();
+        expect(document.activeElement).toBe(item);
+
+        menu.hidePopover();
+        await nextTask();
+
+        expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the parent item when a child popover closes with focus inside it', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="parent-menu">Open</button>
+            <neon-menu id="parent-menu" popover>
+                <button class="menu__item" type="button">Rename</button>
+                <button class="menu__item" type="button" popovertarget="child-menu" aria-haspopup="menu">
+                    Export as
+                </button>
+            </neon-menu>
+            <neon-menu id="child-menu" popover>
+                <button class="menu__item" type="button">PDF</button>
+                <button class="menu__item" type="button">Markdown</button>
+            </neon-menu>
+        `;
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const parentItems = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('#parent-menu .menu__item'));
+        const childMenu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#child-menu'));
+        const childItem = /** @type {HTMLElement} */ (document.querySelector('#child-menu .menu__item'));
+
+        trigger.focus();
+        trigger.click();
+        await nextTask();
+        parentItems[1].focus();
+        parentItems[1].click();
+        await nextTask();
+        expect(document.activeElement).toBe(childItem);
+
+        childMenu.hidePopover();
+        await nextTask();
+
+        expect(document.activeElement).toBe(parentItems[1]);
+    });
+
+    it('does not restore focus when focus has already moved outside the closing menu', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="menu">Open</button>
+            <button id="outside" type="button">Outside</button>
+            <neon-menu id="menu" popover>
+                <button class="menu__item" type="button">Alpha</button>
+            </neon-menu>
+        `;
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const outside = /** @type {HTMLElement} */ (document.querySelector('#outside'));
+        const menu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#menu'));
+
+        trigger.focus();
+        trigger.click();
+        await nextTask();
+        outside.focus();
+        menu.hidePopover();
+        await nextTask();
+
+        expect(document.activeElement).toBe(outside);
     });
 
     it('cancels clicks on disabled items from nested targets', () => {

@@ -9,8 +9,6 @@
  * - Roving tabindex across `.menu__item` rows. Disabled items are
  *   skipped (`[disabled]` or `aria-disabled="true"`).
  * - Arrow Up / Down move between items, Home / End jump to first / last.
- * - Type-ahead: alphanumeric keys focus the next item whose label starts
- *   with the typed prefix (case-insensitive).
  * - Enter / Space activate the focused item via `click()`.
  * - `role="menu"` on the host, `role="menuitem"` on each focusable item.
  *
@@ -21,7 +19,6 @@ import { defineElement, internals, onMount, withInternals } from '@slimlib/eleme
 import { getActiveElement } from './utils.js';
 
 const ITEM_SELECTOR = '.menu__item';
-const TYPEAHEAD_TIMEOUT_MS = 500;
 
 /**
  * @param {Element} element
@@ -57,10 +54,22 @@ const renderMenu = (host) => {
     ));
     /** @returns {HTMLElement[]} */
     const getFocusableItems = () => getItems().filter((item) => !isDisabled(item));
+    /**
+     * @param {Element | undefined | null} element
+     * @returns {element is HTMLElement}
+     */
+    const canRestoreFocusTo = (element) => element instanceof HTMLElement
+        && element.isConnected
+        && !isDisabled(element);
+    /**
+     * @param {Element | null} element
+     * @returns {element is HTMLElement}
+     */
+    const canRestoreFocusFrom = (element) => element instanceof HTMLElement
+        && host.contains(element);
 
-    let typeBuffer = '';
-    /** @type {ReturnType<typeof setTimeout> | undefined} */
-    let typeTimer;
+    /** @type {HTMLElement | undefined} */
+    let restoreFocusElement;
 
     const refreshItems = () => {
         const items = getItems();
@@ -99,31 +108,6 @@ const renderMenu = (host) => {
         item.focus();
     };
 
-    /**
-     * @param {string} key
-     * @param {HTMLElement[]} items
-     * @param {number} from
-     */
-    const typeAhead = (key, items, from) => {
-        typeBuffer = (typeBuffer + key).toLowerCase();
-        if (typeTimer !== undefined) {
-            clearTimeout(typeTimer);
-        }
-        typeTimer = setTimeout(() => {
-            typeBuffer = '';
-        }, TYPEAHEAD_TIMEOUT_MS);
-
-        const start = from < 0 ? -1 : from;
-        for (let offset = 1; offset <= items.length; offset++) {
-            const itemIndex = (start + offset + items.length) % items.length;
-            const label = (/** @type {string} */ (items[itemIndex].textContent)).trim().toLowerCase();
-            if (label.startsWith(typeBuffer)) {
-                focusItem(items[itemIndex]);
-                return;
-            }
-        }
-    };
-
     /** @param {KeyboardEvent} event */
     const onKeyDown = (event) => {
         const items = getFocusableItems();
@@ -155,16 +139,6 @@ const renderMenu = (host) => {
                         currentItem.click();
                     }
                     break;
-                default:
-                    if (
-                        event.key.length === 1
-                        && /\S/.test(event.key)
-                        && !event.ctrlKey
-                        && !event.metaKey
-                        && !event.altKey
-                    ) {
-                        typeAhead(event.key, items, currentItemIndex);
-                    }
             }
         }
     };
@@ -184,14 +158,24 @@ const renderMenu = (host) => {
 
     /** @param {ToggleEvent} event */
     const onToggle = (event) => {
+        const activeElement = getActiveElement(host);
         if (event.newState === 'open') {
+            restoreFocusElement = canRestoreFocusTo(activeElement)
+                && !canRestoreFocusFrom(activeElement)
+                ? activeElement
+                : undefined;
             const firstFocusableItem = getFocusableItems()[0];
             if (firstFocusableItem !== undefined) {
-                for (const item of getItems()) {
-                    item.setAttribute('tabindex', item === firstFocusableItem ? '0' : '-1');
-                }
-                firstFocusableItem.focus();
+                focusItem(firstFocusableItem);
             }
+        } else {
+            if (
+                canRestoreFocusFrom(activeElement)
+                && canRestoreFocusTo(restoreFocusElement)
+            ) {
+                restoreFocusElement.focus();
+            }
+            restoreFocusElement = undefined;
         }
     };
 
@@ -224,9 +208,6 @@ const renderMenu = (host) => {
 
         return () => {
             abortController.abort();
-            if (typeTimer !== undefined) {
-                clearTimeout(typeTimer);
-            }
             mutationObserver.disconnect();
         };
     });

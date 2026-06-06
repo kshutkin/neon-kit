@@ -4,8 +4,8 @@
         <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
         keyboard behavior to the theme's <code>.menu</code> markup: a roving
         <code>tabindex</code> across <code>.menu__item</code> rows, arrow-key
-        navigation, <code>Home</code> / <code>End</code> jump, and
-        type-ahead. Disabled items (<code>[disabled]</code> or
+        navigation, <code>Home</code> / <code>End</code> jump, and activation
+        with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or
         <code>aria-disabled="true"</code>) are skipped. See the
         <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
     </p>
@@ -25,8 +25,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             Pair the host element with the native popover API:
             <code>popovertarget</code> on a trigger button, <code>popover</code>
             on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the
-            arrow keys, <code>Home</code>, <code>End</code>, or type the first
-            letters of an item label to focus it.
+            arrow keys, <code>Home</code>, <code>End</code>, <code>Enter</code>,
+            and <code>Space</code>.
         </p>
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button type="button" class="btn" popovertarget="wc-demo-menu">
@@ -66,6 +66,69 @@ import '@neon-kit/web-components/menu';</code></pre>
                 </div>
             </neon-menu>
         </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Nested popover menus</h2>
+        <p class="mb-4 text-ink-secondary">
+            Nested menus can be composed without extra component code by using
+            a menu item as the native popover trigger for another
+            <code>&lt;neon-menu&gt;</code>. Open the parent, focus
+            <span class="whitespace-nowrap">Export as</span>, then press
+            <kbd class="kbd">Enter</kbd> or <kbd class="kbd">Space</kbd> to
+            open the child menu.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+            <button type="button" class="btn" popovertarget="wc-nested-menu">
+                Open nested menu
+            </button>
+            <neon-menu id="wc-nested-menu" popover class="menu">
+                <div class="menu__group">
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Rename</span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Duplicate</span>
+                    </button>
+                    <button
+                        class="menu__item"
+                        type="button"
+                        popovertarget="wc-nested-export-menu"
+                        aria-haspopup="menu"
+                    >
+                        <span class="menu__label">Export as</span>
+                        <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                    </button>
+                </div>
+                <div class="menu__group">
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Archive</span>
+                    </button>
+                    <button class="menu__item" type="button" disabled>
+                        <span class="menu__label">Delete permanently</span>
+                    </button>
+                </div>
+            </neon-menu>
+
+            <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
+                <div class="menu__group">
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">PDF document</span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">Markdown file</span>
+                    </button>
+                    <button class="menu__item" type="button">
+                        <span class="menu__label">HTML page</span>
+                    </button>
+                </div>
+            </neon-menu>
+        </div>
+        <p class="mt-4 text-ink-secondary">
+            This composition is intentionally modest: there is no dedicated
+            <kbd class="kbd">→</kbd>/<kbd class="kbd">←</kbd> submenu logic or
+            hover-open behavior. Each open menu handles its own roving focus.
+        </p>
     </section>
 
     <section class="mb-8">
@@ -109,9 +172,9 @@ import '@neon-kit/web-components/menu';</code></pre>
         <p class="mb-4 text-ink-secondary">
             Implements the
             <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/">WAI-ARIA Menu pattern</a>.
-            The host carries <code>role="menu"</code>, each row carries
+            The host has a default <code>menu</code> role, each row carries
             <code>role="menuitem"</code>, and a roving <code>tabindex</code>
-            keeps the menu a single tab stop.
+            keeps each menu a single tab stop.
         </p>
 
         <h3 class="mb-2">Keyboard support</h3>
@@ -137,10 +200,6 @@ import '@neon-kit/web-components/menu';</code></pre>
                         <td class="border border-border px-4 py-2">Activate the focused item (calls <code>click()</code>).</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2">Printable characters</td>
-                        <td class="border border-border px-4 py-2">Type-ahead: case-insensitive prefix match against item labels within ~500&nbsp;ms. From a no-focus state the match starts at the very first item.</td>
-                    </tr>
-                    <tr>
                         <td class="border border-border px-4 py-2"><kbd class="kbd">Esc</kbd></td>
                         <td class="border border-border px-4 py-2">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>
                     </tr>
@@ -150,7 +209,7 @@ import '@neon-kit/web-components/menu';</code></pre>
 
         <p class="mb-4 text-ink-secondary">
             Disabled items are kept in the DOM for context but skipped during
-            arrow / type-ahead navigation, do not receive the roving
+            arrow-key navigation, do not receive the roving
             <code>tabindex</code>, and have their <code>click</code> events
             suppressed.
         </p>
