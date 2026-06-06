@@ -93,6 +93,13 @@ for (const variant of Object.keys(VARIANT_META)) {
 }
 
 describe('subpath import shape', () => {
+    it('keeps variant factory exports private except icon', async () => {
+        for (const variant of Object.keys(VARIANT_META)) {
+            const variantModule = await import(`../src/${variant}/_variant.js`);
+            expect(Object.keys(variantModule)).toEqual(['icon']);
+        }
+    });
+
     it('outline/bars-3 default import has correct shape', async () => {
         /** @type {{ default: import('../src/types.js').IconDef }} */
         const barsIconModule = await import('../src/outline/bars-3.js');

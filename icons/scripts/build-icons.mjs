@@ -8,11 +8,10 @@
  *     src/<variant>/index.js          — named re-exports for the variant
  *     src/index.js                    — root aggregate (4 namespaces + serialize)
  *
- * Variants: `outline`, `solid`, `mini`, `micro`. Each variant's defaults
- * (viewBox, shell attrs, path attrs) live in the hand-tracked
- * `src/<variant>/_variant.js` factory — the generator imports those
- * named exports at run time so the emitted icon modules stay in sync
- * with whatever the factory currently declares.
+ * Variants: `outline`, `solid`, `mini`, `micro`. Each variant's
+ * defaults live in the hand-tracked `src/<variant>/_variant.js`
+ * factory, and the generator samples the exported helper so emitted
+ * modules stay in sync with whatever the factory currently declares.
  *
  * Re-runnable: deletes prior outputs deterministically before
  * re-emitting, so running twice produces a clean diff.
@@ -148,8 +147,8 @@ const MANIFEST = {
 };
 
 /**
- * Per-variant constants — loaded at run time from the hand-tracked
- * factory modules so the generator never drifts from the published
+ * Per-variant constants — derived at run time from the hand-tracked
+ * factory helpers so the generator never drifts from the published
  * defaults.
  *
  * @typedef {{ viewBox: string, shellAttrs: Record<string,string>, pathAttrs: Record<string,string> }} VariantSpec
@@ -159,13 +158,14 @@ const VARIANT_SPEC = /** @type {any} */ ({});
 for (const variant of VARIANTS) {
     const factoryUrl = new URL(`../src/${variant}/_variant.js`, import.meta.url).href;
     const variantModule = await import(factoryUrl);
-    if (typeof variantModule.VIEWBOX !== 'string' || !variantModule.SVG_ATTRS || !variantModule.PATH_ATTRS) {
-        throw new Error(`src/${variant}/_variant.js must export VIEWBOX, SVG_ATTRS, PATH_ATTRS`);
+    if (typeof variantModule.icon !== 'function') {
+        throw new Error(`src/${variant}/_variant.js must export icon`);
     }
+    const [width, height, shellAttrs, pathAttrs] = variantModule.icon(variant === 'outline' ? [''] : '');
     VARIANT_SPEC[variant] = {
-        viewBox: variantModule.VIEWBOX,
-        shellAttrs: variantModule.SVG_ATTRS,
-        pathAttrs: variantModule.PATH_ATTRS,
+        viewBox: `0 0 ${width} ${height}`,
+        shellAttrs,
+        pathAttrs,
     };
 }
 

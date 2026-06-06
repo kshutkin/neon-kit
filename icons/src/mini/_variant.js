@@ -3,24 +3,22 @@
  *
  * Owns the per-variant viewBox + shell/path attribute defaults. Each
  * generated icon module imports `icon` and calls `icon(pathData)`. The
- * generator (`scripts/build-icons.mjs`) reads the three named exports
- * below to keep its emitted output in sync with these defaults — edit
- * them here when heroicons changes its mini conventions, then re-run
- * `pnpm --filter @neon-kit/icons run gen`.
+ * constants stay private so only the helper is part of the module's
+ * public surface.
  *
  * @import { IconDef } from '../types.js'
  */
-
-export const VIEWBOX = '0 0 20 20';
-export const WIDTH = 20;
-export const HEIGHT = 20;
-export const SVG_ATTRS = { fill: 'currentColor' };
-export const PATH_ATTRS = { 'fill-rule': 'evenodd', 'clip-rule': 'evenodd' };
 
 /**
  * @param {string} pathData
  * @returns {IconDef}
  */
 export function icon(pathData) {
-    return [WIDTH, HEIGHT, SVG_ATTRS, PATH_ATTRS, pathData];
+    return [
+        20, // Natural icon width; paired with height to form `viewBox`.
+        20, // Natural icon height; paired with width to form `viewBox`.
+        { fill: 'currentColor' }, // Attributes applied to the root `<svg>`.
+        { 'fill-rule': 'evenodd', 'clip-rule': 'evenodd' }, // Default attributes applied to every `<path>`.
+        pathData,
+    ];
 }
