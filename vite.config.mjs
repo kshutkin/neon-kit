@@ -12,6 +12,7 @@ const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
 const WEB_COMPONENT_MODULES = [
   '@neon-kit/web-components',
   '@neon-kit/web-components/tooltip',
+  '@neon-kit/web-components/jsx-tooltip',
   '@neon-kit/web-components/menu',
   '@neon-kit/web-components/combobox',
   '@neon-kit/web-components/multicombobox',
@@ -23,6 +24,7 @@ const WEB_COMPONENT_MODULES = [
 const WEB_COMPONENT_ALIASES = [
   { find: /^@neon-kit\/web-components$/, replacement: resolve(WC_SRC, 'index.js') },
   { find: /^@neon-kit\/web-components\/tooltip$/, replacement: resolve(WC_SRC, 'tooltip.jsx') },
+  { find: /^@neon-kit\/web-components\/jsx-tooltip$/, replacement: resolve(WC_SRC, 'jsx-tooltip.jsx') },
   { find: /^@neon-kit\/web-components\/menu$/, replacement: resolve(WC_SRC, 'menu.js') },
   { find: /^@neon-kit\/web-components\/combobox$/, replacement: resolve(WC_SRC, 'combobox.jsx') },
   { find: /^@neon-kit\/web-components\/multicombobox$/, replacement: resolve(WC_SRC, 'multicombobox.jsx') },
@@ -59,6 +61,7 @@ const ROUTES = {
   shadows:    { title: 'Shadows',    desc: 'Shadow and inset highlight utilities for elevation in the Neon theme.', section: 'css', item: 'shadows' },
   utilities:  { title: 'Utilities',  desc: 'Utility classes that complement the Neon theme tokens.', section: 'css', item: 'utilities' },
   'wc-tooltip': { title: 'Tooltip (WC)', desc: 'Customized built-in <button is="neon-tooltip"> — a Light-DOM web component wrapping the Neon tooltip styles.', section: 'wc', item: 'tooltip' },
+  'jsx-tooltip': { title: 'Tooltip (JSX)', desc: 'JSX Tooltip component built with @slimlib/jsx — decorates one trigger element with a popover-based informational helper.', section: 'jsx', item: 'tooltip' },
   'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — Light-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.', section: 'wc', item: 'menus' },
   'wc-combobox': { title: 'Combobox (WC)', desc: '<neon-combobox> — Light-DOM, form-associated combobox web component with filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-single' },
   'wc-multicombobox': { title: 'Multicombobox (WC)', desc: '<neon-multicombobox> — Light-DOM, form-associated multi-select combobox web component with tag chips, filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-multi' },
@@ -69,7 +72,7 @@ const ROUTES = {
 const DEFAULT_SLUG = 'about';
 const DEFAULT_COMPONENT_SLUG = 'buttons';
 const DOCS_SECTIONS = ['about', 'getting-started', 'components', 'icons'];
-const COMPONENT_MODE_SECTIONS = ['css', 'wc'];
+const COMPONENT_MODE_SECTIONS = ['css', 'wc', 'jsx'];
 
 const SIDEBAR_ITEMS = [
   { item: 'buttons', css: 'buttons' },
@@ -87,7 +90,7 @@ const SIDEBAR_ITEMS = [
   { item: 'datepicker', css: 'datepicker', wc: 'wc-datepicker' },
   { item: 'datepicker-range', css: 'datepicker-range' },
   { item: 'timepicker', css: 'timepicker', wc: 'wc-timepicker' },
-  { item: 'tooltip', css: 'tooltip', wc: 'wc-tooltip' },
+  { item: 'tooltip', css: 'tooltip', wc: 'wc-tooltip', jsx: 'jsx-tooltip' },
   { item: 'typography', css: 'typography' },
   { item: 'tables', css: 'tables' },
   { item: 'colors', css: 'colors' },
@@ -109,7 +112,7 @@ const isIconRoute = (slug) => slug === 'icons' || slug === 'icon-web-component';
 
 const sidebarSlugFor = (item, section) => {
   const sidebarItem = SIDEBAR_ITEMS_BY_ID[item];
-  return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
+  return sidebarItem?.[section] ?? sidebarItem?.css;
 };
 
 const topNavSlugFor = (item, section) => SIDEBAR_ITEMS_BY_ID[item]?.[section];

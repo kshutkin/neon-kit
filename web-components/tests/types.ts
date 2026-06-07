@@ -2,6 +2,7 @@
 
 import '@neon-kit/web-components';
 import '@neon-kit/web-components/tooltip';
+import { Tooltip } from '@neon-kit/web-components/jsx-tooltip';
 import '@neon-kit/web-components/menu';
 import '@neon-kit/web-components/combobox';
 import '@neon-kit/web-components/multicombobox';
@@ -29,6 +30,7 @@ void menu;
 const tooltip = document.createElement('neon-tooltip');
 tooltip.showPopover();
 tooltip.hidePopover();
+void Tooltip;
 
 const combobox = document.createElement('neon-combobox');
 const v: string = combobox.value;

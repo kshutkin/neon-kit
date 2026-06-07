@@ -12,6 +12,7 @@
         "paths": {
             "@neon-kit/web-components": ["./types/index.d.ts"],
             "@neon-kit/web-components/tooltip": ["./types/index.d.ts"],
+            "@neon-kit/web-components/jsx-tooltip": ["./types/index.d.ts"],
             "@neon-kit/web-components/menu": ["./types/index.d.ts"],
             "@neon-kit/web-components/combobox": ["./types/index.d.ts"],
             "@neon-kit/web-components/multicombobox": ["./types/index.d.ts"],

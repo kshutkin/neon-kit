@@ -19,8 +19,6 @@
  * Attribute changes flow through `props()` and normal reactive effects,
  * so placement / trigger changes commit on Slimlib's effect schedule.
  */
-import { DEV } from 'esm-env';
-
 import {
     attributes,
     defineElement,
@@ -33,71 +31,12 @@ import {
 } from '@slimlib/element';
 import { effect } from '@slimlib/store';
 
-import { generateId, getActiveElement, isFocusable } from './utils.js';
-
-const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
-
-const OPEN_DELAY_MS = 120;
-const CLOSE_DELAY_MS = 100;
-
-/**
- * @typedef {'hover' | 'focus' | 'click'} Trigger
- * @typedef {HTMLElement & { showPopover: () => void, hidePopover: () => void }} TooltipHost
- */
-
-/** @type {Record<Trigger, Array<{ $_target: 'parent' | 'self', $_event: string, $_action: '$_show' | '$_hide' | '$_toggle' | '$_cancelHide' }>>} */
-const TRIGGER_BINDINGS = {
-    hover: [
-        { $_target: 'parent', $_event: 'pointerenter', $_action: '$_show' },
-        { $_target: 'parent', $_event: 'pointerleave', $_action: '$_hide' },
-        { $_target: 'self', $_event: 'pointerenter', $_action: '$_cancelHide' },
-        { $_target: 'self', $_event: 'pointerleave', $_action: '$_hide' },
-    ],
-    focus: [
-        { $_target: 'parent', $_event: 'focusin', $_action: '$_show' },
-        { $_target: 'parent', $_event: 'focusout', $_action: '$_hide' },
-    ],
-    click: [
-        { $_target: 'parent', $_event: 'click', $_action: '$_toggle' },
-    ],
-};
-
-const isPopoverSupported = () => 'popover' in HTMLElement.prototype;
-
-/**
- * @param {string | undefined} value
- * @returns {'top' | 'bottom' | 'left' | 'right'}
- */
-function readPlacement(value) {
-    return /** @type {any} */ (PLACEMENTS.includes(/** @type {any} */ (value)) ? value : 'top');
-}
-
-/**
- * @param {string | undefined} value
- * @returns {Set<Trigger>}
- */
-function readTriggerSet(value) {
-    /** @type {Set<Trigger>} */
-    const triggerSet = new Set();
-    if (value === undefined) {
-        triggerSet.add('hover');
-        triggerSet.add('focus');
-    } else {
-        for (const part of value.trim().split(/\s+/)) {
-            if (part === 'hover' || part === 'focus' || part === 'click') {
-                triggerSet.add(part);
-            }
-        }
-    }
-    return triggerSet;
-}
-
-/**
- * @param {HTMLElement} host
- */
-function isTooltipOpen(host) {
-    return host.matches(':popover-open');
-}
+import {
+    createTooltipController,
+    isPopoverSupported,
+    readTooltipPlacement,
+} from './tooltip-controller.js';
+import { generateId } from './utils.js';
 
 /**
  * @param {HTMLElement} host
@@ -115,165 +54,36 @@ const renderTooltip = (host) => {
         trigger: /** @type {string | undefined} */ (undefined),
     });
 
-    /** @type {HTMLElement | null | undefined} */
-    let triggerElement;
-    /** @type {ReturnType<typeof setTimeout> | undefined} */
-    let delayTimer;
-    /** @type {AbortController | undefined} */
-    let listenerController = undefined;
-    let ownsAriaDescribedBy = false;
-    let anchorName = '';
+    /** @type {import('./tooltip-controller.js').TooltipController[0] | undefined} */
+    let updateTooltipController = undefined;
+    /** @type {import('./tooltip-controller.js').TooltipController[1] | undefined} */
+    let destroyTooltipController = undefined;
 
-    const clearTimer = () => {
-        if (delayTimer) {
-            clearTimeout(delayTimer);
-            delayTimer = undefined;
-        }
-    };
-
-    const showPopoverNow = () => {
-        clearTimer();
-        /** @type {TooltipHost} */ (host).showPopover();
-    };
-
-    const hidePopoverNow = () => {
-        clearTimer();
-        if (isTooltipOpen(host)) {
-            /** @type {TooltipHost} */ (host).hidePopover();
-        }
-    };
-
-    /** @param {KeyboardEvent} event */
-    const hideOnEscape = (event) => {
-        if (event.key === 'Escape') {
-            hidePopoverNow();
-        }
-    };
-
-    /** @param {number} delay */
-    const scheduleShow = (delay = OPEN_DELAY_MS) => {
-        clearTimer();
-        delayTimer = setTimeout(() => {
-            if (!isTooltipOpen(host)) {
-                /** @type {TooltipHost} */ (host).showPopover();
-            }
-        }, delay);
-    };
-
-    /** @param {number} delay */
-    const scheduleHide = (delay = CLOSE_DELAY_MS) => {
-        clearTimer();
-        delayTimer = setTimeout(() => {
-            const activeElement = getActiveElement(host);
-            const shouldStayOpen = host.matches(':hover')
-                || triggerElement?.matches(':hover') === true
-                || activeElement === triggerElement
-                || (activeElement !== null && host.contains(activeElement));
-            if (!shouldStayOpen) {
-                if (isTooltipOpen(host)) {
-                    /** @type {TooltipHost} */ (host).hidePopover();
-                }
-            }
-        }, delay);
-    };
-
-    /** @type {Record<'$_show' | '$_hide' | '$_toggle' | '$_cancelHide', () => void>} */
-    const actions = {
-        $_show: () => scheduleShow(),
-        $_hide: () => scheduleHide(),
-        $_toggle: () => {
-            if (isTooltipOpen(host)) {
-                hidePopoverNow();
-            } else {
-                showPopoverNow();
-            }
-        },
-        $_cancelHide: () => clearTimer(),
-    };
-
-    /** @param {'top' | 'bottom' | 'left' | 'right'} value */
-    const applyPlacementClass = (value) => {
+    effect(() => {
         host.classList.remove('-top', '-bottom', '-left', '-right');
-        host.classList.add(`-${value}`);
-    };
-
-    /** @param {Set<Trigger>} triggers */
-    const applyTriggers = (triggers) => {
-        listenerController?.abort();
-        if (triggerElement) {
-            const listenerControllerForTriggers = new AbortController();
-            listenerController = listenerControllerForTriggers;
-            const listenerOptions = { signal: listenerControllerForTriggers.signal };
-            triggerElement.addEventListener('keydown', hideOnEscape, listenerOptions);
-            for (const trigger of triggers) {
-                for (const binding of TRIGGER_BINDINGS[trigger]) {
-                    const target = binding.$_target === 'parent' ? triggerElement : host;
-                    target.addEventListener(binding.$_event, actions[binding.$_action], listenerOptions);
-                }
-            }
-        }
-    };
-
-    effect(() => {
-        applyPlacementClass(readPlacement(state.placement));
-    });
-
-    effect(() => {
-        applyTriggers(readTriggerSet(state.trigger));
+        host.classList.add(`-${readTooltipPlacement(state.placement)}`);
+        updateTooltipController?.({
+            placement: state.placement,
+            trigger: state.trigger,
+        });
     });
 
     onConnect(() => {
-        triggerElement = host.parentElement;
+        const triggerElement = host.parentElement;
         if (triggerElement) {
-            const existingAnchorName = triggerElement.style.getPropertyValue('anchor-name');
-            let positionAnchor = existingAnchorName;
-            
-            if (existingAnchorName) {
-                anchorName = '';
-            } else {
-                anchorName = `--neon-tooltip-anchor-${host.id}`;
-                positionAnchor = anchorName;
-                triggerElement.style.setProperty('anchor-name', anchorName);
-            }
-
-            if (!host.style.getPropertyValue('position-anchor')) {
-                host.style.setProperty('position-anchor', positionAnchor);
-            }
-
-            if (!triggerElement.hasAttribute('aria-describedby')) {
-                triggerElement.setAttribute('aria-describedby', host.id);
-                ownsAriaDescribedBy = true;
-            }
-
-            const triggerSet = readTriggerSet(state.trigger);
-            applyPlacementClass(readPlacement(state.placement));
-            applyTriggers(triggerSet);
-
-            if (DEV && triggerSet.has('focus') && !isFocusable(triggerElement)) {
-                // eslint-disable-next-line no-console
-                console.debug(
-                    '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
-                    triggerElement,
-                );
-            }
+            [updateTooltipController, destroyTooltipController] = createTooltipController({
+                $_tooltipElement: host,
+                $_triggerElement: triggerElement,
+                $_placement: state.placement,
+                $_trigger: state.trigger,
+            });
         }
     });
 
     onDisconnect(() => {
-        clearTimer();
-        listenerController?.abort();
-        listenerController = undefined;
-        if (triggerElement) {
-            if (ownsAriaDescribedBy && triggerElement.getAttribute('aria-describedby') === host.id) {
-                triggerElement.removeAttribute('aria-describedby');
-            }
-            if (anchorName && triggerElement.style.getPropertyValue('anchor-name') === anchorName) {
-                triggerElement.style.removeProperty('anchor-name');
-            }
-        }
-        triggerElement = undefined;
-        ownsAriaDescribedBy = false;
-        anchorName = '';
+        destroyTooltipController?.();
+        updateTooltipController = undefined;
+        destroyTooltipController = undefined;
     });
 
     return <div class="tooltip__arrow" />;

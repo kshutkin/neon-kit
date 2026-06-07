@@ -20,6 +20,12 @@ importers:
       '@neon-kit/web-components':
         specifier: workspace:*
         version: link:web-components
+      '@slimlib/jsx':
+        specifier: ^0.2.0
+        version: 0.2.0(@slimlib/store@2.1.0)
+      '@slimlib/store':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@tailwindcss/vite':
         specifier: ^4.1.13
         version: 4.2.4(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1))

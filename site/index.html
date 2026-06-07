@@ -53,6 +53,7 @@
             <ul class="nav -tabs">
                 <li><a data-section="css" href="buttons/" class="nav__item">CSS</a></li>
                 <li><a data-section="wc" href="wc-tooltip/" class="nav__item">Web Components</a></li>
+                <li hidden><a data-section="jsx" href="jsx-tooltip/" class="nav__item">JSX</a></li>
             </ul>
         </nav>
         <div id="content-inner" class="p-8"></div>
@@ -62,6 +63,7 @@
     <script src="./datepicker.js" type="module"></script>
     <script src="./timepicker.js" type="module"></script>
     <script src="./tooltip.js" type="module"></script>
+    <script src="./jsx-tooltip.jsx" type="module"></script>
     <script src="./icons.js" type="module"></script>
     <script src="./wc.js" type="module"></script>
     <script type="module">
@@ -97,6 +99,7 @@
             shadows: { title: 'Shadows', section: 'css', item: 'shadows' },
             utilities: { title: 'Utilities', section: 'css', item: 'utilities' },
             'wc-tooltip': { title: 'Tooltip (WC)', section: 'wc', item: 'tooltip' },
+            'jsx-tooltip': { title: 'Tooltip (JSX)', section: 'jsx', item: 'tooltip' },
             'wc-menu': { title: 'Menu (WC)', section: 'wc', item: 'menus' },
             'wc-combobox': { title: 'Combobox (WC)', section: 'wc', item: 'combobox-single' },
             'wc-multicombobox': { title: 'Multicombobox (WC)', section: 'wc', item: 'combobox-multi' },
@@ -120,7 +123,7 @@
             { item: 'datepicker', css: 'datepicker', wc: 'wc-datepicker' },
             { item: 'datepicker-range', css: 'datepicker-range' },
             { item: 'timepicker', css: 'timepicker', wc: 'wc-timepicker' },
-            { item: 'tooltip', css: 'tooltip', wc: 'wc-tooltip' },
+            { item: 'tooltip', css: 'tooltip', wc: 'wc-tooltip', jsx: 'jsx-tooltip' },
             { item: 'typography', css: 'typography' },
             { item: 'tables', css: 'tables' },
             { item: 'colors', css: 'colors' },
@@ -139,7 +142,7 @@
         const isIconRoute = (slug) => slug === 'icons' || slug === 'icon-web-component';
         const sidebarSlugFor = (item, section) => {
             const sidebarItem = sidebarItemsById[item];
-            return section === 'wc' ? (sidebarItem?.wc ?? sidebarItem?.css) : sidebarItem?.css;
+            return sidebarItem?.[section] ?? sidebarItem?.css;
         };
         const topNavSlugFor = (item, section) => sidebarItemsById[item]?.[section];
         const docsNavSlugFor = (slug, section) => {
@@ -224,6 +227,7 @@
             setActiveLink(slug);
             document.title = `Project Neon — ${routes[slug].title}`;
             content.scrollTop = 0;
+            document.dispatchEvent(new CustomEvent('neon-docs:render', { detail: { slug } }));
         };
 
         // Intercept clicks on internal nav links for soft (no-reload) navigation.

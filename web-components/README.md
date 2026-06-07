@@ -9,6 +9,7 @@ is flattened by `pkgprn` at pack time.
 ## Components
 
 - `@neon-kit/web-components/tooltip` - `<neon-tooltip>`
+- `@neon-kit/web-components/jsx-tooltip` - `Tooltip` JSX component
 - `@neon-kit/web-components/menu` - `<neon-menu>`
 - `@neon-kit/web-components/combobox` - `<neon-combobox>`
 - `@neon-kit/web-components/multicombobox` - `<neon-multicombobox>`

@@ -323,7 +323,7 @@ describe('<neon-tooltip>', () => {
         const span = mount(`<span>x<neon-tooltip>y</neon-tooltip></span>`);
 
         expect(debug).toHaveBeenCalledWith(
-            '<neon-tooltip>: parent element is not focusable; the `focus` trigger will not fire.',
+            'Tooltip: parent element is not focusable; the `focus` trigger will not fire.',
             span,
         );
     });
