@@ -19,6 +19,7 @@ interface HTMLElementTagNameMap {
     'neon-timepicker': import('@neon-kit/web-components/timepicker').NeonTimepickerElement;
     'neon-icon': import('@neon-kit/web-components/icon').NeonIconElement;
     'neon-menu': import('@neon-kit/web-components/menu').NeonMenuElement;
+    'neon-menu-item': import('@neon-kit/web-components/menu').NeonMenuItemElement;
     'neon-tooltip': import('@neon-kit/web-components/tooltip').NeonTooltipElement;
 }
 `;

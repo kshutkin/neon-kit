@@ -31,10 +31,26 @@ function formatAxeViolations(results) {
 function configureAxeElementInternals() {
     axe._enableElementInternals = true;
     axe.externalAPIs({
-        getElementInternals: async () => Array.from(document.querySelectorAll('neon-menu'), (menu) => ({
-            ancestry: axe.utils.getSelector(menu),
-            internals: { role: 'menu' },
-        })),
+        getElementInternals: async () => [
+            ...Array.from(document.querySelectorAll('neon-menu'), (menu) => ({
+                ancestry: axe.utils.getSelector(menu),
+                internals: { role: 'menu' },
+            })),
+            ...Array.from(document.querySelectorAll('neon-menu-item'), (item) => {
+                const itemInternals = { role: 'menuitem' };
+                if (item.hasAttribute('disabled') || item.getAttribute('aria-disabled') === 'true') {
+                    itemInternals.ariaDisabled = 'true';
+                }
+                if (item.hasAttribute('popovertarget')) {
+                    itemInternals.ariaExpanded = 'false';
+                    itemInternals.ariaHasPopup = 'menu';
+                }
+                return {
+                    ancestry: axe.utils.getSelector(item),
+                    internals: itemInternals,
+                };
+            }),
+        ],
     });
 }
 
@@ -49,15 +65,16 @@ describe('<neon-menu>', () => {
 
     it('registers as a custom element', () => {
         expect(customElements.get('neon-menu')).toBeTruthy();
+        expect(customElements.get('neon-menu-item')).toBeTruthy();
     });
 
     it('has no axe violations for an inline menu', async () => {
         mount(`
             <main>
                 <neon-menu aria-label="File actions">
-                <button class="menu__item" type="button">New file</button>
-                <button class="menu__item" type="button">Open</button>
-                <button class="menu__item" type="button" disabled>Save</button>
+                <neon-menu-item class="menu__item">New file</neon-menu-item>
+                <neon-menu-item class="menu__item">Open</neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>Save</neon-menu-item>
                 </neon-menu>
             </main>
         `);
@@ -76,8 +93,8 @@ describe('<neon-menu>', () => {
                     Open menu
                 </button>
                 <neon-menu id="menu" popover aria-label="File actions">
-                    <button class="menu__item" type="button">New file</button>
-                    <button class="menu__item" type="button">Open</button>
+                    <neon-menu-item class="menu__item">New file</neon-menu-item>
+                    <neon-menu-item class="menu__item">Open</neon-menu-item>
                 </neon-menu>
             </main>
         `;
@@ -96,19 +113,17 @@ describe('<neon-menu>', () => {
                     Open menu
                 </button>
                 <neon-menu id="parent-menu" popover aria-label="File actions">
-                    <button class="menu__item" type="button">Rename</button>
-                    <button
+                    <neon-menu-item class="menu__item">Rename</neon-menu-item>
+                    <neon-menu-item
                         class="menu__item"
-                        type="button"
                         popovertarget="child-menu"
-                        aria-haspopup="menu"
                     >
                         Export as
-                    </button>
+                    </neon-menu-item>
                 </neon-menu>
                 <neon-menu id="child-menu" popover aria-label="Export formats">
-                    <button class="menu__item" type="button">PDF</button>
-                    <button class="menu__item" type="button">Markdown</button>
+                    <neon-menu-item class="menu__item">PDF</neon-menu-item>
+                    <neon-menu-item class="menu__item">Markdown</neon-menu-item>
                 </neon-menu>
             </main>
         `;
@@ -123,7 +138,7 @@ describe('<neon-menu>', () => {
     it('preserves an existing host role', () => {
         const menu = mount(`
             <neon-menu role="listbox">
-                <button class="menu__item" type="button">One</button>
+                <neon-menu-item class="menu__item">One</neon-menu-item>
             </neon-menu>
         `);
 
@@ -143,33 +158,68 @@ describe('<neon-menu>', () => {
     it('assigns roving tabindex with the first focusable item active', async () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button" disabled>Disabled</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>Disabled</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
         await Promise.resolve();
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         expect(items[0].getAttribute('tabindex')).toBe('0');
         expect(items[1].getAttribute('tabindex')).toBe('-1');
-        // Native [disabled] is left to the platform; we don't mirror it to
-        // aria-disabled (so removing the attribute cleanly re-enables).
+        // The menu item owns accessible disabled state; the menu only uses
+        // disabled state to decide roving focus.
         expect(items[1].hasAttribute('disabled')).toBe(true);
         expect(items[2].getAttribute('tabindex')).toBe('-1');
         for (const item of items) {
-            expect(item.getAttribute('role')).toBe('menuitem');
+            expect(item.hasAttribute('role')).toBe(false);
         }
+    });
+
+    it('ignores styled rows that are not menu item elements', async () => {
+        const menu = mount(`
+            <neon-menu>
+                <button class="menu__item" type="button">Alpha</button>
+            </neon-menu>
+        `);
+        await Promise.resolve();
+        const item = /** @type {HTMLElement} */ (menu.querySelector('.menu__item'));
+        const event = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true });
+
+        menu.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(false);
+        expect(item.hasAttribute('role')).toBe(false);
+        expect(item.hasAttribute('tabindex')).toBe(false);
+    });
+
+    it('ignores menu item elements that are not direct children', async () => {
+        const menu = mount(`
+            <neon-menu>
+                <div>
+                    <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                </div>
+            </neon-menu>
+        `);
+        await Promise.resolve();
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
+        const event = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true });
+
+        menu.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(false);
+        expect(item.hasAttribute('tabindex')).toBe(false);
     });
 
     it('does not assign a roving item when every item is disabled', async () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button" disabled>Alpha</button>
-                <button class="menu__item" type="button" aria-disabled="true">Bravo</button>
+                <neon-menu-item class="menu__item" disabled>Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item" aria-disabled="true">Bravo</neon-menu-item>
             </neon-menu>
         `);
         await Promise.resolve();
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
 
         expect(items[0].getAttribute('tabindex')).toBe('-1');
         expect(items[1].getAttribute('tabindex')).toBe('-1');
@@ -178,11 +228,11 @@ describe('<neon-menu>', () => {
     it('keeps the focused item roving after item state changes', async () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[1].focus();
         items[0].setAttribute('aria-disabled', 'true');
         await new Promise((resolve) => setTimeout(resolve, 0));
@@ -195,12 +245,12 @@ describe('<neon-menu>', () => {
     it('moves focus with ArrowDown/ArrowUp skipping disabled items', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button" disabled>Skip</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>Skip</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[0].focus();
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
@@ -213,11 +263,11 @@ describe('<neon-menu>', () => {
     it('moves keyboard navigation from no focused item', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
         expect(document.activeElement).toBe(items[0]);
@@ -228,11 +278,11 @@ describe('<neon-menu>', () => {
         const shadow = host.attachShadow({ mode: 'open' });
         shadow.innerHTML = `
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
             </neon-menu>
         `;
         document.body.appendChild(host);
-        const item = /** @type {HTMLElement} */ (shadow.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (shadow.querySelector('neon-menu-item'));
 
         item.focus();
         expect(document.activeElement).toBe(host);
@@ -242,12 +292,12 @@ describe('<neon-menu>', () => {
     it('Home/End jump to first/last focusable item', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">A</button>
-                <button class="menu__item" type="button">B</button>
-                <button class="menu__item" type="button">C</button>
+                <neon-menu-item class="menu__item">A</neon-menu-item>
+                <neon-menu-item class="menu__item">B</neon-menu-item>
+                <neon-menu-item class="menu__item">C</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[1].focus();
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
@@ -259,10 +309,10 @@ describe('<neon-menu>', () => {
     it('Enter activates the focused item via click', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Hit me</button>
+                <neon-menu-item class="menu__item">Hit me</neon-menu-item>
             </neon-menu>
         `);
-        const item = /** @type {HTMLElement} */ (menu.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
         let clicked = 0;
         item.addEventListener('click', () => clicked++);
         item.focus();
@@ -274,10 +324,10 @@ describe('<neon-menu>', () => {
     it('Space activates the focused item via click', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Hit me</button>
+                <neon-menu-item class="menu__item">Hit me</neon-menu-item>
             </neon-menu>
         `);
-        const item = /** @type {HTMLElement} */ (menu.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
         let clicked = 0;
         item.addEventListener('click', () => {
             clicked++;
@@ -292,11 +342,11 @@ describe('<neon-menu>', () => {
     it('ignores focus on child elements that are not menu items', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
                 <span tabindex="0">Other focus target</span>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         const otherFocusTarget = /** @type {HTMLElement} */ (menu.querySelector('span'));
 
         otherFocusTarget.focus();
@@ -308,10 +358,10 @@ describe('<neon-menu>', () => {
     it('does not activate an item when Enter is pressed without focus', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Hit me</button>
+                <neon-menu-item class="menu__item">Hit me</neon-menu-item>
             </neon-menu>
         `);
-        const item = /** @type {HTMLElement} */ (menu.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
         let clicked = 0;
         item.addEventListener('click', () => {
             clicked++;
@@ -325,11 +375,11 @@ describe('<neon-menu>', () => {
     it('un-disabling an item makes it focusable again', async () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">A</button>
-                <button class="menu__item" type="button" disabled>B</button>
+                <neon-menu-item class="menu__item">A</neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>B</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[0].focus();
         items[1].removeAttribute('disabled');
         // Let the MutationObserver re-run.
@@ -342,11 +392,11 @@ describe('<neon-menu>', () => {
     it('focuses the first focusable item when a popover menu opens', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         const event = new Event('toggle', { bubbles: true });
         Object.defineProperty(event, 'newState', { value: 'open' });
 
@@ -360,11 +410,11 @@ describe('<neon-menu>', () => {
     it('does not restore focus to an item that was already inside the opening menu', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">Alpha</button>
-                <button class="menu__item" type="button">Bravo</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item class="menu__item">Bravo</neon-menu-item>
             </neon-menu>
         `);
-        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('.menu__item')));
+        const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         const openEvent = new Event('toggle', { bubbles: true });
         const closedEvent = new Event('toggle', { bubbles: true });
         Object.defineProperty(openEvent, 'newState', { value: 'open' });
@@ -382,10 +432,10 @@ describe('<neon-menu>', () => {
     it('ignores closed popover toggles and open toggles without focusable items', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button" disabled>Alpha</button>
+                <neon-menu-item class="menu__item" disabled>Alpha</neon-menu-item>
             </neon-menu>
         `);
-        const item = /** @type {HTMLElement} */ (menu.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
         const closedEvent = new Event('toggle', { bubbles: true });
         const openEvent = new Event('toggle', { bubbles: true });
         Object.defineProperty(closedEvent, 'newState', { value: 'closed' });
@@ -402,12 +452,12 @@ describe('<neon-menu>', () => {
         document.body.innerHTML = `
             <button id="trigger" type="button" popovertarget="menu">Open</button>
             <neon-menu id="menu" popover>
-                <button class="menu__item" type="button">Alpha</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
             </neon-menu>
         `;
         const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
         const menu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#menu'));
-        const item = /** @type {HTMLElement} */ (document.querySelector('.menu__item'));
+        const item = /** @type {HTMLElement} */ (document.querySelector('neon-menu-item'));
 
         trigger.focus();
         trigger.click();
@@ -424,20 +474,20 @@ describe('<neon-menu>', () => {
         document.body.innerHTML = `
             <button id="trigger" type="button" popovertarget="parent-menu">Open</button>
             <neon-menu id="parent-menu" popover>
-                <button class="menu__item" type="button">Rename</button>
-                <button class="menu__item" type="button" popovertarget="child-menu" aria-haspopup="menu">
+                <neon-menu-item class="menu__item">Rename</neon-menu-item>
+                <neon-menu-item class="menu__item" popovertarget="child-menu" aria-haspopup="menu">
                     Export as
-                </button>
+                </neon-menu-item>
             </neon-menu>
             <neon-menu id="child-menu" popover>
-                <button class="menu__item" type="button">PDF</button>
-                <button class="menu__item" type="button">Markdown</button>
+                <neon-menu-item class="menu__item">PDF</neon-menu-item>
+                <neon-menu-item class="menu__item">Markdown</neon-menu-item>
             </neon-menu>
         `;
         const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
-        const parentItems = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('#parent-menu .menu__item'));
+        const parentItems = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('#parent-menu neon-menu-item'));
         const childMenu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#child-menu'));
-        const childItem = /** @type {HTMLElement} */ (document.querySelector('#child-menu .menu__item'));
+        const childItem = /** @type {HTMLElement} */ (document.querySelector('#child-menu neon-menu-item'));
 
         trigger.focus();
         trigger.click();
@@ -458,7 +508,7 @@ describe('<neon-menu>', () => {
             <button id="trigger" type="button" popovertarget="menu">Open</button>
             <button id="outside" type="button">Outside</button>
             <neon-menu id="menu" popover>
-                <button class="menu__item" type="button">Alpha</button>
+                <neon-menu-item class="menu__item">Alpha</neon-menu-item>
             </neon-menu>
         `;
         const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
@@ -478,9 +528,9 @@ describe('<neon-menu>', () => {
     it('cancels clicks on disabled items from nested targets', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button" aria-disabled="true">
+                <neon-menu-item class="menu__item" aria-disabled="true">
                     <span>Disabled</span>
-                </button>
+                </neon-menu-item>
             </neon-menu>
         `);
         const target = /** @type {HTMLElement} */ (menu.querySelector('span'));
@@ -499,9 +549,9 @@ describe('<neon-menu>', () => {
     it('allows clicks on enabled items', () => {
         const menu = mount(`
             <neon-menu>
-                <button class="menu__item" type="button">
+                <neon-menu-item class="menu__item">
                     <span>Enabled</span>
-                </button>
+                </neon-menu-item>
             </neon-menu>
         `);
         const target = /** @type {HTMLElement} */ (menu.querySelector('span'));
@@ -517,22 +567,126 @@ describe('<neon-menu>', () => {
         expect(reachedLaterListener).toBe(true);
     });
 
-    it('ignores click events from non-element targets', () => {
-        const menu = mount(`
-            <neon-menu>
-                <button class="menu__item" type="button">Enabled</button>
-            </neon-menu>
-        `);
-        const textTarget = /** @type {Text} */ (menu.querySelector('.menu__item').firstChild);
+    it('cancels clicks on disabled menu item elements without a parent menu', async () => {
+        const item = mount('<neon-menu-item class="menu__item" disabled>Disabled</neon-menu-item>');
+        await Promise.resolve();
         let reachedLaterListener = false;
-        menu.addEventListener('click', () => {
+        item.addEventListener('click', () => {
             reachedLaterListener = true;
         });
         const event = new MouseEvent('click', { bubbles: true, cancelable: true });
 
-        textTarget.dispatchEvent(event);
+        item.dispatchEvent(event);
 
-        expect(event.defaultPrevented).toBe(false);
-        expect(reachedLaterListener).toBe(true);
+        expect(event.defaultPrevented).toBe(true);
+        expect(reachedLaterListener).toBe(false);
     });
+
+    it('lets a menu item element toggle its popover target', async () => {
+        document.body.innerHTML = `
+            <neon-menu-item id="item" class="menu__item" popovertarget="menu">
+                Export as
+            </neon-menu-item>
+            <neon-menu id="menu" popover>
+                <neon-menu-item class="menu__item">PDF</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const item = /** @type {HTMLElement} */ (document.querySelector('#item'));
+        const menu = /** @type {HTMLElement} */ (document.querySelector('#menu'));
+
+        item.click();
+        await nextTask();
+        expect(menu.matches(':popover-open')).toBe(true);
+
+        item.click();
+        await nextTask();
+        expect(menu.matches(':popover-open')).toBe(false);
+    });
+
+    it('keeps a parent popover open when a menu item opens a child popover', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="parent-menu">Open</button>
+            <neon-menu id="parent-menu" popover>
+                <neon-menu-item
+                    id="item"
+                    class="menu__item"
+                    popovertarget="child-menu"
+                >
+                    Export as
+                </neon-menu-item>
+            </neon-menu>
+            <neon-menu id="child-menu" popover>
+                <neon-menu-item class="menu__item">PDF</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const item = /** @type {HTMLElement} */ (document.querySelector('#item'));
+        const parentMenu = /** @type {HTMLElement} */ (document.querySelector('#parent-menu'));
+        const childMenu = /** @type {HTMLElement} */ (document.querySelector('#child-menu'));
+
+        trigger.click();
+        await nextTask();
+        item.click();
+        await nextTask();
+
+        expect(parentMenu.matches(':popover-open')).toBe(true);
+        expect(childMenu.matches(':popover-open')).toBe(true);
+    });
+
+    it('lets a menu item element show and hide its popover target', async () => {
+        document.body.innerHTML = `
+            <neon-menu-item
+                id="item"
+                class="menu__item"
+                popovertarget="menu"
+                popovertargetaction="show"
+            >
+                Export as
+            </neon-menu-item>
+            <neon-menu id="menu" popover>
+                <neon-menu-item class="menu__item">PDF</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const item = /** @type {HTMLElement} */ (document.querySelector('#item'));
+        const menu = /** @type {HTMLElement} */ (document.querySelector('#menu'));
+
+        item.click();
+        await nextTask();
+        expect(menu.matches(':popover-open')).toBe(true);
+
+        item.setAttribute('popovertargetaction', 'hide');
+        item.click();
+        await nextTask();
+        expect(menu.matches(':popover-open')).toBe(false);
+    });
+
+    it('updates popover target behavior when the target attribute changes', async () => {
+        document.body.innerHTML = `
+            <neon-menu-item id="item" class="menu__item" popovertarget="first-menu">
+                Export as
+            </neon-menu-item>
+            <neon-menu id="first-menu" popover>
+                <neon-menu-item class="menu__item">PDF</neon-menu-item>
+            </neon-menu>
+            <neon-menu id="second-menu" popover>
+                <neon-menu-item class="menu__item">Markdown</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const item = /** @type {HTMLElement} */ (document.querySelector('#item'));
+        const firstMenu = /** @type {HTMLElement} */ (document.querySelector('#first-menu'));
+        const secondMenu = /** @type {HTMLElement} */ (document.querySelector('#second-menu'));
+
+        item.setAttribute('popovertarget', 'second-menu');
+        await nextTask();
+        item.click();
+        await nextTask();
+
+        expect(firstMenu.matches(':popover-open')).toBe(false);
+        expect(secondMenu.matches(':popover-open')).toBe(true);
+    });
+
 });

@@ -2,8 +2,8 @@
     <h1 class="mb-6">Menu — Web Component</h1>
     <p class="mb-6 text-ink-secondary">
         <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
-        keyboard behavior to the theme's <code>.menu</code> markup: a roving
-        <code>tabindex</code> across <code>.menu__item</code> rows, arrow-key
+        keyboard behavior to the theme's menu markup: a roving
+        <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key
         navigation, <code>Home</code> / <code>End</code> jump, and activation
         with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or
         <code>aria-disabled="true"</code>) are skipped. See the
@@ -33,37 +33,32 @@ import '@neon-kit/web-components/menu';</code></pre>
                 Open menu
             </button>
             <neon-menu id="wc-demo-menu" popover class="menu">
-                <div class="menu__group">
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">New file</span>
-                        <span class="menu__shortcut kbd-keys">
-                            <kbd class="kbd">⌘</kbd>
-                            <kbd class="kbd">N</kbd>
-                        </span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Open</span>
-                        <span class="menu__shortcut kbd-keys">
-                            <kbd class="kbd">⌘</kbd>
-                            <kbd class="kbd">O</kbd>
-                        </span>
-                    </button>
-                    <button class="menu__item" type="button" disabled>
-                        <span class="menu__label">Save (disabled)</span>
-                    </button>
-                </div>
-                <div class="menu__group">
-                    <div class="menu__group-header">Recent</div>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Project Neon</span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Theme tokens</span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Tooltip notes</span>
-                    </button>
-                </div>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">New file</span>
+                    <span class="menu__shortcut kbd-keys">
+                        <kbd class="kbd">⌘</kbd>
+                        <kbd class="kbd">N</kbd>
+                    </span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Open</span>
+                    <span class="menu__shortcut kbd-keys">
+                        <kbd class="kbd">⌘</kbd>
+                        <kbd class="kbd">O</kbd>
+                    </span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>
+                    <span class="menu__label">Save (disabled)</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Project Neon</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Theme tokens</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Tooltip notes</span>
+                </neon-menu-item>
             </neon-menu>
         </div>
     </section>
@@ -83,45 +78,37 @@ import '@neon-kit/web-components/menu';</code></pre>
                 Open nested menu
             </button>
             <neon-menu id="wc-nested-menu" popover class="menu">
-                <div class="menu__group">
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Rename</span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Duplicate</span>
-                    </button>
-                    <button
-                        class="menu__item"
-                        type="button"
-                        popovertarget="wc-nested-export-menu"
-                        aria-haspopup="menu"
-                    >
-                        <span class="menu__label">Export as</span>
-                        <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
-                    </button>
-                </div>
-                <div class="menu__group">
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Archive</span>
-                    </button>
-                    <button class="menu__item" type="button" disabled>
-                        <span class="menu__label">Delete permanently</span>
-                    </button>
-                </div>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Rename</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Duplicate</span>
+                </neon-menu-item>
+                <neon-menu-item
+                    class="menu__item"
+                    popovertarget="wc-nested-export-menu"
+                >
+                    <span class="menu__label">Export as</span>
+                    <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Archive</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item" disabled>
+                    <span class="menu__label">Delete permanently</span>
+                </neon-menu-item>
             </neon-menu>
 
             <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
-                <div class="menu__group">
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">PDF document</span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">Markdown file</span>
-                    </button>
-                    <button class="menu__item" type="button">
-                        <span class="menu__label">HTML page</span>
-                    </button>
-                </div>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">PDF document</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">Markdown file</span>
+                </neon-menu-item>
+                <neon-menu-item class="menu__item">
+                    <span class="menu__label">HTML page</span>
+                </neon-menu-item>
             </neon-menu>
         </div>
         <p class="mt-4 text-ink-secondary">
@@ -137,24 +124,30 @@ import '@neon-kit/web-components/menu';</code></pre>
             <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It
             does not create any DOM of its own — it consumes the theme's
             <code>.menu</code> markup and adds keyboard behavior on top.
+            <code>&lt;neon-menu-item&gt;</code> owns item semantics and disabled
+            click suppression.
         </p>
 
         <h3 class="mb-2">Markup contract</h3>
         <p class="mb-4 text-ink-secondary">
-            Descendant rows must use <code>class="menu__item"</code>. Disabled
-            rows use the native <code>disabled</code> attribute (on form
-            controls) or <code>aria-disabled="true"</code> — both are skipped
-            during keyboard navigation, click is suppressed, and they are
-            excluded from the roving <code>tabindex</code>.
+            Rows must be authored as direct
+            <code>&lt;neon-menu-item class="menu__item"&gt;</code>. The item
+            element does not render its own children, so labels, shortcuts,
+            icons, checkmarks, and chevrons remain consumer-authored markup.
+            Disabled rows use <code>disabled</code> or
+            <code>aria-disabled="true"</code> — both are skipped during
+            keyboard navigation, click is suppressed, and they are excluded
+            from the roving <code>tabindex</code>.
         </p>
 
         <h3 class="mb-2">Behavior</h3>
         <ul class="mb-6 list-disc pl-6 text-ink-secondary">
             <li>Provides a default <code>menu</code> role for the host.</li>
-            <li>Sets <code>role="menuitem"</code> on each <code>.menu__item</code> (unless one is already set).</li>
+            <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
             <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first focusable item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
             <li>Watches the subtree (<code>MutationObserver</code>) so dynamically added/removed items and <code>disabled</code>/<code>aria-disabled</code> changes stay in sync.</li>
+            <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>
         </ul>
 
         <h3 class="mb-2">Popover wiring</h3>
@@ -173,7 +166,7 @@ import '@neon-kit/web-components/menu';</code></pre>
             Implements the
             <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/">WAI-ARIA Menu pattern</a>.
             The host has a default <code>menu</code> role, each row carries
-            <code>role="menuitem"</code>, and a roving <code>tabindex</code>
+            a default <code>menuitem</code> role, and a roving <code>tabindex</code>
             keeps each menu a single tab stop.
         </p>
 

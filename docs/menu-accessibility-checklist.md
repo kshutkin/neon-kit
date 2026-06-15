@@ -7,7 +7,8 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 ## Implemented
 
 - [x] Menu container has a default `menu` role through ElementInternals.
-- [x] Consumer-authored menu rows can use `role="menuitem"`.
+- [x] `<neon-menu-item>` has a default `menuitem` role through ElementInternals.
+- [x] `neon-menu` only treats direct `<neon-menu-item>` children as menu items.
 - [x] The menu uses roving `tabindex` so one menu item is in the tab sequence at a time.
 - [x] Opening a popover menu moves focus to the first focusable menu item.
 - [x] `ArrowDown` moves focus to the next focusable menu item.
@@ -19,7 +20,11 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [x] `Enter` activates the focused item by dispatching its click behavior.
 - [x] `Space` activates the focused item by dispatching its click behavior.
 - [x] Disabled menu items do not activate on click.
-- [x] Elements that are not menu items, such as group headers and separators without `.menu__item`, are skipped by keyboard navigation.
+- [x] `<neon-menu-item>` reflects `disabled` and `aria-disabled="true"` to accessible disabled state.
+- [x] `<neon-menu-item>` can act as a popover trigger for nested menu composition.
+- [x] `<neon-menu-item popovertarget>` manages `aria-haspopup` for submenu trigger items.
+- [x] `<neon-menu-item popovertarget>` manages `aria-expanded` for submenu trigger items.
+- [x] Elements that are not direct `<neon-menu-item>` children are ignored by keyboard navigation.
 - [x] `Escape` closes an open popover menu and restores focus through browser popover behavior.
 - [x] Focus restore fills the native popover gap when focus remains inside a closing menu and a valid trigger or invoker is available.
 
@@ -43,8 +48,6 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [ ] `menuitemcheckbox` role support.
 - [ ] `menuitemradio` role support.
 - [ ] Component-managed `aria-checked`.
-- [ ] Component-managed `aria-haspopup` for submenu trigger items.
-- [ ] Component-managed `aria-expanded` for submenu trigger items.
 - [ ] Component-managed `aria-controls` or trigger-to-menu relationship wiring.
 - [ ] Component-managed `aria-labelledby` wiring.
 - [ ] Component-managed `aria-orientation`.

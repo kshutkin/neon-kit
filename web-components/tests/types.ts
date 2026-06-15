@@ -27,6 +27,11 @@ void menu.activeItem;
 void menu.focusableItems;
 void menu;
 
+const menuItem = document.createElement('neon-menu-item');
+// @ts-expect-error - disabled is not a custom public property yet
+menuItem.disabled = true;
+void menuItem;
+
 const tooltip = document.createElement('neon-tooltip');
 tooltip.showPopover();
 tooltip.hidePopover();
