@@ -87,7 +87,9 @@ export function createTooltipController(options) {
     const triggerElement = options.$_triggerElement;
 
     tooltipElement.setAttribute('popover', 'manual');
-    tooltipElement.id = generateId('neon-tooltip');
+    if (!tooltipElement.id) {
+        tooltipElement.id = generateId('neon-tooltip');
+    }
     tooltipElement.classList.add('tooltip');
 
     /** @type {ReturnType<typeof setTimeout> | undefined} */

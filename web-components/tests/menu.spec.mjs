@@ -119,11 +119,11 @@ describe('<neon-menu>', () => {
                         popovertarget="child-menu"
                     >
                         Export as
+                        <neon-menu id="child-menu" popover aria-label="Export formats">
+                            <neon-menu-item class="menu__item">PDF</neon-menu-item>
+                            <neon-menu-item class="menu__item">Markdown</neon-menu-item>
+                        </neon-menu>
                     </neon-menu-item>
-                </neon-menu>
-                <neon-menu id="child-menu" popover aria-label="Export formats">
-                    <neon-menu-item class="menu__item">PDF</neon-menu-item>
-                    <neon-menu-item class="menu__item">Markdown</neon-menu-item>
                 </neon-menu>
             </main>
         `;
@@ -193,7 +193,7 @@ describe('<neon-menu>', () => {
         expect(item.hasAttribute('tabindex')).toBe(false);
     });
 
-    it('ignores menu item elements that are not direct children', async () => {
+    it('registers wrapped descendant menu item elements with the nearest menu', async () => {
         const menu = mount(`
             <neon-menu>
                 <div>
@@ -207,8 +207,42 @@ describe('<neon-menu>', () => {
 
         menu.dispatchEvent(event);
 
-        expect(event.defaultPrevented).toBe(false);
-        expect(item.hasAttribute('tabindex')).toBe(false);
+        expect(event.defaultPrevented).toBe(true);
+        expect(document.activeElement).toBe(item);
+        expect(item.getAttribute('tabindex')).toBe('0');
+    });
+
+    it('registers descendant menu items added after mount', async () => {
+        const menu = mount('<neon-menu></neon-menu>');
+        const wrapper = document.createElement('div');
+        const item = document.createElement('neon-menu-item');
+        item.className = 'menu__item';
+        item.textContent = 'Alpha';
+
+        wrapper.append(item);
+        menu.append(wrapper);
+        await nextTask();
+
+        expect(item.getAttribute('tabindex')).toBe('0');
+    });
+
+    it('uses current tree order after registered items move', async () => {
+        const menu = mount(`
+            <neon-menu>
+                <neon-menu-item id="alpha" class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item id="bravo" class="menu__item">Bravo</neon-menu-item>
+            </neon-menu>
+        `);
+        const alpha = /** @type {HTMLElement} */ (menu.querySelector('#alpha'));
+        const bravo = /** @type {HTMLElement} */ (menu.querySelector('#bravo'));
+
+        menu.insertBefore(bravo, alpha);
+        await nextTask();
+        bravo.focus();
+
+        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+
+        expect(document.activeElement).toBe(alpha);
     });
 
     it('does not assign a roving item when every item is disabled', async () => {
@@ -306,6 +340,34 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(items[0]);
     });
 
+    it('keeps nested menu items out of parent menu keyboard navigation', async () => {
+        const parentMenu = mount(`
+            <neon-menu>
+                <neon-menu-item id="first" class="menu__item">First</neon-menu-item>
+                <neon-menu-item id="submenu-trigger" class="menu__item" popovertarget="child-menu">
+                    More
+                    <neon-menu id="child-menu" popover>
+                        <neon-menu-item id="child-item" class="menu__item">Child</neon-menu-item>
+                    </neon-menu>
+                </neon-menu-item>
+                <neon-menu-item id="last" class="menu__item">Last</neon-menu-item>
+            </neon-menu>
+        `);
+        await nextTask();
+        const firstItem = /** @type {HTMLElement} */ (parentMenu.querySelector('#first'));
+        const submenuTrigger = /** @type {HTMLElement} */ (parentMenu.querySelector('#submenu-trigger'));
+        const lastItem = /** @type {HTMLElement} */ (parentMenu.querySelector('#last'));
+        const childItem = /** @type {HTMLElement} */ (parentMenu.querySelector('#child-item'));
+
+        expect(childItem.getAttribute('tabindex')).toBe('0');
+        firstItem.focus();
+        parentMenu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(submenuTrigger);
+
+        parentMenu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(lastItem);
+    });
+
     it('Enter activates the focused item via click', () => {
         const menu = mount(`
             <neon-menu>
@@ -382,7 +444,7 @@ describe('<neon-menu>', () => {
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[0].focus();
         items[1].removeAttribute('disabled');
-        // Let the MutationObserver re-run.
+        // Let the menu item attribute observer notify the menu controller.
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
@@ -477,15 +539,15 @@ describe('<neon-menu>', () => {
                 <neon-menu-item class="menu__item">Rename</neon-menu-item>
                 <neon-menu-item class="menu__item" popovertarget="child-menu" aria-haspopup="menu">
                     Export as
+                    <neon-menu id="child-menu" popover>
+                        <neon-menu-item class="menu__item">PDF</neon-menu-item>
+                        <neon-menu-item class="menu__item">Markdown</neon-menu-item>
+                    </neon-menu>
                 </neon-menu-item>
-            </neon-menu>
-            <neon-menu id="child-menu" popover>
-                <neon-menu-item class="menu__item">PDF</neon-menu-item>
-                <neon-menu-item class="menu__item">Markdown</neon-menu-item>
             </neon-menu>
         `;
         const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
-        const parentItems = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('#parent-menu neon-menu-item'));
+        const parentItems = /** @type {HTMLElement[]} */ (Array.from(document.querySelectorAll('#parent-menu > neon-menu-item')));
         const childMenu = /** @type {HTMLElement & { hidePopover: () => void }} */ (document.querySelector('#child-menu'));
         const childItem = /** @type {HTMLElement} */ (document.querySelector('#child-menu neon-menu-item'));
 
@@ -614,10 +676,10 @@ describe('<neon-menu>', () => {
                     popovertarget="child-menu"
                 >
                     Export as
+                    <neon-menu id="child-menu" popover>
+                        <neon-menu-item class="menu__item">PDF</neon-menu-item>
+                    </neon-menu>
                 </neon-menu-item>
-            </neon-menu>
-            <neon-menu id="child-menu" popover>
-                <neon-menu-item class="menu__item">PDF</neon-menu-item>
             </neon-menu>
         `;
         await nextTask();
@@ -633,6 +695,63 @@ describe('<neon-menu>', () => {
 
         expect(parentMenu.matches(':popover-open')).toBe(true);
         expect(childMenu.matches(':popover-open')).toBe(true);
+    });
+
+    it('closes all open menus in the root tree after a leaf item click', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="parent-menu">Open</button>
+            <neon-menu id="parent-menu" popover>
+                <neon-menu-item
+                    id="item"
+                    class="menu__item"
+                    popovertarget="child-menu"
+                >
+                    Export as
+                    <neon-menu id="child-menu" popover>
+                        <neon-menu-item id="leaf" class="menu__item">PDF</neon-menu-item>
+                    </neon-menu>
+                </neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const item = /** @type {HTMLElement} */ (document.querySelector('#item'));
+        const leaf = /** @type {HTMLElement} */ (document.querySelector('#leaf'));
+        const parentMenu = /** @type {HTMLElement} */ (document.querySelector('#parent-menu'));
+        const childMenu = /** @type {HTMLElement} */ (document.querySelector('#child-menu'));
+
+        trigger.click();
+        await nextTask();
+        item.click();
+        await nextTask();
+        expect(parentMenu.matches(':popover-open')).toBe(true);
+        expect(childMenu.matches(':popover-open')).toBe(true);
+
+        leaf.click();
+        await nextTask();
+
+        expect(parentMenu.matches(':popover-open')).toBe(false);
+        expect(childMenu.matches(':popover-open')).toBe(false);
+    });
+
+    it('does not close open menus after a disabled item click', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="menu">Open</button>
+            <neon-menu id="menu" popover>
+                <neon-menu-item id="disabled-item" class="menu__item" disabled>Disabled</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const disabledItem = /** @type {HTMLElement} */ (document.querySelector('#disabled-item'));
+        const menu = /** @type {HTMLElement} */ (document.querySelector('#menu'));
+
+        trigger.click();
+        await nextTask();
+        disabledItem.click();
+        await nextTask();
+
+        expect(menu.matches(':popover-open')).toBe(true);
     });
 
     it('lets a menu item element show and hide its popover target', async () => {

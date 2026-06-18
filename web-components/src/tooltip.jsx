@@ -60,12 +60,14 @@ const renderTooltip = (host) => {
     let destroyTooltipController = undefined;
 
     effect(() => {
-        host.classList.remove('-top', '-bottom', '-left', '-right');
-        host.classList.add(`-${readTooltipPlacement(state.placement)}`);
-        updateTooltipController?.({
-            placement: state.placement,
-            trigger: state.trigger,
-        });
+        const placement = state.placement;
+        const trigger = state.trigger;
+        if (updateTooltipController) {
+            updateTooltipController({ placement, trigger });
+        } else {
+            host.classList.remove('-top', '-bottom', '-left', '-right');
+            host.classList.add(`-${readTooltipPlacement(placement)}`);
+        }
     });
 
     onConnect(() => {

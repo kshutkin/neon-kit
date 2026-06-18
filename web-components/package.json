@@ -76,9 +76,9 @@
     },
     "peerDependencies": {
         "@neon-kit/icons": "^workspace:*",
-        "@slimlib/element": "^0.2.1",
-        "@slimlib/jsx": "^0.2.0",
-        "@slimlib/store": "^2.1.0"
+        "@slimlib/element": "^0.4.0",
+        "@slimlib/jsx": "^0.4.0",
+        "@slimlib/store": "^2.2.0"
     },
     "dependencies": {
         "esm-env": "^1.2.2"

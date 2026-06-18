@@ -6,7 +6,7 @@
  * `<neon-menu-item>` elements. Menu item contents remain fully
  * consumer-authored.
  *
- * - Roving tabindex across `<neon-menu-item>` rows. Disabled items are
+ * - Roving tabindex across registered `<neon-menu-item>` rows. Disabled items are
  *   skipped (`[disabled]` or `aria-disabled="true"`).
  * - Arrow Up / Down move between items, Home / End jump to first / last.
  * - Enter / Space activate the focused item via `click()`.
@@ -14,11 +14,66 @@
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
  */
-import { defineElement, internals, onMount, withInternals } from '@slimlib/element';
+import {
+    ContextRequestEvent,
+    attributes,
+    booleanAttribute,
+    contextProvider,
+    createContext,
+    defineElement,
+    internals,
+    onConnect,
+    onDisconnect,
+    onMount,
+    props,
+    requestContext,
+    rootContextProvider,
+    stringAttribute,
+    withInternals,
+} from '@slimlib/element';
+import { effect } from '@slimlib/store';
 
 import { getActiveElement } from './utils.js';
 
 const ITEM_SELECTOR = 'neon-menu-item';
+const MENU_SELECTOR = 'neon-menu';
+
+/**
+ * @typedef {{
+ *     $_registerMenu: (controller: MenuController) => void;
+ *     $_unregisterMenu: (controller: MenuController) => void;
+ *     $_registerOpenMenu: (menu: HTMLElement) => void;
+ *     $_unregisterOpenMenu: (menu: HTMLElement) => void;
+ *     $_closeAll: () => void;
+ * }} MenuRootController
+ *
+ * @typedef {{
+ *     $_element: HTMLElement;
+ *     $_disabled: boolean;
+ * }} MenuItemRecord
+ *
+ * @typedef {{
+ *     $_host: HTMLElement;
+ *     $_setRootController: (controller: MenuRootController) => void;
+ *     $_registerItem: (item: HTMLElement) => void;
+ *     $_unregisterItem: (item: HTMLElement) => void;
+ *     $_updateItemState: (item: HTMLElement) => void;
+ *     $_refreshItems: () => void;
+ *     $_handleKeyDown: (event: KeyboardEvent) => void;
+ *     $_handleFocusIn: (event: FocusEvent) => void;
+ *     $_handleToggle: (event: ToggleEvent) => void;
+ *     $_closeRootMenus: () => void;
+ * }} MenuController
+ */
+
+/** @type {import('@slimlib/element').Context<symbol, MenuRootController>} */
+const MenuRootContext = createContext(Symbol());
+
+/** @type {import('@slimlib/element').Context<symbol, MenuController>} */
+const MenuContext = createContext(Symbol());
+
+/** @type {WeakMap<HTMLElement, MenuController>} */
+const menuControllers = new WeakMap();
 
 /**
  * @param {Element} element
@@ -29,31 +84,90 @@ function isDisabled(element) {
 }
 
 /**
- * @param {HTMLElement} host
+ * @param {HTMLElement} target
+ * @returns {boolean}
  */
-const renderMenu = (host) => {
-    const elementInternals = internals();
-    elementInternals.role = 'menu';
+function isOpenPopover(target) {
+    return target.matches(':popover-open');
+}
 
+/**
+ * @returns {MenuRootController}
+ */
+function createMenuRootController() {
+    /** @type {Set<MenuController>} */
+    const menuControllerSet = new Set();
+    /** @type {Set<HTMLElement>} */
+    const openMenus = new Set();
+
+    return {
+        $_registerMenu(controller) {
+            menuControllerSet.add(controller);
+        },
+        $_unregisterMenu(controller) {
+            menuControllerSet.delete(controller);
+            openMenus.delete(controller.$_host);
+        },
+        $_registerOpenMenu(menu) {
+            openMenus.add(menu);
+        },
+        $_unregisterOpenMenu(menu) {
+            openMenus.delete(menu);
+        },
+        $_closeAll() {
+            for (const menu of Array.from(openMenus).reverse()) {
+                if (menu.isConnected && isOpenPopover(menu)) {
+                    menu.hidePopover();
+                }
+            }
+            openMenus.clear();
+        },
+    };
+}
+
+/**
+ * @param {MenuItemRecord} firstRecord
+ * @param {MenuItemRecord} secondRecord
+ * @returns {number}
+ */
+function compareItemRecords(firstRecord, secondRecord) {
+    const position = firstRecord.$_element.compareDocumentPosition(secondRecord.$_element);
+    if ((position & Node.DOCUMENT_POSITION_FOLLOWING) !== 0) {
+        return -1;
+    }
+    if ((position & Node.DOCUMENT_POSITION_PRECEDING) !== 0) {
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @param {HTMLElement} host
+ * @returns {MenuController}
+ */
+function createMenuController(host) {
+    /** @type {Map<HTMLElement, MenuItemRecord>} */
+    const itemRecords = new Map();
+    /** @type {MenuRootController | undefined} */
+    let rootController;
+    /** @type {HTMLElement | undefined} */
+    let restoreFocusElement;
+
+    /** @returns {MenuItemRecord[]} */
+    const getItemRecords = () => Array.from(itemRecords.values()).sort(compareItemRecords);
+    /** @returns {HTMLElement[]} */
+    const getItems = () => getItemRecords().map((record) => record.$_element);
+    /** @returns {HTMLElement[]} */
+    const getFocusableItems = () => getItemRecords()
+        .filter((record) => !record.$_disabled)
+        .map((record) => record.$_element);
     /** @returns {HTMLElement | undefined} */
     const getActiveItem = () => {
         const activeElement = getActiveElement(host);
-        let activeItem;
-        if (
-            activeElement instanceof HTMLElement
-            && host.contains(activeElement)
-            && activeElement.matches(ITEM_SELECTOR)
-        ) {
-            activeItem = activeElement;
-        }
-        return activeItem;
+        return activeElement instanceof HTMLElement && itemRecords.has(activeElement)
+            ? activeElement
+            : undefined;
     };
-    /** @returns {HTMLElement[]} */
-    const getItems = () => Array.from(host.children)
-        .filter((item) => item.matches(ITEM_SELECTOR))
-        .map((item) => /** @type {HTMLElement} */ (item));
-    /** @returns {HTMLElement[]} */
-    const getFocusableItems = () => getItems().filter((item) => !isDisabled(item));
     /**
      * @param {Element | undefined | null} element
      * @returns {element is HTMLElement}
@@ -67,132 +181,179 @@ const renderMenu = (host) => {
      */
     const canRestoreFocusFrom = (element) => element instanceof HTMLElement
         && host.contains(element);
-
-    /** @type {HTMLElement | undefined} */
-    let restoreFocusElement;
-
-    const refreshItems = () => {
-        const items = getItems();
-        if (items.length > 0) {
-            const activeItem = getActiveItem();
-            let assignedRovingItem = false;
-            for (const item of items) {
-                if (isDisabled(item)) {
-                    item.setAttribute('tabindex', '-1');
-                } else if (activeItem === item) {
-                    item.setAttribute('tabindex', '0');
-                    assignedRovingItem = true;
-                } else {
-                    item.setAttribute('tabindex', '-1');
-                }
-            }
-
-            if (!assignedRovingItem) {
-                const firstFocusableItem = getFocusableItems()[0];
-                if (firstFocusableItem !== undefined) {
-                    firstFocusableItem.setAttribute('tabindex', '0');
+    /**
+     * @param {EventTarget | null} target
+     * @returns {HTMLElement | undefined}
+     */
+    const getEventItem = (target) => {
+        let eventItem;
+        if (target instanceof Element) {
+            const closestMenu = target.closest(MENU_SELECTOR);
+            if (closestMenu === host) {
+                const closestItem = target.closest(ITEM_SELECTOR);
+                if (closestItem instanceof HTMLElement && itemRecords.has(closestItem)) {
+                    eventItem = closestItem;
                 }
             }
         }
+        return eventItem;
+    };
+
+    /** @param {HTMLElement | undefined} rovingItem */
+    const setRovingTabindex = (rovingItem) => {
+        for (const item of getItems()) {
+            item.setAttribute('tabindex', item === rovingItem ? '0' : '-1');
+        }
+    };
+
+    const refreshItems = () => {
+        if (itemRecords.size === 0) {
+            return;
+        }
+        const activeItem = getActiveItem();
+        const rovingItem = activeItem !== undefined && !isDisabled(activeItem)
+            ? activeItem
+            : getFocusableItems()[0];
+        setRovingTabindex(rovingItem);
     };
 
     /** @param {HTMLElement} item */
     const focusItem = (item) => {
-        for (const menuItem of getItems()) {
-            menuItem.setAttribute('tabindex', menuItem === item ? '0' : '-1');
-        }
+        setRovingTabindex(item);
         item.focus();
     };
 
-    /** @param {KeyboardEvent} event */
-    const onKeyDown = (event) => {
-        const items = getFocusableItems();
-        if (items.length > 0) {
-            const currentItem = getActiveItem();
-            const currentItemIndex = currentItem !== undefined ? items.indexOf(currentItem) : -1;
+    return {
+        $_host: host,
+        $_setRootController(controller) {
+            rootController = controller;
+        },
+        $_registerItem(item) {
+            itemRecords.set(item, {
+                $_element: item,
+                $_disabled: isDisabled(item),
+            });
+            refreshItems();
+        },
+        $_unregisterItem(item) {
+            if (itemRecords.delete(item)) {
+                item.removeAttribute('tabindex');
+                refreshItems();
+            }
+        },
+        $_updateItemState(item) {
+            const record = itemRecords.get(item);
+            if (record !== undefined) {
+                record.$_disabled = isDisabled(item);
+                refreshItems();
+            }
+        },
+        $_refreshItems: refreshItems,
+        $_handleKeyDown(event) {
+            const items = getFocusableItems();
+            const shouldHandleEvent = event.target === host || getEventItem(event.target) !== undefined;
+            if (items.length > 0 && shouldHandleEvent) {
+                const currentItem = getActiveItem();
+                const currentItemIndex = currentItem !== undefined ? items.indexOf(currentItem) : -1;
+                let handled = false;
 
-            switch (event.key) {
-                case 'ArrowDown':
-                    event.preventDefault();
-                    focusItem(items[(currentItemIndex + 1 + items.length) % items.length]);
-                    break;
-                case 'ArrowUp':
-                    event.preventDefault();
-                    focusItem(items[(currentItemIndex - 1 + items.length) % items.length]);
-                    break;
-                case 'Home':
-                    event.preventDefault();
-                    focusItem(items[0]);
-                    break;
-                case 'End':
-                    event.preventDefault();
-                    focusItem(items[items.length - 1]);
-                    break;
-                case 'Enter':
-                case ' ':
-                    if (currentItem !== undefined) {
+                switch (event.key) {
+                    case 'ArrowDown':
                         event.preventDefault();
-                        currentItem.click();
+                        focusItem(items[(currentItemIndex + 1 + items.length) % items.length]);
+                        handled = true;
+                        break;
+                    case 'ArrowUp':
+                        event.preventDefault();
+                        focusItem(items[(currentItemIndex - 1 + items.length) % items.length]);
+                        handled = true;
+                        break;
+                    case 'Home':
+                        event.preventDefault();
+                        focusItem(items[0]);
+                        handled = true;
+                        break;
+                    case 'End':
+                        event.preventDefault();
+                        focusItem(items[items.length - 1]);
+                        handled = true;
+                        break;
+                    case 'Enter':
+                    case ' ':
+                        if (currentItem !== undefined) {
+                            event.preventDefault();
+                            currentItem.click();
+                            handled = true;
+                        }
+                        break;
+                }
+
+                if (handled) {
+                    event.stopPropagation();
+                }
+            }
+        },
+        $_handleFocusIn(event) {
+            const focusedItem = getEventItem(event.target);
+            if (focusedItem !== undefined && !isDisabled(focusedItem)) {
+                setRovingTabindex(focusedItem);
+            }
+        },
+        $_handleToggle(event) {
+            if (event.target === host) {
+                const activeElement = getActiveElement(host);
+                if (event.newState === 'open') {
+                    rootController?.$_registerOpenMenu(host);
+                    restoreFocusElement = canRestoreFocusTo(activeElement)
+                        && !canRestoreFocusFrom(activeElement)
+                        ? activeElement
+                        : undefined;
+                    const firstFocusableItem = getFocusableItems()[0];
+                    if (firstFocusableItem !== undefined) {
+                        focusItem(firstFocusableItem);
                     }
-                    break;
+                } else {
+                    rootController?.$_unregisterOpenMenu(host);
+                    if (
+                        canRestoreFocusFrom(activeElement)
+                        && canRestoreFocusTo(restoreFocusElement)
+                    ) {
+                        restoreFocusElement.focus();
+                    }
+                    restoreFocusElement = undefined;
+                }
             }
-        }
+        },
+        $_closeRootMenus() {
+            rootController?.$_closeAll();
+        },
     };
+}
 
-    /** @param {FocusEvent} event */
-    const onFocusIn = (event) => {
-        if (
-            event.target instanceof HTMLElement
-            && event.target.matches(ITEM_SELECTOR)
-            && !isDisabled(event.target)
-        ) {
-            for (const item of getItems()) {
-                item.setAttribute('tabindex', item === event.target ? '0' : '-1');
-            }
-        }
-    };
-
-    /** @param {ToggleEvent} event */
-    const onToggle = (event) => {
-        const activeElement = getActiveElement(host);
-        if (event.newState === 'open') {
-            restoreFocusElement = canRestoreFocusTo(activeElement)
-                && !canRestoreFocusFrom(activeElement)
-                ? activeElement
-                : undefined;
-            const firstFocusableItem = getFocusableItems()[0];
-            if (firstFocusableItem !== undefined) {
-                focusItem(firstFocusableItem);
-            }
-        } else {
-            if (
-                canRestoreFocusFrom(activeElement)
-                && canRestoreFocusTo(restoreFocusElement)
-            ) {
-                restoreFocusElement.focus();
-            }
-            restoreFocusElement = undefined;
-        }
-    };
+/**
+ * @param {HTMLElement} host
+ */
+const renderMenu = (host) => {
+    const elementInternals = internals();
+    elementInternals.role = 'menu';
+    const menuController = /** @type {MenuController} */ (menuControllers.get(host));
+    const rootController = requestContext(MenuRootContext);
+    if (rootController !== undefined) {
+        menuController.$_setRootController(rootController);
+    }
 
     onMount(() => {
         const abortController = new AbortController();
         const listenerOptions = { signal: abortController.signal };
-        host.addEventListener('keydown', onKeyDown, listenerOptions);
-        host.addEventListener('focusin', onFocusIn, listenerOptions);
-        host.addEventListener('toggle', /** @type {EventListener} */ (onToggle), listenerOptions);
-        refreshItems();
-        const mutationObserver = new MutationObserver(() => refreshItems());
-        mutationObserver.observe(host, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['disabled', 'aria-disabled'],
-        });
+        rootController?.$_registerMenu(menuController);
+        host.addEventListener('keydown', menuController.$_handleKeyDown, listenerOptions);
+        host.addEventListener('focusin', menuController.$_handleFocusIn, listenerOptions);
+        host.addEventListener('toggle', /** @type {EventListener} */ (menuController.$_handleToggle), listenerOptions);
+        menuController.$_refreshItems();
 
         return () => {
+            rootController?.$_unregisterMenu(menuController);
             abortController.abort();
-            mutationObserver.disconnect();
         };
     });
 
@@ -205,7 +366,15 @@ const renderMenu = (host) => {
  * @typedef {HTMLElement} NeonMenuElement
  */
 
-defineElement('neon-menu', [withInternals()], renderMenu);
+defineElement('neon-menu', [
+    withInternals(),
+    rootContextProvider(MenuRootContext, () => createMenuRootController()),
+    contextProvider(MenuContext, (host) => {
+        const menuController = createMenuController(/** @type {HTMLElement} */ (host));
+        menuControllers.set(/** @type {HTMLElement} */ (host), menuController);
+        return menuController;
+    }),
+], renderMenu);
 
 /**
  * @param {HTMLElement} host
@@ -225,11 +394,16 @@ function getPopoverTarget(host) {
 }
 
 /**
- * @param {HTMLElement} target
- * @returns {boolean}
+ * @param {HTMLElement} host
+ * @returns {MenuController | undefined}
  */
-function isOpenPopover(target) {
-    return target.matches(':popover-open');
+function requestMenuController(host) {
+    /** @type {MenuController | undefined} */
+    let menuController;
+    host.dispatchEvent(new ContextRequestEvent(MenuContext, (providedMenuController) => {
+        menuController = providedMenuController;
+    }));
+    return menuController;
 }
 
 /**
@@ -239,11 +413,56 @@ const renderMenuItem = (host) => {
     const elementInternals = internals();
     elementInternals.role = 'menuitem';
 
+    // Reactive attribute state. The attributes() middleware routes
+    // `disabled` / `aria-disabled` / `popovertarget` changes through
+    // props(), so the item no longer needs a self-targeted attribute
+    // MutationObserver — the effect below reacts to those changes.
+    const state = props({
+        disabled: false,
+        'aria-disabled': /** @type {string | null} */ (null),
+        popovertarget: /** @type {string | null} */ (null),
+    });
+
+    /** @type {MenuController | undefined} */
+    let menuController;
+    /** @type {AbortController | undefined} */
+    let popoverTargetAbortController;
+    /** @type {HTMLElement | undefined} */
+    let observedPopoverTarget;
+
     const syncAccessibility = () => {
         const popoverTarget = getPopoverTarget(host);
         elementInternals.ariaDisabled = isDisabled(host) ? 'true' : null;
         elementInternals.ariaHasPopup = popoverTarget === undefined ? null : 'menu';
         elementInternals.ariaExpanded = popoverTarget === undefined ? null : String(isOpenPopover(popoverTarget));
+    };
+
+    const syncObservedPopoverTarget = () => {
+        const nextPopoverTarget = getPopoverTarget(host);
+        if (nextPopoverTarget !== observedPopoverTarget) {
+            popoverTargetAbortController?.abort();
+            observedPopoverTarget = nextPopoverTarget;
+            if (observedPopoverTarget !== undefined) {
+                popoverTargetAbortController = new AbortController();
+                observedPopoverTarget.addEventListener('toggle', syncAccessibility, {
+                    signal: popoverTargetAbortController.signal,
+                });
+            } else {
+                popoverTargetAbortController = undefined;
+            }
+        }
+        syncAccessibility();
+        menuController?.$_updateItemState(host);
+    };
+
+    const syncMenuController = () => {
+        const nextMenuController = requestMenuController(host);
+        if (nextMenuController !== menuController) {
+            menuController?.$_unregisterItem(host);
+            menuController = nextMenuController;
+            menuController?.$_registerItem(host);
+        }
+        menuController?.$_updateItemState(host);
     };
 
     /** @param {MouseEvent} event */
@@ -264,44 +483,43 @@ const renderMenuItem = (host) => {
                     /** @type {HTMLElement & { togglePopover: (options?: { source?: HTMLElement }) => boolean }} */ (popoverTarget)
                         .togglePopover({ source: host });
                 }
+            } else {
+                queueMicrotask(() => {
+                    menuController?.$_closeRootMenus();
+                });
             }
         }
     };
+
+    // Re-sync whenever the consumer toggles disabled / aria-disabled /
+    // popovertarget. EAGER (1) runs the first pass synchronously at mount,
+    // matching the previous observer-driven behavior; later runs are
+    // batched by the scheduler like the MutationObserver they replace.
+    effect(() => {
+        void state.disabled;
+        void state['aria-disabled'];
+        void state.popovertarget;
+        syncObservedPopoverTarget();
+    }, 1);
+
+    onConnect(() => {
+        syncMenuController();
+    });
+
+    onDisconnect(() => {
+        menuController?.$_unregisterItem(host);
+        menuController = undefined;
+    });
 
     onMount(() => {
         const abortController = new AbortController();
         const listenerOptions = { signal: abortController.signal };
         host.addEventListener('click', onClick, listenerOptions);
-        /** @type {AbortController | undefined} */
-        let popoverTargetAbortController;
-        /** @type {HTMLElement | undefined} */
-        let observedPopoverTarget;
 
-        const syncObservedPopoverTarget = () => {
-            const nextPopoverTarget = getPopoverTarget(host);
-            if (nextPopoverTarget !== observedPopoverTarget) {
-                popoverTargetAbortController?.abort();
-                observedPopoverTarget = nextPopoverTarget;
-                if (observedPopoverTarget !== undefined) {
-                    popoverTargetAbortController = new AbortController();
-                    observedPopoverTarget.addEventListener('toggle', syncAccessibility, {
-                        signal: popoverTargetAbortController.signal,
-                    });
-                } else {
-                    popoverTargetAbortController = undefined;
-                }
-            }
-            syncAccessibility();
-        };
-
-        syncObservedPopoverTarget();
-
-        const mutationObserver = new MutationObserver(syncObservedPopoverTarget);
-        mutationObserver.observe(host, {
-            attributes: true,
-            attributeFilter: ['disabled', 'aria-disabled', 'popovertarget'],
-        });
-
+        // The popover target is an external element referenced by id, with
+        // no lifecycle tie to this item. Watch the root subtree so the item
+        // notices the target being inserted or removed and keeps its toggle
+        // listener and aria-haspopup / aria-expanded state in sync.
         const popoverTargetObserver = new MutationObserver(syncObservedPopoverTarget);
         popoverTargetObserver.observe(host.getRootNode(), {
             childList: true,
@@ -310,8 +528,10 @@ const renderMenuItem = (host) => {
 
         return () => {
             abortController.abort();
+            menuController?.$_unregisterItem(host);
             popoverTargetAbortController?.abort();
-            mutationObserver.disconnect();
+            popoverTargetAbortController = undefined;
+            observedPopoverTarget = undefined;
             popoverTargetObserver.disconnect();
         };
     });
@@ -325,4 +545,11 @@ const renderMenuItem = (host) => {
  * @typedef {HTMLElement} NeonMenuItemElement
  */
 
-defineElement('neon-menu-item', [withInternals()], renderMenuItem);
+defineElement('neon-menu-item', [
+    withInternals(),
+    attributes({
+        disabled: [booleanAttribute[0]],
+        'aria-disabled': [stringAttribute[0]],
+        popovertarget: [stringAttribute[0]],
+    }),
+], renderMenuItem);

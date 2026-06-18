@@ -71,7 +71,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             <code>&lt;neon-menu&gt;</code>. Open the parent, focus
             <span class="whitespace-nowrap">Export as</span>, then press
             <kbd class="kbd">Enter</kbd> or <kbd class="kbd">Space</kbd> to
-            open the child menu.
+            open the child menu. The submenu is authored inside its trigger
+            item so the menu tree shares one root context.
         </p>
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button type="button" class="btn" popovertarget="wc-nested-menu">
@@ -90,24 +91,23 @@ import '@neon-kit/web-components/menu';</code></pre>
                 >
                     <span class="menu__label">Export as</span>
                     <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                    <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
+                        <neon-menu-item class="menu__item">
+                            <span class="menu__label">PDF document</span>
+                        </neon-menu-item>
+                        <neon-menu-item class="menu__item">
+                            <span class="menu__label">Markdown file</span>
+                        </neon-menu-item>
+                        <neon-menu-item class="menu__item">
+                            <span class="menu__label">HTML page</span>
+                        </neon-menu-item>
+                    </neon-menu>
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
                     <span class="menu__label">Archive</span>
                 </neon-menu-item>
                 <neon-menu-item class="menu__item" disabled>
                     <span class="menu__label">Delete permanently</span>
-                </neon-menu-item>
-            </neon-menu>
-
-            <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
-                <neon-menu-item class="menu__item">
-                    <span class="menu__label">PDF document</span>
-                </neon-menu-item>
-                <neon-menu-item class="menu__item">
-                    <span class="menu__label">Markdown file</span>
-                </neon-menu-item>
-                <neon-menu-item class="menu__item">
-                    <span class="menu__label">HTML page</span>
                 </neon-menu-item>
             </neon-menu>
         </div>
@@ -130,8 +130,11 @@ import '@neon-kit/web-components/menu';</code></pre>
 
         <h3 class="mb-2">Markup contract</h3>
         <p class="mb-4 text-ink-secondary">
-            Rows must be authored as direct
-            <code>&lt;neon-menu-item class="menu__item"&gt;</code>. The item
+            Rows must be authored as
+            <code>&lt;neon-menu-item class="menu__item"&gt;</code> descendants.
+            Each item registers with the nearest ancestor
+            <code>&lt;neon-menu&gt;</code>, so a nested
+            <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item
             element does not render its own children, so labels, shortcuts,
             icons, checkmarks, and chevrons remain consumer-authored markup.
             Disabled rows use <code>disabled</code> or
@@ -146,15 +149,20 @@ import '@neon-kit/web-components/menu';</code></pre>
             <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
             <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first focusable item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
-            <li>Watches the subtree (<code>MutationObserver</code>) so dynamically added/removed items and <code>disabled</code>/<code>aria-disabled</code> changes stay in sync.</li>
+            <li>Registers descendant menu items through context, while each item reports its own <code>disabled</code>/<code>aria-disabled</code> changes.</li>
+            <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>
             <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>
         </ul>
 
         <h3 class="mb-2">Popover wiring</h3>
         <p class="mb-4 text-ink-secondary">
-            No popover wiring lives in the component itself. Pair the host with
-            the <code>popover</code> attribute and a trigger button using
-            <code>popovertarget="&lt;menu-id&gt;"</code> (as in the demo above).
+            Pair the host with the <code>popover</code> attribute and a trigger
+            button using <code>popovertarget="&lt;menu-id&gt;"</code> (as in the
+            demo above). Menu items can also use <code>popovertarget</code> to
+            open submenu popovers.
+            For submenus, place the child <code>&lt;neon-menu popover&gt;</code>
+            inside the triggering <code>&lt;neon-menu-item&gt;</code> so the
+            menu tree shares one root context.
             The theme's <code>.menu</code> CSS provides default placement via
             <code>position-area: block-end span-inline-end</code>.
         </p>

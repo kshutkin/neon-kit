@@ -20,12 +20,15 @@ importers:
       '@neon-kit/web-components':
         specifier: workspace:*
         version: link:web-components
+      '@slimlib/element':
+        specifier: ^0.4.0
+        version: 0.4.0(@slimlib/jsx@0.4.0(@slimlib/store@2.2.0))(@slimlib/store@2.2.0)
       '@slimlib/jsx':
-        specifier: ^0.2.0
-        version: 0.2.0(@slimlib/store@2.1.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@slimlib/store@2.2.0)
       '@slimlib/store':
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.2.0
+        version: 2.2.0
       '@tailwindcss/vite':
         specifier: ^4.1.13
         version: 4.2.4(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1))
@@ -81,14 +84,14 @@ importers:
   web-components:
     dependencies:
       '@slimlib/element':
-        specifier: ^0.2.1
-        version: 0.2.1(@slimlib/jsx@0.2.0(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@slimlib/jsx@0.4.0(@slimlib/store@2.2.0))(@slimlib/store@2.2.0)
       '@slimlib/jsx':
-        specifier: ^0.2.0
-        version: 0.2.0(@slimlib/store@2.1.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@slimlib/store@2.2.0)
       '@slimlib/store':
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.2.0
+        version: 2.2.0
       esm-env:
         specifier: ^1.2.2
         version: 1.2.2
@@ -716,19 +719,19 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@slimlib/element@0.2.1':
-    resolution: {integrity: sha512-8N7uQGuQZHFnCInhRL/Ocmo8vD7/xnIHgGRZE/ojDL6j2E2eab4CKOwHp2SS78sEaNOPx613QjK8gcH2N8OecA==}
+  '@slimlib/element@0.4.0':
+    resolution: {integrity: sha512-ycpYHADt8Gs29Nopcf1iQakdlNMvj4ki+Ocr+3iggeSGcnsqIxg8ibjr1iObqmZMnUTfQB9QSGpY8R90z4HcBQ==}
     peerDependencies:
-      '@slimlib/jsx': ^0.2.0
-      '@slimlib/store': ^2.1.0
+      '@slimlib/jsx': ^0.4.0
+      '@slimlib/store': ^2.2.0
 
-  '@slimlib/jsx@0.2.0':
-    resolution: {integrity: sha512-blPQuoL2HBjOhFTJ8wXsJHFdlPS8ZVQps4HFzaW60TMgPs47dJ/8qrR/Ea0e+qrcsqD0iSvt7e0RPtfxOtHn8g==}
+  '@slimlib/jsx@0.4.0':
+    resolution: {integrity: sha512-8Po/tZkAhzzsxMs0d2jgPT1Fuvq9gZtgGhLCABmNBDWdHJKwMs0kpTLqWzTnztbOL2L9pai+HAorXfveCM2N5A==}
     peerDependencies:
-      '@slimlib/store': ^2.1.0
+      '@slimlib/store': ^2.2.0
 
-  '@slimlib/store@2.1.0':
-    resolution: {integrity: sha512-8I4kkUyFy6bETICrD7qkU9959Yd82xN4D0PeUsMxxPNks8YvLjDWv61zOA+k9YP7orUOF3TVe/7dAuYHC32sgQ==}
+  '@slimlib/store@2.2.0':
+    resolution: {integrity: sha512-e0qzkTz3DRoyLtYoeFpevCFw3sXCZ7FMhPVFB7U8iyxUrzz5ajN3nE4YsaSGBHebrQX+cLGvK5UEwYzU3mnO4w==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -2246,18 +2249,18 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.4':
     optional: true
 
-  '@slimlib/element@0.2.1(@slimlib/jsx@0.2.0(@slimlib/store@2.1.0))(@slimlib/store@2.1.0)':
+  '@slimlib/element@0.4.0(@slimlib/jsx@0.4.0(@slimlib/store@2.2.0))(@slimlib/store@2.2.0)':
     dependencies:
-      '@slimlib/jsx': 0.2.0(@slimlib/store@2.1.0)
-      '@slimlib/store': 2.1.0
+      '@slimlib/jsx': 0.4.0(@slimlib/store@2.2.0)
+      '@slimlib/store': 2.2.0
       esm-env: 1.2.2
 
-  '@slimlib/jsx@0.2.0(@slimlib/store@2.1.0)':
+  '@slimlib/jsx@0.4.0(@slimlib/store@2.2.0)':
     dependencies:
-      '@slimlib/store': 2.1.0
+      '@slimlib/store': 2.2.0
       esm-env: 1.2.2
 
-  '@slimlib/store@2.1.0':
+  '@slimlib/store@2.2.0':
     dependencies:
       esm-env: 1.2.2
 
