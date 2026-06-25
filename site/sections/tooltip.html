@@ -10,22 +10,80 @@
         <code>filter</code> on ancestors.
     </p>
     <p class="mb-8 text-ink-secondary">
-        Placement uses CSS anchor positioning. The trigger that invokes
-        the popover via <code>popovertarget</code> becomes its implicit
-        anchor, so the position tracks the trigger automatically as
-        layout reflows or scrolls.
+        Placement uses CSS anchor positioning. A trigger that invokes the
+        popover with <code>interestfor</code>, <code>commandfor</code>, or
+        <code>popovertarget</code> becomes its anchor, so the position
+        tracks the trigger automatically as layout reflows or scrolls.
     </p>
 
     <section class="mb-8">
-        <h2 class="mb-4">Basic — Click / Keyboard</h2>
+        <h2 class="mb-4">Copy-Paste Snippets</h2>
         <p class="mb-3 text-sm text-ink-secondary">
-            Native <code>popovertarget</code> handles activation for
-            free: click, <kbd class="kbd">Space</kbd>, and
-            <kbd class="kbd">⏎</kbd> all toggle the popover. Click
-            outside or press <kbd class="kbd">⎋</kbd> to dismiss.
+            Use <code>interestfor</code> for delayed hover and focus hints.
+            Use <code>commandfor</code> for immediate click, Space, and
+            Enter activation. These native invokers are intentionally
+            limited to native interactive elements; use the Web Component
+            or JSX Tooltip when you need arbitrary trigger elements.
+        </p>
+        <div class="grid gap-4 lg:grid-cols-2">
+            <div class="rounded-lg border border-border bg-surface-secondary p-4">
+                <h3 class="mb-3 text-base font-semibold">Hover / Focus Hint</h3>
+                <pre class="overflow-x-auto rounded-md border border-border bg-surface p-4 text-sm"><code>&lt;button
+    class="btn"
+    interestfor="tip-save"
+    aria-describedby="tip-save"
+    type="button"
+&gt;
+    Save
+&lt;/button&gt;
+
+&lt;div
+    id="tip-save"
+    popover="hint"
+    class="tooltip -top"
+    role="tooltip"
+&gt;
+    Saves the current document.
+    &lt;div class="tooltip__arrow"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+            <div class="rounded-lg border border-border bg-surface-secondary p-4">
+                <h3 class="mb-3 text-base font-semibold">Click / Keyboard Command</h3>
+                <pre class="overflow-x-auto rounded-md border border-border bg-surface p-4 text-sm"><code>&lt;button
+    class="btn"
+    commandfor="tip-actions"
+    command="toggle-popover"
+    type="button"
+&gt;
+    Open details
+&lt;/button&gt;
+
+&lt;div id="tip-actions" popover class="tooltip -top"&gt;
+    &lt;div class="tooltip__title"&gt;Delete this item?&lt;/div&gt;
+    &lt;p class="tooltip__body"&gt;Removed items can be restored for 30 days.&lt;/p&gt;
+    &lt;button
+        commandfor="tip-actions"
+        command="hide-popover"
+        type="button"
+    &gt;
+        Close
+    &lt;/button&gt;
+    &lt;div class="tooltip__arrow"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Click / Keyboard Commands</h2>
+        <p class="mb-3 text-sm text-ink-secondary">
+            Native <code>commandfor</code> handles activation for free:
+            click, <kbd class="kbd">Space</kbd>, and
+            <kbd class="kbd">⏎</kbd> all toggle the popover. Click outside
+            or press <kbd class="kbd">⎋</kbd> to dismiss.
         </p>
         <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
-            <button class="btn" popovertarget="tip-basic" aria-describedby="tip-basic" type="button">
+            <button class="btn" commandfor="tip-basic" command="toggle-popover" aria-describedby="tip-basic" type="button">
                 Click me
             </button>
             <div id="tip-basic" popover class="tooltip -top" role="tooltip">
@@ -33,7 +91,7 @@
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn cta" popovertarget="tip-basic-bottom" aria-describedby="tip-basic-bottom" type="button">
+            <button class="btn cta" commandfor="tip-basic-bottom" command="toggle-popover" aria-describedby="tip-basic-bottom" type="button">
                 Below
             </button>
             <div id="tip-basic-bottom" popover class="tooltip -bottom" role="tooltip">
@@ -44,28 +102,33 @@
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">Hover &amp; Focus</h2>
+        <h2 class="mb-4">Hover &amp; Focus Interest</h2>
         <p class="mb-3 text-sm text-ink-secondary">
-            Add <code>data-tooltip-hover</code> to any trigger to open
-            its popover on hover and on keyboard focus. Open is delayed
-            slightly so casual flyovers don't flash. The tooltip itself
-            keeps the popover open while the pointer is over it, so
-            rich content (links, buttons, copy fields) stays reachable.
+            Native <code>interestfor</code> opens <code>popover="hint"</code>
+            tooltips on hover, keyboard focus, and long-press where the
+            platform supports it. The default open and close delays are
+            defined in CSS on the invoker and can be overridden per trigger.
         </p>
         <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
-            <button class="btn" popovertarget="tip-hover-1" aria-describedby="tip-hover-1" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-hover-1" aria-describedby="tip-hover-1" type="button">
                 Hover or focus
             </button>
-            <div id="tip-hover-1" popover class="tooltip -top" role="tooltip">
+            <div id="tip-hover-1" popover="hint" class="tooltip -top" role="tooltip">
                 Reveals on pointer or keyboard focus.
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-hover-2" aria-describedby="tip-hover-2" data-tooltip-hover type="button">
-                Try keyboard
+            <button
+                class="btn"
+                interestfor="tip-hover-2"
+                aria-describedby="tip-hover-2"
+                style="--tooltip-open-delay: 240ms; --tooltip-close-delay: 160ms;"
+                type="button"
+            >
+                Custom delay
             </button>
-            <div id="tip-hover-2" popover class="tooltip -bottom" role="tooltip">
-                Tab through to focus me.
+            <div id="tip-hover-2" popover="hint" class="tooltip -bottom" role="tooltip">
+                This trigger overrides the CSS delay variables.
                 <div class="tooltip__arrow"></div>
             </div>
         </div>
@@ -80,34 +143,34 @@
             <code>position-area</code>.
         </p>
         <div class="flex flex-wrap items-center justify-center gap-8 rounded-lg border border-border bg-surface-secondary p-12">
-            <button class="btn" popovertarget="tip-place-top" aria-describedby="tip-place-top" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-place-top" aria-describedby="tip-place-top" type="button">
                 Top
             </button>
-            <div id="tip-place-top" popover class="tooltip -top" role="tooltip">
+            <div id="tip-place-top" popover="hint" class="tooltip -top" role="tooltip">
                 Top placement
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-place-bottom" aria-describedby="tip-place-bottom" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-place-bottom" aria-describedby="tip-place-bottom" type="button">
                 Bottom
             </button>
-            <div id="tip-place-bottom" popover class="tooltip -bottom" role="tooltip">
+            <div id="tip-place-bottom" popover="hint" class="tooltip -bottom" role="tooltip">
                 Bottom placement
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-place-left" aria-describedby="tip-place-left" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-place-left" aria-describedby="tip-place-left" type="button">
                 Left
             </button>
-            <div id="tip-place-left" popover class="tooltip -left" role="tooltip">
+            <div id="tip-place-left" popover="hint" class="tooltip -left" role="tooltip">
                 Left placement
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-place-right" aria-describedby="tip-place-right" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-place-right" aria-describedby="tip-place-right" type="button">
                 Right
             </button>
-            <div id="tip-place-right" popover class="tooltip -right" role="tooltip">
+            <div id="tip-place-right" popover="hint" class="tooltip -right" role="tooltip">
                 Right placement
                 <div class="tooltip__arrow"></div>
             </div>
@@ -119,17 +182,15 @@
         <p class="mb-3 text-sm text-ink-secondary">
             Because the popover is a regular block container while open,
             the body can hold any markup: a title with secondary copy,
-            keyboard hints, badges, even interactive elements. Use the
-            optional <code>.tooltip__title</code>,
-            <code>.tooltip__body</code>, and
-            <code>.tooltip__meta</code> helpers, or compose with
-            Tailwind utilities.
+            keyboard hints, badges, even interactive elements. Use
+            <code>popover="hint"</code> for transient help and regular
+            <code>popover</code> for command-opened action content.
         </p>
         <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
-            <button class="btn" popovertarget="tip-rich-shortcut" aria-describedby="tip-rich-shortcut" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-rich-shortcut" aria-describedby="tip-rich-shortcut" type="button">
                 With a shortcut
             </button>
-            <div id="tip-rich-shortcut" popover class="tooltip -top" role="tooltip">
+            <div id="tip-rich-shortcut" popover="hint" class="tooltip -top" role="tooltip">
                 <div class="tooltip__title">Save</div>
                 <p class="tooltip__body">Persists the current draft to your account.</p>
                 <div class="tooltip__meta">
@@ -141,10 +202,10 @@
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-rich-status" aria-describedby="tip-rich-status" data-tooltip-hover type="button">
+            <button class="btn" interestfor="tip-rich-status" aria-describedby="tip-rich-status" type="button">
                 With a status
             </button>
-            <div id="tip-rich-status" popover class="tooltip -bottom" role="tooltip">
+            <div id="tip-rich-status" popover="hint" class="tooltip -bottom" role="tooltip">
                 <div class="tooltip__title">
                     <span class="badge -success">Healthy</span>
                     api.example.com
@@ -153,15 +214,15 @@
                 <div class="tooltip__arrow"></div>
             </div>
 
-            <button class="btn" popovertarget="tip-rich-actions" type="button">
+            <button class="btn" commandfor="tip-rich-actions" command="toggle-popover" type="button">
                 With actions (click)
             </button>
             <div id="tip-rich-actions" popover class="tooltip -top">
                 <div class="tooltip__title">Delete this item?</div>
                 <p class="tooltip__body">Removed items can be restored from trash for 30 days.</p>
                 <div class="tooltip__meta justify-end">
-                    <button class="btn quiet" popovertarget="tip-rich-actions" popovertargetaction="hide" type="button">Cancel</button>
-                    <button class="btn cta" popovertarget="tip-rich-actions" popovertargetaction="hide" type="button">Delete</button>
+                    <button class="btn quiet" commandfor="tip-rich-actions" command="hide-popover" type="button">Cancel</button>
+                    <button class="btn cta" commandfor="tip-rich-actions" command="hide-popover" type="button">Delete</button>
                 </div>
                 <div class="tooltip__arrow"></div>
             </div>
@@ -180,10 +241,10 @@
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <div class="overflow-hidden rounded-md border border-border-secondary p-6" style="transform: translateZ(0); filter: saturate(1);">
                 <div class="flex items-center gap-4">
-                    <button class="btn" popovertarget="tip-stack" aria-describedby="tip-stack" data-tooltip-hover type="button">
+                    <button class="btn" interestfor="tip-stack" aria-describedby="tip-stack" type="button">
                         Trigger inside clipped + transformed parent
                     </button>
-                    <div id="tip-stack" popover class="tooltip -top" role="tooltip">
+                    <div id="tip-stack" popover="hint" class="tooltip -top" role="tooltip">
                         Still escapes the clip.
                         <div class="tooltip__arrow"></div>
                     </div>
@@ -198,30 +259,30 @@
     <section class="mb-8">
         <h2 class="mb-4">Inline With Prose</h2>
         <p class="mb-3 text-sm text-ink-secondary">
-            Tooltips work on any focusable inline element. A common
-            pattern is an info-style trigger inside body copy.
+            Native interest invokers work well for inline help when the
+            trigger is a real button or link.
         </p>
         <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4">
             <p>
                 Your plan renews on the
-                <button class="link" popovertarget="tip-prose-1" aria-describedby="tip-prose-1" data-tooltip-hover type="button">
+                <button class="link" interestfor="tip-prose-1" aria-describedby="tip-prose-1" type="button">
                     1st of every month
                 </button>
                 at the local time of your account.
             </p>
-            <div id="tip-prose-1" popover class="tooltip -top" role="tooltip">
+            <div id="tip-prose-1" popover="hint" class="tooltip -top" role="tooltip">
                 Charged to the card ending in •• 4242.
                 <div class="tooltip__arrow"></div>
             </div>
 
             <p>
                 Press
-                <button class="link" popovertarget="tip-prose-2" aria-describedby="tip-prose-2" data-tooltip-hover type="button">
+                <button class="link" interestfor="tip-prose-2" aria-describedby="tip-prose-2" type="button">
                     the command key
                 </button>
                 with another key to trigger a shortcut.
             </p>
-            <div id="tip-prose-2" popover class="tooltip -bottom" role="tooltip">
+            <div id="tip-prose-2" popover="hint" class="tooltip -bottom" role="tooltip">
                 <div class="tooltip__title">Command (⌘)</div>
                 <p class="tooltip__body">Modifier key on Apple keyboards. Equivalent to Ctrl on Windows.</p>
                 <div class="tooltip__arrow"></div>
@@ -230,7 +291,7 @@
     </section>
 
     <section class="mb-8">
-        <h2 class="mb-4">Accessibility</h2>
+        <h2 class="mb-4">Choosing an API</h2>
         <ul class="list-disc space-y-2 pl-6 text-sm text-ink-secondary">
             <li>
                 For description-style tooltips, use
@@ -238,19 +299,24 @@
                 <code>aria-describedby="tip-id"</code> on the trigger.
             </li>
             <li>
-                For richer popovers (titles, multiple paragraphs,
-                actions), drop <code>role="tooltip"</code> and rely on
-                the popover's own semantics plus a heading inside.
+                For hover and focus help, use <code>interestfor</code>
+                with <code>popover="hint"</code>. The CSS component defines
+                <code>--tooltip-open-delay</code> and
+                <code>--tooltip-close-delay</code> on the invoker.
             </li>
             <li>
-                Keyboard users get tooltips on focus when
-                <code>data-tooltip-hover</code> is set; without it, the
-                trigger still toggles the popover via
-                <kbd class="kbd">Space</kbd> /
-                <kbd class="kbd">⏎</kbd>.
+                For click-open action content, use <code>commandfor</code>
+                with <code>command="toggle-popover"</code> and a regular
+                <code>popover</code>.
             </li>
             <li>
-                <kbd class="kbd">⎋</kbd> dismisses any open popover —
+                Native invokers keep the CSS component JavaScript-free but
+                only work on supported native interactive elements. The
+                Web Component and JSX Tooltip keep the previous broader
+                trigger model at the cost of a small JavaScript controller.
+            </li>
+            <li>
+                <kbd class="kbd">⎋</kbd> dismisses open popovers through
                 browser default behavior.
             </li>
         </ul>

@@ -1,23 +1,29 @@
-/* Tooltip / hint popover — built on the native `popover` attribute and
-   CSS anchor positioning (implicit anchor via `popovertarget`).
+/* Tooltip / hint popover — built on the native `popover` attribute,
+   CSS anchor positioning, and declarative invokers (`interestfor` for
+   hover/focus hints, `commandfor` for click/keyboard commands).
 
    Why this shape:
    - `popover` puts the element in the browser's top layer, so it always
      paints above siblings regardless of `overflow: hidden`, `transform`,
      `filter`, or any other stacking-context trap on ancestors.
-   - The trigger that invokes the popover via `popovertarget` becomes the
-     popover's implicit anchor, so positioning is declarative — no
-     wrapper element, no portal, no JS to recompute on scroll/resize.
+   - The trigger that invokes the popover via `interestfor`,
+     `commandfor`, or `popovertarget` becomes the popover's implicit
+     anchor, so positioning is declarative — no wrapper element, no
+     portal, no JS to recompute on scroll/resize.
    - Because it's a regular block element while open, the body can hold
      rich templates: headings, lists, code, kbd, badges, even buttons.
 
-   Minimal markup (click / keyboard, long-press on touch):
-       <button class="btn" popovertarget="tip-save"
+   Minimal markup (hover / focus / long-press where supported):
+       <button class="btn" interestfor="tip-save"
                aria-describedby="tip-save">Save</button>
-       <div id="tip-save" popover class="tooltip -top" role="tooltip">
+       <div id="tip-save" popover="hint" class="tooltip -top" role="tooltip">
            Saves the current document.
            <div class="tooltip__arrow"></div>
        </div>
+
+   Click / keyboard command:
+       <button class="btn" commandfor="tip-save"
+               command="toggle-popover">Save</button>
 
    Rich body — anything goes. Optional helpers `.tooltip__title`,
    `.tooltip__body`, `.tooltip__meta` mirror the dialog header/body/footer
@@ -36,6 +42,16 @@
    - For richer popovers (titles, paragraphs, actions) drop `role="tooltip"`
      and rely on the popover semantics + a heading inside.
 */
+
+:where([interestfor]) {
+    --tooltip-open-delay: 120ms;
+    --tooltip-close-delay: 100ms;
+
+    /* Native property plus the custom property consumed by the
+       `interestfor` polyfill. */
+    interest-delay: var(--tooltip-open-delay) var(--tooltip-close-delay);
+    --interest-delay: var(--tooltip-open-delay) var(--tooltip-close-delay);
+}
 
 .tooltip[popover] {
     @apply text-ink-primary
