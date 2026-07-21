@@ -18,7 +18,6 @@ import {
     ContextRequestEvent,
     attributes,
     booleanAttribute,
-    contextProvider,
     createContext,
     defineElement,
     internals,
@@ -31,49 +30,35 @@ import {
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
+import { queryChildren } from '@slimlib/jsx/query-children';
 import { effect } from '@slimlib/store';
 
 import { getActiveElement } from './utils.js';
 
 const ITEM_SELECTOR = 'neon-menu-item';
 const MENU_SELECTOR = 'neon-menu';
+const OWNED_ITEM_SELECTOR = `:scope ${ITEM_SELECTOR}:not(:scope ${MENU_SELECTOR} ${ITEM_SELECTOR})`;
+const OWNED_FOCUSABLE_ITEM_SELECTOR = `${OWNED_ITEM_SELECTOR}:not([disabled]):not([aria-disabled="true"])`;
 
 /**
  * @typedef {{
- *     $_registerMenu: (controller: MenuController) => void;
- *     $_unregisterMenu: (controller: MenuController) => void;
  *     $_registerOpenMenu: (menu: HTMLElement) => void;
  *     $_unregisterOpenMenu: (menu: HTMLElement) => void;
  *     $_closeAll: () => void;
  * }} MenuRootController
  *
  * @typedef {{
- *     $_element: HTMLElement;
- *     $_disabled: boolean;
- * }} MenuItemRecord
- *
- * @typedef {{
  *     $_host: HTMLElement;
- *     $_setRootController: (controller: MenuRootController) => void;
- *     $_registerItem: (item: HTMLElement) => void;
- *     $_unregisterItem: (item: HTMLElement) => void;
- *     $_updateItemState: (item: HTMLElement) => void;
  *     $_refreshItems: () => void;
+ *     $_clearItems: () => void;
  *     $_handleKeyDown: (event: KeyboardEvent) => void;
  *     $_handleFocusIn: (event: FocusEvent) => void;
  *     $_handleToggle: (event: ToggleEvent) => void;
- *     $_closeRootMenus: () => void;
  * }} MenuController
  */
 
 /** @type {import('@slimlib/element').Context<symbol, MenuRootController>} */
 const MenuRootContext = createContext(Symbol());
-
-/** @type {import('@slimlib/element').Context<symbol, MenuController>} */
-const MenuContext = createContext(Symbol());
-
-/** @type {WeakMap<HTMLElement, MenuController>} */
-const menuControllers = new WeakMap();
 
 /**
  * @param {Element} element
@@ -95,19 +80,10 @@ function isOpenPopover(target) {
  * @returns {MenuRootController}
  */
 function createMenuRootController() {
-    /** @type {Set<MenuController>} */
-    const menuControllerSet = new Set();
     /** @type {Set<HTMLElement>} */
     const openMenus = new Set();
 
     return {
-        $_registerMenu(controller) {
-            menuControllerSet.add(controller);
-        },
-        $_unregisterMenu(controller) {
-            menuControllerSet.delete(controller);
-            openMenus.delete(controller.$_host);
-        },
         $_registerOpenMenu(menu) {
             openMenus.add(menu);
         },
@@ -126,45 +102,26 @@ function createMenuRootController() {
 }
 
 /**
- * @param {MenuItemRecord} firstRecord
- * @param {MenuItemRecord} secondRecord
- * @returns {number}
- */
-function compareItemRecords(firstRecord, secondRecord) {
-    const position = firstRecord.$_element.compareDocumentPosition(secondRecord.$_element);
-    if ((position & Node.DOCUMENT_POSITION_FOLLOWING) !== 0) {
-        return -1;
-    }
-    if ((position & Node.DOCUMENT_POSITION_PRECEDING) !== 0) {
-        return 1;
-    }
-    return 0;
-}
-
-/**
  * @param {HTMLElement} host
+ * @param {MenuRootController | undefined} rootController
+ * @param {import('@slimlib/store').Signal<readonly HTMLElement[]>} itemQuery
+ * @param {import('@slimlib/store').Signal<readonly HTMLElement[]>} focusableItemQuery
  * @returns {MenuController}
  */
-function createMenuController(host) {
-    /** @type {Map<HTMLElement, MenuItemRecord>} */
-    const itemRecords = new Map();
-    /** @type {MenuRootController | undefined} */
-    let rootController;
+function createMenuController(host, rootController, itemQuery, focusableItemQuery) {
     /** @type {HTMLElement | undefined} */
     let restoreFocusElement;
+    /** @type {readonly HTMLElement[]} */
+    let previousItems = [];
 
-    /** @returns {MenuItemRecord[]} */
-    const getItemRecords = () => Array.from(itemRecords.values()).sort(compareItemRecords);
-    /** @returns {HTMLElement[]} */
-    const getItems = () => getItemRecords().map((record) => record.$_element);
-    /** @returns {HTMLElement[]} */
-    const getFocusableItems = () => getItemRecords()
-        .filter((record) => !record.$_disabled)
-        .map((record) => record.$_element);
+    /** @returns {readonly HTMLElement[]} */
+    const getItems = () => itemQuery();
+    /** @returns {readonly HTMLElement[]} */
+    const getFocusableItems = () => focusableItemQuery();
     /** @returns {HTMLElement | undefined} */
     const getActiveItem = () => {
         const activeElement = getActiveElement(host);
-        return activeElement instanceof HTMLElement && itemRecords.has(activeElement)
+        return activeElement instanceof HTMLElement && getItems().includes(activeElement)
             ? activeElement
             : undefined;
     };
@@ -191,7 +148,7 @@ function createMenuController(host) {
             const closestMenu = target.closest(MENU_SELECTOR);
             if (closestMenu === host) {
                 const closestItem = target.closest(ITEM_SELECTOR);
-                if (closestItem instanceof HTMLElement && itemRecords.has(closestItem)) {
+                if (closestItem instanceof HTMLElement && getItems().includes(closestItem)) {
                     eventItem = closestItem;
                 }
             }
@@ -207,9 +164,13 @@ function createMenuController(host) {
     };
 
     const refreshItems = () => {
-        if (itemRecords.size === 0) {
-            return;
+        const items = getItems();
+        for (const previousItem of previousItems) {
+            if (!items.includes(previousItem)) {
+                previousItem.removeAttribute('tabindex');
+            }
         }
+        previousItems = items;
         const activeItem = getActiveItem();
         const rovingItem = activeItem !== undefined && !isDisabled(activeItem)
             ? activeItem
@@ -225,30 +186,13 @@ function createMenuController(host) {
 
     return {
         $_host: host,
-        $_setRootController(controller) {
-            rootController = controller;
-        },
-        $_registerItem(item) {
-            itemRecords.set(item, {
-                $_element: item,
-                $_disabled: isDisabled(item),
-            });
-            refreshItems();
-        },
-        $_unregisterItem(item) {
-            if (itemRecords.delete(item)) {
-                item.removeAttribute('tabindex');
-                refreshItems();
-            }
-        },
-        $_updateItemState(item) {
-            const record = itemRecords.get(item);
-            if (record !== undefined) {
-                record.$_disabled = isDisabled(item);
-                refreshItems();
-            }
-        },
         $_refreshItems: refreshItems,
+        $_clearItems() {
+            for (const item of previousItems) {
+                item.removeAttribute('tabindex');
+            }
+            previousItems = [];
+        },
         $_handleKeyDown(event) {
             const items = getFocusableItems();
             const shouldHandleEvent = event.target === host || getEventItem(event.target) !== undefined;
@@ -324,9 +268,6 @@ function createMenuController(host) {
                 }
             }
         },
-        $_closeRootMenus() {
-            rootController?.$_closeAll();
-        },
     };
 }
 
@@ -336,23 +277,36 @@ function createMenuController(host) {
 const renderMenu = (host) => {
     const elementInternals = internals();
     elementInternals.role = 'menu';
-    const menuController = /** @type {MenuController} */ (menuControllers.get(host));
     const rootController = requestContext(MenuRootContext);
-    if (rootController !== undefined) {
-        menuController.$_setRootController(rootController);
-    }
+    const itemQuery = queryChildren(/** @type {HTMLElement} */ (host), OWNED_ITEM_SELECTOR);
+    const focusableItemQuery = queryChildren(
+        /** @type {HTMLElement} */ (host),
+        OWNED_FOCUSABLE_ITEM_SELECTOR,
+    );
+    const menuController = createMenuController(
+        /** @type {HTMLElement} */ (host),
+        rootController,
+        itemQuery,
+        focusableItemQuery,
+    );
+
+    effect(() => {
+        void itemQuery();
+        void focusableItemQuery();
+        menuController.$_refreshItems();
+    }, 1);
 
     onMount(() => {
         const abortController = new AbortController();
         const listenerOptions = { signal: abortController.signal };
-        rootController?.$_registerMenu(menuController);
         host.addEventListener('keydown', menuController.$_handleKeyDown, listenerOptions);
         host.addEventListener('focusin', menuController.$_handleFocusIn, listenerOptions);
         host.addEventListener('toggle', /** @type {EventListener} */ (menuController.$_handleToggle), listenerOptions);
         menuController.$_refreshItems();
 
         return () => {
-            rootController?.$_unregisterMenu(menuController);
+            rootController?.$_unregisterOpenMenu(/** @type {HTMLElement} */ (host));
+            menuController.$_clearItems();
             abortController.abort();
         };
     });
@@ -369,11 +323,6 @@ const renderMenu = (host) => {
 defineElement('neon-menu', [
     withInternals(),
     rootContextProvider(MenuRootContext, () => createMenuRootController()),
-    contextProvider(MenuContext, (host) => {
-        const menuController = createMenuController(/** @type {HTMLElement} */ (host));
-        menuControllers.set(/** @type {HTMLElement} */ (host), menuController);
-        return menuController;
-    }),
 ], renderMenu);
 
 /**
@@ -395,15 +344,15 @@ function getPopoverTarget(host) {
 
 /**
  * @param {HTMLElement} host
- * @returns {MenuController | undefined}
+ * @returns {MenuRootController | undefined}
  */
-function requestMenuController(host) {
-    /** @type {MenuController | undefined} */
-    let menuController;
-    host.dispatchEvent(new ContextRequestEvent(MenuContext, (providedMenuController) => {
-        menuController = providedMenuController;
+function requestMenuRootController(host) {
+    /** @type {MenuRootController | undefined} */
+    let rootController;
+    host.dispatchEvent(new ContextRequestEvent(MenuRootContext, (providedRootController) => {
+        rootController = providedRootController;
     }));
-    return menuController;
+    return rootController;
 }
 
 /**
@@ -423,8 +372,8 @@ const renderMenuItem = (host) => {
         popovertarget: /** @type {string | null} */ (null),
     });
 
-    /** @type {MenuController | undefined} */
-    let menuController;
+    /** @type {MenuRootController | undefined} */
+    let rootController;
     /** @type {AbortController | undefined} */
     let popoverTargetAbortController;
     /** @type {HTMLElement | undefined} */
@@ -452,17 +401,10 @@ const renderMenuItem = (host) => {
             }
         }
         syncAccessibility();
-        menuController?.$_updateItemState(host);
     };
 
-    const syncMenuController = () => {
-        const nextMenuController = requestMenuController(host);
-        if (nextMenuController !== menuController) {
-            menuController?.$_unregisterItem(host);
-            menuController = nextMenuController;
-            menuController?.$_registerItem(host);
-        }
-        menuController?.$_updateItemState(host);
+    const syncRootController = () => {
+        rootController = requestMenuRootController(host);
     };
 
     /** @param {MouseEvent} event */
@@ -485,7 +427,7 @@ const renderMenuItem = (host) => {
                 }
             } else {
                 queueMicrotask(() => {
-                    menuController?.$_closeRootMenus();
+                    rootController?.$_closeAll();
                 });
             }
         }
@@ -503,12 +445,11 @@ const renderMenuItem = (host) => {
     }, 1);
 
     onConnect(() => {
-        syncMenuController();
+        syncRootController();
     });
 
     onDisconnect(() => {
-        menuController?.$_unregisterItem(host);
-        menuController = undefined;
+        rootController = undefined;
     });
 
     onMount(() => {
@@ -528,7 +469,6 @@ const renderMenuItem = (host) => {
 
         return () => {
             abortController.abort();
-            menuController?.$_unregisterItem(host);
             popoverTargetAbortController?.abort();
             popoverTargetAbortController = undefined;
             observedPopoverTarget = undefined;

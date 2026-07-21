@@ -245,6 +245,29 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(alpha);
     });
 
+    it('updates menu ownership when an item moves into a nested menu', async () => {
+        const menu = mount(`
+            <neon-menu>
+                <neon-menu-item id="alpha" class="menu__item">Alpha</neon-menu-item>
+                <neon-menu-item id="bravo" class="menu__item">Bravo</neon-menu-item>
+                <neon-menu id="nested-menu">
+                    <neon-menu-item id="charlie" class="menu__item">Charlie</neon-menu-item>
+                </neon-menu>
+            </neon-menu>
+        `);
+        const alpha = /** @type {HTMLElement} */ (menu.querySelector('#alpha'));
+        const bravo = /** @type {HTMLElement} */ (menu.querySelector('#bravo'));
+        const nestedMenu = /** @type {HTMLElement} */ (menu.querySelector('#nested-menu'));
+        const charlie = /** @type {HTMLElement} */ (menu.querySelector('#charlie'));
+
+        nestedMenu.append(alpha);
+        await nextTask();
+
+        expect(bravo.getAttribute('tabindex')).toBe('0');
+        expect(charlie.getAttribute('tabindex')).toBe('0');
+        expect(alpha.getAttribute('tabindex')).toBe('-1');
+    });
+
     it('does not assign a roving item when every item is disabled', async () => {
         const menu = mount(`
             <neon-menu>
