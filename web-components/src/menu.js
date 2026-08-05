@@ -6,7 +6,7 @@
  * `<neon-menu-item>` elements. Menu item contents remain fully
  * consumer-authored.
  *
- * - Roving tabindex across registered `<neon-menu-item>` rows. Disabled items are
+ * - Roving tabindex across owned `<neon-menu-item>` rows. Disabled items are
  *   skipped (`[disabled]` or `aria-disabled="true"`).
  * - Arrow Up / Down move between items, Home / End jump to first / last.
  * - Enter / Space activate the focused item via `click()`.

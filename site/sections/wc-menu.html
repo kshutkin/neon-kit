@@ -132,8 +132,8 @@ import '@neon-kit/web-components/menu';</code></pre>
         <p class="mb-4 text-ink-secondary">
             Rows must be authored as
             <code>&lt;neon-menu-item class="menu__item"&gt;</code> descendants.
-            Each item registers with the nearest ancestor
-            <code>&lt;neon-menu&gt;</code>, so a nested
+            Each menu queries its Light-DOM descendants and owns the items whose
+            nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested
             <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item
             element does not render its own children, so labels, shortcuts,
             icons, checkmarks, and chevrons remain consumer-authored markup.
@@ -149,7 +149,7 @@ import '@neon-kit/web-components/menu';</code></pre>
             <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
             <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first focusable item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
-            <li>Registers descendant menu items through context, while each item reports its own <code>disabled</code>/<code>aria-disabled</code> changes.</li>
+            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, moved, or change <code>disabled</code>/<code>aria-disabled</code> state.</li>
             <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>
             <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>
         </ul>

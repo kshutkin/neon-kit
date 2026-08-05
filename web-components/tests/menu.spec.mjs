@@ -193,7 +193,7 @@ describe('<neon-menu>', () => {
         expect(item.hasAttribute('tabindex')).toBe(false);
     });
 
-    it('registers wrapped descendant menu item elements with the nearest menu', async () => {
+    it('includes wrapped descendant menu item elements owned by the nearest menu', async () => {
         const menu = mount(`
             <neon-menu>
                 <div>
@@ -212,7 +212,7 @@ describe('<neon-menu>', () => {
         expect(item.getAttribute('tabindex')).toBe('0');
     });
 
-    it('registers descendant menu items added after mount', async () => {
+    it('includes descendant menu items added after mount', async () => {
         const menu = mount('<neon-menu></neon-menu>');
         const wrapper = document.createElement('div');
         const item = document.createElement('neon-menu-item');
@@ -226,7 +226,7 @@ describe('<neon-menu>', () => {
         expect(item.getAttribute('tabindex')).toBe('0');
     });
 
-    it('uses current tree order after registered items move', async () => {
+    it('uses current tree order after owned items move', async () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item id="alpha" class="menu__item">Alpha</neon-menu-item>
@@ -467,7 +467,7 @@ describe('<neon-menu>', () => {
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[0].focus();
         items[1].removeAttribute('disabled');
-        // Let the menu item attribute observer notify the menu controller.
+        // Let the reactive DOM query observe the disabled-state change.
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));

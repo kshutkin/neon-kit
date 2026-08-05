@@ -8,7 +8,7 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 
 - [x] Menu container has a default `menu` role through ElementInternals.
 - [x] `<neon-menu-item>` has a default `menuitem` role through ElementInternals.
-- [x] `<neon-menu-item>` registers with the nearest ancestor `<neon-menu>` context.
+- [x] Each `<neon-menu>` queries its Light-DOM descendants and owns the `<neon-menu-item>` elements whose nearest ancestor menu is that menu.
 - [x] The menu uses roving `tabindex` so one menu item is in the tab sequence at a time.
 - [x] Opening a popover menu moves focus to the first focusable menu item.
 - [x] `ArrowDown` moves focus to the next focusable menu item.
@@ -24,7 +24,7 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [x] `<neon-menu-item>` can act as a popover trigger for nested menu composition.
 - [x] `<neon-menu-item popovertarget>` manages `aria-haspopup` for submenu trigger items.
 - [x] `<neon-menu-item popovertarget>` manages `aria-expanded` for submenu trigger items.
-- [x] Elements that are not registered `<neon-menu-item>` descendants are ignored by keyboard navigation.
+- [x] Elements that are not owned `<neon-menu-item>` descendants are ignored by keyboard navigation.
 - [x] `Escape` closes an open popover menu and restores focus through browser popover behavior.
 - [x] Focus restore fills the native popover gap when focus remains inside a closing menu and a valid trigger or invoker is available.
 - [x] Leaf menu item activation closes all open popover menus in the same root menu tree.
