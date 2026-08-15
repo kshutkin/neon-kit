@@ -20,6 +20,13 @@ export function getActiveElement(element) {
 
 /**
  * @param {Element} element
+ */
+export function isDisabled(element) {
+    return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true';
+}
+
+/**
+ * @param {Element} element
  * @param {FocusableFlags} [flags]
  */
 export function isFocusable(element, flags = 0) {

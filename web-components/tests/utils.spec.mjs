@@ -4,6 +4,7 @@ import {
     FOCUSABLE_PROGRAMMATIC,
     generateId,
     getActiveElement,
+    isDisabled,
     isFocusable,
 } from '../src/utils.js';
 
@@ -46,6 +47,18 @@ describe('getActiveElement()', () => {
         expect(getActiveElement(button)).toBe(button);
 
         host.remove();
+    });
+});
+
+describe('isDisabled()', () => {
+    it('accepts disabled and aria-disabled elements', () => {
+        expect(isDisabled(elementFromHtml('<button disabled>Save</button>'))).toBe(true);
+        expect(isDisabled(elementFromHtml('<div aria-disabled="true"></div>'))).toBe(true);
+    });
+
+    it('rejects enabled elements', () => {
+        expect(isDisabled(elementFromHtml('<button>Save</button>'))).toBe(false);
+        expect(isDisabled(elementFromHtml('<div aria-disabled="false"></div>'))).toBe(false);
     });
 });
 

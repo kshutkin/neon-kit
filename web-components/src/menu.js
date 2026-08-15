@@ -34,7 +34,7 @@ import {
 import { queryChildren } from '@slimlib/jsx/query-children';
 import { effect } from '@slimlib/store';
 
-import { generateId, getActiveElement } from './utils.js';
+import { generateId, getActiveElement, isDisabled } from './utils.js';
 
 const ITEM_SELECTOR = 'neon-menu-item';
 const MENU_SELECTOR = 'neon-menu';
@@ -59,14 +59,6 @@ const OWNED_ITEM_SELECTOR = `:scope ${ITEM_SELECTOR}:not(:scope ${MENU_SELECTOR}
 
 /** @type {import('@slimlib/element').Context<symbol, MenuRootController>} */
 const MenuRootContext = createContext(Symbol());
-
-/**
- * @param {Element} element
- * @returns {boolean}
- */
-function isDisabled(element) {
-    return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true';
-}
 
 /**
  * @param {HTMLElement} target
