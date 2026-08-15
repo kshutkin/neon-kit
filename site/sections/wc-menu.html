@@ -34,30 +34,30 @@ import '@neon-kit/web-components/menu';</code></pre>
             </button>
             <neon-menu id="wc-demo-menu" popover class="menu">
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">New file</span>
+                    New file
                     <span class="menu__shortcut kbd-keys">
                         <kbd class="kbd">⌘</kbd>
                         <kbd class="kbd">N</kbd>
                     </span>
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Open</span>
+                    Open
                     <span class="menu__shortcut kbd-keys">
                         <kbd class="kbd">⌘</kbd>
                         <kbd class="kbd">O</kbd>
                     </span>
                 </neon-menu-item>
                 <neon-menu-item class="menu__item" disabled>
-                    <span class="menu__label">Save (disabled)</span>
+                    Save (disabled)
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Project Neon</span>
+                    Project Neon
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Theme tokens</span>
+                    Theme tokens
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Tooltip notes</span>
+                    Tooltip notes
                 </neon-menu-item>
             </neon-menu>
         </div>
@@ -82,34 +82,34 @@ import '@neon-kit/web-components/menu';</code></pre>
             </button>
             <neon-menu id="wc-nested-menu" popover class="menu">
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Rename</span>
+                    Rename
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Duplicate</span>
+                    Duplicate
                 </neon-menu-item>
                 <neon-menu-item
                     class="menu__item"
                     popovertarget="wc-nested-export-menu"
                 >
-                    <span class="menu__label">Export as</span>
+                    Export as
                     <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
                     <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
                         <neon-menu-item class="menu__item">
-                            <span class="menu__label">PDF document</span>
+                            PDF document
                         </neon-menu-item>
                         <neon-menu-item class="menu__item">
-                            <span class="menu__label">Markdown file</span>
+                            Markdown file
                         </neon-menu-item>
                         <neon-menu-item class="menu__item">
-                            <span class="menu__label">HTML page</span>
+                            HTML page
                         </neon-menu-item>
                     </neon-menu>
                 </neon-menu-item>
                 <neon-menu-item class="menu__item">
-                    <span class="menu__label">Archive</span>
+                    Archive
                 </neon-menu-item>
                 <neon-menu-item class="menu__item" disabled>
-                    <span class="menu__label">Delete permanently</span>
+                    Delete permanently
                 </neon-menu-item>
             </neon-menu>
         </div>
@@ -137,7 +137,9 @@ import '@neon-kit/web-components/menu';</code></pre>
             nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested
             <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item
             element does not render its own children, so labels, shortcuts,
-            icons, checkmarks, and chevrons remain consumer-authored markup.
+            icons, checkmarks, and chevrons remain consumer-authored markup. One
+            direct text run or unclassified element fills the label column;
+            <code>.menu__label</code> is only needed to group multiple label nodes.
             Disabled rows use <code>disabled</code> or
             <code>aria-disabled="true"</code> — both remain in keyboard
             navigation and click activation is suppressed.

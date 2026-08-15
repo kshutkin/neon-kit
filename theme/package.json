@@ -37,7 +37,8 @@
   },
   "homepage": "https://github.com/kshutkin/neon-kit",
   "scripts": {
-    "prepack": "npx pkgprn"
+    "prepack": "npx pkgprn",
+    "test": "vitest run --config ../vitest.config.js"
   },
   "devDependencies": {
     "heroicons": "^2.2.0",

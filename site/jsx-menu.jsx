@@ -21,17 +21,17 @@ function mountDemos() {
                 content={
                     <div class="menu__group">
                         <MenuItem>
-                            <span class="menu__label">New file</span>
+                            New file
                             <span class="menu__shortcut kbd-keys">
                                 <kbd class="kbd">⌘</kbd>
                                 <kbd class="kbd">N</kbd>
                             </span>
                         </MenuItem>
                         <MenuItem>
-                            <span class="menu__label">Open</span>
+                            Open
                         </MenuItem>
                         <MenuItem disabled>
-                            <span class="menu__label">Delete</span>
+                            Delete
                         </MenuItem>
                     </div>
                 }
@@ -48,23 +48,23 @@ function mountDemos() {
                 content={
                     <div class="menu__group">
                         <MenuItem>
-                            <span class="menu__label">Rename</span>
+                            Rename
                         </MenuItem>
                         <Menu
                             placement="inline-end"
                             content={
                                 <div class="menu__group">
                                     <MenuItem>
-                                        <span class="menu__label">PDF document</span>
+                                        PDF document
                                     </MenuItem>
                                     <MenuItem>
-                                        <span class="menu__label">Markdown file</span>
+                                        Markdown file
                                     </MenuItem>
                                 </div>
                             }
                         >
                             <MenuItem>
-                                <span class="menu__label">Export as</span>
+                                Export as
                                 {svg(() => (
                                     <svg
                                         class="menu__chevron"
@@ -84,7 +84,7 @@ function mountDemos() {
                             </MenuItem>
                         </Menu>
                         <MenuItem>
-                            <span class="menu__label">Archive</span>
+                            Archive
                         </MenuItem>
                     </div>
                 }

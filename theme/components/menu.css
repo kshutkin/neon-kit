@@ -8,7 +8,7 @@
          <div class="menu__group-header">Section</div>
          <button class="menu__item" type="button">
            <svg class="menu__icon" aria-hidden="true">…</svg>
-           <span class="menu__label">Label</span>
+           Label
            <kbd class="menu__shortcut">⌘K</kbd>
            <svg class="menu__chevron" aria-hidden="true">…</svg>
          </button>
@@ -19,8 +19,10 @@
    Layout uses CSS subgrid so the three columns
    [start-icon] [label] [end: shortcut OR chevron]
    align across every row in the menu, regardless of which optional parts
-   each item carries. Shortcut and chevron share the trailing column —
-   items with a submenu chevron should not also carry a shortcut hint.
+   each item carries. A label can be one direct text run or one unclassified
+   element. Use `.menu__label` only to group multiple label nodes. Shortcut
+   and chevron share the trailing column — items with a submenu chevron
+   should not also carry a shortcut hint.
 
    Items are <button type="button"> so they're natively focusable and
    keyboard-activatable; group headers and the menu container itself are not.
@@ -39,7 +41,10 @@
        subgrid. The trailing column holds either the shortcut or the
        chevron — never both. */
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    /* The label track owns its minimum because an unwrapped text label is an
+       anonymous, unstyleable grid item and cannot receive `min-inline-size`.
+       This preserves the old `.menu__label { min-inline-size: 0 }` behavior. */
+    grid-template-columns: auto minmax(0, 1fr) auto;
     min-width: --spacing(48);
 
     /* Tunable item padding — overridable per-instance. */
@@ -163,9 +168,19 @@
     padding-inline: var(--menu-item-padding-inline);
 }
 
+/* Reserve the leading column so one unwrapped text run or unclassified
+   element auto-places into the label column. A real icon overlaps this empty
+   grid item. This generated box is an internal layout hook. */
+.menu__item::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+}
+
 /* Decorative icon — sized in em so it scales with the row's font size. */
 .menu__icon {
     grid-column: 1;
+    grid-row: 1;
     inline-size: 1em;
     block-size: 1em;
     align-self: center;
@@ -174,6 +189,7 @@
 /* Label text. */
 .menu__label {
     grid-column: 2;
+    grid-row: 1;
     min-inline-size: 0;
 }
 
@@ -182,6 +198,7 @@
 .menu__shortcut {
     @apply text-ink-secondary text-xs;
     grid-column: 3;
+    grid-row: 1;
     justify-self: end;
     align-self: center;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -195,6 +212,7 @@
    that column with a long keyboard-shortcut hint. */
 .menu__chevron {
     grid-column: 3;
+    grid-row: 1;
     justify-self: end;
     inline-size: 1em;
     block-size: 1em;
