@@ -6,10 +6,11 @@
  * `<neon-menu-item>` elements. Menu item contents remain fully
  * consumer-authored.
  *
- * - Roving tabindex across owned `<neon-menu-item>` rows. Disabled items are
- *   skipped (`[disabled]` or `aria-disabled="true"`).
+ * - Roving tabindex across owned `<neon-menu-item>` rows, including disabled
+ *   items as required by the APG menu pattern.
  * - Arrow Up / Down move between items, Home / End jump to first / last.
- * - Enter / Space activate the focused item via `click()`.
+ * - Arrow Right opens a submenu; Arrow Left closes it and restores focus.
+ * - Enter / Space activate an enabled focused item via `click()`.
  * - `role="menu"` on the host. `<neon-menu-item>` provides item role.
  *
  * Per ADR 0001 the element renders into Light DOM (no shadow root).
@@ -33,12 +34,11 @@ import {
 import { queryChildren } from '@slimlib/jsx/query-children';
 import { effect } from '@slimlib/store';
 
-import { getActiveElement } from './utils.js';
+import { generateId, getActiveElement } from './utils.js';
 
 const ITEM_SELECTOR = 'neon-menu-item';
 const MENU_SELECTOR = 'neon-menu';
 const OWNED_ITEM_SELECTOR = `:scope ${ITEM_SELECTOR}:not(:scope ${MENU_SELECTOR} ${ITEM_SELECTOR})`;
-const OWNED_FOCUSABLE_ITEM_SELECTOR = `${OWNED_ITEM_SELECTOR}:not([disabled]):not([aria-disabled="true"])`;
 
 /**
  * @typedef {{
@@ -105,10 +105,9 @@ function createMenuRootController() {
  * @param {HTMLElement} host
  * @param {MenuRootController | undefined} rootController
  * @param {import('@slimlib/store').Signal<readonly HTMLElement[]>} itemQuery
- * @param {import('@slimlib/store').Signal<readonly HTMLElement[]>} focusableItemQuery
  * @returns {MenuController}
  */
-function createMenuController(host, rootController, itemQuery, focusableItemQuery) {
+function createMenuController(host, rootController, itemQuery) {
     /** @type {HTMLElement | undefined} */
     let restoreFocusElement;
     /** @type {readonly HTMLElement[]} */
@@ -116,8 +115,6 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
 
     /** @returns {readonly HTMLElement[]} */
     const getItems = () => itemQuery();
-    /** @returns {readonly HTMLElement[]} */
-    const getFocusableItems = () => focusableItemQuery();
     /** @returns {HTMLElement | undefined} */
     const getActiveItem = () => {
         const activeElement = getActiveElement(host);
@@ -172,9 +169,9 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
         }
         previousItems = items;
         const activeItem = getActiveItem();
-        const rovingItem = activeItem !== undefined && !isDisabled(activeItem)
+        const rovingItem = activeItem !== undefined
             ? activeItem
-            : getFocusableItems()[0];
+            : items[0];
         setRovingTabindex(rovingItem);
     };
 
@@ -194,7 +191,7 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
             previousItems = [];
         },
         $_handleKeyDown(event) {
-            const items = getFocusableItems();
+            const items = getItems();
             const shouldHandleEvent = event.target === host || getEventItem(event.target) !== undefined;
             if (items.length > 0 && shouldHandleEvent) {
                 const currentItem = getActiveItem();
@@ -222,11 +219,41 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
                         focusItem(items[items.length - 1]);
                         handled = true;
                         break;
+                    case 'ArrowRight': {
+                        const submenu = currentItem === undefined || isDisabled(currentItem)
+                            ? undefined
+                            : getMenuPopoverTarget(currentItem);
+                        if (submenu !== undefined) {
+                            event.preventDefault();
+                            if (!isOpenPopover(submenu)) {
+                                /** @type {HTMLElement & { showPopover: (options?: { source?: HTMLElement }) => void }} */ (submenu)
+                                    .showPopover({ source: currentItem });
+                            }
+                            const firstSubmenuItem = /** @type {HTMLElement | null} */ (
+                                submenu.querySelector(OWNED_ITEM_SELECTOR)
+                            );
+                            firstSubmenuItem?.focus();
+                            handled = true;
+                        }
+                        break;
+                    }
+                    case 'ArrowLeft': {
+                        const parentItem = getParentMenuItem(host, restoreFocusElement);
+                        if (parentItem !== undefined && isOpenPopover(host)) {
+                            event.preventDefault();
+                            host.hidePopover();
+                            parentItem.focus();
+                            handled = true;
+                        }
+                        break;
+                    }
                     case 'Enter':
                     case ' ':
                         if (currentItem !== undefined) {
                             event.preventDefault();
-                            currentItem.click();
+                            if (!isDisabled(currentItem)) {
+                                currentItem.click();
+                            }
                             handled = true;
                         }
                         break;
@@ -239,7 +266,7 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
         },
         $_handleFocusIn(event) {
             const focusedItem = getEventItem(event.target);
-            if (focusedItem !== undefined && !isDisabled(focusedItem)) {
+            if (focusedItem !== undefined) {
                 setRovingTabindex(focusedItem);
             }
         },
@@ -248,13 +275,17 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
                 const activeElement = getActiveElement(host);
                 if (event.newState === 'open') {
                     rootController?.$_registerOpenMenu(host);
-                    restoreFocusElement = canRestoreFocusTo(activeElement)
-                        && !canRestoreFocusFrom(activeElement)
-                        ? activeElement
+                    const eventSource = /** @type {ToggleEvent & { source?: Element | null }} */ (event).source;
+                    const focusCandidate = canRestoreFocusTo(eventSource)
+                        ? eventSource
+                        : activeElement;
+                    restoreFocusElement = canRestoreFocusTo(focusCandidate)
+                        && !canRestoreFocusFrom(focusCandidate)
+                        ? focusCandidate
                         : undefined;
-                    const firstFocusableItem = getFocusableItems()[0];
-                    if (firstFocusableItem !== undefined) {
-                        focusItem(firstFocusableItem);
+                    const firstItem = getItems()[0];
+                    if (firstItem !== undefined) {
+                        focusItem(firstItem);
                     }
                 } else {
                     rootController?.$_unregisterOpenMenu(host);
@@ -272,27 +303,146 @@ function createMenuController(host, rootController, itemQuery, focusableItemQuer
 }
 
 /**
+ * @param {HTMLElement} item
+ * @returns {HTMLElement | undefined}
+ */
+function getMenuPopoverTarget(item) {
+    const popoverTarget = getPopoverTarget(item);
+    return popoverTarget?.matches(`${MENU_SELECTOR}[popover]`) === true
+        && item.getAttribute('popovertargetaction') !== 'hide'
+        ? popoverTarget
+        : undefined;
+}
+
+/**
+ * @param {HTMLElement} menu
+ * @param {HTMLElement | undefined} restoreFocusElement
+ * @returns {HTMLElement | undefined}
+ */
+function getParentMenuItem(menu, restoreFocusElement) {
+    let parentItem;
+    if (
+        restoreFocusElement?.matches(ITEM_SELECTOR) === true
+        && restoreFocusElement.closest(MENU_SELECTOR) !== null
+        && getPopoverTarget(restoreFocusElement) === menu
+    ) {
+        parentItem = restoreFocusElement;
+    } else {
+        const root = menu.getRootNode();
+        if (root instanceof Document || root instanceof ShadowRoot) {
+            parentItem = /** @type {HTMLElement | undefined} */ (
+                Array.from(root.querySelectorAll(ITEM_SELECTOR)).find((item) => (
+                    item instanceof HTMLElement
+                    && item.closest(MENU_SELECTOR) !== null
+                    && getPopoverTarget(item) === menu
+                ))
+            );
+        }
+    }
+    return parentItem;
+}
+
+/**
+ * @param {HTMLElement} menu
+ * @param {HTMLElement | null | undefined} preferredTrigger
+ * @returns {HTMLElement | undefined}
+ */
+function getPopoverTrigger(menu, preferredTrigger) {
+    let trigger;
+    if (preferredTrigger instanceof HTMLElement && getPopoverTarget(preferredTrigger) === menu) {
+        trigger = preferredTrigger;
+    } else {
+        const root = menu.getRootNode();
+        if (root instanceof Document || root instanceof ShadowRoot) {
+            trigger = /** @type {HTMLElement | undefined} */ (
+                Array.from(root.querySelectorAll('[popovertarget]')).find((candidate) => (
+                    candidate instanceof HTMLElement && getPopoverTarget(candidate) === menu
+                ))
+            );
+        }
+    }
+    return trigger;
+}
+
+/**
+ * @param {HTMLElement} host
+ */
+function createMenuLabelController(host) {
+    /** @type {HTMLElement | undefined} */
+    let generatedIdTrigger;
+    /** @type {string | undefined} */
+    let generatedTriggerId;
+    /** @type {string | undefined} */
+    let managedLabelledBy;
+
+    const clearGeneratedId = () => {
+        if (generatedIdTrigger !== undefined && generatedIdTrigger.id === generatedTriggerId) {
+            generatedIdTrigger.removeAttribute('id');
+        }
+        generatedIdTrigger = undefined;
+        generatedTriggerId = undefined;
+    };
+
+    const clearManagedLabel = () => {
+        if (host.getAttribute('aria-labelledby') === managedLabelledBy) {
+            host.removeAttribute('aria-labelledby');
+        }
+        managedLabelledBy = undefined;
+        clearGeneratedId();
+    };
+
+    return {
+        /** @param {HTMLElement | null | undefined} [preferredTrigger] */
+        $_sync(preferredTrigger) {
+            const currentLabelledBy = host.getAttribute('aria-labelledby');
+            const hasConsumerLabel = host.hasAttribute('aria-label')
+                || (currentLabelledBy !== null && currentLabelledBy !== managedLabelledBy);
+            if (hasConsumerLabel) {
+                clearManagedLabel();
+            } else {
+                const trigger = getPopoverTrigger(host, preferredTrigger);
+                if (trigger === undefined) {
+                    clearManagedLabel();
+                } else {
+                    if (generatedIdTrigger !== undefined && generatedIdTrigger !== trigger) {
+                        clearGeneratedId();
+                    }
+                    if (trigger.id === '') {
+                        generatedTriggerId = generateId('neon-menu-trigger');
+                        generatedIdTrigger = trigger;
+                        trigger.id = generatedTriggerId;
+                    }
+                    managedLabelledBy = trigger.id;
+                    if (currentLabelledBy !== managedLabelledBy) {
+                        host.setAttribute('aria-labelledby', managedLabelledBy);
+                    }
+                }
+            }
+        },
+        $_clear() {
+            clearManagedLabel();
+        },
+    };
+}
+
+/**
  * @param {HTMLElement} host
  */
 const renderMenu = (host) => {
     const elementInternals = internals();
     elementInternals.role = 'menu';
     const rootController = requestContext(MenuRootContext);
+    /** @type {import('@slimlib/store').Signal<readonly HTMLElement[]>} */
     const itemQuery = queryChildren(/** @type {HTMLElement} */ (host), OWNED_ITEM_SELECTOR);
-    const focusableItemQuery = queryChildren(
-        /** @type {HTMLElement} */ (host),
-        OWNED_FOCUSABLE_ITEM_SELECTOR,
-    );
     const menuController = createMenuController(
         /** @type {HTMLElement} */ (host),
         rootController,
         itemQuery,
-        focusableItemQuery,
     );
+    const labelController = createMenuLabelController(/** @type {HTMLElement} */ (host));
 
     effect(() => {
         void itemQuery();
-        void focusableItemQuery();
         menuController.$_refreshItems();
     }, 1);
 
@@ -301,12 +451,30 @@ const renderMenu = (host) => {
         const listenerOptions = { signal: abortController.signal };
         host.addEventListener('keydown', menuController.$_handleKeyDown, listenerOptions);
         host.addEventListener('focusin', menuController.$_handleFocusIn, listenerOptions);
-        host.addEventListener('toggle', /** @type {EventListener} */ (menuController.$_handleToggle), listenerOptions);
+        host.addEventListener('toggle', /** @type {EventListener} */ ((event) => {
+            labelController.$_sync(
+                /** @type {ToggleEvent & { source?: HTMLElement | null }} */ (event).source,
+            );
+            menuController.$_handleToggle(/** @type {ToggleEvent} */ (event));
+        }), listenerOptions);
         menuController.$_refreshItems();
+        labelController.$_sync();
+
+        const labelObserver = new MutationObserver(() => {
+            labelController.$_sync();
+        });
+        labelObserver.observe(host.getRootNode(), {
+            attributeFilter: ['aria-label', 'aria-labelledby', 'id', 'popovertarget'],
+            attributes: true,
+            childList: true,
+            subtree: true,
+        });
 
         return () => {
             rootController?.$_unregisterOpenMenu(/** @type {HTMLElement} */ (host));
             menuController.$_clearItems();
+            labelObserver.disconnect();
+            labelController.$_clear();
             abortController.abort();
         };
     });

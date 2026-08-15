@@ -6,7 +6,7 @@
         <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key
         navigation, <code>Home</code> / <code>End</code> jump, and activation
         with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or
-        <code>aria-disabled="true"</code>) are skipped. See the
+        <code>aria-disabled="true"</code>) remain focusable but cannot be activated. See the
         <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
     </p>
 
@@ -70,9 +70,11 @@ import '@neon-kit/web-components/menu';</code></pre>
             a menu item as the native popover trigger for another
             <code>&lt;neon-menu&gt;</code>. Open the parent, focus
             <span class="whitespace-nowrap">Export as</span>, then press
-            <kbd class="kbd">Enter</kbd> or <kbd class="kbd">Space</kbd> to
+            <kbd class="kbd">→</kbd>, <kbd class="kbd">Enter</kbd>, or <kbd class="kbd">Space</kbd> to
             open the child menu. The submenu is authored inside its trigger
-            item so the menu tree shares one root context.
+            item so the menu tree shares one root context. Press
+            <kbd class="kbd">←</kbd> in the child menu to close it and return
+            focus to <span class="whitespace-nowrap">Export as</span>.
         </p>
         <div class="rounded-lg border border-border bg-surface-secondary p-6">
             <button type="button" class="btn" popovertarget="wc-nested-menu">
@@ -112,9 +114,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             </neon-menu>
         </div>
         <p class="mt-4 text-ink-secondary">
-            This composition is intentionally modest: there is no dedicated
-            <kbd class="kbd">→</kbd>/<kbd class="kbd">←</kbd> submenu logic or
-            hover-open behavior. Each open menu handles its own roving focus.
+            Each open menu handles its own roving focus. Hover-open behavior
+            remains consumer-owned.
         </p>
     </section>
 
@@ -138,9 +139,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             element does not render its own children, so labels, shortcuts,
             icons, checkmarks, and chevrons remain consumer-authored markup.
             Disabled rows use <code>disabled</code> or
-            <code>aria-disabled="true"</code> — both are skipped during
-            keyboard navigation, click is suppressed, and they are excluded
-            from the roving <code>tabindex</code>.
+            <code>aria-disabled="true"</code> — both remain in keyboard
+            navigation and click activation is suppressed.
         </p>
 
         <h3 class="mb-2">Behavior</h3>
@@ -148,10 +148,11 @@ import '@neon-kit/web-components/menu';</code></pre>
             <li>Provides a default <code>menu</code> role for the host.</li>
             <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
-            <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first focusable item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
-            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, moved, or change <code>disabled</code>/<code>aria-disabled</code> state.</li>
+            <li>On the popover <code>toggle</code> event with <code>newState === "open"</code>, focus moves to the first item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>
+            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, or moved.</li>
             <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>
             <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>
+            <li>A popover menu derives <code>aria-labelledby</code> from its trigger unless the menu already has <code>aria-label</code> or <code>aria-labelledby</code>.</li>
         </ul>
 
         <h3 class="mb-2">Popover wiring</h3>
@@ -172,7 +173,7 @@ import '@neon-kit/web-components/menu';</code></pre>
         <h2 class="mb-4">Accessibility pattern</h2>
         <p class="mb-4 text-ink-secondary">
             Implements the
-            <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/">WAI-ARIA Menu pattern</a>.
+            <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/">WAI-ARIA Menu and Menubar pattern</a>.
             The host has a default <code>menu</code> role, each row carries
             a default <code>menuitem</code> role, and a roving <code>tabindex</code>
             keeps each menu a single tab stop.
@@ -190,15 +191,23 @@ import '@neon-kit/web-components/menu';</code></pre>
                 <tbody>
                     <tr>
                         <td class="border border-border px-4 py-2"><kbd class="kbd">↓</kbd> <kbd class="kbd">↑</kbd></td>
-                        <td class="border border-border px-4 py-2">Move focus to the next / previous focusable item, wrapping at the ends.</td>
+                        <td class="border border-border px-4 py-2">Move focus to the next / previous item, wrapping at the ends.</td>
                     </tr>
                     <tr>
                         <td class="border border-border px-4 py-2"><kbd class="kbd">Home</kbd> <kbd class="kbd">End</kbd></td>
-                        <td class="border border-border px-4 py-2">Jump to the first / last focusable item.</td>
+                        <td class="border border-border px-4 py-2">Jump to the first / last item.</td>
                     </tr>
                     <tr>
                         <td class="border border-border px-4 py-2"><kbd class="kbd">Enter</kbd> <kbd class="kbd">Space</kbd></td>
-                        <td class="border border-border px-4 py-2">Activate the focused item (calls <code>click()</code>).</td>
+                        <td class="border border-border px-4 py-2">Activate the focused enabled item (calls <code>click()</code>).</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">→</kbd></td>
+                        <td class="border border-border px-4 py-2">Open the focused item's submenu and move focus to its first item.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-border px-4 py-2"><kbd class="kbd">←</kbd></td>
+                        <td class="border border-border px-4 py-2">Close a submenu and return focus to its parent menu item.</td>
                     </tr>
                     <tr>
                         <td class="border border-border px-4 py-2"><kbd class="kbd">Esc</kbd></td>
@@ -209,14 +218,13 @@ import '@neon-kit/web-components/menu';</code></pre>
         </div>
 
         <p class="mb-4 text-ink-secondary">
-            Disabled items are kept in the DOM for context but skipped during
-            arrow-key navigation, do not receive the roving
-            <code>tabindex</code>, and have their <code>click</code> events
-            suppressed.
+            Disabled items remain in arrow-key navigation and can receive the
+            roving <code>tabindex</code>, but keyboard and pointer activation
+            are suppressed.
         </p>
         <p class="mb-4 text-ink-secondary">
             The trigger button keeps its native semantics. On open, focus moves
-            into the menu (first focusable item). On close via
+            into the menu (first item). On close via
             <kbd class="kbd">Esc</kbd> or outside dismissal, the native popover
             behavior returns focus to the trigger.
         </p>

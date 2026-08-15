@@ -10,15 +10,16 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [x] `<neon-menu-item>` has a default `menuitem` role through ElementInternals.
 - [x] Each `<neon-menu>` queries its Light-DOM descendants and owns the `<neon-menu-item>` elements whose nearest ancestor menu is that menu.
 - [x] The menu uses roving `tabindex` so one menu item is in the tab sequence at a time.
-- [x] Opening a popover menu moves focus to the first focusable menu item.
-- [x] `ArrowDown` moves focus to the next focusable menu item.
-- [x] `ArrowUp` moves focus to the previous focusable menu item.
-- [x] Arrow-key navigation wraps from the last focusable item to the first.
-- [x] Arrow-key navigation wraps from the first focusable item to the last.
-- [x] `Home` moves focus to the first focusable menu item.
-- [x] `End` moves focus to the last focusable menu item.
-- [x] `Enter` activates the focused item by dispatching its click behavior.
-- [x] `Space` activates the focused item by dispatching its click behavior.
+- [x] Opening a popover menu moves focus to the first menu item.
+- [x] `ArrowDown` moves focus to the next menu item.
+- [x] `ArrowUp` moves focus to the previous menu item.
+- [x] Arrow-key navigation wraps from the last item to the first.
+- [x] Arrow-key navigation wraps from the first item to the last.
+- [x] `Home` moves focus to the first menu item.
+- [x] `End` moves focus to the last menu item.
+- [x] `Enter` activates an enabled focused item by dispatching its click behavior.
+- [x] `Space` activates an enabled focused item by dispatching its click behavior.
+- [x] Disabled menu items participate in roving focus but cannot be activated.
 - [x] Disabled menu items do not activate on click.
 - [x] `<neon-menu-item>` reflects `disabled` and `aria-disabled="true"` to accessible disabled state.
 - [x] `<neon-menu-item>` can act as a popover trigger for nested menu composition.
@@ -29,12 +30,14 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [x] Focus restore fills the native popover gap when focus remains inside a closing menu and a valid trigger or invoker is available.
 - [x] Leaf menu item activation closes all open popover menus in the same root menu tree.
 - [x] Nested menus share root menu context when the child menu is authored inside its triggering menu item.
+- [x] `Right Arrow` opens the focused item's submenu and moves focus to its first item.
+- [x] `Left Arrow` closes a submenu and returns focus to its parent menu item.
+- [x] A popover menu without a consumer-authored name uses `aria-labelledby` to reference its trigger.
+- [x] Consumer-authored `aria-label` and `aria-labelledby` values take precedence over component-managed naming.
 
 ## Partially Implemented
 
-- [ ] Disabled menu items should be focusable but not activatable according to APG; current behavior skips disabled items during keyboard navigation.
-- [ ] Submenus can be composed with nested popovers, but there is no dedicated submenu keyboard model.
-- [ ] Accessible names for menus are consumer-authored rather than managed by the component.
+No partially implemented checklist items remain.
 
 ## Not Implemented
 
@@ -42,15 +45,12 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 - [ ] Horizontal menubar keyboard behavior.
 - [ ] `Right Arrow` behavior for moving through menubar items.
 - [ ] `Left Arrow` behavior for moving through menubar items.
-- [ ] `Right Arrow` behavior for opening a submenu from a menu item.
-- [ ] `Left Arrow` behavior for closing a submenu and returning focus to its parent menu item.
 - [ ] Menubar submenu opening from arrow-key navigation.
 - [ ] Printable-character typeahead.
 - [ ] `menuitemcheckbox` role support.
 - [ ] `menuitemradio` role support.
 - [ ] Component-managed `aria-checked`.
 - [ ] Component-managed `aria-controls` or trigger-to-menu relationship wiring.
-- [ ] Component-managed `aria-labelledby` wiring.
 - [ ] Component-managed `aria-orientation`.
 - [ ] `aria-activedescendant` focus strategy.
 - [ ] `Tab` behavior that closes all open menus when focus leaves a menu or menubar.
@@ -67,8 +67,5 @@ Use this as a working checklist for the `neon-menu` component. Items are grouped
 
 ## Open Refinement Questions
 
-- [ ] Should disabled items become focusable to match APG, or should `neon-menu` intentionally keep native disabled controls out of arrow-key navigation?
-- [ ] Should nested menus graduate from "working composition" to a supported submenu model?
-- [ ] If submenus become fully supported, should the component add arrow-key open/close behavior beyond current popover composition?
 - [ ] Should `neon-menu` ever support `menubar`, or should that become a separate component?
 - [ ] Should typeahead stay intentionally removed, or move to an opt-in helper outside the component?

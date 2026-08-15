@@ -145,7 +145,50 @@ describe('<neon-menu>', () => {
         expect(menu.getAttribute('role')).toBe('listbox');
     });
 
-    it('ignores keyboard navigation when the menu has no focusable items', () => {
+    it('uses its popover trigger as its accessible name', async () => {
+        document.body.innerHTML = `
+            <button type="button" popovertarget="menu">File actions</button>
+            <neon-menu id="menu" popover>
+                <neon-menu-item class="menu__item">Open</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('button'));
+        const menu = /** @type {HTMLElement} */ (document.querySelector('neon-menu'));
+
+        expect(trigger.id).toMatch(/^neon-menu-trigger-[a-z0-9]{9}$/);
+        expect(menu.getAttribute('aria-labelledby')).toBe(trigger.id);
+    });
+
+    it('preserves a consumer-authored accessible name', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="menu">File actions</button>
+            <neon-menu id="menu" popover aria-label="Commands">
+                <neon-menu-item class="menu__item">Open</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const menu = /** @type {HTMLElement} */ (document.querySelector('neon-menu'));
+
+        expect(menu.getAttribute('aria-label')).toBe('Commands');
+        expect(menu.hasAttribute('aria-labelledby')).toBe(false);
+    });
+
+    it('preserves a consumer-authored accessible name reference', async () => {
+        document.body.innerHTML = `
+            <span id="label">File actions</span>
+            <button id="trigger" type="button" popovertarget="menu">Open</button>
+            <neon-menu id="menu" popover aria-labelledby="label">
+                <neon-menu-item class="menu__item">Open</neon-menu-item>
+            </neon-menu>
+        `;
+        await nextTask();
+        const menu = /** @type {HTMLElement} */ (document.querySelector('neon-menu'));
+
+        expect(menu.getAttribute('aria-labelledby')).toBe('label');
+    });
+
+    it('ignores keyboard navigation when the menu has no items', () => {
         const menu = mount('<neon-menu></neon-menu>');
         const event = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true });
 
@@ -155,7 +198,7 @@ describe('<neon-menu>', () => {
         expect(menu.querySelectorAll('.menu__item')).toHaveLength(0);
     });
 
-    it('assigns roving tabindex with the first focusable item active', async () => {
+    it('assigns roving tabindex with the first item active', async () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item">Alpha</neon-menu-item>
@@ -167,8 +210,7 @@ describe('<neon-menu>', () => {
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         expect(items[0].getAttribute('tabindex')).toBe('0');
         expect(items[1].getAttribute('tabindex')).toBe('-1');
-        // The menu item owns accessible disabled state; the menu only uses
-        // disabled state to decide roving focus.
+        // The menu item owns accessible disabled state.
         expect(items[1].hasAttribute('disabled')).toBe(true);
         expect(items[2].getAttribute('tabindex')).toBe('-1');
         for (const item of items) {
@@ -268,7 +310,7 @@ describe('<neon-menu>', () => {
         expect(alpha.getAttribute('tabindex')).toBe('-1');
     });
 
-    it('does not assign a roving item when every item is disabled', async () => {
+    it('assigns a roving item when every item is disabled', async () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item" disabled>Alpha</neon-menu-item>
@@ -278,7 +320,7 @@ describe('<neon-menu>', () => {
         await Promise.resolve();
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
 
-        expect(items[0].getAttribute('tabindex')).toBe('-1');
+        expect(items[0].getAttribute('tabindex')).toBe('0');
         expect(items[1].getAttribute('tabindex')).toBe('-1');
     });
 
@@ -299,7 +341,7 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(items[1]);
     });
 
-    it('moves focus with ArrowDown/ArrowUp skipping disabled items', () => {
+    it('moves focus with ArrowDown/ArrowUp through disabled items', () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item">Alpha</neon-menu-item>
@@ -311,10 +353,13 @@ describe('<neon-menu>', () => {
         items[0].focus();
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(items[1]);
+
+        menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
         expect(document.activeElement).toBe(items[2]);
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-        expect(document.activeElement).toBe(items[0]);
+        expect(document.activeElement).toBe(items[1]);
     });
 
     it('moves keyboard navigation from no focused item', () => {
@@ -346,7 +391,7 @@ describe('<neon-menu>', () => {
         expect(shadow.activeElement).toBe(item);
     });
 
-    it('Home/End jump to first/last focusable item', () => {
+    it('Home/End jump to first/last item', () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item">A</neon-menu-item>
@@ -391,6 +436,50 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(lastItem);
     });
 
+    it('opens a submenu with ArrowRight and closes it with ArrowLeft', async () => {
+        document.body.innerHTML = `
+            <button id="trigger" type="button" popovertarget="parent-menu">Open</button>
+            <neon-menu id="parent-menu" popover>
+                <neon-menu-item id="submenu-trigger" class="menu__item" popovertarget="child-menu">
+                    Export as
+                    <neon-menu id="child-menu" popover>
+                        <neon-menu-item id="pdf" class="menu__item">PDF</neon-menu-item>
+                        <neon-menu-item class="menu__item">Markdown</neon-menu-item>
+                    </neon-menu>
+                </neon-menu-item>
+            </neon-menu>
+        `;
+        const trigger = /** @type {HTMLElement} */ (document.querySelector('#trigger'));
+        const parentMenu = /** @type {HTMLElement} */ (document.querySelector('#parent-menu'));
+        const submenuTrigger = /** @type {HTMLElement} */ (document.querySelector('#submenu-trigger'));
+        const childMenu = /** @type {HTMLElement} */ (document.querySelector('#child-menu'));
+        const childItem = /** @type {HTMLElement} */ (document.querySelector('#pdf'));
+
+        trigger.click();
+        await nextTask();
+        submenuTrigger.focus();
+        parentMenu.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            key: 'ArrowRight',
+        }));
+        await nextTask();
+
+        expect(childMenu.matches(':popover-open')).toBe(true);
+        expect(document.activeElement).toBe(childItem);
+
+        childMenu.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            key: 'ArrowLeft',
+        }));
+        await nextTask();
+
+        expect(childMenu.matches(':popover-open')).toBe(false);
+        expect(document.activeElement).toBe(submenuTrigger);
+        expect(parentMenu.matches(':popover-open')).toBe(true);
+    });
+
     it('Enter activates the focused item via click', () => {
         const menu = mount(`
             <neon-menu>
@@ -422,6 +511,31 @@ describe('<neon-menu>', () => {
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
 
         expect(clicked).toBe(1);
+    });
+
+    it('does not activate a focused disabled item', () => {
+        const menu = mount(`
+            <neon-menu>
+                <neon-menu-item class="menu__item" disabled>Disabled</neon-menu-item>
+            </neon-menu>
+        `);
+        const item = /** @type {HTMLElement} */ (menu.querySelector('neon-menu-item'));
+        let clicked = 0;
+        item.addEventListener('click', () => {
+            clicked++;
+        });
+        item.focus();
+        const event = new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            key: 'Enter',
+        });
+
+        menu.dispatchEvent(event);
+
+        expect(clicked).toBe(0);
+        expect(event.defaultPrevented).toBe(true);
+        expect(document.activeElement).toBe(item);
     });
 
     it('ignores focus on child elements that are not menu items', () => {
@@ -457,24 +571,23 @@ describe('<neon-menu>', () => {
         expect(clicked).toBe(0);
     });
 
-    it('un-disabling an item makes it focusable again', async () => {
+    it('keeps an item in keyboard navigation when it becomes disabled', async () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item">A</neon-menu-item>
-                <neon-menu-item class="menu__item" disabled>B</neon-menu-item>
+                <neon-menu-item class="menu__item">B</neon-menu-item>
             </neon-menu>
         `);
         const items = /** @type {HTMLElement[]} */ (Array.from(menu.querySelectorAll('neon-menu-item')));
         items[0].focus();
-        items[1].removeAttribute('disabled');
-        // Let the reactive DOM query observe the disabled-state change.
+        items[1].setAttribute('disabled', '');
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
         expect(document.activeElement).toBe(items[1]);
     });
 
-    it('focuses the first focusable item when a popover menu opens', () => {
+    it('focuses the first item when a popover menu opens', () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item">Alpha</neon-menu-item>
@@ -514,7 +627,7 @@ describe('<neon-menu>', () => {
         expect(document.activeElement).toBe(items[0]);
     });
 
-    it('ignores closed popover toggles and open toggles without focusable items', () => {
+    it('focuses a disabled first item when a popover menu opens', () => {
         const menu = mount(`
             <neon-menu>
                 <neon-menu-item class="menu__item" disabled>Alpha</neon-menu-item>
@@ -529,8 +642,8 @@ describe('<neon-menu>', () => {
         menu.dispatchEvent(closedEvent);
         menu.dispatchEvent(openEvent);
 
-        expect(document.activeElement).not.toBe(item);
-        expect(item.getAttribute('tabindex')).toBe('-1');
+        expect(document.activeElement).toBe(item);
+        expect(item.getAttribute('tabindex')).toBe('0');
     });
 
     it('lets the platform restore focus to a top-level popover trigger', async () => {
