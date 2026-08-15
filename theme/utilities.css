@@ -103,8 +103,10 @@
         @apply bg-surface-active;
     }
 
-    &:disabled,
-    &[aria-disabled="true"] {
+    /* Autonomous custom elements do not match :disabled, even when they
+       expose a disabled attribute. Keep :disabled for native controls and
+       fieldset inheritance, and add [disabled] for custom controls. */
+    &:is(:disabled, [disabled], [aria-disabled="true"]) {
         @apply text-ink-muted;
         pointer-events: none;
     }
