@@ -1,4 +1,6 @@
 packages:
+  - core
+  - jsx-components
   - theme
   - web-components
   - icons

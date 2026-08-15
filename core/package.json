@@ -1,0 +1,23 @@
+{
+  "name": "@neon-kit/core",
+  "version": "0.0.1",
+  "description": "Framework-agnostic primitives for Neon Kit.",
+  "license": "MIT",
+  "author": "Konstantin Shutkin",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kshutkin/neon-kit.git",
+    "directory": "core"
+  },
+  "bugs": "https://github.com/kshutkin/neon-kit/issues",
+  "homepage": "https://github.com/kshutkin/neon-kit/blob/main/core/README.md",
+  "readme": "README.md",
+  "engines": {
+    "node": ">=18"
+  }
+}
