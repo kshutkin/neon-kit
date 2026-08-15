@@ -196,11 +196,11 @@ export function Menu(props) {
             labelObserver?.disconnect();
             labelObserver = undefined;
             getMenuRootController(/** @type {HTMLElement} */ (menuElement))
-                ?.$_unregisterOpenMenu(/** @type {HTMLElement} */ (menuElement));
+                ?.unregisterOpenMenu(/** @type {HTMLElement} */ (menuElement));
             menuRootControllers.delete(/** @type {HTMLElement} */ (menuElement));
-            menuController?.$_clearItems();
+            menuController?.clearItems();
             menuController = undefined;
-            labelController?.$_clear();
+            labelController?.clear();
             labelController = undefined;
             if (
                 ownsPopoverTarget
@@ -226,20 +226,20 @@ export function Menu(props) {
 
         listenerController = new AbortController();
         const listenerOptions = { signal: listenerController.signal };
-        menuNode.addEventListener('keydown', menuController.$_handleKeyDown, listenerOptions);
-        menuNode.addEventListener('focusin', menuController.$_handleFocusIn, listenerOptions);
+        menuNode.addEventListener('keydown', menuController.handleKeyDown, listenerOptions);
+        menuNode.addEventListener('focusin', menuController.handleFocusIn, listenerOptions);
         menuNode.addEventListener('toggle', /** @type {EventListener} */ ((event) => {
-            labelController?.$_sync(
+            labelController?.sync(
                 /** @type {ToggleEvent & { source?: HTMLElement | null }} */ (event).source,
             );
-            menuController?.$_handleToggle(/** @type {ToggleEvent} */ (event));
+            menuController?.handleToggle(/** @type {ToggleEvent} */ (event));
         }), listenerOptions);
 
-        menuController.$_refreshItems();
-        labelController.$_sync(triggerElement);
+        menuController.refreshItems();
+        labelController.sync(triggerElement);
 
         itemObserver = new MutationObserver(() => {
-            menuController?.$_refreshItems();
+            menuController?.refreshItems();
         });
         itemObserver.observe(menuNode, {
             attributeFilter: ['class'],
@@ -251,7 +251,7 @@ export function Menu(props) {
         queueMicrotask(() => {
             if (!disposed) {
                 labelObserver = new MutationObserver(() => {
-                    labelController?.$_sync();
+                    labelController?.sync();
                 });
                 labelObserver.observe(menuNode.getRootNode(), {
                     attributeFilter: ['aria-label', 'aria-labelledby', 'id', 'popovertarget'],
@@ -259,7 +259,7 @@ export function Menu(props) {
                     childList: true,
                     subtree: true,
                 });
-                labelController?.$_sync(triggerElement);
+                labelController?.sync(triggerElement);
             }
         });
     };
@@ -427,7 +427,7 @@ export function MenuItem(props) {
                 && getPopoverTarget(itemElement) === undefined
             ) {
                 queueMicrotask(() => {
-                    getMenuRootController(itemElement)?.$_closeAll();
+                    getMenuRootController(itemElement)?.closeAll();
                 });
             }
         }

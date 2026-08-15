@@ -7,20 +7,20 @@ import { generateId, getActiveElement, isDisabled } from './utils.js';
  *     ownedItem: string;
  * }} MenuSelectors
  * @typedef {{
- *     $_registerOpenMenu: (menu: HTMLElement) => void;
- *     $_unregisterOpenMenu: (menu: HTMLElement) => void;
- *     $_closeAll: () => void;
+ *     registerOpenMenu: (menu: HTMLElement) => void;
+ *     unregisterOpenMenu: (menu: HTMLElement) => void;
+ *     closeAll: () => void;
  * }} MenuRootController
  * @typedef {{
- *     $_refreshItems: () => void;
- *     $_clearItems: () => void;
- *     $_handleKeyDown: (event: KeyboardEvent) => void;
- *     $_handleFocusIn: (event: FocusEvent) => void;
- *     $_handleToggle: (event: ToggleEvent) => void;
+ *     refreshItems: () => void;
+ *     clearItems: () => void;
+ *     handleKeyDown: (event: KeyboardEvent) => void;
+ *     handleFocusIn: (event: FocusEvent) => void;
+ *     handleToggle: (event: ToggleEvent) => void;
  * }} MenuController
  * @typedef {{
- *     $_sync: (preferredTrigger?: HTMLElement | null) => void;
- *     $_clear: () => void;
+ *     sync: (preferredTrigger?: HTMLElement | null) => void;
+ *     clear: () => void;
  * }} MenuLabelController
  */
 
@@ -57,13 +57,13 @@ export function createMenuRootController() {
     const openMenus = new Set();
 
     return {
-        $_registerOpenMenu(menu) {
+        registerOpenMenu(menu) {
             openMenus.add(menu);
         },
-        $_unregisterOpenMenu(menu) {
+        unregisterOpenMenu(menu) {
             openMenus.delete(menu);
         },
-        $_closeAll() {
+        closeAll() {
             for (const menu of Array.from(openMenus).reverse()) {
                 if (menu.isConnected && isOpenPopover(menu)) {
                     menu.hidePopover();
@@ -196,14 +196,14 @@ export function createMenuController(host, getRootController, getItems, selector
     };
 
     return {
-        $_refreshItems: refreshItems,
-        $_clearItems() {
+        refreshItems,
+        clearItems() {
             for (const item of previousItems) {
                 item.removeAttribute('tabindex');
             }
             previousItems = [];
         },
-        $_handleKeyDown(event) {
+        handleKeyDown(event) {
             const items = getItems();
             const shouldHandleEvent = event.target === host || getEventItem(event.target) !== undefined;
             if (items.length > 0 && shouldHandleEvent) {
@@ -277,18 +277,18 @@ export function createMenuController(host, getRootController, getItems, selector
                 }
             }
         },
-        $_handleFocusIn(event) {
+        handleFocusIn(event) {
             const focusedItem = getEventItem(event.target);
             if (focusedItem !== undefined) {
                 setRovingTabindex(focusedItem);
             }
         },
-        $_handleToggle(event) {
+        handleToggle(event) {
             if (event.target === host) {
                 const activeElement = getActiveElement(host);
                 const rootController = getRootController();
                 if (event.newState === 'open') {
-                    rootController?.$_registerOpenMenu(host);
+                    rootController?.registerOpenMenu(host);
                     const eventSource = /** @type {ToggleEvent & { source?: Element | null }} */ (event).source;
                     const focusCandidate = canRestoreFocusTo(eventSource)
                         ? eventSource
@@ -302,7 +302,7 @@ export function createMenuController(host, getRootController, getItems, selector
                         focusItem(firstItem);
                     }
                 } else {
-                    rootController?.$_unregisterOpenMenu(host);
+                    rootController?.unregisterOpenMenu(host);
                     if (
                         canRestoreFocusFrom(activeElement)
                         && canRestoreFocusTo(restoreFocusElement)
@@ -376,7 +376,7 @@ export function createMenuLabelController(host) {
     };
 
     return {
-        $_sync(preferredTrigger) {
+        sync(preferredTrigger) {
             const currentLabelledBy = host.getAttribute('aria-labelledby');
             const hasConsumerLabel = host.hasAttribute('aria-label')
                 || (currentLabelledBy !== null && currentLabelledBy !== managedLabelledBy);
@@ -402,7 +402,7 @@ export function createMenuLabelController(host) {
                 }
             }
         },
-        $_clear() {
+        clear() {
             clearManagedLabel();
         },
     };

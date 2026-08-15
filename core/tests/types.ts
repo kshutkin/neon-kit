@@ -40,10 +40,10 @@ const menuController = createMenuController(
 );
 const menuLabelController = createMenuLabelController(menuElement);
 
-menuController.$_refreshItems();
-menuController.$_clearItems();
-menuLabelController.$_sync(triggerElement);
-menuLabelController.$_clear();
+menuController.refreshItems();
+menuController.clearItems();
+menuLabelController.sync(triggerElement);
+menuLabelController.clear();
 
 void placement;
 void triggers;

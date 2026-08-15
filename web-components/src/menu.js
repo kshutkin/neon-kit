@@ -78,25 +78,25 @@ const renderMenu = (host) => {
 
     effect(() => {
         void itemQuery();
-        menuController.$_refreshItems();
+        menuController.refreshItems();
     }, 1);
 
     onMount(() => {
         const abortController = new AbortController();
         const listenerOptions = { signal: abortController.signal };
-        host.addEventListener('keydown', menuController.$_handleKeyDown, listenerOptions);
-        host.addEventListener('focusin', menuController.$_handleFocusIn, listenerOptions);
+        host.addEventListener('keydown', menuController.handleKeyDown, listenerOptions);
+        host.addEventListener('focusin', menuController.handleFocusIn, listenerOptions);
         host.addEventListener('toggle', /** @type {EventListener} */ ((event) => {
-            labelController.$_sync(
+            labelController.sync(
                 /** @type {ToggleEvent & { source?: HTMLElement | null }} */ (event).source,
             );
-            menuController.$_handleToggle(/** @type {ToggleEvent} */ (event));
+            menuController.handleToggle(/** @type {ToggleEvent} */ (event));
         }), listenerOptions);
-        menuController.$_refreshItems();
-        labelController.$_sync();
+        menuController.refreshItems();
+        labelController.sync();
 
         const labelObserver = new MutationObserver(() => {
-            labelController.$_sync();
+            labelController.sync();
         });
         labelObserver.observe(host.getRootNode(), {
             attributeFilter: ['aria-label', 'aria-labelledby', 'id', 'popovertarget'],
@@ -106,10 +106,10 @@ const renderMenu = (host) => {
         });
 
         return () => {
-            rootController?.$_unregisterOpenMenu(/** @type {HTMLElement} */ (host));
-            menuController.$_clearItems();
+            rootController?.unregisterOpenMenu(/** @type {HTMLElement} */ (host));
+            menuController.clearItems();
             labelObserver.disconnect();
-            labelController.$_clear();
+            labelController.clear();
             abortController.abort();
         };
     });
@@ -213,7 +213,7 @@ const renderMenuItem = (host) => {
                 }
             } else {
                 queueMicrotask(() => {
-                    rootController?.$_closeAll();
+                    rootController?.closeAll();
                 });
             }
         }

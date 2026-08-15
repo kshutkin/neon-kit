@@ -1,4 +1,4 @@
-import { render } from '@slimlib/jsx';
+import { render, svg } from '@slimlib/jsx';
 import { Menu, MenuItem } from '@neon-kit/jsx-components/menu';
 
 /** @type {Array<() => void>} */
@@ -65,7 +65,22 @@ function mountDemos() {
                         >
                             <MenuItem>
                                 <span class="menu__label">Export as</span>
-                                <span aria-hidden="true" class="menu__chevron">›</span>
+                                {svg(() => (
+                                    <svg
+                                        class="menu__chevron"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                        />
+                                    </svg>
+                                ))}
                             </MenuItem>
                         </Menu>
                         <MenuItem>
