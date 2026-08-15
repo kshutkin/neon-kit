@@ -15,6 +15,10 @@
             "types": "./types/index.d.ts",
             "default": "./dist/tooltip.js"
         },
+        "./menu": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/menu.js"
+        },
         "./package.json": "./package.json"
     },
     "files": [
@@ -33,7 +37,7 @@
         "node": ">=18"
     },
     "scripts": {
-        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/jsx-components:.dts/index.d.ts -m @neon-kit/jsx-components/tooltip:.dts/tooltip.d.ts",
+        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/jsx-components:.dts/index.d.ts -m @neon-kit/jsx-components/menu:.dts/menu.d.ts -m @neon-kit/jsx-components/tooltip:.dts/tooltip.d.ts",
         "prepack": "pkgprn --flatten types,dist",
         "test": "vitest run --coverage --config ../vitest.config.js",
         "test:types": "tsc -p tsconfig.types.json"

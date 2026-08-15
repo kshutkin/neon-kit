@@ -1,0 +1,60 @@
+<main>
+    <h1 class="mb-6">Menu — JSX</h1>
+    <p class="mb-6 text-ink-secondary">
+        <code>Menu</code> decorates one button trigger and renders a sibling
+        native popover containing <code>MenuItem</code> buttons. It shares the
+        same roving focus, keyboard navigation, nested-menu coordination, and
+        accessible labelling behavior as <code>&lt;neon-menu&gt;</code>.
+    </p>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Installation</h2>
+        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/jsx-components @slimlib/jsx
+
+import '@neon-kit/theme/index.css';
+import { Menu, MenuItem } from '@neon-kit/jsx-components/menu';</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Basic</h2>
+        <p class="mb-4 text-ink-secondary">
+            Pass one button as the trigger and menu JSX as <code>content</code>.
+            The component wires IDs, <code>popovertarget</code>, menu roles, and
+            labelling automatically.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6" data-jsx-menu-demo="basic"></div>
+        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;Menu
+    content={
+        &lt;div class="menu__group"&gt;
+            &lt;MenuItem onClick={createFile}&gt;New file&lt;/MenuItem&gt;
+            &lt;MenuItem&gt;Open&lt;/MenuItem&gt;
+            &lt;MenuItem disabled&gt;Delete&lt;/MenuItem&gt;
+        &lt;/div&gt;
+    }
+&gt;
+    &lt;button type="button" class="btn"&gt;Actions&lt;/button&gt;
+&lt;/Menu&gt;</code></pre>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">Nested menus</h2>
+        <p class="mb-4 text-ink-secondary">
+            Use a <code>MenuItem</code> as another <code>Menu</code>'s trigger.
+            <kbd class="kbd">→</kbd> opens the submenu,
+            <kbd class="kbd">←</kbd> returns to its parent item, and activating
+            a leaf closes the complete open menu tree.
+        </p>
+        <div class="rounded-lg border border-border bg-surface-secondary p-6" data-jsx-menu-demo="nested"></div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="mb-4">API</h2>
+        <ul class="list-disc pl-6 text-ink-secondary">
+            <li><code>Menu.children</code>: exactly one <code>HTMLButtonElement</code> trigger.</li>
+            <li><code>Menu.content</code>: JSX containing owned <code>MenuItem</code> descendants.</li>
+            <li><code>Menu.placement</code>: <code>block-end</code>, <code>block-start</code>, <code>inline-end</code>, or <code>inline-start</code>.</li>
+            <li><code>MenuItem.disabled</code>: creates focusable <code>aria-disabled="true"</code> state and suppresses activation.</li>
+            <li><code>MenuItem.onClick</code>: runs for enabled item activation before leaf menus close.</li>
+        </ul>
+    </section>
+</main>

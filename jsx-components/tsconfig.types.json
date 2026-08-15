@@ -9,6 +9,7 @@
         "skipLibCheck": true,
         "paths": {
             "@neon-kit/jsx-components": ["./types/index.d.ts"],
+            "@neon-kit/jsx-components/menu": ["./types/index.d.ts"],
             "@neon-kit/jsx-components/tooltip": ["./types/index.d.ts"]
         }
     },

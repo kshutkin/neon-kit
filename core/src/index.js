@@ -5,6 +5,13 @@ export {
     readTooltipTriggerSet,
 } from './tooltip.js';
 export {
+    createMenuController,
+    createMenuLabelController,
+    createMenuRootController,
+    getPopoverTarget,
+    isOpenPopover,
+} from './menu.js';
+export {
     FOCUSABLE_PROGRAMMATIC,
     generateId,
     getActiveElement,
