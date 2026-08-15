@@ -9,13 +9,15 @@ is flattened by `pkgprn` at pack time.
 ## Components
 
 - `@neon-kit/web-components/tooltip` - `<neon-tooltip>`
-- `@neon-kit/web-components/jsx-tooltip` - `Tooltip` JSX component
 - `@neon-kit/web-components/menu` - `<neon-menu>` and `<neon-menu-item>`
 - `@neon-kit/web-components/combobox` - `<neon-combobox>`
 - `@neon-kit/web-components/multicombobox` - `<neon-multicombobox>`
 - `@neon-kit/web-components/datepicker` - `<neon-datepicker>`
 - `@neon-kit/web-components/timepicker` - `<neon-timepicker>`
 - `@neon-kit/web-components/icon` - `<neon-icon>`
+
+The JSX tooltip component is available from
+`@neon-kit/jsx-components/tooltip`.
 
 ## `<neon-icon>`
 

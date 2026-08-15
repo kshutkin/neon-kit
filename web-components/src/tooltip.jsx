@@ -35,8 +35,8 @@ import {
     createTooltipController,
     isPopoverSupported,
     readTooltipPlacement,
-} from './tooltip-controller.js';
-import { generateId } from './utils.js';
+} from '@neon-kit/core/tooltip';
+import { generateId } from '@neon-kit/core/utils';
 
 /**
  * @param {HTMLElement} host
@@ -54,9 +54,9 @@ const renderTooltip = (host) => {
         trigger: /** @type {string | undefined} */ (undefined),
     });
 
-    /** @type {import('./tooltip-controller.js').TooltipController[0] | undefined} */
+    /** @type {import('@neon-kit/core/tooltip').TooltipController[0] | undefined} */
     let updateTooltipController = undefined;
-    /** @type {import('./tooltip-controller.js').TooltipController[1] | undefined} */
+    /** @type {import('@neon-kit/core/tooltip').TooltipController[1] | undefined} */
     let destroyTooltipController = undefined;
 
     effect(() => {
@@ -73,12 +73,12 @@ const renderTooltip = (host) => {
     onConnect(() => {
         const triggerElement = host.parentElement;
         if (triggerElement) {
-            [updateTooltipController, destroyTooltipController] = createTooltipController({
-                $_tooltipElement: host,
-                $_triggerElement: triggerElement,
-                $_placement: state.placement,
-                $_trigger: state.trigger,
-            });
+            [updateTooltipController, destroyTooltipController] = createTooltipController([
+                host,
+                triggerElement,
+                state.placement,
+                state.trigger,
+            ]);
         }
     });
 

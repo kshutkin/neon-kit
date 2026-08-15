@@ -3,7 +3,7 @@ import axe from 'axe-core';
 import { createElement, Fragment, render } from '@slimlib/jsx';
 import { signal } from '@slimlib/store';
 
-import { Tooltip } from '../src/jsx-tooltip.jsx';
+import { Tooltip } from '../src/tooltip.jsx';
 
 /** @type {Array<() => void>} */
 let renderDisposers = [];

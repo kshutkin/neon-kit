@@ -14,10 +14,6 @@
             "types": "./types/index.d.ts",
             "default": "./dist/tooltip.js"
         },
-        "./jsx-tooltip": {
-            "types": "./types/index.d.ts",
-            "default": "./dist/jsx-tooltip.js"
-        },
         "./menu": {
             "types": "./types/index.d.ts",
             "default": "./dist/menu.js"
@@ -69,7 +65,7 @@
         "theme"
     ],
     "scripts": {
-        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/web-components:.dts/index.d.ts -m @neon-kit/web-components/tooltip:.dts/tooltip.d.ts -m @neon-kit/web-components/jsx-tooltip:.dts/jsx-tooltip.d.ts -m @neon-kit/web-components/menu:.dts/menu.d.ts -m @neon-kit/web-components/combobox:.dts/combobox.d.ts -m @neon-kit/web-components/multicombobox:.dts/multicombobox.d.ts -m @neon-kit/web-components/datepicker:.dts/datepicker.d.ts -m @neon-kit/web-components/timepicker:.dts/timepicker.d.ts -m @neon-kit/web-components/icon:.dts/icon.d.ts && node scripts/append-globals.mjs",
+        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/web-components:.dts/index.d.ts -m @neon-kit/web-components/tooltip:.dts/tooltip.d.ts -m @neon-kit/web-components/menu:.dts/menu.d.ts -m @neon-kit/web-components/combobox:.dts/combobox.d.ts -m @neon-kit/web-components/multicombobox:.dts/multicombobox.d.ts -m @neon-kit/web-components/datepicker:.dts/datepicker.d.ts -m @neon-kit/web-components/timepicker:.dts/timepicker.d.ts -m @neon-kit/web-components/icon:.dts/icon.d.ts && node scripts/append-globals.mjs",
         "prepack": "pkgprn --flatten types,dist",
         "test": "vitest run --coverage --config ../vitest.config.js",
         "test:types": "tsc -p tsconfig.types.json"
@@ -81,6 +77,7 @@
         "@slimlib/store": "^2.2.1"
     },
     "dependencies": {
+        "@neon-kit/core": "workspace:*",
         "esm-env": "^1.2.2"
     },
     "devDependencies": {

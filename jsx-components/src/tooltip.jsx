@@ -5,7 +5,7 @@ import { effect } from '@slimlib/store';
 import {
     createTooltipController,
     readTooltipPlacement,
-} from './tooltip-controller.js';
+} from '@neon-kit/core/tooltip';
 
 /**
  * @import { Child } from '@slimlib/jsx'
@@ -76,9 +76,9 @@ export function Tooltip(props) {
         return props.children;
     }
 
-    /** @type {import('./tooltip-controller.js').TooltipController[0] | undefined} */
+    /** @type {import('@neon-kit/core/tooltip').TooltipController[0] | undefined} */
     let updateTooltipController;
-    /** @type {import('./tooltip-controller.js').TooltipController[1] | undefined} */
+    /** @type {import('@neon-kit/core/tooltip').TooltipController[1] | undefined} */
     let destroyTooltipController;
 
     /** @param {Element | null} tooltipNode */
@@ -91,12 +91,12 @@ export function Tooltip(props) {
             return;
         }
 
-        [updateTooltipController, destroyTooltipController] = createTooltipController({
-            $_tooltipElement: tooltipNode,
-            $_triggerElement: triggerElement,
-            $_placement: readPlacementProp(props.placement),
-            $_trigger: readTriggerProp(props.trigger),
-        });
+        [updateTooltipController, destroyTooltipController] = createTooltipController([
+            tooltipNode,
+            triggerElement,
+            readPlacementProp(props.placement),
+            readTriggerProp(props.trigger),
+        ]);
     };
 
     const tooltipElement = /** @type {HTMLDivElement} */ (

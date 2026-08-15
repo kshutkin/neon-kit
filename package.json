@@ -14,10 +14,12 @@
     "build:docs": "vite build",
     "preview": "vite preview"
   },
-  "devDependencies": {
-    "@changesets/cli": "^2.27.12",
-    "@neon-kit/icons": "workspace:*",
-    "@neon-kit/theme": "workspace:*",
+    "devDependencies": {
+        "@changesets/cli": "^2.27.12",
+        "@neon-kit/core": "workspace:*",
+        "@neon-kit/icons": "workspace:*",
+        "@neon-kit/jsx-components": "workspace:*",
+        "@neon-kit/theme": "workspace:*",
     "@neon-kit/web-components": "workspace:*",
     "@slimlib/element": "^0.4.1",
     "@slimlib/jsx": "^0.5.0",

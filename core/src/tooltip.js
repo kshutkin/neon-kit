@@ -16,12 +16,12 @@ const CLOSE_DELAY_MS = 100;
  *   destroy: () => void,
  * ]} TooltipController
  * @typedef {{ placement?: string, trigger?: string }} TooltipControllerUpdate
- * @typedef {{
- *   $_tooltipElement: HTMLElement,
- *   $_triggerElement: HTMLElement,
- *   $_placement?: string,
- *   $_trigger?: string,
- * }} TooltipControllerOptions
+ * @typedef {[
+ *   tooltipElement: HTMLElement,
+ *   triggerElement: HTMLElement,
+ *   placement?: string,
+ *   trigger?: string,
+ * ]} TooltipControllerOptions
  */
 
 /** @type {Record<TooltipTrigger, Array<{ $_target: 'trigger' | 'tooltip', $_event: string, $_action: '$_show' | '$_hide' | '$_toggle' | '$_cancelHide' }>>} */
@@ -79,12 +79,11 @@ function isTooltipOpen(tooltipElement) {
 }
 
 /**
- * @param {TooltipControllerOptions} options
+ * @param {TooltipControllerOptions} controllerOptions
  * @returns {TooltipController}
  */
-export function createTooltipController(options) {
-    const tooltipElement = options.$_tooltipElement;
-    const triggerElement = options.$_triggerElement;
+export function createTooltipController(controllerOptions) {
+    const [tooltipElement, triggerElement, placement, trigger] = controllerOptions;
 
     tooltipElement.setAttribute('popover', 'manual');
     if (!tooltipElement.id) {
@@ -98,8 +97,8 @@ export function createTooltipController(options) {
     let listenerController = undefined;
     let ownsAriaDescribedBy = false;
     let anchorName = '';
-    let currentPlacement = readTooltipPlacement(options.$_placement);
-    let currentTriggerSet = readTooltipTriggerSet(options.$_trigger);
+    let currentPlacement = readTooltipPlacement(placement);
+    let currentTriggerSet = readTooltipTriggerSet(trigger);
 
     const clearTimer = () => {
         if (delayTimer) {

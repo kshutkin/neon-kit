@@ -1,5 +1,5 @@
 import { render } from '@slimlib/jsx';
-import { Tooltip } from '@neon-kit/web-components/jsx-tooltip';
+import { Tooltip } from '@neon-kit/jsx-components/tooltip';
 
 /** @type {Array<() => void>} */
 let disposers = [];

@@ -34,7 +34,7 @@ import {
 import { queryChildren } from '@slimlib/jsx/query-children';
 import { effect } from '@slimlib/store';
 
-import { generateId, getActiveElement, isDisabled } from './utils.js';
+import { generateId, getActiveElement, isDisabled } from '@neon-kit/core/utils';
 
 const ITEM_SELECTOR = 'neon-menu-item';
 const MENU_SELECTOR = 'neon-menu';

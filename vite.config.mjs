@@ -5,14 +5,18 @@ import { resolve, dirname } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, 'site');
 const OUT = resolve(import.meta.dirname, 'dist-docs');
+const CORE_SRC = resolve(import.meta.dirname, 'core/src');
+const JSX_COMPONENTS_SRC = resolve(import.meta.dirname, 'jsx-components/src');
 const WC_SRC = resolve(import.meta.dirname, 'web-components/src');
 const BASE = '/neon-kit/';
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://kshutkin.github.io';
 
-const WEB_COMPONENT_MODULES = [
+const LOCAL_MODULES = [
+  '@neon-kit/core/tooltip',
+  '@neon-kit/core/utils',
+  '@neon-kit/jsx-components/tooltip',
   '@neon-kit/web-components',
   '@neon-kit/web-components/tooltip',
-  '@neon-kit/web-components/jsx-tooltip',
   '@neon-kit/web-components/menu',
   '@neon-kit/web-components/combobox',
   '@neon-kit/web-components/multicombobox',
@@ -21,10 +25,12 @@ const WEB_COMPONENT_MODULES = [
   '@neon-kit/web-components/icon',
 ];
 
-const WEB_COMPONENT_ALIASES = [
+const LOCAL_ALIASES = [
+  { find: /^@neon-kit\/core\/tooltip$/, replacement: resolve(CORE_SRC, 'tooltip.js') },
+  { find: /^@neon-kit\/core\/utils$/, replacement: resolve(CORE_SRC, 'utils.js') },
+  { find: /^@neon-kit\/jsx-components\/tooltip$/, replacement: resolve(JSX_COMPONENTS_SRC, 'tooltip.jsx') },
   { find: /^@neon-kit\/web-components$/, replacement: resolve(WC_SRC, 'index.js') },
   { find: /^@neon-kit\/web-components\/tooltip$/, replacement: resolve(WC_SRC, 'tooltip.jsx') },
-  { find: /^@neon-kit\/web-components\/jsx-tooltip$/, replacement: resolve(WC_SRC, 'jsx-tooltip.jsx') },
   { find: /^@neon-kit\/web-components\/menu$/, replacement: resolve(WC_SRC, 'menu.js') },
   { find: /^@neon-kit\/web-components\/combobox$/, replacement: resolve(WC_SRC, 'combobox.jsx') },
   { find: /^@neon-kit\/web-components\/multicombobox$/, replacement: resolve(WC_SRC, 'multicombobox.jsx') },
@@ -279,14 +285,14 @@ export default defineConfig({
   base: BASE,
   plugins: [tailwindcss(), prerenderPlugin()],
   resolve: {
-    alias: WEB_COMPONENT_ALIASES,
+    alias: LOCAL_ALIASES,
   },
   esbuild: {
     jsx: 'automatic',
     jsxImportSource: '@slimlib/jsx',
   },
   optimizeDeps: {
-    exclude: WEB_COMPONENT_MODULES,
+    exclude: LOCAL_MODULES,
   },
   server: {
     fs: {
