@@ -95,7 +95,6 @@ export function createTooltipController(controllerOptions) {
     let delayTimer = undefined;
     /** @type {AbortController | undefined} */
     let listenerController = undefined;
-    let ownsAriaDescribedBy = false;
     let anchorName = '';
     let currentPlacement = readTooltipPlacement(placement);
     let currentTriggerSet = readTooltipTriggerSet(trigger);
@@ -209,21 +208,15 @@ export function createTooltipController(controllerOptions) {
                 triggerElement,
             );
         }
-        if (DEV && !ownsAriaDescribedBy && triggerElement.hasAttribute('aria-describedby')) {
-            // eslint-disable-next-line no-console
-            console.debug(
-                'Tooltip: trigger already has aria-describedby; tooltip description wiring was skipped.',
-                triggerElement,
-            );
-        }
     };
 
     wireAnchor();
 
-    if (!triggerElement.hasAttribute('aria-describedby')) {
-        triggerElement.setAttribute('aria-describedby', tooltipElement.id);
-        ownsAriaDescribedBy = true;
-    }
+    const describedByIds = triggerElement.getAttribute('aria-describedby')?.trim();
+    triggerElement.setAttribute(
+        'aria-describedby',
+        describedByIds ? `${describedByIds} ${tooltipElement.id}` : tooltipElement.id,
+    );
 
     applyPlacementClass(currentPlacement);
     applyTriggers(currentTriggerSet);
@@ -242,13 +235,18 @@ export function createTooltipController(controllerOptions) {
         clearTimer();
         listenerController?.abort();
         listenerController = undefined;
-        if (ownsAriaDescribedBy && triggerElement.getAttribute('aria-describedby') === tooltipElement.id) {
+        const describedByIds = triggerElement.getAttribute('aria-describedby')
+            ?.trim()
+            .split(/\s+/)
+            .filter((id) => id !== tooltipElement.id) ?? [];
+        if (describedByIds.length) {
+            triggerElement.setAttribute('aria-describedby', describedByIds.join(' '));
+        } else {
             triggerElement.removeAttribute('aria-describedby');
         }
         if (anchorName && triggerElement.style.getPropertyValue('anchor-name') === anchorName) {
             triggerElement.style.removeProperty('anchor-name');
         }
-        ownsAriaDescribedBy = false;
         anchorName = '';
     };
 

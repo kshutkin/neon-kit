@@ -182,18 +182,19 @@ describe('<neon-tooltip>', () => {
         expect(tip.classList.contains('-top')).toBe(false);
     });
 
-    it('does not overwrite consumer-set aria-describedby', () => {
+    it('extends consumer-set aria-describedby and restores it on disconnect', () => {
         document.body.innerHTML = `
-            <p id="external">External description.</p>
-            <button aria-describedby="external">x<neon-tooltip>y</neon-tooltip></button>
+            <p id="external-first">First external description.</p>
+            <p id="external-second">Second external description.</p>
+            <button aria-describedby="external-first external-second">x<neon-tooltip>y</neon-tooltip></button>
         `;
         const btn = /** @type {HTMLButtonElement} */ (document.querySelector('button'));
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        expect(btn.getAttribute('aria-describedby')).toBe('external');
+        expect(btn.getAttribute('aria-describedby'))
+            .toBe(`external-first external-second ${tip.id}`);
 
         tip.remove();
-        // We did not own that attribute, so it stays put.
-        expect(btn.getAttribute('aria-describedby')).toBe('external');
+        expect(btn.getAttribute('aria-describedby')).toBe('external-first external-second');
     });
 
     it('toggles on click for any parent with trigger="click"', () => {

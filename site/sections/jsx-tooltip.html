@@ -111,16 +111,16 @@ import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
     <section class="mb-8">
         <h2 class="mb-4">Accessibility Pattern</h2>
         <p class="mb-4 text-ink-secondary">
-            The generated popover receives <code>role="tooltip"</code> and the
-            trigger receives <code>aria-describedby</code> unless it already has
-            one. The component also wires anchor positioning so hover and focus
-            opens place the popover against the trigger.
+            The generated popover receives <code>role="tooltip"</code> and its ID
+            is added to the trigger's <code>aria-describedby</code> ID-reference
+            list, preserving existing description references. The component also
+            wires anchor positioning so hover and focus opens place the popover
+            against the trigger.
         </p>
         <p class="mb-4 text-ink-secondary">
             In development builds the component warns when the trigger child is
-            invalid, when existing <code>aria-describedby</code> prevents the
-            tooltip from wiring its own description, or when a focus tooltip is
-            attached to a non-focusable trigger.
+            invalid or when a focus tooltip is attached to a non-focusable
+            trigger.
         </p>
     </section>
 </main>

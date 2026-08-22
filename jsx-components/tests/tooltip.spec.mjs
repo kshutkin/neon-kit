@@ -181,19 +181,20 @@ describe('Tooltip JSX component', () => {
         expect(tooltipElement.matches(':popover-open')).toBe(false);
     });
 
-    it('keeps consumer-owned aria and anchor wiring', () => {
+    it('extends consumer-owned aria wiring and keeps consumer-owned attributes on disposal', () => {
         const triggerElement = document.createElement('button');
         triggerElement.type = 'button';
         triggerElement.textContent = 'Save';
-        triggerElement.setAttribute('aria-describedby', 'external');
+        triggerElement.setAttribute('aria-describedby', 'external-first external-second');
         triggerElement.style.setProperty('anchor-name', '--existing');
         const { dispose, tooltipElement } = mountTooltip('Hint.', { triggerElement });
 
-        expect(triggerElement.getAttribute('aria-describedby')).toBe('external');
+        expect(triggerElement.getAttribute('aria-describedby'))
+            .toBe(`external-first external-second ${tooltipElement.id}`);
         expect(tooltipElement.style.getPropertyValue('position-anchor')).toBe('--existing');
 
         dispose();
-        expect(triggerElement.getAttribute('aria-describedby')).toBe('external');
+        expect(triggerElement.getAttribute('aria-describedby')).toBe('external-first external-second');
         expect(triggerElement.style.getPropertyValue('anchor-name')).toBe('--existing');
     });
 
@@ -244,7 +245,7 @@ describe('Tooltip JSX component', () => {
         expect(triggerElement.hasAttribute('aria-describedby')).toBe(false);
     });
 
-    it('warns for invalid child, existing aria-describedby, and non-focusable focus trigger', () => {
+    it('warns for an invalid child and non-focusable focus trigger', () => {
         const debug = vi.spyOn(console, 'debug').mockImplementation(() => {});
 
         const host = createHost();
@@ -252,16 +253,6 @@ describe('Tooltip JSX component', () => {
         expect(debug).toHaveBeenCalledWith(
             'Tooltip: expected exactly one HTMLElement child to use as the trigger.',
             'Save',
-        );
-
-        const triggerElement = document.createElement('button');
-        triggerElement.type = 'button';
-        triggerElement.textContent = 'Save';
-        triggerElement.setAttribute('aria-describedby', 'external');
-        renderDisposers.push(render(() => Tooltip({ content: 'Hint.', children: triggerElement }), createHost()));
-        expect(debug).toHaveBeenCalledWith(
-            'Tooltip: trigger already has aria-describedby; tooltip description wiring was skipped.',
-            triggerElement,
         );
 
         const span = document.createElement('span');

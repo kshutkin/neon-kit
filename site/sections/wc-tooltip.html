@@ -171,7 +171,7 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             <li>Renders a <code>.tooltip__arrow</code> child.</li>
             <li>Sets a default tooltip role through <code>ElementInternals</code>.</li>
             <li>Assigns an <code>anchor-name</code> to the parent and references it from the tooltip's <code>position-anchor</code> (existing <code>anchor-name</code> on the parent is reused, not overwritten).</li>
-            <li>Sets <code>aria-describedby</code> on the parent to the tooltip's <code>id</code> — only if the consumer hasn't already set <code>aria-describedby</code>.</li>
+            <li>Adds the tooltip's <code>id</code> to the parent's <code>aria-describedby</code> ID-reference list.</li>
         </ul>
     </section>
 
@@ -191,11 +191,10 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             interactive controls.
         </p>
         <p class="mb-4 text-ink-secondary">
-            The trigger receives <code>aria-describedby="&lt;tooltip-id&gt;"</code>
-            so screen readers announce the tooltip text alongside the trigger's
-            accessible name. If the consumer already set
-            <code>aria-describedby</code> on the trigger, the component leaves it
-            alone.
+            The component adds the tooltip's ID to the trigger's
+            <code>aria-describedby</code> ID-reference list so screen readers
+            announce the tooltip text alongside the trigger's accessible name.
+            Existing description references are preserved.
         </p>
         <p class="mb-4 text-ink-secondary">
             For the <code>focus</code> trigger to fire, the parent must be
