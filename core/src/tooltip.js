@@ -7,8 +7,8 @@ const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 const HOVER_OPEN_DELAY_MS = 400;
 const HOVER_CLOSE_DELAY_MS = 500;
 
-/** @type {HTMLElement | undefined} */
-let hoverDelayOwnerElement = undefined;
+/** @type {(() => void) | undefined} */
+let closeOpenHoverTooltip = undefined;
 
 /**
  * @typedef {'hover' | 'focus' | 'click'} TooltipTrigger
@@ -110,8 +110,8 @@ export function createTooltipController(controllerOptions) {
     };
 
     const releaseHoverDelay = () => {
-        if (hoverDelayOwnerElement === tooltipElement) {
-            hoverDelayOwnerElement = undefined;
+        if (closeOpenHoverTooltip === hidePopoverNow) {
+            closeOpenHoverTooltip = undefined;
         }
     };
 
@@ -155,15 +155,18 @@ export function createTooltipController(controllerOptions) {
 
     const showPopoverOnHover = () => {
         clearTimer();
+        if (closeOpenHoverTooltip !== hidePopoverNow) {
+            closeOpenHoverTooltip?.();
+        }
         if (!isTooltipOpen(tooltipElement)) {
             /** @type {TooltipPopoverElement} */ (tooltipElement).showPopover();
         }
-        hoverDelayOwnerElement = tooltipElement;
+        closeOpenHoverTooltip = hidePopoverNow;
     };
 
     const scheduleShow = () => {
         clearTimer();
-        if (hoverDelayOwnerElement) {
+        if (closeOpenHoverTooltip) {
             showPopoverOnHover();
         } else {
             delayTimer = setTimeout(() => {

@@ -169,7 +169,7 @@ describe('Tooltip JSX component', () => {
         expect(tooltipElement.matches(':popover-open')).toBe(false);
     });
 
-    it('skips the hover open delay globally while another tooltip waits to close', () => {
+    it('keeps only the latest hover tooltip open during the global warm period', () => {
         vi.useFakeTimers();
         const firstTooltip = mountTooltip('First hint.');
         const secondTooltip = mountTooltip('Second hint.');
@@ -181,20 +181,27 @@ describe('Tooltip JSX component', () => {
 
         firstTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
         secondTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
-        expect(secondTooltip.tooltipElement.matches(':popover-open')).toBe(true);
-
-        vi.advanceTimersByTime(500);
         expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(false);
+        expect(secondTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+        expect(vi.getTimerCount()).toBe(0);
 
         secondTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
         thirdTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
+        expect(secondTooltip.tooltipElement.matches(':popover-open')).toBe(false);
         expect(thirdTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+        expect(vi.getTimerCount()).toBe(0);
 
         thirdTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
-        vi.advanceTimersByTime(500);
+        vi.advanceTimersByTime(499);
+        expect(thirdTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+        vi.advanceTimersByTime(1);
+        expect(thirdTooltip.tooltipElement.matches(':popover-open')).toBe(false);
+
         firstTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
         expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(false);
-        vi.advanceTimersByTime(400);
+        vi.advanceTimersByTime(399);
+        expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(false);
+        vi.advanceTimersByTime(1);
         expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(true);
     });
 
