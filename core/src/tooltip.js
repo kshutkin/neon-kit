@@ -7,6 +7,9 @@ const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 const HOVER_OPEN_DELAY_MS = 400;
 const HOVER_CLOSE_DELAY_MS = 500;
 
+/** @type {HTMLElement | undefined} */
+let hoverDelayOwnerElement = undefined;
+
 /**
  * @typedef {'hover' | 'focus' | 'click'} TooltipTrigger
  * @typedef {'top' | 'bottom' | 'left' | 'right'} TooltipPlacement
@@ -106,6 +109,12 @@ export function createTooltipController(controllerOptions) {
         }
     };
 
+    const releaseHoverDelay = () => {
+        if (hoverDelayOwnerElement === tooltipElement) {
+            hoverDelayOwnerElement = undefined;
+        }
+    };
+
     const showPopoverNow = () => {
         clearTimer();
         /** @type {TooltipPopoverElement} */ (tooltipElement).showPopover();
@@ -116,6 +125,7 @@ export function createTooltipController(controllerOptions) {
         if (isTooltipOpen(tooltipElement)) {
             /** @type {TooltipPopoverElement} */ (tooltipElement).hidePopover();
         }
+        releaseHoverDelay();
     };
 
     /** @param {KeyboardEvent} event */
@@ -135,18 +145,31 @@ export function createTooltipController(controllerOptions) {
 
     const hidePopoverIfInactive = () => {
         clearTimer();
-        if (!shouldStayOpen() && isTooltipOpen(tooltipElement)) {
-            /** @type {TooltipPopoverElement} */ (tooltipElement).hidePopover();
+        if (!shouldStayOpen()) {
+            if (isTooltipOpen(tooltipElement)) {
+                /** @type {TooltipPopoverElement} */ (tooltipElement).hidePopover();
+            }
+            releaseHoverDelay();
         }
+    };
+
+    const showPopoverOnHover = () => {
+        clearTimer();
+        if (!isTooltipOpen(tooltipElement)) {
+            /** @type {TooltipPopoverElement} */ (tooltipElement).showPopover();
+        }
+        hoverDelayOwnerElement = tooltipElement;
     };
 
     const scheduleShow = () => {
         clearTimer();
-        delayTimer = setTimeout(() => {
-            if (!isTooltipOpen(tooltipElement)) {
-                /** @type {TooltipPopoverElement} */ (tooltipElement).showPopover();
-            }
-        }, HOVER_OPEN_DELAY_MS);
+        if (hoverDelayOwnerElement) {
+            showPopoverOnHover();
+        } else {
+            delayTimer = setTimeout(() => {
+                showPopoverOnHover();
+            }, HOVER_OPEN_DELAY_MS);
+        }
     };
 
     const scheduleHide = () => {
@@ -243,6 +266,7 @@ export function createTooltipController(controllerOptions) {
 
     const destroy = () => {
         clearTimer();
+        releaseHoverDelay();
         listenerController?.abort();
         listenerController = undefined;
         const describedByIds = triggerElement.getAttribute('aria-describedby')

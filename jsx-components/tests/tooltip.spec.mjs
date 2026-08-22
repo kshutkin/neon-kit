@@ -169,6 +169,35 @@ describe('Tooltip JSX component', () => {
         expect(tooltipElement.matches(':popover-open')).toBe(false);
     });
 
+    it('skips the hover open delay globally while another tooltip waits to close', () => {
+        vi.useFakeTimers();
+        const firstTooltip = mountTooltip('First hint.');
+        const secondTooltip = mountTooltip('Second hint.');
+        const thirdTooltip = mountTooltip('Third hint.');
+
+        firstTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
+        vi.advanceTimersByTime(400);
+        expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+
+        firstTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
+        secondTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
+        expect(secondTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+
+        vi.advanceTimersByTime(500);
+        expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(false);
+
+        secondTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
+        thirdTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
+        expect(thirdTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+
+        thirdTooltip.triggerElement.dispatchEvent(new Event('pointerleave'));
+        vi.advanceTimersByTime(500);
+        firstTooltip.triggerElement.dispatchEvent(new Event('pointerenter'));
+        expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(false);
+        vi.advanceTimersByTime(400);
+        expect(firstTooltip.tooltipElement.matches(':popover-open')).toBe(true);
+    });
+
     it('toggles on click and closes on Escape', () => {
         const span = document.createElement('span');
         span.tabIndex = 0;
