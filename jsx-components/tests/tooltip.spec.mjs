@@ -147,7 +147,7 @@ describe('Tooltip JSX component', () => {
         trigger.set('hover');
         await tick();
         triggerElement.dispatchEvent(new Event('pointerenter'));
-        vi.advanceTimersByTime(120);
+        vi.advanceTimersByTime(400);
         expect(tooltipElement.matches(':popover-open')).toBe(true);
     });
 
@@ -157,11 +157,15 @@ describe('Tooltip JSX component', () => {
 
         triggerElement.dispatchEvent(new Event('pointerenter'));
         expect(tooltipElement.matches(':popover-open')).toBe(false);
-        vi.advanceTimersByTime(120);
+        vi.advanceTimersByTime(399);
+        expect(tooltipElement.matches(':popover-open')).toBe(false);
+        vi.advanceTimersByTime(1);
         expect(tooltipElement.matches(':popover-open')).toBe(true);
 
         triggerElement.dispatchEvent(new Event('pointerleave'));
-        vi.advanceTimersByTime(100);
+        vi.advanceTimersByTime(499);
+        expect(tooltipElement.matches(':popover-open')).toBe(true);
+        vi.advanceTimersByTime(1);
         expect(tooltipElement.matches(':popover-open')).toBe(false);
     });
 

@@ -240,6 +240,28 @@ describe('<neon-tooltip>', () => {
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
+    it('opens immediately on keyboard focus', () => {
+        vi.useFakeTimers();
+        const btn = mount(`<button>x<neon-tooltip trigger="focus">y</neon-tooltip></button>`);
+        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+
+        btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+        expect(tip.matches(':popover-open')).toBe(true);
+        expect(vi.getTimerCount()).toBe(0);
+    });
+
+    it('closes immediately when keyboard focus moves away', () => {
+        const btn = mount(`<button>x<neon-tooltip trigger="focus">y</neon-tooltip></button>`);
+        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const nextButton = document.createElement('button');
+        document.body.appendChild(nextButton);
+
+        btn.focus();
+        expect(tip.matches(':popover-open')).toBe(true);
+        nextButton.focus();
+        expect(tip.matches(':popover-open')).toBe(false);
+    });
+
     it('opens and closes on hover delays', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
@@ -247,11 +269,15 @@ describe('<neon-tooltip>', () => {
 
         btn.dispatchEvent(new Event('pointerenter'));
         expect(tip.matches(':popover-open')).toBe(false);
-        vi.advanceTimersByTime(120);
+        vi.advanceTimersByTime(399);
+        expect(tip.matches(':popover-open')).toBe(false);
+        vi.advanceTimersByTime(1);
         expect(tip.matches(':popover-open')).toBe(true);
 
         btn.dispatchEvent(new Event('pointerleave'));
-        vi.advanceTimersByTime(100);
+        vi.advanceTimersByTime(499);
+        expect(tip.matches(':popover-open')).toBe(true);
+        vi.advanceTimersByTime(1);
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
@@ -262,7 +288,7 @@ describe('<neon-tooltip>', () => {
 
         tip.showPopover();
         btn.dispatchEvent(new Event('pointerenter'));
-        vi.advanceTimersByTime(120);
+        vi.advanceTimersByTime(400);
         expect(tip.matches(':popover-open')).toBe(true);
     });
 
@@ -274,7 +300,7 @@ describe('<neon-tooltip>', () => {
         /** @type {any} */ (tip).showPopover();
         btn.dispatchEvent(new Event('pointerleave'));
         tip.dispatchEvent(new Event('pointerenter'));
-        vi.advanceTimersByTime(100);
+        vi.advanceTimersByTime(500);
         expect(tip.matches(':popover-open')).toBe(true);
     });
 
@@ -284,7 +310,7 @@ describe('<neon-tooltip>', () => {
         const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
 
         btn.dispatchEvent(new Event('pointerleave'));
-        vi.advanceTimersByTime(100);
+        vi.advanceTimersByTime(500);
         expect(tip.matches(':popover-open')).toBe(false);
     });
 
@@ -296,7 +322,6 @@ describe('<neon-tooltip>', () => {
         tip.showPopover();
         btn.focus();
         btn.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
-        vi.advanceTimersByTime(100);
         expect(tip.matches(':popover-open')).toBe(true);
     });
 
@@ -315,7 +340,6 @@ describe('<neon-tooltip>', () => {
         expect(shadow.activeElement).toBe(btn);
 
         btn.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
-        vi.advanceTimersByTime(100);
         expect(tip.matches(':popover-open')).toBe(true);
     });
 

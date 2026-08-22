@@ -4,8 +4,8 @@ import { generateId, getActiveElement, isFocusable } from './utils.js';
 
 const PLACEMENTS = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
 
-const OPEN_DELAY_MS = 120;
-const CLOSE_DELAY_MS = 100;
+const HOVER_OPEN_DELAY_MS = 400;
+const HOVER_CLOSE_DELAY_MS = 500;
 
 /**
  * @typedef {'hover' | 'focus' | 'click'} TooltipTrigger
@@ -24,17 +24,17 @@ const CLOSE_DELAY_MS = 100;
  * ]} TooltipControllerOptions
  */
 
-/** @type {Record<TooltipTrigger, Array<{ $_target: 'trigger' | 'tooltip', $_event: string, $_action: '$_show' | '$_hide' | '$_toggle' | '$_cancelHide' }>>} */
+/** @type {Record<TooltipTrigger, Array<{ $_target: 'trigger' | 'tooltip', $_event: string, $_action: '$_showNow' | '$_hideNow' | '$_scheduleShow' | '$_scheduleHide' | '$_toggle' | '$_cancelHide' }>>} */
 const TRIGGER_BINDINGS = {
     hover: [
-        { $_target: 'trigger', $_event: 'pointerenter', $_action: '$_show' },
-        { $_target: 'trigger', $_event: 'pointerleave', $_action: '$_hide' },
+        { $_target: 'trigger', $_event: 'pointerenter', $_action: '$_scheduleShow' },
+        { $_target: 'trigger', $_event: 'pointerleave', $_action: '$_scheduleHide' },
         { $_target: 'tooltip', $_event: 'pointerenter', $_action: '$_cancelHide' },
-        { $_target: 'tooltip', $_event: 'pointerleave', $_action: '$_hide' },
+        { $_target: 'tooltip', $_event: 'pointerleave', $_action: '$_scheduleHide' },
     ],
     focus: [
-        { $_target: 'trigger', $_event: 'focusin', $_action: '$_show' },
-        { $_target: 'trigger', $_event: 'focusout', $_action: '$_hide' },
+        { $_target: 'trigger', $_event: 'focusin', $_action: '$_showNow' },
+        { $_target: 'trigger', $_event: 'focusout', $_action: '$_hideNow' },
     ],
     click: [
         { $_target: 'trigger', $_event: 'click', $_action: '$_toggle' },
@@ -125,33 +125,43 @@ export function createTooltipController(controllerOptions) {
         }
     };
 
+    const shouldStayOpen = () => {
+        const activeElement = getActiveElement(tooltipElement);
+        return tooltipElement.matches(':hover')
+            || triggerElement.matches(':hover')
+            || activeElement === triggerElement
+            || (activeElement !== null && tooltipElement.contains(activeElement));
+    };
+
+    const hidePopoverIfInactive = () => {
+        clearTimer();
+        if (!shouldStayOpen() && isTooltipOpen(tooltipElement)) {
+            /** @type {TooltipPopoverElement} */ (tooltipElement).hidePopover();
+        }
+    };
+
     const scheduleShow = () => {
         clearTimer();
         delayTimer = setTimeout(() => {
             if (!isTooltipOpen(tooltipElement)) {
                 /** @type {TooltipPopoverElement} */ (tooltipElement).showPopover();
             }
-        }, OPEN_DELAY_MS);
+        }, HOVER_OPEN_DELAY_MS);
     };
 
     const scheduleHide = () => {
         clearTimer();
         delayTimer = setTimeout(() => {
-            const activeElement = getActiveElement(tooltipElement);
-            const shouldStayOpen = tooltipElement.matches(':hover')
-                || triggerElement.matches(':hover')
-                || activeElement === triggerElement
-                || (activeElement !== null && tooltipElement.contains(activeElement));
-            if (!shouldStayOpen && isTooltipOpen(tooltipElement)) {
-                /** @type {TooltipPopoverElement} */ (tooltipElement).hidePopover();
-            }
-        }, CLOSE_DELAY_MS);
+            hidePopoverIfInactive();
+        }, HOVER_CLOSE_DELAY_MS);
     };
 
-    /** @type {Record<'$_show' | '$_hide' | '$_toggle' | '$_cancelHide', () => void>} */
+    /** @type {Record<'$_showNow' | '$_hideNow' | '$_scheduleShow' | '$_scheduleHide' | '$_toggle' | '$_cancelHide', () => void>} */
     const actions = {
-        $_show: () => scheduleShow(),
-        $_hide: () => scheduleHide(),
+        $_showNow: () => showPopoverNow(),
+        $_hideNow: () => hidePopoverIfInactive(),
+        $_scheduleShow: () => scheduleShow(),
+        $_scheduleHide: () => scheduleHide(),
         $_toggle: () => {
             if (isTooltipOpen(tooltipElement)) {
                 hidePopoverNow();

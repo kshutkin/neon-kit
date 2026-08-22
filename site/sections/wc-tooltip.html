@@ -204,10 +204,11 @@ import '@neon-kit/web-components/tooltip';</code></pre>
             <code>tabindex</code>).
         </p>
         <p class="mb-4 text-ink-secondary">
-            Keyboard: <kbd class="kbd">Esc</kbd> closes an open tooltip when
-            pressed from the trigger. Hover and focus close paths also handle
-            dismissal naturally — moving the pointer or focus away closes the
-            tooltip after a short delay. For click-driven tooltips
+            Keyboard focus opens the tooltip immediately and moving focus away
+            closes it immediately. Hover waits <code>400ms</code> before opening
+            and <code>500ms</code> before closing. <kbd class="kbd">Esc</kbd>
+            closes an open tooltip when pressed from the trigger. For
+            click-driven tooltips
             (<code>trigger="click"</code>), clicking the trigger again toggles
             it closed.
         </p>

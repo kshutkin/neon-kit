@@ -106,8 +106,9 @@
         <p class="mb-3 text-sm text-ink-secondary">
             Native <code>interestfor</code> opens <code>popover="hint"</code>
             tooltips on hover, keyboard focus, and long-press where the
-            platform supports it. The default open and close delays are
-            defined in CSS on the invoker and can be overridden per trigger.
+            platform supports it. The CSS defaults wait <code>400ms</code> to
+            open and <code>500ms</code> to close, and can be overridden per
+            trigger.
         </p>
         <div class="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface-secondary p-8">
             <button class="btn" interestfor="tip-hover-1" aria-describedby="tip-hover-1" type="button">
@@ -122,7 +123,7 @@
                 class="btn"
                 interestfor="tip-hover-2"
                 aria-describedby="tip-hover-2"
-                style="--tooltip-open-delay: 240ms; --tooltip-close-delay: 160ms;"
+                style="--tooltip-open-delay: 700ms; --tooltip-close-delay: 800ms;"
                 type="button"
             >
                 Custom delay
