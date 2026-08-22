@@ -8,6 +8,8 @@ import {
     isOpenPopover,
 } from '@neon-kit/core/menu';
 import { generateId, isDisabled } from '@neon-kit/core/utils';
+import { queryChildrenRef } from '@slimlib/jsx/query-children';
+import { effect } from '@slimlib/store';
 
 /**
  * @import { Child } from '@slimlib/jsx'
@@ -164,8 +166,6 @@ export function Menu(props) {
     /** @type {import('@neon-kit/core/menu').MenuLabelController | undefined} */
     let labelController;
     /** @type {MutationObserver | undefined} */
-    let itemObserver;
-    /** @type {MutationObserver | undefined} */
     let labelObserver;
     /** @type {AbortController | undefined} */
     let listenerController;
@@ -182,17 +182,28 @@ export function Menu(props) {
     const menuClass = typeof placement === 'function' || typeof className === 'function'
         ? readMenuClass
         : readMenuClass();
+    /** @type {import('@slimlib/jsx/query-children').QueryChildrenSignal<HTMLElement>} */
+    const itemQuery = queryChildrenRef(OWNED_ITEM_SELECTOR, {
+        attributeFilter: ['class'],
+        attributes: true,
+        childList: true,
+        subtree: true,
+    });
+
+    effect(() => {
+        void itemQuery();
+        menuController?.refreshItems();
+    }, 1);
 
     /** @param {Element | null} menuNode */
     const attachMenu = (menuNode) => {
         consumerRef?.(menuNode);
+        itemQuery.ref(menuNode);
 
         if (!(menuNode instanceof HTMLElement)) {
             disposed = true;
             listenerController?.abort();
             listenerController = undefined;
-            itemObserver?.disconnect();
-            itemObserver = undefined;
             labelObserver?.disconnect();
             labelObserver = undefined;
             getMenuRootController(/** @type {HTMLElement} */ (menuElement))
@@ -214,12 +225,10 @@ export function Menu(props) {
 
         disposed = false;
         menuRootControllers.set(menuNode, ownRootController);
-        const getItems = () => Array.from(menuNode.querySelectorAll(OWNED_ITEM_SELECTOR))
-            .filter((item) => item instanceof HTMLElement);
         menuController = createMenuController(
             menuNode,
             () => getMenuRootController(menuNode),
-            getItems,
+            itemQuery,
             MENU_SELECTORS,
         );
         labelController = createMenuLabelController(menuNode);
@@ -237,16 +246,6 @@ export function Menu(props) {
 
         menuController.refreshItems();
         labelController.sync(triggerElement);
-
-        itemObserver = new MutationObserver(() => {
-            menuController?.refreshItems();
-        });
-        itemObserver.observe(menuNode, {
-            attributeFilter: ['class'],
-            attributes: true,
-            childList: true,
-            subtree: true,
-        });
 
         queueMicrotask(() => {
             if (!disposed) {

@@ -113,6 +113,39 @@ describe('Menu JSX component', () => {
         expect(document.activeElement).toBe(items[2]);
     });
 
+    it('updates item navigation after items are added or moved', async () => {
+        let items = [];
+        const { menuElement, triggerElement } = mountMenu(() => {
+            items = [
+                MenuItem({ children: 'Alpha' }),
+                MenuItem({ children: 'Bravo' }),
+            ];
+            return items;
+        });
+        await nextTask();
+        const addedItem = document.createElement('button');
+        addedItem.className = 'menu__item';
+        addedItem.textContent = 'Charlie';
+
+        menuElement.append(addedItem);
+        await nextTask();
+        expect(addedItem.getAttribute('tabindex')).toBe('-1');
+
+        menuElement.insertBefore(addedItem, items[0]);
+        await nextTask();
+        triggerElement.click();
+        await nextTask();
+        expect(document.activeElement).toBe(addedItem);
+
+        menuElement.dispatchEvent(new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            key: 'ArrowDown',
+        }));
+
+        expect(document.activeElement).toBe(items[0]);
+    });
+
     it('does not invoke a disabled item click handler', async () => {
         const onClick = vi.fn();
         let item;
