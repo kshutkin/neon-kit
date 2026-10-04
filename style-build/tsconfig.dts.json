@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "checkJs": false,
+        "noEmit": false,
+        "noEmitOnError": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "declarationMap": true,
+        "outDir": ".dts"
+    }
+}

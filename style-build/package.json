@@ -1,0 +1,40 @@
+{
+    "name": "@neon-kit/style-build",
+    "version": "0.0.1",
+    "description": "Shared compiler for shadow-root CSS modules and native CSS sheets.",
+    "license": "MIT",
+    "author": "Konstantin Shutkin",
+    "type": "module",
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "src",
+        "types"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kshutkin/neon-kit.git",
+        "directory": "style-build"
+    },
+    "bugs": "https://github.com/kshutkin/neon-kit/issues",
+    "homepage": "https://github.com/kshutkin/neon-kit/blob/main/style-build/README.md",
+    "readme": "README.md",
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/style-build:.dts/index.d.ts",
+        "prepack": "pkgprn --flatten types,src",
+        "test": "vitest run --config ./vitest.config.js",
+        "test:types": "tsc -p tsconfig.types.json"
+    },
+    "dependencies": {
+        "lightningcss": "^1.30.2"
+    }
+}

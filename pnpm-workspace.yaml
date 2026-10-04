@@ -4,6 +4,7 @@ packages:
   - theme
   - web-components
   - icons
+  - style-build
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
