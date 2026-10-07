@@ -1,0 +1,485 @@
+{
+  "sourceRevision": "5dea0f2fc46846b8c26bafa57473b42cc50c1c7e",
+  "capturedAt": "2026-10-07T18:23:00.018Z",
+  "browser": "147.0.7727.15",
+  "playwright": "1.59.1",
+  "vite": "8.0.10",
+  "postcss": "8.5.12",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "date": "2026-10-07T12:00:00Z",
+  "fonts": "Google Fonts disabled; platform sans-serif fallback",
+  "serving": "Vite development server with the repository config; not packed-package validation",
+  "captures": [
+    {
+      "route": "badges",
+      "theme": "light",
+      "screenshots": [
+        "light/badges.png"
+      ]
+    },
+    {
+      "route": "buttons",
+      "theme": "light",
+      "screenshots": [
+        "light/buttons.png",
+        "light/buttons-interaction.png"
+      ]
+    },
+    {
+      "route": "colors",
+      "theme": "light",
+      "screenshots": [
+        "light/colors.png"
+      ]
+    },
+    {
+      "route": "combobox-multi",
+      "theme": "light",
+      "screenshots": [
+        "light/combobox-multi.png",
+        "light/combobox-multi-interaction.png"
+      ]
+    },
+    {
+      "route": "combobox-single",
+      "theme": "light",
+      "screenshots": [
+        "light/combobox-single.png",
+        "light/combobox-single-interaction.png"
+      ]
+    },
+    {
+      "route": "datepicker-range",
+      "theme": "light",
+      "screenshots": [
+        "light/datepicker-range.png"
+      ]
+    },
+    {
+      "route": "datepicker",
+      "theme": "light",
+      "screenshots": [
+        "light/datepicker.png",
+        "light/datepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "details",
+      "theme": "light",
+      "screenshots": [
+        "light/details.png",
+        "light/details-interaction.png"
+      ]
+    },
+    {
+      "route": "dialogs",
+      "theme": "light",
+      "screenshots": [
+        "light/dialogs.png",
+        "light/dialogs-interaction.png"
+      ]
+    },
+    {
+      "route": "forms",
+      "theme": "light",
+      "screenshots": [
+        "light/forms.png"
+      ]
+    },
+    {
+      "route": "icon-web-component",
+      "theme": "light",
+      "screenshots": [
+        "light/icon-web-component.png"
+      ]
+    },
+    {
+      "route": "jsx-menu",
+      "theme": "light",
+      "screenshots": [
+        "light/jsx-menu.png",
+        "light/jsx-menu-interaction.png"
+      ]
+    },
+    {
+      "route": "jsx-tooltip",
+      "theme": "light",
+      "screenshots": [
+        "light/jsx-tooltip.png",
+        "light/jsx-tooltip-interaction.png"
+      ]
+    },
+    {
+      "route": "kbd",
+      "theme": "light",
+      "screenshots": [
+        "light/kbd.png"
+      ]
+    },
+    {
+      "route": "links",
+      "theme": "light",
+      "screenshots": [
+        "light/links.png"
+      ]
+    },
+    {
+      "route": "menus",
+      "theme": "light",
+      "screenshots": [
+        "light/menus.png",
+        "light/menus-interaction.png"
+      ]
+    },
+    {
+      "route": "navigation",
+      "theme": "light",
+      "screenshots": [
+        "light/navigation.png"
+      ]
+    },
+    {
+      "route": "panels",
+      "theme": "light",
+      "screenshots": [
+        "light/panels.png"
+      ]
+    },
+    {
+      "route": "shadows",
+      "theme": "light",
+      "screenshots": [
+        "light/shadows.png"
+      ]
+    },
+    {
+      "route": "tables",
+      "theme": "light",
+      "screenshots": [
+        "light/tables.png"
+      ]
+    },
+    {
+      "route": "tags",
+      "theme": "light",
+      "screenshots": [
+        "light/tags.png"
+      ]
+    },
+    {
+      "route": "timepicker",
+      "theme": "light",
+      "screenshots": [
+        "light/timepicker.png",
+        "light/timepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "tooltip",
+      "theme": "light",
+      "screenshots": [
+        "light/tooltip.png",
+        "light/tooltip-interaction.png"
+      ]
+    },
+    {
+      "route": "typography",
+      "theme": "light",
+      "screenshots": [
+        "light/typography.png"
+      ]
+    },
+    {
+      "route": "utilities",
+      "theme": "light",
+      "screenshots": [
+        "light/utilities.png"
+      ]
+    },
+    {
+      "route": "wc-combobox",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-combobox.png",
+        "light/wc-combobox-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-datepicker",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-datepicker.png",
+        "light/wc-datepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-menu",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-menu.png",
+        "light/wc-menu-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-multicombobox",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-multicombobox.png",
+        "light/wc-multicombobox-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-timepicker",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-timepicker.png",
+        "light/wc-timepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-tooltip",
+      "theme": "light",
+      "screenshots": [
+        "light/wc-tooltip.png",
+        "light/wc-tooltip-interaction.png"
+      ]
+    },
+    {
+      "route": "badges",
+      "theme": "dark",
+      "screenshots": [
+        "dark/badges.png"
+      ]
+    },
+    {
+      "route": "buttons",
+      "theme": "dark",
+      "screenshots": [
+        "dark/buttons.png",
+        "dark/buttons-interaction.png"
+      ]
+    },
+    {
+      "route": "colors",
+      "theme": "dark",
+      "screenshots": [
+        "dark/colors.png"
+      ]
+    },
+    {
+      "route": "combobox-multi",
+      "theme": "dark",
+      "screenshots": [
+        "dark/combobox-multi.png",
+        "dark/combobox-multi-interaction.png"
+      ]
+    },
+    {
+      "route": "combobox-single",
+      "theme": "dark",
+      "screenshots": [
+        "dark/combobox-single.png",
+        "dark/combobox-single-interaction.png"
+      ]
+    },
+    {
+      "route": "datepicker-range",
+      "theme": "dark",
+      "screenshots": [
+        "dark/datepicker-range.png"
+      ]
+    },
+    {
+      "route": "datepicker",
+      "theme": "dark",
+      "screenshots": [
+        "dark/datepicker.png",
+        "dark/datepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "details",
+      "theme": "dark",
+      "screenshots": [
+        "dark/details.png",
+        "dark/details-interaction.png"
+      ]
+    },
+    {
+      "route": "dialogs",
+      "theme": "dark",
+      "screenshots": [
+        "dark/dialogs.png",
+        "dark/dialogs-interaction.png"
+      ]
+    },
+    {
+      "route": "forms",
+      "theme": "dark",
+      "screenshots": [
+        "dark/forms.png"
+      ]
+    },
+    {
+      "route": "icon-web-component",
+      "theme": "dark",
+      "screenshots": [
+        "dark/icon-web-component.png"
+      ]
+    },
+    {
+      "route": "jsx-menu",
+      "theme": "dark",
+      "screenshots": [
+        "dark/jsx-menu.png",
+        "dark/jsx-menu-interaction.png"
+      ]
+    },
+    {
+      "route": "jsx-tooltip",
+      "theme": "dark",
+      "screenshots": [
+        "dark/jsx-tooltip.png",
+        "dark/jsx-tooltip-interaction.png"
+      ]
+    },
+    {
+      "route": "kbd",
+      "theme": "dark",
+      "screenshots": [
+        "dark/kbd.png"
+      ]
+    },
+    {
+      "route": "links",
+      "theme": "dark",
+      "screenshots": [
+        "dark/links.png"
+      ]
+    },
+    {
+      "route": "menus",
+      "theme": "dark",
+      "screenshots": [
+        "dark/menus.png",
+        "dark/menus-interaction.png"
+      ]
+    },
+    {
+      "route": "navigation",
+      "theme": "dark",
+      "screenshots": [
+        "dark/navigation.png"
+      ]
+    },
+    {
+      "route": "panels",
+      "theme": "dark",
+      "screenshots": [
+        "dark/panels.png"
+      ]
+    },
+    {
+      "route": "shadows",
+      "theme": "dark",
+      "screenshots": [
+        "dark/shadows.png"
+      ]
+    },
+    {
+      "route": "tables",
+      "theme": "dark",
+      "screenshots": [
+        "dark/tables.png"
+      ]
+    },
+    {
+      "route": "tags",
+      "theme": "dark",
+      "screenshots": [
+        "dark/tags.png"
+      ]
+    },
+    {
+      "route": "timepicker",
+      "theme": "dark",
+      "screenshots": [
+        "dark/timepicker.png",
+        "dark/timepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "tooltip",
+      "theme": "dark",
+      "screenshots": [
+        "dark/tooltip.png",
+        "dark/tooltip-interaction.png"
+      ]
+    },
+    {
+      "route": "typography",
+      "theme": "dark",
+      "screenshots": [
+        "dark/typography.png"
+      ]
+    },
+    {
+      "route": "utilities",
+      "theme": "dark",
+      "screenshots": [
+        "dark/utilities.png"
+      ]
+    },
+    {
+      "route": "wc-combobox",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-combobox.png",
+        "dark/wc-combobox-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-datepicker",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-datepicker.png",
+        "dark/wc-datepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-menu",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-menu.png",
+        "dark/wc-menu-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-multicombobox",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-multicombobox.png",
+        "dark/wc-multicombobox-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-timepicker",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-timepicker.png",
+        "dark/wc-timepicker-interaction.png"
+      ]
+    },
+    {
+      "route": "wc-tooltip",
+      "theme": "dark",
+      "screenshots": [
+        "dark/wc-tooltip.png",
+        "dark/wc-tooltip-interaction.png"
+      ]
+    }
+  ]
+}

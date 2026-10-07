@@ -1,8 +1,18 @@
 # @neon-kit style build for shadow-root components
 
 Status: proposal for build tooling in the `@neon-kit` workspace. Adapter package
-names and authoring syntax below are provisional. `@slimlib/element` already
-provides the `shadowStyles()` rendering middleware.
+names and authoring syntax below are provisional. The local
+`@slimlib/element` source provides the `shadowStyles()` rendering middleware;
+the migration still needs a packaged release exposing that API.
+
+The current migration scope is defined in
+[`STYLE_SYSTEM_MIGRATION_PLAN.md`](STYLE_SYSTEM_MIGRATION_PLAN.md): Vite is the
+only supported bundler, its adapter is a separate package depending on
+`@neon-kit/style-build`, and standalone/CDN builds and detailed slots/parts
+APIs are deferred. `@neon-kit/theme` owns shared style sources;
+`@neon-kit/theme-vanilla` owns its own build and selectable plain CSS outputs
+for classical HTML use. The broader compiler possibilities below do not add
+deliverables to that migration.
 
 ## Goal
 
@@ -59,8 +69,10 @@ the individual host; the theme sheet's fallback works when it sets none.
 ## Ownership and integration
 
 The compiler core, bundler adapters, CLI, and authoring types belong in the
-`@neon-kit` workspace. `@neon-kit/style-build` is the shared core; adapter
-package names are still open. `@slimlib/element` remains the rendering
+`@neon-kit` workspace. `@neon-kit/style-build` is the shared core. The current
+Vite adapter belongs in a separate package with the core as a normal dependency
+and Vite as a peer dependency; its final name remains open.
+`@slimlib/element` remains the rendering
 integration and does not own the build implementation.
 
 `@slimlib/element` is the initial rendering target. It receives ordered native
@@ -191,7 +203,8 @@ objects. It does not resolve `composes` or walk a CSS dependency graph.
 The example inlines the compiled class string at its use site. An actual
 adapter may retain a generated JS facade with named class-string exports; that
 is still compiled data, not a runtime CSS Modules map. Source-only `?neon`
-imports must not remain in a published artifact.
+imports may remain in npm source authoring entries, but must not remain in
+the final browser artifact.
 
 An authoring import with named class exports is preferable to an opaque
 `styles[name]` object for typing and future unused-export analysis. The
@@ -220,16 +233,16 @@ Each adapter should do only the work that cannot live in the shared core:
 5. Update affected style modules during development and preserve class-name
    consistency between development and production builds.
 
-Start with Vite and Parcel adapters. Port the theme, shared border, and lazy
+Implement only the separate Vite adapter in the current migration. Port the
+theme, shared border, and lazy
 leaf scenario from the temporary Slimlib playground into integration fixtures
-in the `@neon-kit` workspace. Rollup may share most of the Vite adapter's
-module-generation logic, but its library output and CSS handling need their
-own acceptance test. Webpack and esbuild can follow the same compiler contract
-through their plugin APIs. Avoid delegating CSS Modules compilation to each
+in the `@neon-kit` workspace. Other bundler adapters are future work; the
+compiler remains independent of Vite so they can reuse its contract.
+Avoid delegating shadow CSS Modules compilation to each
 bundler: doing so would recreate the divergent `composes` behavior the build
 layer is meant to remove.
 
-A CLI should use the same compiler without a bundler. Besides validating the
+A future CLI could use the same compiler without a bundler. Besides validating the
 core, it can produce precompiled library artifacts for consumers that do not
 install an adapter. Consumers of those artifacts still need a browser or
 downstream bundler that preserves native typed CSS imports. An adapter should
@@ -286,8 +299,8 @@ types. The first implementation needs only native attributes and selectors.
 - In the `@neon-kit` workspace, build a component against the packaged
   `@slimlib/element` API. Confirm that its output passes native sheets and
   class strings to `shadowStyles()` without an `@neon-kit` runtime dependency.
-- Compile theme, border, link, and card fixtures with both adapters and the
-  standalone compiler; compare exported classes and transformed CSS.
+- Compile theme, border, link, and card fixtures with the compiler core and
+  the separate Vite adapter; compare exported classes and transformed CSS.
 - In a browser, mount link and card in distinct shadow roots. Verify their
   shared border style, theme fallback, root-provided override, leaf animation,
   and that the adopted sheets do not style unrelated document or shadow-root
@@ -322,8 +335,8 @@ types. The first implementation needs only native attributes and selectors.
   one from incidental bundler traversal.
 - Whether later optimization may combine source CSS files into larger native
   CSS assets, and which shared/leaf boundaries it must preserve.
-- Whether to support raw CSS source imports in published packages, or publish
-  only precompiled JS/CSS artifacts for the first release.
+- The current migration publishes source CSS for consumer Vite builds;
+  precompiled standalone web-component artifacts are deferred.
 - Whether cross-document moves or server-side rendering are needed for this
   browser-targeted native import path.
 

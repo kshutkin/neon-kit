@@ -1,0 +1,379 @@
+{
+  "route": "wc-menu",
+  "theme": "dark",
+  "errors": [],
+  "idle": {
+    "markup": "<div id=\"content-inner\" class=\"p-8\"><main>\n    <h1 class=\"mb-6\">Menu — Web Component</h1>\n    <p class=\"mb-6 text-ink-secondary\">\n        <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds\n        keyboard behavior to the theme's menu markup: a roving\n        <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key\n        navigation, <code>Home</code> / <code>End</code> jump, and activation\n        with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or\n        <code>aria-disabled=\"true\"</code>) remain focusable but cannot be activated. See the\n        <a class=\"link\" href=\"https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md\">rendering-mode ADR</a>.\n    </p>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Installation</h2>\n        <pre class=\"rounded-lg border border-border bg-surface-secondary p-4\"><code>pnpm add @neon-kit/theme @neon-kit/web-components\n\n// In your bundle entry:\nimport '@neon-kit/theme/index.css';\nimport '@neon-kit/web-components/menu';</code></pre>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Popover-anchored menu</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host element with the native popover API:\n            <code>popovertarget</code> on a trigger button, <code>popover</code>\n            on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the\n            arrow keys, <code>Home</code>, <code>End</code>, <code>Enter</code>,\n            and <code>Space</code>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-demo-menu\" id=\"neon-menu-trigger-olvzr60yn\">\n                Open menu\n            </button>\n            <neon-menu id=\"wc-demo-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-olvzr60yn\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    New file\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">N</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Open\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">O</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Save (disabled)\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Project Neon\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Theme tokens\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Tooltip notes\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Nested popover menus</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Nested menus can be composed without extra component code by using\n            a menu item as the native popover trigger for another\n            <code>&lt;neon-menu&gt;</code>. Open the parent, focus\n            <span class=\"whitespace-nowrap\">Export as</span>, then press\n            <kbd class=\"kbd\">→</kbd>, <kbd class=\"kbd\">Enter</kbd>, or <kbd class=\"kbd\">Space</kbd> to\n            open the child menu. The submenu is authored inside its trigger\n            item so the menu tree shares one root context. Press\n            <kbd class=\"kbd\">←</kbd> in the child menu to close it and return\n            focus to <span class=\"whitespace-nowrap\">Export as</span>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-nested-menu\" id=\"neon-menu-trigger-tb8s8oldz\">\n                Open nested menu\n            </button>\n            <neon-menu id=\"wc-nested-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-tb8s8oldz\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    Rename\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Duplicate\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" popovertarget=\"wc-nested-export-menu\" tabindex=\"-1\" id=\"neon-menu-trigger-nk559wei5\">\n                    Export as\n                    <svg class=\"menu__chevron\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" aria-hidden=\"true\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m8.25 4.5 7.5 7.5-7.5 7.5\"></path></svg>\n                    <neon-menu id=\"wc-nested-export-menu\" popover=\"\" class=\"menu -inline-end\" aria-labelledby=\"neon-menu-trigger-nk559wei5\">\n                        <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                            PDF document\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            Markdown file\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            HTML page\n                        </neon-menu-item>\n                    </neon-menu>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Archive\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Delete permanently\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n        <p class=\"mt-4 text-ink-secondary\">\n            Each open menu handles its own roving focus. Hover-open behavior\n            remains consumer-owned.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">API</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It\n            does not create any DOM of its own — it consumes the theme's\n            <code>.menu</code> markup and adds keyboard behavior on top.\n            <code>&lt;neon-menu-item&gt;</code> owns item semantics and disabled\n            click suppression.\n        </p>\n\n        <h3 class=\"mb-2\">Markup contract</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Rows must be authored as\n            <code>&lt;neon-menu-item class=\"menu__item\"&gt;</code> descendants.\n            Each menu queries its Light-DOM descendants and owns the items whose\n            nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested\n            <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item\n            element does not render its own children, so labels, shortcuts,\n            icons, checkmarks, and chevrons remain consumer-authored markup. One\n            direct text run or unclassified element fills the label column;\n            <code>.menu__label</code> is only needed to group multiple label nodes.\n            Disabled rows use <code>disabled</code> or\n            <code>aria-disabled=\"true\"</code> — both remain in keyboard\n            navigation and click activation is suppressed.\n        </p>\n\n        <h3 class=\"mb-2\">Behavior</h3>\n        <ul class=\"mb-6 list-disc pl-6 text-ink-secondary\">\n            <li>Provides a default <code>menu</code> role for the host.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>\n            <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex=\"0\"</code>; the others are <code>-1</code>.</li>\n            <li>On the popover <code>toggle</code> event with <code>newState === \"open\"</code>, focus moves to the first item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>\n            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, or moved.</li>\n            <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>\n            <li>A popover menu derives <code>aria-labelledby</code> from its trigger unless the menu already has <code>aria-label</code> or <code>aria-labelledby</code>.</li>\n        </ul>\n\n        <h3 class=\"mb-2\">Popover wiring</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host with the <code>popover</code> attribute and a trigger\n            button using <code>popovertarget=\"&lt;menu-id&gt;\"</code> (as in the\n            demo above). Menu items can also use <code>popovertarget</code> to\n            open submenu popovers.\n            For submenus, place the child <code>&lt;neon-menu popover&gt;</code>\n            inside the triggering <code>&lt;neon-menu-item&gt;</code> so the\n            menu tree shares one root context.\n            The theme's <code>.menu</code> CSS provides default placement via\n            <code>position-area: block-end span-inline-end</code>.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Accessibility pattern</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Implements the\n            <a class=\"link\" href=\"https://www.w3.org/WAI/ARIA/apg/patterns/menubar/\">WAI-ARIA Menu and Menubar pattern</a>.\n            The host has a default <code>menu</code> role, each row carries\n            a default <code>menuitem</code> role, and a roving <code>tabindex</code>\n            keeps each menu a single tab stop.\n        </p>\n\n        <h3 class=\"mb-2\">Keyboard support</h3>\n        <div class=\"overflow-x-auto mb-6\">\n            <table class=\"w-full border-collapse\">\n                <thead>\n                    <tr class=\"bg-surface-secondary\">\n                        <th class=\"border border-border px-4 py-2 text-left\">Key</th>\n                        <th class=\"border border-border px-4 py-2 text-left\">Action</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">↓</kbd> <kbd class=\"kbd\">↑</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Move focus to the next / previous item, wrapping at the ends.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Home</kbd> <kbd class=\"kbd\">End</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Jump to the first / last item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Enter</kbd> <kbd class=\"kbd\">Space</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Activate the focused enabled item (calls <code>click()</code>).</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">→</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Open the focused item's submenu and move focus to its first item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">←</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Close a submenu and return focus to its parent menu item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Esc</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n\n        <p class=\"mb-4 text-ink-secondary\">\n            Disabled items remain in arrow-key navigation and can receive the\n            roving <code>tabindex</code>, but keyboard and pointer activation\n            are suppressed.\n        </p>\n        <p class=\"mb-4 text-ink-secondary\">\n            The trigger button keeps its native semantics. On open, focus moves\n            into the menu (first item). On close via\n            <kbd class=\"kbd\">Esc</kbd> or outside dismissal, the native popover\n            behavior returns focus to the trigger.\n        </p>\n    </section>\n</main>\n</div>",
+    "tokens": {
+      "--accent-hue-offset": "18",
+      "--color-accent": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18))",
+      "--color-accent-active": "oklch(from oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18)) calc(l - 0.15) calc(c * 0.8) h)",
+      "--color-accent-hover": "oklch(from oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18)) l calc(c * 0.95) h)",
+      "--color-border": "oklch(from oklch(25% 0.02 200) calc(l + 0.13) c h)",
+      "--color-border-disabled": "oklch(from oklch(from oklch(25% 0.02 200) calc(l + 0.13) c h) calc(l - 0.06) c h)",
+      "--color-border-focus": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) max(l, 0.70) c h)",
+      "--color-border-primary": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l + 0.04) calc(c * 0.81) h)",
+      "--color-border-secondary": "oklch(from oklch(25% 0.02 200) l c h / 0.6)",
+      "--color-error": "oklch(from oklch(70% 0.3 15) 0.78 calc(c * 0.82) h)",
+      "--color-error-soft": "oklch(from oklch(from oklch(70% 0.3 15) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--color-info": "oklch(from oklch(88% 0.15 202) 0.78 calc(c * 0.82) h)",
+      "--color-info-soft": "oklch(from oklch(from oklch(88% 0.15 202) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--color-ink-inverse": "oklch(25% 0.02 200)",
+      "--color-ink-muted": "oklch(from oklch(92% calc(0.02 * 0.5) 200) calc(l - 0.42) c h)",
+      "--color-ink-primary": "oklch(92% calc(0.02 * 0.5) 200)",
+      "--color-ink-secondary": "oklch(from oklch(92% calc(0.02 * 0.5) 200) calc(l - 0.22) c h)",
+      "--color-neon-blue": "oklch(88% 0.15 202)",
+      "--color-neon-green": "oklch(88% 0.25 148)",
+      "--color-neon-orange": "oklch(70% 0.2 43)",
+      "--color-neon-pink": "oklch(70% 0.32 328)",
+      "--color-neon-red": "oklch(70% 0.3 15)",
+      "--color-neon-white": "oklch(100% 0 0)",
+      "--color-neon-yellow": "oklch(97% 0.21 110)",
+      "--color-neutral": "oklch(25% 0.02 200)",
+      "--color-primary": "oklch(calc((38 + 10) * 1%) 0.2 245)",
+      "--color-primary-active": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.11) calc(c * 0.8) h)",
+      "--color-primary-disabled": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.27) calc(c * 0.48) h)",
+      "--color-primary-hover": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l + 0.03) calc(c * 0.9) h)",
+      "--color-primary-soft-pressed": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.1) c h / 0.6)",
+      "--color-shadow-base": "oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1))",
+      "--color-shadow-surface-base": "oklch(from oklch(92% calc(0.02 * 0.5) 200) l c calc(h * 0.9 + 245 * 0.1))",
+      "--color-success": "oklch(from oklch(88% 0.25 148) 0.78 calc(c * 0.82) h)",
+      "--color-success-soft": "oklch(from oklch(from oklch(88% 0.25 148) 0.78 calc(c * 0.82) h) l c h / 0.20)",
+      "--color-surface": "oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h)",
+      "--color-surface-active": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.1) c h)",
+      "--color-surface-disabled": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.2) c h)",
+      "--color-surface-hover": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.05) c h)",
+      "--color-surface-secondary": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.03) c h)",
+      "--color-warning": "oklch(from oklch(70% 0.2 43) 0.78 calc(c * 0.82) h)",
+      "--color-warning-soft": "oklch(from oklch(from oklch(70% 0.2 43) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--docs-topbar-height": "4rem",
+      "--foil-border-width": "",
+      "--font-sans": "\"Hanken Grotesk\", sans-serif",
+      "--inset-shadow-highlight": "inset 0 1px oklch(from oklch(from oklch(92% calc(0.02 * 0.5) 200) l c calc(h * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--inset-shadow-highlight-pressed": "inset 0 1px oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l c h / 0.25)",
+      "--inset-shadow-pressed": "inset 0 1px 2px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--interest-delay": "",
+      "--menu-item-padding-block": "",
+      "--menu-item-padding-inline": "",
+      "--neon-border-color": "",
+      "--neon-color": "",
+      "--neon-glow": "",
+      "--neon-text-color": "",
+      "--neutral-chroma": "0.02",
+      "--neutral-hue": "200",
+      "--primary-chroma": "0.2",
+      "--primary-hue": "245",
+      "--primary-lightness": "38",
+      "--shadow-drop": "0 1px 2px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.4)",
+      "--shadow-drop-subtle": "0 1px 1px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--state-chroma-scale": "0.82",
+      "--state-target-lightness": "0.78",
+      "--surface-chroma": "calc(0.02 * 0.25)",
+      "--text-shadow-debossed": "0 -1px oklch(15% 0.02 200 / 0.6), 0 1px oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.15) c h / 0.5)",
+      "--text-shadow-embossed": "0 1px oklch(15% 0.02 200 / 0.6)",
+      "--tooltip-arrow-clip": "",
+      "--tooltip-arrow-inset-block-start": "",
+      "--tooltip-arrow-inset-inline-start": "",
+      "--tooltip-arrow-translate": "",
+      "--tooltip-close-delay": "",
+      "--tooltip-max-inline-size": "",
+      "--tooltip-open-delay": ""
+    },
+    "classes": [
+      "-inline-end",
+      "bg-surface-secondary",
+      "border",
+      "border-border",
+      "border-collapse",
+      "btn",
+      "kbd",
+      "kbd-keys",
+      "link",
+      "list-disc",
+      "mb-2",
+      "mb-4",
+      "mb-6",
+      "mb-8",
+      "menu",
+      "menu__chevron",
+      "menu__item",
+      "menu__shortcut",
+      "mt-4",
+      "overflow-x-auto",
+      "p-4",
+      "p-6",
+      "pl-6",
+      "px-4",
+      "py-2",
+      "rounded-lg",
+      "text-ink-secondary",
+      "text-left",
+      "w-full",
+      "whitespace-nowrap"
+    ],
+    "hosts": [
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      }
+    ],
+    "openPopovers": [],
+    "focus": "<body class=\"min-h-screen bg-surface text-ink-primary\">\n    <header class=\"docs-topbar\">\n        <a class=\"docs-wordmark\" data-docs-home=\"\" href=\"/neon-kit/\">Neon Kit</a>\n        <nav class=\"docs-topbar__nav\" aria-label=\"Documentation sections\">\n            <ul class=\"nav -segmented\" data-docs-nav=\"\">\n                <li><a data-docs-section=\"about\" href=\"/neon-kit/\" class=\"nav__item\">About</a></li>\n                <li><a data-docs-section=\"getting-started\" href=\"/neon-kit/getting-started/\" class=\"nav__item\">Getting Started</a></li>\n                <li><a data-docs-section=\"components\" href=\"/neon-kit/wc-menu/\" class=\"nav__item -active\">Components</a></li>\n                <li><a data-docs-section=\"icons\" href=\"/neon-kit/icons/\" class=\"nav__item\">Icons</a></li>\n            </ul>\n        </nav>\n        <theme-switcher>\n      <div class=\"relative\">\n        <button class=\"btn theme-toggle-btn cursor-pointer text-sm\">\n          Theme &amp; Colors\n        </button>\n        <div class=\"theme-panel hidden absolute top-full right-0 mt-2 p-6 rounded-lg shadow-lg min-w-[280px] max-w-[320px] z-[1000]\" style=\"background: var(--color-surface); border: 1px solid var(--color-border);\">\n          <div class=\"mb-6\">\n            <h3 class=\"text-base font-semibold mb-4\" style=\"color: var(--color-ink-primary);\">Theme</h3>\n            <button class=\"btn cta theme-toggle w-full cursor-pointer\">\n              Toggle Light/Dark\n            </button>\n          </div>\n\n          <div class=\"pt-6\" style=\"border-top: 1px solid var(--color-border);\">\n            <h3 class=\"text-base font-semibold mb-4\" style=\"color: var(--color-ink-primary);\">Primary Color</h3>\n\n            <div class=\"mb-4\">\n              <div class=\"primary-color-preview w-full h-16 rounded-md mb-3 border-2\" style=\"background: var(--color-primary); border-color: var(--color-border);\"></div>\n              <div class=\"font-mono text-xs text-center mb-4 primary-oklch-display\" style=\"color: var(--color-ink-secondary);\">oklch(38% 0.2 245)</div>\n            </div>\n\n            <div class=\"mb-4\">\n              <label class=\"block text-sm mb-2\" style=\"color: var(--color-ink-primary);\">\n                Lightness: <span class=\"primary-l-value\">38</span>%\n              </label>\n              <input type=\"range\" class=\"primary-l-slider w-full\" min=\"0\" max=\"100\" value=\"38\" step=\"1\">\n            </div>\n\n            <div class=\"mb-4\">\n              <label class=\"block text-sm mb-2\" style=\"color: var(--color-ink-primary);\">\n                Chroma: <span class=\"primary-c-value\">0.2</span>\n              </label>\n              <input type=\"range\" class=\"primary-c-slider w-full\" min=\"0\" max=\"0.5\" value=\"0.2\" step=\"0.01\">\n            </div>\n\n            <div class=\"mb-4\">\n              <label class=\"block text-sm mb-2\" style=\"color: var(--color-ink-primary);\">\n                Hue: <span class=\"primary-h-value\">245</span>°\n              </label>\n              <input type=\"range\" class=\"primary-h-slider w-full\" min=\"0\" max=\"360\" value=\"245\" step=\"1\">\n            </div>\n            <button class=\"btn reset-primary-btn w-full mt-2 cursor-pointer\">\n              Reset to Default\n            </button>\n          </div>\n        </div>\n      </div>\n    </theme-switcher>\n    </header>\n    <aside class=\"docs-aside flex w-72 flex-col border-r border-border bg-surface-secondary\">\n        <nav class=\"flex-1 p-4\">\n            <ul class=\"nav -vertical\" data-sidebar=\"\">\n                <li data-item=\"buttons\"><a data-item=\"buttons\" data-slug=\"buttons\" href=\"/neon-kit/buttons/\" class=\"nav__item\">Buttons</a></li>\n                <li data-item=\"panels\"><a data-item=\"panels\" data-slug=\"panels\" href=\"/neon-kit/panels/\" class=\"nav__item\">Panels</a></li>\n                <li data-item=\"details\"><a data-item=\"details\" data-slug=\"details\" href=\"/neon-kit/details/\" class=\"nav__item\">Details</a></li>\n                <li data-item=\"dialogs\"><a data-item=\"dialogs\" data-slug=\"dialogs\" href=\"/neon-kit/dialogs/\" class=\"nav__item\">Dialogs</a></li>\n                <li data-item=\"menus\"><a data-item=\"menus\" data-slug=\"wc-menu\" href=\"/neon-kit/wc-menu/\" class=\"nav__item -active\">Menus</a></li>\n                <li data-item=\"navigation\"><a data-item=\"navigation\" data-slug=\"navigation\" href=\"/neon-kit/navigation/\" class=\"nav__item\">Navigation</a></li>\n                <li data-item=\"kbd\"><a data-item=\"kbd\" data-slug=\"kbd\" href=\"/neon-kit/kbd/\" class=\"nav__item\">Keyboard</a></li>\n                <li data-item=\"badges\"><a data-item=\"badges\" data-slug=\"badges\" href=\"/neon-kit/badges/\" class=\"nav__item\">Badges</a></li>\n                <li data-item=\"tags\"><a data-item=\"tags\" data-slug=\"tags\" href=\"/neon-kit/tags/\" class=\"nav__item\">Tags</a></li>\n                <li data-item=\"forms\"><a data-item=\"forms\" data-slug=\"forms\" href=\"/neon-kit/forms/\" class=\"nav__item\">Forms</a></li>\n                <li data-item=\"combobox-single\"><a data-item=\"combobox-single\" data-slug=\"wc-combobox\" href=\"/neon-kit/wc-combobox/\" class=\"nav__item\">Combobox — Single</a></li>\n                <li data-item=\"combobox-multi\"><a data-item=\"combobox-multi\" data-slug=\"wc-multicombobox\" href=\"/neon-kit/wc-multicombobox/\" class=\"nav__item\">Combobox — Multi</a></li>\n                <li data-item=\"datepicker\"><a data-item=\"datepicker\" data-slug=\"wc-datepicker\" href=\"/neon-kit/wc-datepicker/\" class=\"nav__item\">Datepicker</a></li>\n                <li data-item=\"datepicker-range\"><a data-item=\"datepicker-range\" data-slug=\"datepicker-range\" href=\"/neon-kit/datepicker-range/\" class=\"nav__item\">Datepicker — Range</a></li>\n                <li data-item=\"timepicker\"><a data-item=\"timepicker\" data-slug=\"wc-timepicker\" href=\"/neon-kit/wc-timepicker/\" class=\"nav__item\">Timepicker</a></li>\n                <li data-item=\"tooltip\"><a data-item=\"tooltip\" data-slug=\"wc-tooltip\" href=\"/neon-kit/wc-tooltip/\" class=\"nav__item\">Tooltip</a></li>\n                <li data-item=\"typography\"><a data-item=\"typography\" data-slug=\"typography\" href=\"/neon-kit/typography/\" class=\"nav__item\">Typography</a></li>\n                <li data-item=\"tables\"><a data-item=\"tables\" data-slug=\"tables\" href=\"/neon-kit/tables/\" class=\"nav__item\">Tables</a></li>\n                <li data-item=\"colors\"><a data-item=\"colors\" data-slug=\"colors\" href=\"/neon-kit/colors/\" class=\"nav__item\">Colors</a></li>\n                <li data-item=\"links\"><a data-item=\"links\" data-slug=\"links\" href=\"/neon-kit/links/\" class=\"nav__item\">Links</a></li>\n                <li data-item=\"shadows\"><a data-item=\"shadows\" data-slug=\"shadows\" href=\"/neon-kit/shadows/\" class=\"nav__item\">Shadows</a></li>\n                <li data-item=\"utilities\"><a data-item=\"utilities\" data-slug=\"utilities\" href=\"/neon-kit/utilities/\" class=\"nav__item\">Utilities</a></li>\n            </ul>\n        </nav>\n    </aside>\n    <main id=\"content\" class=\"docs-main bg-surface\">\n        <nav data-component-mode-nav=\"\" aria-label=\"Component mode\" class=\"docs-tabs\">\n            <ul class=\"nav -tabs\">\n                <li><a data-section=\"css\" href=\"/neon-kit/menus/\" class=\"nav__item\">CSS</a></li>\n                <li><a data-section=\"wc\" href=\"/neon-kit/wc-menu/\" class=\"nav__item -active\">Web Components</a></li>\n                <li><a data-section=\"jsx\" href=\"/neon-kit/jsx-menu/\" class=\"nav__item\">JSX</a></li>\n            </ul>\n        </nav>\n        <div id=\"content-inner\" class=\"p-8\"><main>\n    <h1 class=\"mb-6\">Menu — Web Component</h1>\n    <p class=\"mb-6 text-ink-secondary\">\n        <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds\n        keyboard behavior to the theme's menu markup: a roving\n        <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key\n        navigation, <code>Home</code> / <code>End</code> jump, and activation\n        with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or\n        <code>aria-disabled=\"true\"</code>) remain focusable but cannot be activated. See the\n        <a class=\"link\" href=\"https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md\">rendering-mode ADR</a>.\n    </p>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Installation</h2>\n        <pre class=\"rounded-lg border border-border bg-surface-secondary p-4\"><code>pnpm add @neon-kit/theme @neon-kit/web-components\n\n// In your bundle entry:\nimport '@neon-kit/theme/index.css';\nimport '@neon-kit/web-components/menu';</code></pre>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Popover-anchored menu</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host element with the native popover API:\n            <code>popovertarget</code> on a trigger button, <code>popover</code>\n            on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the\n            arrow keys, <code>Home</code>, <code>End</code>, <code>Enter</code>,\n            and <code>Space</code>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-demo-menu\" id=\"neon-menu-trigger-olvzr60yn\">\n                Open menu\n            </button>\n            <neon-menu id=\"wc-demo-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-olvzr60yn\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    New file\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">N</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Open\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">O</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Save (disabled)\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Project Neon\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Theme tokens\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Tooltip notes\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Nested popover menus</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Nested menus can be composed without extra component code by using\n            a menu item as the native popover trigger for another\n            <code>&lt;neon-menu&gt;</code>. Open the parent, focus\n            <span class=\"whitespace-nowrap\">Export as</span>, then press\n            <kbd class=\"kbd\">→</kbd>, <kbd class=\"kbd\">Enter</kbd>, or <kbd class=\"kbd\">Space</kbd> to\n            open the child menu. The submenu is authored inside its trigger\n            item so the menu tree shares one root context. Press\n            <kbd class=\"kbd\">←</kbd> in the child menu to close it and return\n            focus to <span class=\"whitespace-nowrap\">Export as</span>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-nested-menu\" id=\"neon-menu-trigger-tb8s8oldz\">\n                Open nested menu\n            </button>\n            <neon-menu id=\"wc-nested-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-tb8s8oldz\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    Rename\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Duplicate\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" popovertarget=\"wc-nested-export-menu\" tabindex=\"-1\" id=\"neon-menu-trigger-nk559wei5\">\n                    Export as\n                    <svg class=\"menu__chevron\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" aria-hidden=\"true\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m8.25 4.5 7.5 7.5-7.5 7.5\"></path></svg>\n                    <neon-menu id=\"wc-nested-export-menu\" popover=\"\" class=\"menu -inline-end\" aria-labelledby=\"neon-menu-trigger-nk559wei5\">\n                        <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                            PDF document\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            Markdown file\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            HTML page\n                        </neon-menu-item>\n                    </neon-menu>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Archive\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Delete permanently\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n        <p class=\"mt-4 text-ink-secondary\">\n            Each open menu handles its own roving focus. Hover-open behavior\n            remains consumer-owned.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">API</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It\n            does not create any DOM of its own — it consumes the theme's\n            <code>.menu</code> markup and adds keyboard behavior on top.\n            <code>&lt;neon-menu-item&gt;</code> owns item semantics and disabled\n            click suppression.\n        </p>\n\n        <h3 class=\"mb-2\">Markup contract</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Rows must be authored as\n            <code>&lt;neon-menu-item class=\"menu__item\"&gt;</code> descendants.\n            Each menu queries its Light-DOM descendants and owns the items whose\n            nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested\n            <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item\n            element does not render its own children, so labels, shortcuts,\n            icons, checkmarks, and chevrons remain consumer-authored markup. One\n            direct text run or unclassified element fills the label column;\n            <code>.menu__label</code> is only needed to group multiple label nodes.\n            Disabled rows use <code>disabled</code> or\n            <code>aria-disabled=\"true\"</code> — both remain in keyboard\n            navigation and click activation is suppressed.\n        </p>\n\n        <h3 class=\"mb-2\">Behavior</h3>\n        <ul class=\"mb-6 list-disc pl-6 text-ink-secondary\">\n            <li>Provides a default <code>menu</code> role for the host.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>\n            <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex=\"0\"</code>; the others are <code>-1</code>.</li>\n            <li>On the popover <code>toggle</code> event with <code>newState === \"open\"</code>, focus moves to the first item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>\n            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, or moved.</li>\n            <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>\n            <li>A popover menu derives <code>aria-labelledby</code> from its trigger unless the menu already has <code>aria-label</code> or <code>aria-labelledby</code>.</li>\n        </ul>\n\n        <h3 class=\"mb-2\">Popover wiring</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host with the <code>popover</code> attribute and a trigger\n            button using <code>popovertarget=\"&lt;menu-id&gt;\"</code> (as in the\n            demo above). Menu items can also use <code>popovertarget</code> to\n            open submenu popovers.\n            For submenus, place the child <code>&lt;neon-menu popover&gt;</code>\n            inside the triggering <code>&lt;neon-menu-item&gt;</code> so the\n            menu tree shares one root context.\n            The theme's <code>.menu</code> CSS provides default placement via\n            <code>position-area: block-end span-inline-end</code>.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Accessibility pattern</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Implements the\n            <a class=\"link\" href=\"https://www.w3.org/WAI/ARIA/apg/patterns/menubar/\">WAI-ARIA Menu and Menubar pattern</a>.\n            The host has a default <code>menu</code> role, each row carries\n            a default <code>menuitem</code> role, and a roving <code>tabindex</code>\n            keeps each menu a single tab stop.\n        </p>\n\n        <h3 class=\"mb-2\">Keyboard support</h3>\n        <div class=\"overflow-x-auto mb-6\">\n            <table class=\"w-full border-collapse\">\n                <thead>\n                    <tr class=\"bg-surface-secondary\">\n                        <th class=\"border border-border px-4 py-2 text-left\">Key</th>\n                        <th class=\"border border-border px-4 py-2 text-left\">Action</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">↓</kbd> <kbd class=\"kbd\">↑</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Move focus to the next / previous item, wrapping at the ends.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Home</kbd> <kbd class=\"kbd\">End</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Jump to the first / last item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Enter</kbd> <kbd class=\"kbd\">Space</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Activate the focused enabled item (calls <code>click()</code>).</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">→</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Open the focused item's submenu and move focus to its first item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">←</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Close a submenu and return focus to its parent menu item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Esc</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n\n        <p class=\"mb-4 text-ink-secondary\">\n            Disabled items remain in arrow-key navigation and can receive the\n            roving <code>tabindex</code>, but keyboard and pointer activation\n            are suppressed.\n        </p>\n        <p class=\"mb-4 text-ink-secondary\">\n            The trigger button keeps its native semantics. On open, focus moves\n            into the menu (first item). On close via\n            <kbd class=\"kbd\">Esc</kbd> or outside dismissal, the native popover\n            behavior returns focus to the trigger.\n        </p>\n    </section>\n</main>\n</div>\n    </main>\n    <script src=\"/neon-kit/theme-switcher.js\" type=\"module\"></script>\n    <script src=\"/neon-kit/combobox.js\" type=\"module\"></script>\n    <script src=\"/neon-kit/datepicker.js\" type=\"module\"></script>\n    <script src=\"/neon-kit/timepicker.js\" type=\"module\"></script>\n    <script src=\"/neon-kit/jsx-menu.jsx\" type=\"module\"></script>\n    <script src=\"/neon-kit/jsx-tooltip.jsx\" type=\"module\"></script>\n    <script src=\"/neon-kit/icons.js\" type=\"module\"></script>\n    <script src=\"/neon-kit/wc.js\" type=\"module\"></script>\n    <script type=\"module\" src=\"/neon-kit/index.html?html-proxy&amp;index=0.js\"></script>\n\n\n</body>",
+    "fontFamily": "\"Hanken Grotesk\", sans-serif"
+  },
+  "screenshots": [
+    "dark/wc-menu.png",
+    "dark/wc-menu-interaction.png"
+  ],
+  "interaction": {
+    "action": "click",
+    "selector": "#content-inner [popovertarget=\"wc-demo-menu\"]",
+    "markup": "<div id=\"content-inner\" class=\"p-8\"><main>\n    <h1 class=\"mb-6\">Menu — Web Component</h1>\n    <p class=\"mb-6 text-ink-secondary\">\n        <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds\n        keyboard behavior to the theme's menu markup: a roving\n        <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key\n        navigation, <code>Home</code> / <code>End</code> jump, and activation\n        with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or\n        <code>aria-disabled=\"true\"</code>) remain focusable but cannot be activated. See the\n        <a class=\"link\" href=\"https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md\">rendering-mode ADR</a>.\n    </p>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Installation</h2>\n        <pre class=\"rounded-lg border border-border bg-surface-secondary p-4\"><code>pnpm add @neon-kit/theme @neon-kit/web-components\n\n// In your bundle entry:\nimport '@neon-kit/theme/index.css';\nimport '@neon-kit/web-components/menu';</code></pre>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Popover-anchored menu</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host element with the native popover API:\n            <code>popovertarget</code> on a trigger button, <code>popover</code>\n            on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the\n            arrow keys, <code>Home</code>, <code>End</code>, <code>Enter</code>,\n            and <code>Space</code>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-demo-menu\" id=\"neon-menu-trigger-olvzr60yn\">\n                Open menu\n            </button>\n            <neon-menu id=\"wc-demo-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-olvzr60yn\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    New file\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">N</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Open\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">O</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Save (disabled)\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Project Neon\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Theme tokens\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Tooltip notes\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Nested popover menus</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Nested menus can be composed without extra component code by using\n            a menu item as the native popover trigger for another\n            <code>&lt;neon-menu&gt;</code>. Open the parent, focus\n            <span class=\"whitespace-nowrap\">Export as</span>, then press\n            <kbd class=\"kbd\">→</kbd>, <kbd class=\"kbd\">Enter</kbd>, or <kbd class=\"kbd\">Space</kbd> to\n            open the child menu. The submenu is authored inside its trigger\n            item so the menu tree shares one root context. Press\n            <kbd class=\"kbd\">←</kbd> in the child menu to close it and return\n            focus to <span class=\"whitespace-nowrap\">Export as</span>.\n        </p>\n        <div class=\"rounded-lg border border-border bg-surface-secondary p-6\">\n            <button type=\"button\" class=\"btn\" popovertarget=\"wc-nested-menu\" id=\"neon-menu-trigger-tb8s8oldz\">\n                Open nested menu\n            </button>\n            <neon-menu id=\"wc-nested-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-tb8s8oldz\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    Rename\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Duplicate\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" popovertarget=\"wc-nested-export-menu\" tabindex=\"-1\" id=\"neon-menu-trigger-nk559wei5\">\n                    Export as\n                    <svg class=\"menu__chevron\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" aria-hidden=\"true\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m8.25 4.5 7.5 7.5-7.5 7.5\"></path></svg>\n                    <neon-menu id=\"wc-nested-export-menu\" popover=\"\" class=\"menu -inline-end\" aria-labelledby=\"neon-menu-trigger-nk559wei5\">\n                        <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                            PDF document\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            Markdown file\n                        </neon-menu-item>\n                        <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                            HTML page\n                        </neon-menu-item>\n                    </neon-menu>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Archive\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Delete permanently\n                </neon-menu-item>\n            </neon-menu>\n        </div>\n        <p class=\"mt-4 text-ink-secondary\">\n            Each open menu handles its own roving focus. Hover-open behavior\n            remains consumer-owned.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">API</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It\n            does not create any DOM of its own — it consumes the theme's\n            <code>.menu</code> markup and adds keyboard behavior on top.\n            <code>&lt;neon-menu-item&gt;</code> owns item semantics and disabled\n            click suppression.\n        </p>\n\n        <h3 class=\"mb-2\">Markup contract</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Rows must be authored as\n            <code>&lt;neon-menu-item class=\"menu__item\"&gt;</code> descendants.\n            Each menu queries its Light-DOM descendants and owns the items whose\n            nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested\n            <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item\n            element does not render its own children, so labels, shortcuts,\n            icons, checkmarks, and chevrons remain consumer-authored markup. One\n            direct text run or unclassified element fills the label column;\n            <code>.menu__label</code> is only needed to group multiple label nodes.\n            Disabled rows use <code>disabled</code> or\n            <code>aria-disabled=\"true\"</code> — both remain in keyboard\n            navigation and click activation is suppressed.\n        </p>\n\n        <h3 class=\"mb-2\">Behavior</h3>\n        <ul class=\"mb-6 list-disc pl-6 text-ink-secondary\">\n            <li>Provides a default <code>menu</code> role for the host.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>\n            <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex=\"0\"</code>; the others are <code>-1</code>.</li>\n            <li>On the popover <code>toggle</code> event with <code>newState === \"open\"</code>, focus moves to the first item. The browser's <code>:focus-visible</code> heuristic suppresses the focus ring when the popover was opened by mouse and shows it when opened by keyboard — no manual modality tracking.</li>\n            <li>Queries owned descendant menu items in DOM order and reacts when items are added, removed, or moved.</li>\n            <li>Leaf item activation closes all open popover menus in the same root menu tree after consumer click handlers run.</li>\n            <li><code>&lt;neon-menu-item&gt;</code> supports <code>popovertarget</code> and <code>popovertargetaction</code> for nested menu composition.</li>\n            <li>A popover menu derives <code>aria-labelledby</code> from its trigger unless the menu already has <code>aria-label</code> or <code>aria-labelledby</code>.</li>\n        </ul>\n\n        <h3 class=\"mb-2\">Popover wiring</h3>\n        <p class=\"mb-4 text-ink-secondary\">\n            Pair the host with the <code>popover</code> attribute and a trigger\n            button using <code>popovertarget=\"&lt;menu-id&gt;\"</code> (as in the\n            demo above). Menu items can also use <code>popovertarget</code> to\n            open submenu popovers.\n            For submenus, place the child <code>&lt;neon-menu popover&gt;</code>\n            inside the triggering <code>&lt;neon-menu-item&gt;</code> so the\n            menu tree shares one root context.\n            The theme's <code>.menu</code> CSS provides default placement via\n            <code>position-area: block-end span-inline-end</code>.\n        </p>\n    </section>\n\n    <section class=\"mb-8\">\n        <h2 class=\"mb-4\">Accessibility pattern</h2>\n        <p class=\"mb-4 text-ink-secondary\">\n            Implements the\n            <a class=\"link\" href=\"https://www.w3.org/WAI/ARIA/apg/patterns/menubar/\">WAI-ARIA Menu and Menubar pattern</a>.\n            The host has a default <code>menu</code> role, each row carries\n            a default <code>menuitem</code> role, and a roving <code>tabindex</code>\n            keeps each menu a single tab stop.\n        </p>\n\n        <h3 class=\"mb-2\">Keyboard support</h3>\n        <div class=\"overflow-x-auto mb-6\">\n            <table class=\"w-full border-collapse\">\n                <thead>\n                    <tr class=\"bg-surface-secondary\">\n                        <th class=\"border border-border px-4 py-2 text-left\">Key</th>\n                        <th class=\"border border-border px-4 py-2 text-left\">Action</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">↓</kbd> <kbd class=\"kbd\">↑</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Move focus to the next / previous item, wrapping at the ends.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Home</kbd> <kbd class=\"kbd\">End</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Jump to the first / last item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Enter</kbd> <kbd class=\"kbd\">Space</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Activate the focused enabled item (calls <code>click()</code>).</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">→</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Open the focused item's submenu and move focus to its first item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">←</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Close a submenu and return focus to its parent menu item.</td>\n                    </tr>\n                    <tr>\n                        <td class=\"border border-border px-4 py-2\"><kbd class=\"kbd\">Esc</kbd></td>\n                        <td class=\"border border-border px-4 py-2\">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n\n        <p class=\"mb-4 text-ink-secondary\">\n            Disabled items remain in arrow-key navigation and can receive the\n            roving <code>tabindex</code>, but keyboard and pointer activation\n            are suppressed.\n        </p>\n        <p class=\"mb-4 text-ink-secondary\">\n            The trigger button keeps its native semantics. On open, focus moves\n            into the menu (first item). On close via\n            <kbd class=\"kbd\">Esc</kbd> or outside dismissal, the native popover\n            behavior returns focus to the trigger.\n        </p>\n    </section>\n</main>\n</div>",
+    "tokens": {
+      "--accent-hue-offset": "18",
+      "--color-accent": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18))",
+      "--color-accent-active": "oklch(from oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18)) calc(l - 0.15) calc(c * 0.8) h)",
+      "--color-accent-hover": "oklch(from oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l calc(c * 0.91) calc(h - 18)) l calc(c * 0.95) h)",
+      "--color-border": "oklch(from oklch(25% 0.02 200) calc(l + 0.13) c h)",
+      "--color-border-disabled": "oklch(from oklch(from oklch(25% 0.02 200) calc(l + 0.13) c h) calc(l - 0.06) c h)",
+      "--color-border-focus": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) max(l, 0.70) c h)",
+      "--color-border-primary": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l + 0.04) calc(c * 0.81) h)",
+      "--color-border-secondary": "oklch(from oklch(25% 0.02 200) l c h / 0.6)",
+      "--color-error": "oklch(from oklch(70% 0.3 15) 0.78 calc(c * 0.82) h)",
+      "--color-error-soft": "oklch(from oklch(from oklch(70% 0.3 15) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--color-info": "oklch(from oklch(88% 0.15 202) 0.78 calc(c * 0.82) h)",
+      "--color-info-soft": "oklch(from oklch(from oklch(88% 0.15 202) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--color-ink-inverse": "oklch(25% 0.02 200)",
+      "--color-ink-muted": "oklch(from oklch(92% calc(0.02 * 0.5) 200) calc(l - 0.42) c h)",
+      "--color-ink-primary": "oklch(92% calc(0.02 * 0.5) 200)",
+      "--color-ink-secondary": "oklch(from oklch(92% calc(0.02 * 0.5) 200) calc(l - 0.22) c h)",
+      "--color-neon-blue": "oklch(88% 0.15 202)",
+      "--color-neon-green": "oklch(88% 0.25 148)",
+      "--color-neon-orange": "oklch(70% 0.2 43)",
+      "--color-neon-pink": "oklch(70% 0.32 328)",
+      "--color-neon-red": "oklch(70% 0.3 15)",
+      "--color-neon-white": "oklch(100% 0 0)",
+      "--color-neon-yellow": "oklch(97% 0.21 110)",
+      "--color-neutral": "oklch(25% 0.02 200)",
+      "--color-primary": "oklch(calc((38 + 10) * 1%) 0.2 245)",
+      "--color-primary-active": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.11) calc(c * 0.8) h)",
+      "--color-primary-disabled": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.27) calc(c * 0.48) h)",
+      "--color-primary-hover": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l + 0.03) calc(c * 0.9) h)",
+      "--color-primary-soft-pressed": "oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) calc(l - 0.1) c h / 0.6)",
+      "--color-shadow-base": "oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1))",
+      "--color-shadow-surface-base": "oklch(from oklch(92% calc(0.02 * 0.5) 200) l c calc(h * 0.9 + 245 * 0.1))",
+      "--color-success": "oklch(from oklch(88% 0.25 148) 0.78 calc(c * 0.82) h)",
+      "--color-success-soft": "oklch(from oklch(from oklch(88% 0.25 148) 0.78 calc(c * 0.82) h) l c h / 0.20)",
+      "--color-surface": "oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h)",
+      "--color-surface-active": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.1) c h)",
+      "--color-surface-disabled": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.2) c h)",
+      "--color-surface-hover": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.05) c h)",
+      "--color-surface-secondary": "oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.03) c h)",
+      "--color-warning": "oklch(from oklch(70% 0.2 43) 0.78 calc(c * 0.82) h)",
+      "--color-warning-soft": "oklch(from oklch(from oklch(70% 0.2 43) 0.78 calc(c * 0.82) h) l c h / 0.22)",
+      "--docs-topbar-height": "4rem",
+      "--foil-border-width": "",
+      "--font-sans": "\"Hanken Grotesk\", sans-serif",
+      "--inset-shadow-highlight": "inset 0 1px oklch(from oklch(from oklch(92% calc(0.02 * 0.5) 200) l c calc(h * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--inset-shadow-highlight-pressed": "inset 0 1px oklch(from oklch(calc((38 + 10) * 1%) 0.2 245) l c h / 0.25)",
+      "--inset-shadow-pressed": "inset 0 1px 2px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--interest-delay": "",
+      "--menu-item-padding-block": "",
+      "--menu-item-padding-inline": "",
+      "--neon-border-color": "",
+      "--neon-color": "",
+      "--neon-glow": "",
+      "--neon-text-color": "",
+      "--neutral-chroma": "0.02",
+      "--neutral-hue": "200",
+      "--primary-chroma": "0.2",
+      "--primary-hue": "245",
+      "--primary-lightness": "38",
+      "--shadow-drop": "0 1px 2px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.4)",
+      "--shadow-drop-subtle": "0 1px 1px oklch(from oklch(25% 0.02 calc(200 * 0.9 + 245 * 0.1)) l c h / 0.3)",
+      "--state-chroma-scale": "0.82",
+      "--state-target-lightness": "0.78",
+      "--surface-chroma": "calc(0.02 * 0.25)",
+      "--text-shadow-debossed": "0 -1px oklch(15% 0.02 200 / 0.6), 0 1px oklch(from oklch(from oklch(25% 0.02 200) calc(l - 0.1) calc(0.02 * 0.25) h) calc(l + 0.15) c h / 0.5)",
+      "--text-shadow-embossed": "0 1px oklch(15% 0.02 200 / 0.6)",
+      "--tooltip-arrow-clip": "",
+      "--tooltip-arrow-inset-block-start": "",
+      "--tooltip-arrow-inset-inline-start": "",
+      "--tooltip-arrow-translate": "",
+      "--tooltip-close-delay": "",
+      "--tooltip-max-inline-size": "",
+      "--tooltip-open-delay": ""
+    },
+    "classes": [
+      "-inline-end",
+      "bg-surface-secondary",
+      "border",
+      "border-border",
+      "border-collapse",
+      "btn",
+      "kbd",
+      "kbd-keys",
+      "link",
+      "list-disc",
+      "mb-2",
+      "mb-4",
+      "mb-6",
+      "mb-8",
+      "menu",
+      "menu__chevron",
+      "menu__item",
+      "menu__shortcut",
+      "mt-4",
+      "overflow-x-auto",
+      "p-4",
+      "p-6",
+      "pl-6",
+      "px-4",
+      "py-2",
+      "rounded-lg",
+      "text-ink-secondary",
+      "text-left",
+      "w-full",
+      "whitespace-nowrap"
+    ],
+    "hosts": [
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      },
+      {
+        "tag": "neon-menu-item",
+        "shadowRoot": false
+      }
+    ],
+    "openPopovers": [
+      "<neon-menu id=\"wc-demo-menu\" popover=\"\" class=\"menu\" aria-labelledby=\"neon-menu-trigger-olvzr60yn\">\n                <neon-menu-item class=\"menu__item\" tabindex=\"0\">\n                    New file\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">N</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Open\n                    <span class=\"menu__shortcut kbd-keys\">\n                        <kbd class=\"kbd\">⌘</kbd>\n                        <kbd class=\"kbd\">O</kbd>\n                    </span>\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" disabled=\"\" tabindex=\"-1\">\n                    Save (disabled)\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Project Neon\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Theme tokens\n                </neon-menu-item>\n                <neon-menu-item class=\"menu__item\" tabindex=\"-1\">\n                    Tooltip notes\n                </neon-menu-item>\n            </neon-menu>"
+    ],
+    "focus": "<button type=\"button\" class=\"btn\" popovertarget=\"wc-demo-menu\" id=\"neon-menu-trigger-olvzr60yn\">\n                Open menu\n            </button>",
+    "fontFamily": "\"Hanken Grotesk\", sans-serif"
+  }
+}

@@ -1,7 +1,10 @@
 # 0001 — Rendering mode for `@neon-kit/web-components`
 
-- Status: accepted
+- Status: superseded by [0002 — Shared CSS Modules and shadow DOM](0002-shared-css-modules-and-shadow-dom.md)
 - Date: 2026-05-05
+
+Superseded on 2026-10-07. The decision below records the current historical
+light-DOM implementation; ADR 0002 defines the accepted migration direction.
 
 ## Context
 
