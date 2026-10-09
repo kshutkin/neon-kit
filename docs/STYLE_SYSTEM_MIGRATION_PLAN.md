@@ -1,7 +1,7 @@
 # Neon Kit style and rendering migration
 
 Status: accepted migration direction. Step 1 completed on 2026-10-07;
-steps 2–6 are pending.
+step 2 completed on 2026-10-09. Steps 3–6 are pending.
 
 The old global selector API does not need compatibility: Neon Kit has not yet
 been released. JSX components should import their own CSS Modules through
@@ -95,7 +95,7 @@ delivery mechanism for the JSX package.
 | `@neon-kit/theme` | Shared CSS Modules, token defaults, document and shadow reset sources, and visual effects | Source styles consumed by renderer packages and the vanilla build; no classical CSS bundle or public HTML class contract |
 | `@neon-kit/theme-vanilla` | Its own build, public HTML class names, aggregate CSS, and selectable plain CSS entries | Consumes theme sources during its build; publishes ordinary CSS and any referenced assets, with no consumer compiler or plugin requirement |
 | `@neon-kit/style-build` | Vite-independent CSS compilation, class exports, and sheet dependency graph | Does not emit Vite assets or depend on Vite |
-| `@neon-kit/vite-plugin-style-build` (provisional name) | Vite resolution, watching, development updates, JS facades, CSS/URL asset emission, and final native sheet imports | Normal dependency on `@neon-kit/style-build`; peer dependency on supported Vite versions |
+| `@neon-kit/vite-plugin-style-build` | Vite resolution, watching, development updates, JS facades, CSS/URL asset emission, and final native sheet imports | Normal dependency on `@neon-kit/style-build`; peer dependency on supported Vite versions |
 
 The existing compiler's `read`/`resolve` host and graph return value support
 this separation. The Vite plugin supplies the host and emits the returned
@@ -330,10 +330,15 @@ the vanilla package.
    the remaining package API. Keep vanilla fixtures in a separate document
    from CSS Modules showcases; client-side route changes alone must not retain
    vanilla CSS in component examples.
-3. **Extend `style-build` and add the Vite package.** Add compilation data
+   **Completed 2026-10-09:** [slice implementation and results](style-migration/STEP_2_PROOF.md).
+   Packed consumers, a JSX-only configuration without the native-sheet plugin,
+   classical/selective CSS, and the isolated documentation output pass in
+   Chromium and Firefox. The initial Vite package emits raw JS facades to
+   preserve native CSS imports; remaining plugin work stays in step 3.
+3. **Extend `style-build` and complete the Vite package.** Add compilation data
    needed for source maps, URL references, and typed authoring exports to the
    core. Implement Vite asset emission, URL rewriting, and integration in
-   `@neon-kit/vite-plugin-style-build`, depending on the shared core.
+   the initial `@neon-kit/vite-plugin-style-build`, depending on the shared core.
    Build and test this plugin against published source package exports;
    account for dependency prebundling, lazy entries, development updates, and
    final CSS asset URLs. Keep the compiler as the authority for
@@ -362,7 +367,7 @@ the vanilla package.
    aggregate and selected `theme-vanilla` CSS entries, that web-component CSS
    stays inside its root, and that shared sheets have stable URLs. No Tailwind
    directives should remain in published CSS. Source CSS Modules and the
-   provisional `?neon` import may remain in npm authoring entries; they must
+   `?neon` import may remain in npm authoring entries; they must
    not remain in the final browser JS/CSS. Remove Tailwind dependencies only
    after the site and package checks pass. Document the CSS and shadow DOM
    migration for consumers and release the packages with appropriate
@@ -375,18 +380,21 @@ the vanilla package.
    composition, and collisions in the first slice.
 2. Which small set of selective CSS groups should `theme-vanilla` export, and
    how should their load order and overlap behave?
-3. Settle the Vite plugin's final package name and opt-in import API after the
-   packed-consumer proof. Vite is the only adapter in scope.
+
+The step 2 proof settles `@neon-kit/vite-plugin-style-build`, `styleBuild()`, and
+the `.css?neon` named class exports plus ordered `sheets` API. The class export
+name `sheets` is reserved. Vite is the only adapter in scope.
 
 Detailed slots and parts contracts, other bundler adapters, and a standalone
 CDN build remain future work.
 
 ## Remaining browser validation
 
-Validate scheme inheritance in Chromium and Firefox: unstyled page under a
-dark OS preference, page opt-in under both preferences, forced root
-light/dark, per-host override, and nested web components. Chromium has a
-local proof; Firefox still needs a browser test.
+The step 2 fixture validates scheme inheritance in Chromium and Firefox:
+unstyled page under a dark OS preference, page opt-in under both preferences,
+forced root light/dark, per-host override, and nested web components. Repeat
+these checks when the real theme and component catalogue are migrated, together
+with the component-specific accessibility, form, focus, and popover gates above.
 
 ## References
 

@@ -1,0 +1,20 @@
+{
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "name": "@neon-kit/theme-vanilla",
+    "exports": {
+        "./index.css": "./dist/index.css",
+        "./control.css": "./dist/control.css",
+        "./card.css": "./dist/card.css"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "node build.mjs"
+    },
+    "sideEffects": [
+        "**/*.css"
+    ]
+}

@@ -1,0 +1,21 @@
+.control {
+    composes: surface from './surface.module.css';
+    display: inline-flex;
+    gap: 8px;
+    padding: 12px;
+}
+.input {
+    composes: surface from './surface.module.css';
+    min-width: 0;
+    width: 140px;
+    padding: 6px;
+}
+.action {
+    composes: surface from './surface.module.css';
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.action:hover { border-color: rgb(70 140 210); }
+.action:focus-visible { outline: 2px solid var(--neon-focus, light-dark(rgb(0 70 180), rgb(120 180 255))); outline-offset: 2px; }
+.action:disabled { opacity: 0.5; }
+.control:focus-within > .action { text-decoration: underline; }

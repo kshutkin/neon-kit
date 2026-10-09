@@ -1,0 +1,51 @@
+{
+    "name": "@neon-kit/vite-plugin-style-build",
+    "version": "0.0.1",
+    "description": "Vite adapter for native shadow-root CSS sheets.",
+    "license": "MIT",
+    "author": "Konstantin Shutkin",
+    "type": "module",
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "src",
+        "types"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kshutkin/neon-kit.git",
+        "directory": "vite-plugin-style-build"
+    },
+    "bugs": "https://github.com/kshutkin/neon-kit/issues",
+    "homepage": "https://github.com/kshutkin/neon-kit/blob/main/vite-plugin-style-build/README.md",
+    "readme": "README.md",
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/vite-plugin-style-build:.dts/index.d.ts",
+        "prepack": "pkgprn --flatten types,src",
+        "test:style-slice": "node tests/style-slice.mjs",
+        "test:types": "tsc -p tsconfig.json"
+    },
+    "dependencies": {
+        "@neon-kit/style-build": "workspace:*"
+    },
+    "keywords": [
+        "vite-plugin",
+        "css-modules",
+        "web-components"
+    ],
+    "peerDependencies": {
+        "vite": "^8.0.10"
+    },
+    "devDependencies": {
+        "lightningcss": "^1.30.2"
+    }
+}

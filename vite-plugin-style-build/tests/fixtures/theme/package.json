@@ -1,0 +1,12 @@
+{
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "name": "@neon-kit/slice-theme",
+    "exports": {
+        "./*.css": "./*.css"
+    },
+    "files": [
+        "*.css"
+    ]
+}

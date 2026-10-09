@@ -12,6 +12,9 @@
     "dev": "vite",
     "start": "vite",
     "build:docs": "vite build",
+    "test:style-slice": "pnpm --filter @neon-kit/vite-plugin-style-build test:style-slice",
+    "dev:style-slice": "vite --config vite.style-slice.config.mjs",
+    "build:style-slice-docs": "vite build --config vite.style-slice.config.mjs",
     "preview": "vite preview"
   },
     "devDependencies": {
@@ -20,6 +23,7 @@
         "@neon-kit/icons": "workspace:*",
         "@neon-kit/jsx-components": "workspace:*",
         "@neon-kit/theme": "workspace:*",
+        "@neon-kit/vite-plugin-style-build": "workspace:*",
     "@neon-kit/web-components": "workspace:*",
     "@slimlib/element": "^0.4.1",
     "@slimlib/jsx": "^0.5.0",

@@ -6,3 +6,5 @@ coverage
 types
 .DS_Store
 .codex
+
+dist-style-slice-docs

@@ -1,0 +1,9 @@
+/* Local defaults work in either rendering tree. Public overrides inherit. */
+.surface {
+    color: var(--neon-ink, light-dark(rgb(25 35 45), rgb(225 235 245)));
+    background-color: var(--neon-surface, light-dark(rgb(245 248 250), rgb(25 30 35)));
+    border: 2px solid var(--neon-border, light-dark(rgb(90 110 130), rgb(150 170 190)));
+    border-radius: 6px;
+    font: inherit;
+    box-sizing: border-box;
+}

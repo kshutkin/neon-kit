@@ -1,0 +1,5 @@
+ .card {
+    composes: surface from './surface.module.css';
+    display: block;
+    padding: 20px;
+}

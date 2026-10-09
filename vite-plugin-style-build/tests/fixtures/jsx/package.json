@@ -1,0 +1,21 @@
+{
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "name": "@neon-kit/slice-jsx",
+    "exports": {
+        ".": "./index.jsx"
+    },
+    "files": [
+        "index.jsx"
+    ],
+    "sideEffects": [
+        "**/*.css"
+    ],
+    "dependencies": {
+        "@neon-kit/slice-theme": "0.0.0"
+    },
+    "peerDependencies": {
+        "@slimlib/jsx": "^0.5.0"
+    }
+}

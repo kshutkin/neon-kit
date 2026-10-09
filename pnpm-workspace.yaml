@@ -5,6 +5,7 @@ packages:
   - web-components
   - icons
   - style-build
+  - vite-plugin-style-build
 
 onlyBuiltDependencies:
   - '@parcel/watcher'

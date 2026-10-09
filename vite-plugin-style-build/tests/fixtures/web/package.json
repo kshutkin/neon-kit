@@ -1,0 +1,22 @@
+{
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "name": "@neon-kit/slice-web",
+    "exports": {
+        "./control": "./control.jsx",
+        "./card": "./card.jsx"
+    },
+    "files": [
+        "*.jsx"
+    ],
+    "sideEffects": true,
+    "dependencies": {
+        "@neon-kit/slice-theme": "0.0.0"
+    },
+    "peerDependencies": {
+        "@slimlib/element": "0.4.1",
+        "@slimlib/jsx": "^0.5.0",
+        "@slimlib/store": "^2.2.1"
+    }
+}

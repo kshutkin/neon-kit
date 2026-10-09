@@ -5,6 +5,8 @@ The accepted direction is [ADR 0002](../adr/0002-shared-css-modules-and-shadow-d
 the [public CSS policy](PUBLIC_CSS_API.md) records the vanilla class contract.
 This evidence records the existing implementation for comparison during
 steps 2–6 of the [migration plan](../STYLE_SYSTEM_MIGRATION_PLAN.md).
+The completed [step 2 proof](STEP_2_PROOF.md) records packed-consumer, shared
+sheet, plain CSS, and scheme-inheritance results in Chromium and Firefox.
 
 ## Evidence
 
