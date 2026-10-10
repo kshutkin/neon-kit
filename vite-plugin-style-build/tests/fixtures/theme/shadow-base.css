@@ -3,3 +3,5 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
 button, input { font: inherit; }
 :focus-visible { outline: 2px solid var(--neon-focus, light-dark(rgb(0 70 180), rgb(120 180 255))); outline-offset: 2px; }
+button::before { content: ''; display: inline-block; width: 4px; height: 4px; background-image: url('./mark.svg?v=1#mark'); }
+:host::after { content: ''; display: inline-block; width: 4px; height: 4px; background-image: url('/slice-public.svg?v=2#public'); }

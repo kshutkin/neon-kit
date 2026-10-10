@@ -1,7 +1,7 @@
 # Neon Kit style and rendering migration
 
 Status: accepted migration direction. Step 1 completed on 2026-10-07;
-step 2 completed on 2026-10-09. Steps 3–6 are pending.
+steps 2 and 3 completed on 2026-10-09. Steps 4–6 are pending.
 
 The old global selector API does not need compatibility: Neon Kit has not yet
 been released. JSX components should import their own CSS Modules through
@@ -32,9 +32,10 @@ and keep JSX components in light DOM while sharing the same visual rules.
   DOM queries and controller selectors. The web components currently render in
   light DOM. `docs/adr/0001-rendering-mode.md` explicitly chose that mode and
   must be superseded when the new behavior is accepted.
-- `@neon-kit/style-build` currently compiles separate CSS assets and class
-  strings, but does not emit library artifacts, JS facades, rewritten asset
-  URLs, source maps, or bundler adapters. The current installed
+- `@neon-kit/style-build` compiles separate CSS assets, class strings, URL
+  metadata, source maps, and authoring declarations. The separate Vite adapter
+  emits final native-sheet facades/assets and integrates dependency optimization.
+  There is no standalone library/CDN emitter. The current installed
   `@slimlib/element@0.4.1` lacks `shadowStyles()`; the local Slimlib source has
   it. A packaged version with that API is a prerequisite for a release.
 - Menu and tooltip accept consumer-authored children. Comboboxes read light-DOM
@@ -344,6 +345,10 @@ the vanilla package.
    final CSS asset URLs. Keep the compiler as the authority for
    web-component class strings and sheet dependencies. Use the documentation
    Vite build as the first end-to-end asset graph and browser test.
+   **Completed 2026-10-09:** [implementation and validation](style-migration/STEP_3_BUILD.md).
+   URL assets, maps, exact authoring exports, optimized package imports, cached
+   server restarts, and stylesheet/image updates pass the packed-consumer and
+   documentation gates. Native development updates use full-page reloads.
 4. **Translate theme CSS and add `theme-vanilla`.** Replace Tailwind directives
    and functions with ordinary CSS. Keep tokens, document/shadow reset sources,
    component modules, and effects in `theme`. Give `theme-vanilla` its own

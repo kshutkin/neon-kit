@@ -11,7 +11,9 @@ const elementDirectory = process.env.NEON_SLIMLIB_ELEMENT ?? resolve(repository,
 export default defineConfig({
     root: resolve(repository, 'site/style-slice'),
     base: '/neon-kit/style-slice/',
+    publicDir: resolve(fixtures, 'app/public'),
     plugins: [styleBuild()],
+    css: { devSourcemap: true },
     oxc: { jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' } },
     resolve: {
         alias: [
@@ -27,5 +29,6 @@ export default defineConfig({
         outDir: resolve(repository, 'dist-style-slice-docs'),
         emptyOutDir: true,
         cssTarget: ['chrome128', 'firefox128'],
+        sourcemap: true,
     },
 });

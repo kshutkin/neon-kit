@@ -1,7 +1,10 @@
 # @neon-kit style build for shadow-root components
 
-Status: proposal for build tooling in the `@neon-kit` workspace. Adapter package
-names and authoring syntax below are provisional. The local
+Status: compiler and Vite adapter implemented through
+[migration step 3](style-migration/STEP_3_BUILD.md). The accepted adapter is
+`@neon-kit/vite-plugin-style-build`, using `.css?neon` named class strings and
+ordered `sheets`. Broader standalone/compiler possibilities below remain future
+work. The local
 `@slimlib/element` source provides the `shadowStyles()` rendering middleware;
 the migration still needs a packaged release exposing that API.
 
@@ -59,9 +62,9 @@ defineElement('example-link', [shadowStyles(sheets)], () =>
 );
 ```
 
-`?neon` is a provisional opt-in import spelling. It prevents an adapter from
+`?neon` is the accepted opt-in import spelling. It prevents an adapter from
 confusing these imports with its bundler's normal `.module.css` handling. The
-public spelling should be settled after testing adapter compatibility.
+public spelling was validated by the packed Vite consumer.
 
 The application may set `--app-border-color` on `:root`, another ancestor, or
 the individual host; the theme sheet's fallback works when it sets none.
@@ -71,7 +74,7 @@ the individual host; the theme sheet's fallback works when it sets none.
 The compiler core, bundler adapters, CLI, and authoring types belong in the
 `@neon-kit` workspace. `@neon-kit/style-build` is the shared core. The current
 Vite adapter belongs in a separate package with the core as a normal dependency
-and Vite as a peer dependency; its final name remains open.
+and Vite as a peer dependency: `@neon-kit/vite-plugin-style-build`.
 `@slimlib/element` remains the rendering
 integration and does not own the build implementation.
 
@@ -134,15 +137,18 @@ type CompiledStyleModule = {
     exports: Record<string, string>;    // final class strings, including composes
     dependencies: Array<{ id: string; kind: 'import' | 'compose' }>;
     assets: string[];                   // referenced url() assets, if any
+    urls: Array<{ url: string; placeholder: string; loc: SourceLocation }>;
+    map?: string;                      // JSON source map with authored source text
 };
 
 compileStyle(entryId, host: {
     read(id: string): Promise<string>;
     resolve(specifier: string, importer: string): Promise<string>;
-}): Promise<CompiledStyleModule[]>;
+}, options?: { sourceMap?: boolean; projectRoot?: string }): Promise<CompiledStyleModule[]>;
 ```
 
-The exact API can change; the important boundary is that the core returns
+The core also exports AST URL rewriting and authoring declaration helpers;
+see its [current API](../style-build/README.md). The important boundary is that the core returns
 transformed per-source CSS, final exports, and graph edges without deciding
 how a bundler packages them. Resolution must normalize paths, honor the
 adapter's aliases/package resolution, detect cycles, and report missing class
@@ -321,9 +327,8 @@ types. The first implementation needs only native attributes and selectors.
 
 ## Open decisions
 
-- Final opt-in import spelling and whether the public API exports named class
-  strings plus `sheets`, a descriptor, or both. A named `sheets` export also
-  needs a collision policy if the CSS file defines a `.sheets` class.
+- The import/API decision is settled: `.css?neon` exports named class strings
+  and `sheets`; the class export `sheets` is reserved.
 - Whether shadow roots need generated class names at all. Shadow DOM already
   scopes selectors, but names still help when several independently authored
   stylesheets share one root and may collide.

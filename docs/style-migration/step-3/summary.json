@@ -1,0 +1,24 @@
+{
+  "output": {
+    "javascript": 5,
+    "nativeStylesheets": 4,
+    "nativeSourceMaps": 4,
+    "nativeUrlAssets": 1
+  },
+  "slimlib": "/Users/kshutkin/projects/slimlib/element",
+  "browsers": [
+    {
+      "engine": "chromium",
+      "version": "147.0.7727.15"
+    },
+    {
+      "engine": "firefox",
+      "version": "148.0.2"
+    }
+  ],
+  "consumption": "isolated npm tarballs; no workspace source aliases",
+  "packagePrepack": true,
+  "typedImports": true,
+  "optimizerRestart": true,
+  "classAndAssetReload": true
+}

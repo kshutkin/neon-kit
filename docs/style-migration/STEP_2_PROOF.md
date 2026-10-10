@@ -5,6 +5,9 @@ Completed on 2026-10-09. This proves the delivery contracts in
 and a lazily loaded card. The full theme and component catalogue migrate in
 later steps.
 
+This records the initial slice. [Step 3](STEP_3_BUILD.md) subsequently extends
+the adapter and proof; the initial limitations below are historical.
+
 ## Implementation
 
 | Location | Responsibility |

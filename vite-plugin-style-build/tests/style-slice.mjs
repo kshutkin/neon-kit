@@ -6,8 +6,10 @@ import { basename, resolve, join } from 'node:path';
 import { createRequire } from 'node:module';
 import { createServer as createHttpServer } from 'node:http';
 import { promisify } from 'node:util';
-import { build, createServer, preview } from 'vite';
+import { fileURLToPath } from 'node:url';
+import { build, createServer, preview, transformWithOxc } from 'vite';
 import { chromium, firefox } from 'playwright';
+import { TraceMap, decodedMappings } from '@jridgewell/trace-mapping';
 import { buildVanilla } from './fixtures/vanilla/build.mjs';
 
 const execute = promisify(execFile);
@@ -35,16 +37,34 @@ async function pack(source, overrides = {}) {
     }
     // Fixture sources are tiny and use glob-based file lists.
     for (const entry of await readdir(source)) {
-        if (/\.(css|jsx)$/.test(entry)) {
+        if (/\.(css|jsx|svg)$/.test(entry)) {
             await cp(resolve(source, entry), resolve(packageSource, entry));
+            if (metadata.name === '@neon-kit/slice-web' && entry.endsWith('.jsx')) {
+                const result = await transformWithOxc(await readFile(resolve(source, entry), 'utf8'), entry,
+                    { jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' } });
+                await writeFile(resolve(packageSource, entry.replace('.jsx', '.js')), result.code);
+            }
         }
     }
-    await writeFile(resolve(packageSource, 'package.json'), `${JSON.stringify({ ...metadata, ...overrides }, null, 4)}\n`);
+    const published = { ...metadata, ...overrides };
+    if (metadata.name === '@neon-kit/slice-web') {
+        // Renderer JS is transpiled for publication; source style imports stay
+        // intact for the application compiler, just as in the planned packages.
+        published.exports = Object.fromEntries(Object.entries(metadata.exports).map(([name, target]) => [name, target.replace('.jsx', '.js')]));
+        published.files = ['*.js'];
+    }
+    if (overrides.dependencies) {
+        published.dependencies = { ...metadata.dependencies, ...overrides.dependencies };
+    }
+    await writeFile(resolve(packageSource, 'package.json'), `${JSON.stringify(published, null, 4)}\n`);
+    if (source === resolve(repository, 'style-build') || source === resolve(repository, 'vite-plugin-style-build')) {
+        await command(resolve(repository, 'node_modules/.bin/pkgprn'), ['--flatten', 'types,src'], packageSource);
+    }
     const result = await command('npm', ['pack', '--ignore-scripts', '--json', '--pack-destination', directory], packageSource);
     return resolve(directory, JSON.parse(result.stdout)[0].filename);
 }
 
-async function nativeOutput(output) {
+async function nativeOutput(output, root) {
     const files = await readdir(resolve(output, 'assets'));
     const javascript = files.filter((file) => file.endsWith('.js'));
     const references = new Set();
@@ -60,7 +80,27 @@ async function nativeOutput(output) {
     assert.equal(references.size, 4, 'shadow base, shared surface, control, and lazy card remain distinct');
     assert.equal([...references].filter((file) => file.includes('shadow-base.')).length, 1);
     assert.equal([...references].filter((file) => file.includes('surface.module.')).length, 1);
-    return { javascript: javascript.length, nativeStylesheets: references.size };
+    for (const reference of references) {
+        const css = await readFile(reference, 'utf8');
+        assert.doesNotMatch(css, /__parcel_url_|\?neon/);
+        const map = JSON.parse(await readFile(`${reference}.map`, 'utf8'));
+        assert.ok(map.sourcesContent[0].length > 0);
+        assert.ok(map.mappings.length > 0);
+        assert.equal(map.sourcesContent[0], await readFile(resolve(root, map.sources[0]), 'utf8'));
+        for (const row of decodedMappings(new TraceMap(map))) {
+            for (const segment of row) {
+                if (segment.length > 1) {
+                    assert.ok(segment[1] < map.sources.length, 'CSS mappings refer to actual authored sources');
+                }
+            }
+        }
+        for (const match of css.matchAll(/url\("?([^"\)]+)"?\)/g)) {
+            const url = new URL(match[1], `file://${reference}`);
+            await readFile(fileURLToPath(url));
+        }
+    }
+    return { javascript: javascript.length, nativeStylesheets: references.size,
+        nativeSourceMaps: references.size, nativeUrlAssets: files.filter((file) => file.endsWith('.svg')).length };
 }
 
 async function state(page) {
@@ -109,6 +149,9 @@ async function checkPage(browser, origin, mode, requests, label) {
     assert.equal(initial.border, '2px', 'cross-file composed styles apply');
     assert.equal(initial.shared, true, 'instances share native sheet objects');
     assert.equal(initial.sheetCount, 3);
+    const image = await page.locator('#first button').evaluate((element) => getComputedStyle(element, '::before').backgroundImage);
+    assert.match(image, /mark\.[\w]+\.svg\?v=1#mark/);
+    assert.equal((await page.request.get(image.slice(5, -2).split('#')[0])).status(), 200);
     assert.equal(initial.inputFont, initial.hostFont);
     assert.equal(initial.plainBackground, 'rgba(0, 0, 0, 0)');
     assert.doesNotMatch(initial.documentCss, /:host/);
@@ -162,6 +205,7 @@ async function checkPage(browser, origin, mode, requests, label) {
     await page.screenshot({ path: resolve(reports, `${label}-${browser.browserType().name()}-${mode}.png`) });
     assert.deepEqual(errors, []);
     await context.close();
+    return initial.sourceClasses;
 }
 
 async function checkVanilla(browser, origin, label) {
@@ -190,6 +234,7 @@ let watching;
 let classical;
 let jsxDevelopment;
 let jsxProduction;
+let optimizerRestart;
 const browsers = [];
 try {
     await command('pnpm', ['--filter', '@neon-kit/style-build', 'build'], repository);
@@ -215,37 +260,65 @@ try {
     packages.push(await pack(elementDirectory, { peerDependencies: runtimeVersions }));
     await writeFile(resolve(app, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
     const install = await command('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...packages,
-        `vite@${require('vite/package.json').version}`, ...Object.entries(runtimeVersions).map(([name, version]) => `${name}@${version}`),
+        `vite@${require('vite/package.json').version}`, 'typescript@5.9.3', ...Object.entries(runtimeVersions).map(([name, version]) => `${name}@${version}`),
     ], app);
     await writeFile(resolve(reports, 'install.log'), install.stdout);
     await writeFile(resolve(app, 'vite.config.mjs'), `import { defineConfig } from 'vite';
 import { styleBuild } from '@neon-kit/vite-plugin-style-build';
 export default defineConfig({
-    base: '/slice/', plugins: [styleBuild()],
+    base: '/slice/', plugins: [styleBuild({ declarations: 'native-styles.d.ts' })],
+    css: { devSourcemap: true },
     oxc: { jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' } },
-    optimizeDeps: { noDiscovery: true, include: ['@slimlib/jsx', '@slimlib/element'], exclude: ['@neon-kit/slice-web', '@neon-kit/slice-jsx'] },
-    build: { cssTarget: ['chrome128', 'firefox128'], rolldownOptions: { input: { main: ${JSON.stringify(resolve(app, 'index.html'))}, vanilla: ${JSON.stringify(resolve(app, 'vanilla.html'))} } } },
+    optimizeDeps: { include: ['@neon-kit/slice-web/control', '@neon-kit/slice-web/card', '@slimlib/jsx/jsx-dev-runtime'], exclude: ['@neon-kit/slice-jsx'], rolldownOptions: { transform: { jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' } } } },
+    build: { sourcemap: true, cssTarget: ['chrome128', 'firefox128'], rolldownOptions: { input: { main: ${JSON.stringify(resolve(app, 'index.html'))}, vanilla: ${JSON.stringify(resolve(app, 'vanilla.html'))} } } },
 });\n`);
     const configuration = { root: app, configFile: resolve(app, 'vite.config.mjs'), logLevel: 'warn' };
     development = await createServer({ ...configuration, server: { host: '127.0.0.1', port: 0 } });
     await development.listen();
     await build(configuration);
-    const output = await nativeOutput(resolve(app, 'dist'));
+    const output = await nativeOutput(resolve(app, 'dist'), app);
     production = await preview({ ...configuration, preview: { host: '127.0.0.1', port: 0 } });
     for (const engine of [chromium, firefox]) {
         const browser = await engine.launch({ headless: true });
         browsers.push(browser);
+        let developmentClasses;
         for (const server of [development, production]) {
             const origin = server.resolvedUrls.local[0];
             const requests = [];
             for (const preference of ['light', 'dark']) {
-                await checkPage(browser, origin, preference, requests, server === development ? 'dev' : 'prod');
+                const classes = await checkPage(browser, origin, preference, requests, server === development ? 'dev' : 'prod');
+                if (server === development) {
+                    developmentClasses = classes;
+                } else {
+                    assert.deepEqual(classes, developmentClasses, 'native class exports match in development and production');
+                }
             }
             await checkVanilla(browser, origin, server === development ? 'dev' : 'prod');
             assert.ok(requests.filter((request) => request.url.endsWith('.css')).every((request) => request.mime.startsWith('text/css')));
             console.log(`${engine.name()}: ${server === development ? 'development' : 'production'} passed`);
         }
     }
+    const optimized = JSON.parse(await readFile(resolve(app, 'node_modules/.vite/deps/_metadata.json'), 'utf8'));
+    assert.ok(optimized.optimized['@neon-kit/slice-web/control']);
+    await development.close();
+    development = undefined;
+    optimizerRestart = await createServer({ ...configuration, server: { host: '127.0.0.1', port: 0 } });
+    await optimizerRestart.listen();
+    await checkPage(browsers[0], optimizerRestart.resolvedUrls.local[0], 'dark', [], 'optimizer-restart');
+    await writeFile(resolve(app, 'types.ts'), `import { styleBuild } from '@neon-kit/vite-plugin-style-build';
+import { compileStyle, createStyleDeclaration, rewriteStyleUrls, type CompiledStyleModule } from '@neon-kit/style-build';
+import { control, sheets } from '@neon-kit/slice-theme/control.module.css?neon';
+// @ts-expect-error A misspelled class must be rejected.
+import { controll } from '@neon-kit/slice-theme/control.module.css?neon';
+control satisfies string;
+sheets satisfies CSSStyleSheet[];
+styleBuild({ declarations: 'native-styles.d.ts' });
+const module = {} as CompiledStyleModule;
+createStyleDeclaration('example.css?neon', module);
+rewriteStyleUrls(module, {});
+void compileStyle;\n`);
+    await command(resolve(app, 'node_modules/.bin/tsc'), ['--noEmit', '--strict', '--skipLibCheck', '--module', 'esnext', '--moduleResolution', 'bundler', '--target', 'es2022', '--lib', 'es2022,dom', 'types.ts', 'native-styles.d.ts'], app);
+    console.log('Dependency optimization, cached restart, packed declarations and source maps passed');
     // The packed JSX entry must also work in an ordinary Vite application
     // with no native-sheet plugin installed in its configuration.
     await writeFile(resolve(app, 'jsx.html'), '<!doctype html><html><div id="jsx"></div><script type="module" src="./jsx.jsx"></script></html>');
@@ -324,13 +397,23 @@ render(() => <Control />, document.getElementById('jsx'));\n`);
     await watchedPage.waitForFunction(() => window.sliceReady
         && getComputedStyle(document.querySelector('#jsx label')).padding === '16px');
     assert.equal(await watchedPage.locator('#jsx label').evaluate((element) => getComputedStyle(element).padding), '16px');
+    const addedClassNavigation = watchedPage.waitForEvent('framenavigated', { predicate: (frame) => frame === watchedPage.mainFrame() });
+    await writeFile(watchedSource, `${await readFile(watchedSource, 'utf8')}\n.added { color: red; }\n`);
+    await addedClassNavigation;
+    await watchedPage.waitForFunction(() => window.sliceReady && document.querySelector('#jsx input'));
+    assert.match(await readFile(resolve(app, 'native-styles.d.ts'), 'utf8'), /as "added"/);
+    const imageBefore = await watchedPage.locator('#first button').evaluate((element) => getComputedStyle(element, '::before').backgroundImage);
+    const imageNavigation = watchedPage.waitForEvent('framenavigated', { predicate: (frame) => frame === watchedPage.mainFrame() });
+    await writeFile(resolve(watchedTheme, 'mark.svg'), (await readFile(resolve(watchedTheme, 'mark.svg'), 'utf8')).replace('green', 'red'));
+    await imageNavigation;
+    await watchedPage.waitForFunction((before) => window.sliceReady && getComputedStyle(document.getElementById('first').shadowRoot.querySelector('button'), '::before').backgroundImage !== before, imageBefore);
     await watchedPage.close();
-    console.log('Classical/selective CSS and development reload passed');
+    console.log('Classical/selective CSS, class declarations and asset development reload passed');
     // Separate documentation entry: source aliases here do not replace the
     // tarball consumer checks above.
     const documentationConfig = { configFile: resolve(repository, 'vite.style-slice.config.mjs'), logLevel: 'warn' };
     await build(documentationConfig);
-    await nativeOutput(resolve(repository, 'dist-style-slice-docs'));
+    await nativeOutput(resolve(repository, 'dist-style-slice-docs'), resolve(repository, 'site/style-slice'));
     documentation = await preview({ ...documentationConfig, preview: { host: '127.0.0.1', port: 0 } });
     for (const browser of browsers) {
         for (const preference of ['light', 'dark']) {
@@ -341,6 +424,7 @@ render(() => <Control />, document.getElementById('jsx'));\n`);
     await writeFile(resolve(reports, 'summary.json'), `${JSON.stringify({ output, slimlib: elementDirectory,
         browsers: browsers.map((browser) => ({ engine: browser.browserType().name(), version: browser.version() })),
         consumption: 'isolated npm tarballs; no workspace source aliases',
+        packagePrepack: true, typedImports: true, optimizerRestart: true, classAndAssetReload: true,
     }, null, 2)}\n`);
     console.log(`Style slice passed. Review artifacts: ${reports}`);
 } catch (error) {
@@ -351,6 +435,7 @@ render(() => <Control />, document.getElementById('jsx'));\n`);
     await development?.close();
     await watching?.close();
     await jsxDevelopment?.close();
+    await optimizerRestart?.close();
     if (production) {
         await new Promise((done) => production.httpServer.close(done));
     }

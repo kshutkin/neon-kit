@@ -31,11 +31,13 @@
     "scripts": {
         "build": "tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/vite-plugin-style-build:.dts/index.d.ts",
         "prepack": "pkgprn --flatten types,src",
+        "test": "vitest run --config ./vitest.config.js",
         "test:style-slice": "node tests/style-slice.mjs",
         "test:types": "tsc -p tsconfig.json"
     },
     "dependencies": {
-        "@neon-kit/style-build": "workspace:*"
+        "@neon-kit/style-build": "workspace:*",
+        "magic-string": "^0.30.21"
     },
     "keywords": [
         "vite-plugin",
@@ -46,6 +48,7 @@
         "vite": "^8.0.10"
     },
     "devDependencies": {
+        "@jridgewell/trace-mapping": "^0.3.31",
         "lightningcss": "^1.30.2"
     }
 }

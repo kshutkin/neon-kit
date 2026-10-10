@@ -36,5 +36,8 @@
     },
     "dependencies": {
         "lightningcss": "^1.30.2"
+    },
+    "devDependencies": {
+        "@jridgewell/trace-mapping": "^0.3.31"
     }
 }

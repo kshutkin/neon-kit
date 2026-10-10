@@ -1,10 +1,13 @@
 import { transform } from 'lightningcss';
+import { rewriteStyleUrls } from './style-output.js';
 
 /**
  * @typedef {{ id: string, kind: 'import' | 'compose' }} StyleDependency
- * @typedef {{ id: string, css: string, exports: Record<string, string>, dependencies: StyleDependency[], assets: string[] }} CompiledStyleModule
+ * @typedef {{ url: string, placeholder: string, loc: import('lightningcss').SourceLocation }} StyleUrl
+ * @typedef {{ id: string, css: string, exports: Record<string, string>, dependencies: StyleDependency[], assets: string[], urls: StyleUrl[], map?: string }} CompiledStyleModule
  * @typedef {{ read(id: string): Promise<string>, resolve(specifier: string, importer: string): Promise<string> }} StyleHost
- * @typedef {{ id: string, css: string, sourceExports: import('lightningcss').CSSModuleExports, classNames: Set<string>, dependencies: StyleDependency[], compositionTargets: Map<string, string>, assets: string[] }} SourceModule
+ * @typedef {{ sourceMap?: boolean, projectRoot?: string }} CompileStyleOptions
+ * @typedef {{ id: string, css: string, map?: string, sourceExports: import('lightningcss').CSSModuleExports, classNames: Set<string>, dependencies: StyleDependency[], compositionTargets: Map<string, string>, assets: string[], urls: StyleUrl[] }} SourceModule
  */
 
 /** @param {unknown} selectorPart @param {Set<string>} classNames */
@@ -32,9 +35,10 @@ function collectClassNames(selectorPart, classNames) {
  *
  * @param {string} entryId
  * @param {StyleHost} host
+ * @param {CompileStyleOptions} [options]
  * @returns {Promise<CompiledStyleModule[]>}
  */
-export async function compileStyle(entryId, host) {
+export async function compileStyle(entryId, host, options = {}) {
     /** @type {Map<string, SourceModule>} */
     const modules = new Map();
     /** @type {Set<string>} */
@@ -62,6 +66,8 @@ export async function compileStyle(entryId, host) {
             code: Buffer.from(source),
             cssModules: id.endsWith('.module.css') ? { dashedIdents: false } : false,
             analyzeDependencies: true,
+            sourceMap: options.sourceMap,
+            projectRoot: options.projectRoot,
             visitor: {
                 Rule: {
                     import(rule) {
@@ -84,7 +90,8 @@ export async function compileStyle(entryId, host) {
         const compositionTargets = new Map();
         /** @type {string[]} */
         const assets = [];
-        let css = result.code.toString();
+        /** @type {StyleUrl[]} */
+        const urls = [];
         const importDependencies = (result.dependencies ?? []).filter((dependency) => dependency.type === 'import');
         if (sourceImports.length !== importDependencies.length) {
             throw new Error(`${id}: could not account for every @import`);
@@ -95,7 +102,7 @@ export async function compileStyle(entryId, host) {
                 dependencies.push({ id: resolvedId, kind: 'import' });
             } else if (dependency.type === 'url') {
                 assets.push(dependency.url);
-                css = css.replace(dependency.placeholder, dependency.url);
+                urls.push({ url: dependency.url, placeholder: dependency.placeholder, loc: dependency.loc });
             }
         }
         for (const styleExport of Object.values(result.exports ?? {})) {
@@ -108,10 +115,20 @@ export async function compileStyle(entryId, host) {
             }
         }
 
-        dependencies.sort((first, second) => first.id.localeCompare(second.id) || first.kind.localeCompare(second.kind));
-        const uniqueDependencies = dependencies.filter((dependency, index) =>
-            index === 0 || dependency.id !== dependencies[index - 1].id || dependency.kind !== dependencies[index - 1].kind);
-        const module = { id, css, sourceExports: result.exports ?? {}, classNames, dependencies: uniqueDependencies, compositionTargets, assets };
+        const seenDependencies = new Set();
+        const orderedDependencies = [
+            ...dependencies.filter((dependency) => dependency.kind === 'import'),
+            ...dependencies.filter((dependency) => dependency.kind === 'compose').sort((first, second) => first.id.localeCompare(second.id)),
+        ];
+        const uniqueDependencies = orderedDependencies.filter((dependency) => {
+            const key = `${dependency.kind}\0${dependency.id}`;
+            const first = !seenDependencies.has(key);
+            seenDependencies.add(key);
+            return first;
+        });
+        const output = { id, css: result.code.toString(), map: result.map?.toString() };
+        const rewritten = urls.length > 0 ? rewriteStyleUrls(output, Object.fromEntries(urls.map((url) => [url.placeholder, url.url]))) : output;
+        const module = { id, css: rewritten.css, map: rewritten.map, sourceExports: result.exports ?? {}, classNames, dependencies: uniqueDependencies, compositionTargets, assets, urls };
         modules.set(id, module);
         for (const dependency of uniqueDependencies) {
             await visit(dependency.id);
@@ -178,6 +195,6 @@ export async function compileStyle(entryId, host) {
                 exports[name] = expand(id, name);
             }
         }
-        return { id, css: module.css, exports, dependencies: module.dependencies, assets: module.assets };
+        return { id, css: module.css, exports, dependencies: module.dependencies, assets: module.assets, urls: module.urls, map: module.map };
     });
 }
