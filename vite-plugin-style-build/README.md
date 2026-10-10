@@ -104,7 +104,7 @@ source maps, typed imports, optimizer caching, style/image edits, shared sheets,
 lazy entries, vanilla CSS, and a separate documentation build in Chromium and
 Firefox. Artifacts are retained in its reported temporary directory.
 
-The shadow-rendering proof needs a Slimlib candidate exposing `shadowStyles()`;
-installed `@slimlib/element@0.4.1` lacks it. It defaults to `../slimlib/element`.
-Set `NEON_SLIMLIB_ELEMENT` to another candidate package directory as needed.
+The shadow-rendering proof installs the published Slimlib packages at the
+versions used by this repository. `@slimlib/element@0.5.0` provides
+`shadowStyles()`; no sibling checkout is required.
 The adapter itself does not depend on a rendering runtime.

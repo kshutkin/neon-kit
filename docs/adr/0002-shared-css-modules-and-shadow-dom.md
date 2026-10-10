@@ -81,7 +81,8 @@ not a claim that the current baseline has passed Firefox checks.
 - Shared theme sources remain the authority for visual declarations across
   all three outputs. Class names can differ without duplicating those rules.
 - A packaged Slimlib release exposing `shadowStyles()` and final browser
-  output checks are prerequisites for the shadow migration.
+  output checks are prerequisites for the shadow migration. The runtime
+  prerequisite is satisfied by `@slimlib/element@0.5.0`.
 
 ## Implementation record
 

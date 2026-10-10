@@ -8,6 +8,10 @@ later steps.
 This records the initial slice. [Step 3](STEP_3_BUILD.md) subsequently extends
 the adapter and proof; the initial limitations below are historical.
 
+As of 2026-10-10, the fixture uses published `@slimlib/element@0.5.0`.
+The candidate package and environment override described below are no longer
+needed to reproduce the current proof.
+
 ## Implementation
 
 | Location | Responsibility |

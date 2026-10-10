@@ -35,9 +35,9 @@ and keep JSX components in light DOM while sharing the same visual rules.
 - `@neon-kit/style-build` compiles separate CSS assets, class strings, URL
   metadata, source maps, and authoring declarations. The separate Vite adapter
   emits final native-sheet facades/assets and integrates dependency optimization.
-  There is no standalone library/CDN emitter. The current installed
-  `@slimlib/element@0.4.1` lacks `shadowStyles()`; the local Slimlib source has
-  it. A packaged version with that API is a prerequisite for a release.
+  There is no standalone library/CDN emitter. The installed
+  `@slimlib/element@0.5.0` provides `shadowStyles()`, satisfying the rendering
+  runtime release prerequisite. The fixture uses published Slimlib packages.
 - Menu and tooltip accept consumer-authored children. Comboboxes read light-DOM
   `<option>` children. Datepicker, timepicker, and combobox use form internals,
   anchor positioning, and popovers. Their shadow migration needs DOM and

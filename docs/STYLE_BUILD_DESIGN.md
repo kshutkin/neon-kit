@@ -4,9 +4,9 @@ Status: compiler and Vite adapter implemented through
 [migration step 3](style-migration/STEP_3_BUILD.md). The accepted adapter is
 `@neon-kit/vite-plugin-style-build`, using `.css?neon` named class strings and
 ordered `sheets`. Broader standalone/compiler possibilities below remain future
-work. The local
-`@slimlib/element` source provides the `shadowStyles()` rendering middleware;
-the migration still needs a packaged release exposing that API.
+work. The published
+`@slimlib/element@0.5.0` provides the `shadowStyles()` rendering middleware
+and is used by the migration fixture.
 
 The current migration scope is defined in
 [`STYLE_SYSTEM_MIGRATION_PLAN.md`](STYLE_SYSTEM_MIGRATION_PLAN.md): Vite is the

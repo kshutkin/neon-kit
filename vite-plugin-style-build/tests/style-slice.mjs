@@ -253,11 +253,7 @@ try {
         await pack(resolve(repository, 'vite-plugin-style-build'), { dependencies: { '@neon-kit/style-build': '0.0.1' } }),
         ...await Promise.all(['theme', 'jsx', 'web', 'vanilla'].map((name) => pack(resolve(fixtures, name)))),
     ];
-    const elementDirectory = process.env.NEON_SLIMLIB_ELEMENT ?? resolve(repository, '../slimlib/element');
-    const elementSource = await readFile(resolve(elementDirectory, 'src/index.js'), 'utf8');
-    assert.match(elementSource, /export \{ shadowStyles \}/, 'a packaged Slimlib candidate exposing shadowStyles is required');
-    const runtimeVersions = Object.fromEntries(['@slimlib/jsx', '@slimlib/store'].map((name) => [name, require(`${name}/package.json`).version]));
-    packages.push(await pack(elementDirectory, { peerDependencies: runtimeVersions }));
+    const runtimeVersions = Object.fromEntries(['@slimlib/element', '@slimlib/jsx', '@slimlib/store'].map((name) => [name, require(`${name}/package.json`).version]));
     await writeFile(resolve(app, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
     const install = await command('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...packages,
         `vite@${require('vite/package.json').version}`, 'typescript@5.9.3', ...Object.entries(runtimeVersions).map(([name, version]) => `${name}@${version}`),
@@ -421,7 +417,7 @@ render(() => <Control />, document.getElementById('jsx'));\n`);
         }
     }
     console.log('Isolated documentation build passed in Chromium and Firefox');
-    await writeFile(resolve(reports, 'summary.json'), `${JSON.stringify({ output, slimlib: elementDirectory,
+    await writeFile(resolve(reports, 'summary.json'), `${JSON.stringify({ output, slimlib: runtimeVersions,
         browsers: browsers.map((browser) => ({ engine: browser.browserType().name(), version: browser.version() })),
         consumption: 'isolated npm tarballs; no workspace source aliases',
         packagePrepack: true, typedImports: true, optimizerRestart: true, classAndAssetReload: true,

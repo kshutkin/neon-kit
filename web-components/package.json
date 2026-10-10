@@ -72,9 +72,9 @@
     },
     "peerDependencies": {
         "@neon-kit/icons": "^workspace:*",
-        "@slimlib/element": "^0.4.1",
+        "@slimlib/element": "^0.5.0",
         "@slimlib/jsx": "^0.5.0",
-        "@slimlib/store": "^2.2.1"
+        "@slimlib/store": "^2.2.2"
     },
     "dependencies": {
         "@neon-kit/core": "workspace:*",

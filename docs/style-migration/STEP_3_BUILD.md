@@ -135,10 +135,10 @@ pnpm build:style-slice-docs
 ```
 
 Use the repository dependencies and installed Playwright Chromium/Firefox.
-The browser proof still packs a local Slimlib candidate exposing `shadowStyles()`;
-installed `@slimlib/element@0.4.1` lacks it. Override its directory with
-`NEON_SLIMLIB_ELEMENT` if necessary. Publishing that runtime API remains a release
-prerequisite; no sibling runtime files are modified.
+The original proof packed a local Slimlib candidate exposing `shadowStyles()`.
+As of 2026-10-10, the proof and documentation fixture use the published
+`@slimlib/element@0.5.0`; no sibling checkout or `NEON_SLIMLIB_ELEMENT` override
+is required. The checked-in evidence records the original candidate run.
 
 SSR, cross-document sheet adoption, runtime asset-URL expressions, and standalone
 CDN output are outside this native-sheet contract. The plugin owns native asset
