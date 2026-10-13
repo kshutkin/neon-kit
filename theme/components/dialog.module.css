@@ -1,0 +1,113 @@
+@import '../tokens.css';
+
+/* Dialog component — built on the native <dialog> element.
+   Structure:
+     <dialog class="dialog">
+       <header class="dialog__header">…</header>
+       <div class="dialog__body">…</div>
+       <footer class="dialog__footer">…</footer>
+     </dialog>
+
+   Sizes (modifiers on .dialog): .dialog.-small, .dialog.-medium (default), .dialog.-large, .dialog.-xlarge.
+   Mobile (<= 640px): always full-screen regardless of size.
+*/
+
+.dialog {
+    composes: panel from '../shared.module.css';
+    margin: auto;
+    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    white-space: normal;
+
+    /* Layout: header / body / footer with body taking remaining space */
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    /* Default (medium) size */
+    width: min(90vw, calc(var(--neon-spacing, 0.25rem) * 128));
+    max-height: min(85vh, calc(var(--neon-spacing, 0.25rem) * 160));
+}
+
+.dialog.-small {
+    width: min(90vw, calc(var(--neon-spacing, 0.25rem) * 96));
+    max-height: min(85vh, calc(var(--neon-spacing, 0.25rem) * 112));
+}
+
+.dialog.-large {
+    width: min(90vw, calc(var(--neon-spacing, 0.25rem) * 192));
+    max-height: min(85vh, calc(var(--neon-spacing, 0.25rem) * 192));
+}
+
+.dialog.-xlarge {
+    width: min(95vw, calc(var(--neon-spacing, 0.25rem) * 256));
+    max-height: min(90vh, calc(var(--neon-spacing, 0.25rem) * 224));
+}
+
+.dialog:not([open]) {
+    display: none;
+}
+
+.dialog::backdrop {
+    background-color: oklch(
+        from var(--neon-color-ink-primary, var(--_color-ink-primary)) l c h /
+            0.45
+    );
+    backdrop-filter: blur(2px);
+}
+
+.dialog__header {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 3);
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--neon-spacing, 0.25rem) * 3);
+    font-weight: 600;
+}
+
+.dialog__body {
+    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 4);
+    overflow: auto;
+    min-height: 0;
+}
+
+.dialog__footer {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 3);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: calc(var(--neon-spacing, 0.25rem) * 2);
+}
+
+/* Mobile: full screen */
+@media (max-width: 640px) {
+    .dialog,
+    .dialog.-small,
+    .dialog.-large,
+    .dialog.-xlarge {
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+    }
+}

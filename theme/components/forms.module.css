@@ -1,0 +1,539 @@
+@import '../tokens.css';
+
+/* Form components — `.input`, `.checkbox`, `.radio`, `.fieldset`.
+
+   All four sit in the same visual family as `.btn` and `.kbd`:
+   - bordered, rounded, with the top-edge highlight from `--neon-inset-shadow-highlight`
+   - the same focus ring (handled globally via `:focus-visible`) and the same
+     `border-border-focus` border swap on focus, so a focused field reads the
+     same as a focused button
+   - the same disabled treatment (`bg-surface-disabled`, `text-ink-muted`,
+     `border-border-disabled`)
+
+   Where they differ:
+   - `.input` reads as an inset "well": the raised drop-shadow of `.btn` is
+     replaced with `inset-shadow-pressed` so the field looks like something
+     you type *into*, not something you press.
+   - `.checkbox` / `.radio` strip the native UA control and re-render it as a
+     small `.btn`-shaped square / circle. Unchecked state matches the btn's
+     idle look; `:checked` fills with `--neon-color-primary` and reuses the
+     `inset-shadow-highlight-pressed` token from CTA buttons so the checked
+     state reads as "pressed in".
+   - `.fieldset` is a flat panel — no drop shadow, no top highlight — that
+     groups related fields under a small-caps legend.
+*/
+
+/* ---------- Input ---------------------------------------------------------- */
+
+.input {
+    composes: panel disabled-control focus-ring-swap from '../shared.module.css';
+    background-color: var(--neon-color-surface, var(--_color-surface));
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: var(
+        --neon-inset-shadow-pressed,
+        var(--_inset-shadow-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    &::placeholder {
+        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    }
+
+    /* Native control reset — text fields are not inline-block-with-ellipsis. */
+    appearance: none;
+    font: inherit;
+    line-height: 1.25;
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+/* Read-only — muted surface fill. The `:not(:disabled)` guard is load-bearing:
+   in CSS, a disabled <input> ALSO matches `:read-only` (a disabled control
+   isn't user-editable), so without the guard a disabled field would pick up
+   the read-only fill instead of the disabled fill — making `.input` and
+   button-based fields like `.combobox__field` (which use `[aria-readonly]`
+   and don't have this overlap) render disabled in different colours.
+
+   Scoped to `input` and `textarea` because <select> is always `:read-only`
+   in CSS terms (no native text-editing surface), so a plain `.input:read-only`
+   would tint every <select> with the read-only fill in its idle state. */
+:is(input, textarea).input:read-only:not(:disabled) {
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+}
+
+/* Invalid state — opt in via `aria-invalid="true"`, the same hook native
+   form validation toggles on submit. Border swaps to `--neon-color-error`; the
+   focus ring re-uses the same border so the invalid affordance survives
+   focus. Disabled fields skip the treatment so a locked field doesn't shout. */
+.input[aria-invalid='true']:not(:disabled) {
+    border-color: var(--neon-color-error, var(--_color-error));
+    &:focus-visible {
+        border-color: var(--neon-color-error, var(--_color-error));
+    }
+}
+
+/* Multi-line variant. Allow vertical resize but not horizontal — the field's
+   inline size is owned by the layout, not by the user. */
+textarea.input {
+    white-space: pre-wrap;
+    min-block-size: calc(var(--neon-spacing, 0.25rem) * 16);
+    resize: vertical;
+    vertical-align: top;
+}
+
+/* Native <select> — render the chevron ourselves so the control matches the
+   `.btn`-with-trailing-icon look across browsers. */
+select.input {
+    padding-inline-end: calc(var(--neon-spacing, 0.25rem) * 8);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23808080'><path stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right calc(var(--neon-spacing, 0.25rem) * 2.5) center;
+    background-size: 1em;
+    cursor: default;
+}
+
+/* Native <select> placeholder — since it doesn't support ::placeholder, we
+   restyle the control when the default disabled/empty option is chosen. */
+select.input:has(option[value=''][disabled]:checked),
+select.input:required:invalid {
+    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+}
+
+/* Reset the dropdown options to primary text so they aren't muted. */
+select.input option {
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+}
+
+/* File input — strip the OS-rendered button on the inside; consumers can pair
+   the input with a sibling `.btn` if they want a styled trigger. */
+.input[type='file'] {
+    padding: calc(var(--neon-spacing, 0.25rem) * 1.5)
+        calc(var(--neon-spacing, 0.25rem) * 3);
+    cursor: default;
+}
+
+/* ---------- Input group (prefix / suffix affixes) ------------------------- */
+
+/* Wrap an `.input` together with non-interactive affix text ("$", "kg",
+   "/month", a unit or a currency code) that should sit *inside* the
+   field's border. The wrapper carries the field chrome (border, focus
+   swap, disabled / read-only / invalid surfaces); the inner `.input`
+   strips its own border so the affix and the editable area read as a
+   single field — same pattern as `.timepicker__field` hosting the
+   inline timezone button.
+
+   Markup:
+       <div class="input-group">
+         <span class="input-affix">$</span>
+         <input class="input" type="number" value="42">
+         <span class="input-affix">USD</span>
+       </div>
+
+   Either or both affixes may be present. Use a `<button>` instead of a
+   `<span>` if the affix should be interactive (e.g., a unit toggle).
+*/
+.input-group {
+    composes: panel from '../shared.module.css';
+    background-color: var(--neon-color-surface, var(--_color-surface));
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: var(
+        --neon-inset-shadow-pressed,
+        var(--_inset-shadow-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    text-shadow: none;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: stretch;
+    inline-size: 100%;
+    min-block-size: calc(var(--neon-spacing, 0.25rem) * 9);
+}
+
+.input-group:focus-within {
+    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+}
+
+/* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
+   grouped field is indistinguishable from a plain one in those states. */
+.input-group:has(> .input:disabled) {
+    border-color: var(
+        --neon-color-border-disabled,
+        var(--_color-border-disabled)
+    );
+    background-color: var(
+        --neon-color-surface-disabled,
+        var(--_color-surface-disabled)
+    );
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
+    --_inset-shadow: 0 0 #0000;
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Same `:read-only`/select overlap as `.input` above — scope the
+   wrapper read-only fill to text-editable inputs only. */
+.input-group:has(> :is(input, textarea).input:read-only:not(:disabled)) {
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+}
+
+.input-group:has(> .input[aria-invalid='true']:not(:disabled)) {
+    border-color: var(--neon-color-error, var(--_color-error));
+}
+
+.input-group:has(> .input[aria-invalid='true']:not(:disabled)):focus-within {
+    border-color: var(--neon-color-error, var(--_color-error));
+}
+
+/* The hosted `.input` becomes a transparent editable region — the wrapper
+   is the field. Strip the input's own border, shadow, and focus outline so
+   only the wrapper's chrome paints. */
+.input-group > .input {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    outline: none;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+}
+
+/* Non-interactive affix — short label rendered inside the field
+   (currency, units, "/month"). Muted ink so the editable value stays
+   the dominant content. Sized in `em` so it tracks the field's font. */
+.input-affix {
+    display: inline-flex;
+    align-items: center;
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+
+    align-self: stretch;
+    flex: none;
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 3);
+    user-select: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Drop the inner-edge padding so the affix relies on the input's own
+   `padding-inline` for separation from the editable value. */
+.input-affix:first-child {
+    padding-inline-end: 0;
+}
+
+.input-affix:last-child {
+    padding-inline-start: 0;
+}
+
+/* ---------- Checkbox & Radio ---------------------------------------------- */
+
+/* Shared shape: a small `.btn`-styled box. Sized in `em` so the control
+   tracks the surrounding text size — placing one inline with a label keeps
+   the optical alignment correct at any font-size.
+
+   The `not-disabled:` prefix on every hover/active variant is load-bearing.
+   `:disabled` and `:hover` have equal CSS specificity (one pseudo-class
+   each), so source order decides — and the previous utility system emits hover/active rules
+   *after* the disabled fill from `disabled-control`, which means a disabled
+   checkbox would otherwise visibly react to the cursor. `not-disabled:`
+   compiles to `:not(:disabled):hover` (specificity 0,2,0), beating both the
+   plain `:hover` and the `:disabled` fill at the same time. Don't drop the
+   guard when refactoring. The same pattern applies to `.btn` via inline
+   hover/active utilities, which work because `:disabled` there is wrapped
+   in `disabled-control`'s `:is(:disabled, [aria-disabled])` (specificity
+   0,2,0) and outranks bare `:hover` — checkboxes don't get that lift
+   because their disabled state is bare `:disabled` from the compose chain. */
+.checkbox,
+.radio {
+    &:is(:disabled, [aria-disabled='true']) {
+        border-color: var(
+            --neon-color-border-disabled,
+            var(--_color-border-disabled)
+        );
+        background-color: var(
+            --neon-color-surface-disabled,
+            var(--_color-surface-disabled)
+        );
+        color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+        --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
+        --_inset-shadow: 0 0 #0000;
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+        pointer-events: none;
+        cursor: default;
+    }
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    &:focus-visible {
+        border-color: var(
+            --neon-color-border-focus,
+            var(--_color-border-focus)
+        );
+    }
+    background-color: var(--neon-color-surface, var(--_color-surface));
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    &:not(*:disabled) {
+        &:hover {
+            @media (hover: hover) {
+                background-color: var(
+                    --neon-color-surface-hover,
+                    var(--_color-surface-hover)
+                );
+            }
+        }
+        &:active {
+            background-color: var(
+                --neon-color-surface-active,
+                var(--_color-surface-active)
+            );
+            --_shadow: 0 0 #0000;
+            box-shadow: var(--_inset-shadow, 0 0 transparent),
+                var(--_shadow, 0 0 transparent);
+            --_inset-shadow: var(
+                --neon-inset-shadow-pressed,
+                var(--_inset-shadow-pressed)
+            );
+            box-shadow: var(--_inset-shadow, 0 0 transparent),
+                var(--_shadow, 0 0 transparent);
+        }
+    }
+
+    /* Strip the native control. */
+    appearance: none;
+
+    display: inline-grid;
+    place-content: center;
+    flex-shrink: 0;
+
+    inline-size: 1.125em;
+    block-size: 1.125em;
+    padding: 0;
+    margin: 0;
+
+    /* Sit on the surrounding text baseline (matches `.kbd`'s alignment). */
+    vertical-align: middle;
+    cursor: pointer;
+
+    /* Allow the checked-state indicator to use a pseudo-element. */
+    position: relative;
+}
+
+.checkbox {
+    border-radius: calc(var(--neon-spacing, 0.25rem) * 1);
+}
+
+.radio {
+    border-radius: 9999px;
+}
+
+/* Checked: fill with primary, reuse the CTA "pressed-in" highlight token so
+   the checked state reads as committed rather than just hovered. */
+.checkbox:checked,
+.radio:checked {
+    border-color: var(
+        --neon-color-border-primary,
+        var(--_color-border-primary)
+    );
+    background-color: var(--neon-color-primary, var(--_color-primary));
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight-pressed,
+        var(--_inset-shadow-highlight-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    &:hover {
+        @media (hover: hover) {
+            background-color: var(
+                --neon-color-primary-hover,
+                var(--_color-primary-hover)
+            );
+        }
+    }
+    &:active {
+        background-color: var(
+            --neon-color-primary-active,
+            var(--_color-primary-active)
+        );
+    }
+    &:disabled {
+        border-color: var(
+            --neon-color-border-disabled,
+            var(--_color-border-disabled)
+        );
+        background-color: var(
+            --neon-color-primary-disabled,
+            var(--_color-primary-disabled)
+        );
+    }
+}
+
+/* Checkmark — drawn as a CSS-only glyph using two borders, so it inherits
+   `currentColor` and stays crisp at any size. */
+.checkbox:checked::after {
+    content: '';
+    inline-size: 0.3em;
+    block-size: 0.6em;
+    border: solid var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    border-width: 0 0.15em 0.15em 0;
+    transform: translateY(-0.05em) rotate(45deg);
+}
+
+/* Indeterminate state — horizontal bar instead of a checkmark. */
+.checkbox:indeterminate {
+    border-color: var(
+        --neon-color-border-primary,
+        var(--_color-border-primary)
+    );
+    background-color: var(--neon-color-primary, var(--_color-primary));
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight-pressed,
+        var(--_inset-shadow-highlight-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+}
+
+.checkbox:indeterminate::after {
+    content: '';
+    inline-size: 0.6em;
+    block-size: 0.15em;
+    background: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    border-radius: 0.05em;
+}
+
+/* Radio dot. */
+.radio:checked::after {
+    content: '';
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-radius: 9999px;
+    background: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+}
+
+/* Field row — convenience wrapper for "<label> <control> <text>" layouts.
+   Aligns the control and label text on a shared baseline and gives them a
+   click-friendly target. */
+.field {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--neon-spacing, 0.25rem) * 2);
+    cursor: pointer;
+    user-select: none;
+}
+
+.field:has(:disabled) {
+    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    cursor: default;
+}
+
+/* Stacked label above an input. */
+.field-stack {
+    display: inline-flex;
+    flex-direction: column;
+    gap: calc(var(--neon-spacing, 0.25rem) * 1);
+}
+
+.field-stack > .field-label {
+    font-size: var(--neon-text-xs, 0.75rem);
+    line-height: var(
+        --neon-line-height,
+        var(--neon-text-xs--line-height, calc(1 / 0.75))
+    );
+    font-weight: var(--neon-font-weight-semibold, 600);
+    letter-spacing: var(--neon-tracking-wide, 0.025em);
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    text-transform: uppercase;
+    user-select: none;
+}
+
+/* Helper text under a field. `.field-hint` is the neutral form (e.g.
+   formatting tips); `.field-error` is the validation message a consumer
+   shows when the input flips to `aria-invalid="true"`. Both inherit
+   small-text sizing so they don't fight the field for visual weight. */
+.field-hint {
+    font-size: var(--neon-text-xs, 0.75rem);
+    line-height: var(
+        --neon-line-height,
+        var(--neon-text-xs--line-height, calc(1 / 0.75))
+    );
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    user-select: none;
+}
+
+.field-error {
+    font-size: var(--neon-text-xs, 0.75rem);
+    line-height: var(
+        --neon-line-height,
+        var(--neon-text-xs--line-height, calc(1 / 0.75))
+    );
+    color: var(--neon-color-error, var(--_color-error));
+    user-select: none;
+}
+
+/* ---------- Fieldset ------------------------------------------------------- */
+
+/* Flat panel grouping for related fields. No drop shadow (the contained
+   inputs already carry their own elevation), no top highlight — a fieldset is
+   a frame, not a surface you press. */
+.fieldset {
+    display: block;
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+
+    /* Override panel's whitespace/ellipsis defaults — fieldsets contain
+       wrapping content, not a single line of label text. */
+    white-space: normal;
+    text-overflow: clip;
+
+    padding: calc(var(--neon-spacing, 0.25rem) * 3)
+        calc(var(--neon-spacing, 0.25rem) * 4)
+        calc(var(--neon-spacing, 0.25rem) * 4);
+    min-inline-size: 0;
+}
+
+/* Native <legend> sits inside the top border. Use small-caps to match the
+   `.menu__group-header` and `.field-label` typography family. */
+.fieldset > legend {
+    font-size: var(--neon-text-xs, 0.75rem);
+    line-height: var(
+        --neon-line-height,
+        var(--neon-text-xs--line-height, calc(1 / 0.75))
+    );
+    font-weight: var(--neon-font-weight-semibold, 600);
+    letter-spacing: var(--neon-tracking-wide, 0.025em);
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    text-transform: uppercase;
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 1.5);
+    margin-inline-start: calc(calc(var(--neon-spacing, 0.25rem) * 1.5) * -1);
+    user-select: none;
+}

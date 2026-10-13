@@ -1,45 +1,45 @@
 <main>
-    <h1 class="mb-6">Form Controls</h1>
-    <p class="mb-8 text-ink-secondary">
+    <h1 class="docs-mb-6">Form Controls</h1>
+    <p class="docs-mb-8 docs-text-ink-secondary">
         Inputs, checkboxes, radios, and fieldsets share the visual family of
         <code>.btn</code>: same border, same focus ring, same disabled
         treatment. Inputs read as an <em>inset well</em> (you type into them)
         while checkboxes and radios re-use the raised <code>.btn</code> shape
-        and fill with <code>--color-primary</code> when checked. Fieldsets
+        and fill with <code>--neon-color-primary</code> when checked. Fieldsets
         are flat frames — no drop shadow — that group related fields under a
         small-caps legend.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Text Inputs</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Text Inputs</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Apply <code>.input</code> to any single-line form control. Layout
             (width, stretch) is owned by the surrounding container — the
             component sets only the chrome.
         </p>
-        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4">
-            <label class="field-stack w-72">
+        <div class="docs-flex docs-flex-col docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <label class="field-stack docs-w-72">
                 <span class="field-label">Email</span>
                 <input class="input" type="email" placeholder="you@example.com">
             </label>
-            <label class="field-stack w-72">
+            <label class="field-stack docs-w-72">
                 <span class="field-label">Password</span>
                 <input class="input" type="password" value="hunter2">
             </label>
-            <label class="field-stack w-72">
+            <label class="field-stack docs-w-72">
                 <span class="field-label">Disabled</span>
                 <input class="input" type="text" value="Locked value" disabled>
             </label>
-            <label class="field-stack w-72">
+            <label class="field-stack docs-w-72">
                 <span class="field-label">Read-only</span>
                 <input class="input" type="text" value="Read-only value" readonly>
             </label>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Input Types</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Input Types</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             <code>.input</code> works on every native text-like control —
             <code>email</code>, <code>number</code>, <code>search</code>,
             <code>date</code>, <code>file</code>, plus <code>&lt;textarea&gt;</code>
@@ -47,7 +47,7 @@
             <code>&lt;select&gt;</code> is rendered via <code>background-image</code>
             so it's consistent across browsers.
         </p>
-        <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-3">
+        <div class="docs-grid docs-grid-cols-2 docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4 docs-md-3a-grid-cols-3">
             <label class="field-stack">
                 <span class="field-label">Number</span>
                 <input class="input" type="number" value="42">
@@ -77,20 +77,20 @@
                     <option>Three</option>
                 </select>
             </label>
-            <label class="field-stack md:col-span-2">
+            <label class="field-stack docs-md-3a-col-span-2">
                 <span class="field-label">File</span>
                 <input class="input" type="file">
             </label>
-            <label class="field-stack col-span-2 md:col-span-3">
+            <label class="field-stack docs-col-span-2 docs-md-3a-col-span-3">
                 <span class="field-label">Textarea</span>
                 <textarea class="input" rows="3" placeholder="Multi-line content…"></textarea>
             </label>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Prefix &amp; Suffix Affixes</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Prefix &amp; Suffix Affixes</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Wrap an <code>.input</code> in <code>.input-group</code> to render
             non-interactive labels — currency, units, a per-period suffix —
             <em>inside</em> the field's border. The wrapper carries the chrome
@@ -102,24 +102,24 @@
             <code>&lt;button&gt;</code> if the affix should be interactive
             (e.g., a unit toggle).
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
+        <div class="docs-grid docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4 docs-md-3a-grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Price (prefix)</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">$</span>
                     <input class="input" type="number" value="49">
                 </div>
             </label>
             <label class="field-stack">
                 <span class="field-label">Weight (suffix)</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <input class="input" type="number" value="2.5">
                     <span class="input-affix">kg</span>
                 </div>
             </label>
             <label class="field-stack">
                 <span class="field-label">Amount (both)</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">$</span>
                     <input class="input" type="number" value="1499">
                     <span class="input-affix">USD</span>
@@ -127,7 +127,7 @@
             </label>
             <label class="field-stack">
                 <span class="field-label">Subscription</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">$</span>
                     <input class="input" type="number" value="29">
                     <span class="input-affix">/ month</span>
@@ -135,21 +135,21 @@
             </label>
             <label class="field-stack">
                 <span class="field-label">Discount</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <input class="input" type="number" value="15">
                     <span class="input-affix">%</span>
                 </div>
             </label>
             <label class="field-stack">
                 <span class="field-label">Website</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">https://</span>
                     <input class="input" type="text" placeholder="example.com">
                 </div>
             </label>
             <label class="field-stack">
                 <span class="field-label">Disabled</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">$</span>
                     <input class="input" type="number" value="0" disabled>
                     <span class="input-affix">USD</span>
@@ -157,14 +157,14 @@
             </label>
             <label class="field-stack">
                 <span class="field-label">Read-only</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <input class="input" type="number" value="42" readonly>
                     <span class="input-affix">kg</span>
                 </div>
             </label>
-            <label class="field-stack md:col-span-2">
+            <label class="field-stack docs-md-3a-col-span-2">
                 <span class="field-label">Invalid (negative price)</span>
-                <div class="input-group w-full">
+                <div class="input-group docs-w-full">
                     <span class="input-affix">$</span>
                     <input class="input" type="number" value="-12" aria-invalid="true" aria-describedby="price-error">
                     <span class="input-affix">USD</span>
@@ -174,9 +174,9 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Field States</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Field States</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Six canonical states every text-like field supports — empty
             disabled, empty read-only, both filled equivalents, an
             invalid field showing the error helper, and a labelled
@@ -187,7 +187,7 @@
             native form validation toggles on submit) and pairs with a
             <code>.field-error</code> helper underneath.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
+        <div class="docs-grid docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4 docs-md-3a-grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Disabled (empty)</span>
                 <input class="input" type="text" placeholder="you@example.com" disabled>
@@ -219,9 +219,9 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Textarea &amp; Select States</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Textarea &amp; Select States</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             <code>textarea.input</code> and <code>select.input</code> pick
             up the same six-state vocabulary. Disabled freezes both;
             read-only flips a textarea to the muted surface while a
@@ -230,7 +230,7 @@
             <code>disabled</code> or render the chosen option as
             non-editable text.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
+        <div class="docs-grid docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4 docs-md-3a-grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Textarea — disabled (empty)</span>
                 <textarea class="input" rows="3" placeholder="Multi-line content…" disabled></textarea>
@@ -267,15 +267,15 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Checkboxes</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Checkboxes</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Native <code>&lt;input type="checkbox"&gt;</code> with the UA
             chrome stripped and re-rendered as a small <code>.btn</code>-shaped
             square. Sized in <code>em</code> so the box tracks its label's
             font-size automatically.
         </p>
-        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-col docs-gap-2 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <label class="field">
                 <input class="checkbox" type="checkbox">
                 <span>Unchecked</span>
@@ -296,14 +296,14 @@
                 <input class="checkbox" type="checkbox" checked disabled>
                 <span>Disabled, checked</span>
             </label>
-            <p class="mt-3 text-sm text-ink-secondary">
+            <p class="docs-mt-3 docs-text-sm docs-text-ink-secondary">
                 Checkboxes also scale with surrounding text:
             </p>
-            <label class="field text-lg">
+            <label class="field docs-text-lg">
                 <input class="checkbox" type="checkbox" checked>
                 <span>Larger label</span>
             </label>
-            <label class="field text-2xl">
+            <label class="field docs-text-2xl">
                 <input class="checkbox" type="checkbox" checked>
                 <span>Even larger</span>
             </label>
@@ -317,14 +317,14 @@
         </script>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Radio Buttons</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Radio Buttons</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Same shape as <code>.checkbox</code> but circular and with a dot
             instead of a tick. Group radios with a shared <code>name</code> in
             the usual native way.
         </p>
-        <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-col docs-gap-2 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <label class="field">
                 <input class="radio" type="radio" name="size-demo">
                 <span>Small</span>
@@ -344,17 +344,17 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Fieldset</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Fieldset</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             <code>.fieldset</code> is a flat frame for grouping related
             fields. Pair it with native <code>&lt;legend&gt;</code> for an
             accessible group label that browsers expose to assistive tech.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-4">
-            <fieldset class="fieldset w-full max-w-md">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <fieldset class="fieldset docs-w-full docs-max-w-md">
                 <legend>Notification preferences</legend>
-                <div class="flex flex-col gap-2">
+                <div class="docs-flex docs-flex-col docs-gap-2">
                     <label class="field">
                         <input class="checkbox" type="checkbox" checked>
                         <span>Email me about product updates</span>
@@ -372,15 +372,15 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Composed Form</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Composed Form</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Inputs, checkboxes, radios, fieldsets, and buttons composed
             together — everything shares the same border, focus ring, and
             disabled treatment.
         </p>
-        <form class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4" onsubmit="event.preventDefault();">
-            <div class="grid gap-3 md:grid-cols-2">
+        <form class="docs-flex docs-flex-col docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4" onsubmit="event.preventDefault();">
+            <div class="docs-grid docs-gap-3 docs-md-3a-grid-cols-2">
                 <label class="field-stack">
                     <span class="field-label">First name</span>
                     <input class="input" type="text" value="Ada">
@@ -398,7 +398,7 @@
 
             <fieldset class="fieldset">
                 <legend>Plan</legend>
-                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                <div class="docs-flex docs-flex-wrap docs-gap-x-6 docs-gap-y-2">
                     <label class="field">
                         <input class="radio" type="radio" name="plan" value="free" checked>
                         <span>Free</span>
@@ -419,7 +419,7 @@
                 <span>I agree to the terms of service</span>
             </label>
 
-            <div class="flex justify-end gap-2">
+            <div class="docs-flex docs-justify-end docs-gap-2">
                 <button type="reset" class="btn quiet">Reset</button>
                 <button type="submit" class="btn cta">Create account</button>
             </div>

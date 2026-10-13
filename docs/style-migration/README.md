@@ -9,6 +9,8 @@ The completed [step 2 proof](STEP_2_PROOF.md) records packed-consumer, shared
 sheet, plain CSS, and scheme-inheritance results in Chromium and Firefox.
 The completed [step 3 build](STEP_3_BUILD.md) adds asset URLs, source maps,
 authoring types, and dependency optimizer validation.
+The completed [step 4 theme translation](STEP_4_THEME.md) adds the real CSS Modules
+catalogue, separate plain CSS package, and native scheme/palette validation.
 
 ## Evidence
 

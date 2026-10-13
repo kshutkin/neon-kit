@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-surface">
+<html lang="en" class="docs-bg-surface">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Neon</title>
     <!-- prerender:head -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap">
     <link rel="stylesheet" href="./index-docs.css">
 </head>
-<body class="min-h-screen bg-surface text-ink-primary">
+<body class="docs-min-h-screen docs-bg-surface docs-text-ink-primary">
     <header class="docs-topbar">
         <a class="docs-wordmark" data-docs-home href="./">Neon Kit</a>
         <nav class="docs-topbar__nav" aria-label="Documentation sections">
@@ -20,8 +21,8 @@
         </nav>
         <theme-switcher></theme-switcher>
     </header>
-    <aside class="docs-aside flex w-72 flex-col border-r border-border bg-surface-secondary">
-        <nav class="flex-1 p-4">
+    <aside class="docs-aside docs-flex docs-w-72 docs-flex-col docs-border-r docs-border-border docs-bg-surface-secondary">
+        <nav class="docs-flex-1 docs-p-4">
             <ul class="nav -vertical" data-sidebar>
                 <li data-item="buttons"><a data-item="buttons" data-slug="buttons" href="buttons/" class="nav__item">Buttons</a></li>
                 <li data-item="panels"><a data-item="panels" data-slug="panels" href="panels/" class="nav__item">Panels</a></li>
@@ -48,7 +49,7 @@
             </ul>
         </nav>
     </aside>
-    <main id="content" class="docs-main bg-surface">
+    <main id="content" class="docs-main docs-bg-surface">
         <nav data-component-mode-nav aria-label="Component mode" class="docs-tabs" hidden>
             <ul class="nav -tabs">
                 <li><a data-section="css" href="buttons/" class="nav__item">CSS</a></li>
@@ -56,7 +57,7 @@
                 <li hidden><a data-section="jsx" href="jsx-tooltip/" class="nav__item">JSX</a></li>
             </ul>
         </nav>
-        <div id="content-inner" class="p-8"></div>
+        <div id="content-inner" class="docs-p-8"></div>
     </main>
     <script src="./theme-switcher.js" type="module"></script>
     <script src="./combobox.js" type="module"></script>

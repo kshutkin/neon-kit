@@ -1,0 +1,163 @@
+@import '../tokens.css';
+
+/* Tag — labelled chip with a built-in remove affordance.
+
+   Visually a sibling of `.badge` (same em-sized, top-highlight family) but
+   with rectangular `rounded` corners to better seat alongside form
+   controls and a trailing close button so users can dismiss the entry.
+   The trailing button reuses `.btn.quiet`'s hover state language —
+   transparent until hovered, then a subtle surface highlight — so it
+   reads as an action without overpowering the label.
+
+   Markup:
+       <span class="tag">
+           JavaScript
+           <button type="button" class="tag__remove" aria-label="Remove JavaScript">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2" fill="none"
+                    aria-hidden="true">
+                   <path stroke-linecap="round" stroke-linejoin="round"
+                         d="M6 6l12 12M18 6L6 18" />
+               </svg>
+           </button>
+       </span>
+
+   Like `.badge`, `.tag` and `.tag__remove` are sized entirely in `em`, so
+   wrapping a tag list in a smaller / larger font-size scales the chips
+   and their controls in lock-step.
+*/
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    white-space: nowrap;
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    user-select: none;
+    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+
+    font-size: 0.8125em;
+    font-weight: 500;
+    line-height: 1;
+    block-size: 1.75em;
+    /* Asymmetric padding: more on the label side, just enough on the
+       control side to seat the round remove button with even visual
+       breathing room. */
+    padding-inline-start: 0.65em;
+    padding-inline-end: 0.2em;
+    gap: 0.3em;
+
+    vertical-align: middle;
+    cursor: default;
+}
+
+/* Remove button — a tiny circular hit target. Borrows the quiet-button
+   colour language: transparent at rest, surface-hover on :hover /
+   :focus-visible, surface-active when pressed. */
+.tag__remove {
+    composes: quiet-control from '../shared.module.css';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 9999px;
+    color: inherit;
+    cursor: default;
+    text-shadow: none;
+    flex: none;
+}
+
+.tag__remove > svg {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}
+
+/* Tinted states — share semantics and contrast strategy with `.badge`. */
+.tag.-primary {
+    border-color: var(
+        --neon-color-border-primary,
+        var(--_color-border-primary)
+    );
+    background-color: var(--neon-color-primary, var(--_color-primary));
+    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight-pressed,
+        var(--_inset-shadow-highlight-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+}
+
+.tag.-primary .tag__remove {
+    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    &:hover {
+        @media (hover: hover) {
+            color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+        }
+    }
+    background-color: transparent;
+}
+
+.tag.-primary .tag__remove:hover,
+.tag.-primary .tag__remove:focus-visible {
+    background-color: var(
+        --neon-color-primary-soft-pressed,
+        var(--_color-primary-soft-pressed)
+    );
+}
+
+.tag.-success {
+    background-color: var(
+        --neon-color-success-soft,
+        var(--_color-success-soft)
+    );
+    border-color: var(--neon-color-success, var(--_color-success));
+}
+
+.tag.-warning {
+    background-color: var(
+        --neon-color-warning-soft,
+        var(--_color-warning-soft)
+    );
+    border-color: var(--neon-color-warning, var(--_color-warning));
+}
+
+.tag.-error {
+    background-color: var(--neon-color-error-soft, var(--_color-error-soft));
+    border-color: var(--neon-color-error, var(--_color-error));
+}
+
+.tag.-info {
+    background-color: var(--neon-color-info-soft, var(--_color-info-soft));
+    border-color: var(--neon-color-info, var(--_color-info));
+}
+
+/* Optional layout helper — wrap a list of tags with consistent gaps that
+   also scale with the surrounding font-size. */
+.tag-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    vertical-align: middle;
+}

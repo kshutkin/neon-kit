@@ -1,0 +1,162 @@
+@import '../tokens.css';
+
+/* Tabular data — a restrained default style on top of the reset.
+
+   The Neon reset already collapses borders and sets
+   `border-color: currentColor` for every `<table>`. The `.table`
+   component layers a basic, readable look on top: full-width layout,
+   muted header surface, hairline row separators in the theme border
+   token, and a slightly stronger separator above `<tfoot>`.
+
+   No variants for now — a single `.table` class only. If
+   striping / hover / compact density are wanted later, they should
+   come in as additional classes (`.table.-striped`, etc.) without
+   reshaping these defaults.
+
+   Markup:
+       <table class="table">
+           <caption>Neon Kit packages</caption>
+           <thead>
+               <tr><th>Package</th><th>Description</th></tr>
+           </thead>
+           <tbody>
+               <tr><td>@neon-kit/theme</td><td>CSS theme</td></tr>
+           </tbody>
+           <tfoot>
+               <tr><td>Total</td><td>1 package</td></tr>
+           </tfoot>
+       </table>
+*/
+
+.table {
+    border-color: var(--neon-color-border, var(--_color-border));
+    width: 100%;
+    caption-side: bottom;
+    text-align: start;
+    color: inherit;
+}
+
+.table caption {
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    font-size: 0.875rem;
+    padding-block: 0.5rem;
+    text-align: start;
+}
+
+.table th,
+.table td {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    text-align: inherit;
+}
+
+.table thead th {
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    font-weight: 600;
+    text-align: start;
+}
+
+.table tfoot td,
+.table tfoot th {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    font-weight: 500;
+}
+
+/* Strip the trailing tbody row's bottom border so the table doesn't
+   double up against a tfoot top border or a surrounding container.
+   With `border-collapse: collapse`, the tfoot's own top border still
+   separates body from footer when one is present. */
+.table > tbody > tr:last-child > td,
+.table > tbody > tr:last-child > th {
+    border-bottom: 0;
+}
+
+/* Striped rows — alternate the secondary surface on even tbody rows.
+   The thead row uses the same token, so it stays visually anchored
+   above the body via the cell bottom border. */
+.table.-striped > tbody > tr:nth-child(even) > td,
+.table.-striped > tbody > tr:nth-child(even) > th {
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+}
+
+/* Sortable headers — `<th aria-sort="none|ascending|descending">` with
+   an inner `<button type="button">` as the click/keyboard target. The
+   button stretches to fill the cell so the whole header is hit-target,
+   and an arrow indicator is rendered via `::after`:
+
+       ↕   neutral / unsorted          (dim placeholder)
+       ↑   currently sorted ascending  (active)
+       ↓   currently sorted descending (active)
+
+   Space for the arrow is always reserved, so column widths don't shift
+   when the active column changes. Consumers wire the actual sorting
+   logic; this is presentation + a11y only.
+
+   Markup:
+       <th aria-sort="none">
+           <button type="button">Name</button>
+       </th>
+       <th aria-sort="ascending">
+           <button type="button">Date</button>
+       </th>
+*/
+.table thead th:has(> button[type='button']) {
+    padding: 0;
+}
+
+.table thead th > button[type='button'] {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.table thead th > button[type='button']:hover {
+    background-color: var(--neon-color-border, var(--_color-border));
+}
+
+.table thead th > button[type='button']:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.table thead th[aria-sort] > button[type='button']::after {
+    content: '\2195'; /* ↕ */
+    margin-inline-start: auto;
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    opacity: 0.6;
+    font-size: 0.875em;
+    line-height: 1;
+}
+
+.table thead th[aria-sort='ascending'] > button[type='button']::after {
+    content: '\2191'; /* ↑ */
+    opacity: 1;
+    color: inherit;
+}
+
+.table thead th[aria-sort='descending'] > button[type='button']::after {
+    content: '\2193'; /* ↓ */
+    opacity: 1;
+    color: inherit;
+}

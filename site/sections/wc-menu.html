@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Menu — Web Component</h1>
-    <p class="mb-6 text-ink-secondary">
+    <h1 class="docs-mb-6">Menu — Web Component</h1>
+    <p class="docs-mb-6 docs-text-ink-secondary">
         <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
         keyboard behavior to the theme's menu markup: a roving
         <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key
@@ -10,25 +10,25 @@
         <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Installation</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Installation</h2>
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
 
 // In your bundle entry:
-import '@neon-kit/theme/index.css';
+import '@neon-kit/theme-vanilla/index.css';
 import '@neon-kit/web-components/menu';</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Popover-anchored menu</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Popover-anchored menu</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Pair the host element with the native popover API:
             <code>popovertarget</code> on a trigger button, <code>popover</code>
             on the <code>&lt;neon-menu&gt;</code>. Open the menu and use the
             arrow keys, <code>Home</code>, <code>End</code>, <code>Enter</code>,
             and <code>Space</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn" popovertarget="wc-demo-menu">
                 Open menu
             </button>
@@ -63,20 +63,20 @@ import '@neon-kit/web-components/menu';</code></pre>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Nested popover menus</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Nested popover menus</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Nested menus can be composed without extra component code by using
             a menu item as the native popover trigger for another
             <code>&lt;neon-menu&gt;</code>. Open the parent, focus
-            <span class="whitespace-nowrap">Export as</span>, then press
+            <span class="docs-whitespace-nowrap">Export as</span>, then press
             <kbd class="kbd">→</kbd>, <kbd class="kbd">Enter</kbd>, or <kbd class="kbd">Space</kbd> to
             open the child menu. The submenu is authored inside its trigger
             item so the menu tree shares one root context. Press
             <kbd class="kbd">←</kbd> in the child menu to close it and return
-            focus to <span class="whitespace-nowrap">Export as</span>.
+            focus to <span class="docs-whitespace-nowrap">Export as</span>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn" popovertarget="wc-nested-menu">
                 Open nested menu
             </button>
@@ -113,15 +113,15 @@ import '@neon-kit/web-components/menu';</code></pre>
                 </neon-menu-item>
             </neon-menu>
         </div>
-        <p class="mt-4 text-ink-secondary">
+        <p class="docs-mt-4 docs-text-ink-secondary">
             Each open menu handles its own roving focus. Hover-open behavior
             remains consumer-owned.
         </p>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">API</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">API</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It
             does not create any DOM of its own — it consumes the theme's
             <code>.menu</code> markup and adds keyboard behavior on top.
@@ -129,8 +129,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             click suppression.
         </p>
 
-        <h3 class="mb-2">Markup contract</h3>
-        <p class="mb-4 text-ink-secondary">
+        <h3 class="docs-mb-2">Markup contract</h3>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Rows must be authored as
             <code>&lt;neon-menu-item class="menu__item"&gt;</code> descendants.
             Each menu queries its Light-DOM descendants and owns the items whose
@@ -145,8 +145,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             navigation and click activation is suppressed.
         </p>
 
-        <h3 class="mb-2">Behavior</h3>
-        <ul class="mb-6 list-disc pl-6 text-ink-secondary">
+        <h3 class="docs-mb-2">Behavior</h3>
+        <ul class="docs-mb-6 docs-list-disc docs-pl-6 docs-text-ink-secondary">
             <li>Provides a default <code>menu</code> role for the host.</li>
             <li><code>&lt;neon-menu-item&gt;</code> provides a default <code>menuitem</code> role.</li>
             <li>Maintains a roving <code>tabindex</code> across items: only the active item has <code>tabindex="0"</code>; the others are <code>-1</code>.</li>
@@ -157,8 +157,8 @@ import '@neon-kit/web-components/menu';</code></pre>
             <li>A popover menu derives <code>aria-labelledby</code> from its trigger unless the menu already has <code>aria-label</code> or <code>aria-labelledby</code>.</li>
         </ul>
 
-        <h3 class="mb-2">Popover wiring</h3>
-        <p class="mb-4 text-ink-secondary">
+        <h3 class="docs-mb-2">Popover wiring</h3>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Pair the host with the <code>popover</code> attribute and a trigger
             button using <code>popovertarget="&lt;menu-id&gt;"</code> (as in the
             demo above). Menu items can also use <code>popovertarget</code> to
@@ -171,9 +171,9 @@ import '@neon-kit/web-components/menu';</code></pre>
         </p>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Accessibility pattern</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Accessibility pattern</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Implements the
             <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/">WAI-ARIA Menu and Menubar pattern</a>.
             The host has a default <code>menu</code> role, each row carries
@@ -181,50 +181,50 @@ import '@neon-kit/web-components/menu';</code></pre>
             keeps each menu a single tab stop.
         </p>
 
-        <h3 class="mb-2">Keyboard support</h3>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse">
+        <h3 class="docs-mb-2">Keyboard support</h3>
+        <div class="docs-overflow-x-auto docs-mb-6">
+            <table class="docs-w-full docs-border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary">
-                        <th class="border border-border px-4 py-2 text-left">Key</th>
-                        <th class="border border-border px-4 py-2 text-left">Action</th>
+                    <tr class="docs-bg-surface-secondary">
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Key</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">↓</kbd> <kbd class="kbd">↑</kbd></td>
-                        <td class="border border-border px-4 py-2">Move focus to the next / previous item, wrapping at the ends.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">↓</kbd> <kbd class="kbd">↑</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Move focus to the next / previous item, wrapping at the ends.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">Home</kbd> <kbd class="kbd">End</kbd></td>
-                        <td class="border border-border px-4 py-2">Jump to the first / last item.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">Home</kbd> <kbd class="kbd">End</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Jump to the first / last item.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">Enter</kbd> <kbd class="kbd">Space</kbd></td>
-                        <td class="border border-border px-4 py-2">Activate the focused enabled item (calls <code>click()</code>).</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">Enter</kbd> <kbd class="kbd">Space</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Activate the focused enabled item (calls <code>click()</code>).</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">→</kbd></td>
-                        <td class="border border-border px-4 py-2">Open the focused item's submenu and move focus to its first item.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">→</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Open the focused item's submenu and move focus to its first item.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">←</kbd></td>
-                        <td class="border border-border px-4 py-2">Close a submenu and return focus to its parent menu item.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">←</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Close a submenu and return focus to its parent menu item.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><kbd class="kbd">Esc</kbd></td>
-                        <td class="border border-border px-4 py-2">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><kbd class="kbd">Esc</kbd></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Closes the popover (handled by the platform), returning focus to the trigger via the native popover behavior.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Disabled items remain in arrow-key navigation and can receive the
             roving <code>tabindex</code>, but keyboard and pointer activation
             are suppressed.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             The trigger button keeps its native semantics. On open, focus moves
             into the menu (first item). On close via
             <kbd class="kbd">Esc</kbd> or outside dismissal, the native popover

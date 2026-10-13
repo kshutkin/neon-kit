@@ -1,7 +1,7 @@
 # Public CSS policy for `@neon-kit/theme-vanilla`
 
-Status: accepted naming and markup policy, 2026-10-07. The build strategy is
-validated in migration step 2; these classes are not emitted yet.
+Status: accepted naming and markup policy, 2026-10-07; implemented and
+validated against the real catalogue in step 4, 2026-10-10.
 
 ## Ownership and names
 
@@ -89,19 +89,21 @@ composed hashes. The vanilla build must handle pseudo/state selectors,
 descendant relationships, keyframes, and shared dependencies consistently;
 merely renaming the last class of a composed export is insufficient.
 
-Step 2 proves the emitter against that contract. It may use a compilation
-naming policy or generated public selectors; that implementation choice does
-not change the public names or force renderer modules into the public naming
-scheme. Visual declarations are shared sources, not a second manually
+Step 4 implements an explicit public catalogue with selectors generated from
+the core composition graph. AST rewriting includes nested pseudo selectors;
+conflicting independent public owners fail the build. This does not force
+renderer modules into the public naming scheme. Visual declarations are shared sources, not a second manually
 maintained stylesheet catalogue.
 
-The planned CSS entries are `index.css`, `theme.css`, `reset-normalize.css`,
-`components.css`, and a small set of component-group subpaths. All components
+The CSS entries are `index.css`, `theme.css`, `reset-normalize.css`,
+`components.css`, `effects.css`, and `components/{button,forms,overlays,
+navigation,labels,pickers,table,links}.css`. All components
 and helpers are included regardless of whether they appeared in Tailwind's
 content scan. Selective outputs include their required composed rules and
 local defaults. Document reset and root scheme opt-in are explicit choices
-outside the aggregate entry. Entry grouping and cascade/overlap policy are
-validated with the emitter in step 2.
+outside the aggregate entry. Every entry declares the layer order `neon.theme`, `neon.reset`,
+`neon.components`; overlapping imports keep the same semantics in either order.
+See [step 4](STEP_4_THEME.md) for output and browser checks.
 
 Generic Tailwind utilities (spacing, grids, display, palette utilities, and
 their variants) are outside this public catalogue. Documentation layout moves

@@ -1,7 +1,7 @@
 {
   "name": "@neon-kit/theme",
   "version": "0.0.1",
-  "description": "@neon-kit/theme is a simple, lightweight, CSS theme for Tailwind CSS with optional neon-like colors / effects.",
+  "description": "Shared CSS Modules, tokens, resets, and visual effects for Neon Kit.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kshutkin/neon-kit.git",
@@ -18,19 +18,28 @@
   ],
   "author": "Konstantin Shutkin",
   "license": "MIT",
-  "style": "index.css",
   "exports": {
     "./package.json": "./package.json",
-    "./index.css": "./index.css",
-    "./index": "./index.css",
-    "./reset-normalize.css": "./reset-normalize.css",
-    "./reset-normalize": "./reset-normalize.css",
+    "./tokens.css": "./tokens.css",
     "./theme.css": "./theme.css",
-    "./theme": "./theme.css",
-    "./theme-dark.css": "./theme-dark.css",
-    "./theme-dark": "./theme-dark.css",
-    "./components.css": "./components.css",
-    "./components": "./components.css"
+    "./reset-normalize.css": "./reset-normalize.css",
+    "./shadow-base.css": "./shadow-base.css",
+    "./shared.module.css": "./shared.module.css",
+    "./components/button.module.css": "./components/button.module.css",
+    "./components/links.module.css": "./components/links.module.css",
+    "./components/dialog.module.css": "./components/dialog.module.css",
+    "./components/details.module.css": "./components/details.module.css",
+    "./components/menu.module.css": "./components/menu.module.css",
+    "./components/nav.module.css": "./components/nav.module.css",
+    "./components/kbd.module.css": "./components/kbd.module.css",
+    "./components/badge.module.css": "./components/badge.module.css",
+    "./components/tag.module.css": "./components/tag.module.css",
+    "./components/table.module.css": "./components/table.module.css",
+    "./components/forms.module.css": "./components/forms.module.css",
+    "./components/combobox.module.css": "./components/combobox.module.css",
+    "./components/datepicker.module.css": "./components/datepicker.module.css",
+    "./components/timepicker.module.css": "./components/timepicker.module.css",
+    "./components/tooltip.module.css": "./components/tooltip.module.css"
   },
   "bugs": {
     "url": "https://github.com/kshutkin/neon-kit/issues"
@@ -38,10 +47,6 @@
   "homepage": "https://github.com/kshutkin/neon-kit",
   "scripts": {
     "prepack": "npx pkgprn",
-    "test": "vitest run --config ../vitest.config.js"
-  },
-  "devDependencies": {
-    "heroicons": "^2.2.0",
-    "prettier-plugin-tailwindcss": "^0.6.14"
+    "test": "pnpm --filter @neon-kit/theme-vanilla build && vitest run --config ../vitest.config.js"
   }
 }

@@ -1,0 +1,2386 @@
+{
+  "packages": [
+    "theme",
+    "theme-vanilla"
+  ],
+  "consumer": "isolated npm tarballs after pkgprn prepack",
+  "checks": [
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "light",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "dark",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "light",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "dark",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "light",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "dark",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "light",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.98 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.93 0.005 200)",
+            "color": "oklch(0.25 0.02 200)",
+            "borderColor": "oklch(0.77 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(1 0.01 245 / 0.6) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.2) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.38 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.78 0.005 200)",
+            "color": "oklch(0.52 0.02 200)",
+            "borderColor": "oklch(0.83 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.1) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.25 0.02 200 / 0.2) 0px 1px 0px"
+          }
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "dark",
+      "entries": [
+        {
+          "entry": "vanilla",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "selected",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "reversed",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "modules",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        },
+        {
+          "entry": "native",
+          "idle": {
+            "backgroundColor": "oklch(0.15 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "hover": {
+            "backgroundColor": "oklch(0.2 0.005 200)",
+            "color": "oklch(0.92 0.01 200)",
+            "borderColor": "oklch(0.38 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "oklch(0.92 0.01 204.5 / 0.3) 0px 1px 0px 0px inset, oklch(0.25 0.02 204.5 / 0.4) 0px 1px 2px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          },
+          "focus": {
+            "color": "oklch(0.7 0.2 245)",
+            "style": "solid"
+          },
+          "disabled": {
+            "backgroundColor": "oklch(0.35 0.005 200)",
+            "color": "oklch(0.7 0.01 200)",
+            "borderColor": "oklch(0.32 0.02 200)",
+            "borderWidth": "1px",
+            "borderRadius": "4px",
+            "padding": "8px 16px",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.25 0.02 204.5 / 0.3) 0px 1px 1px 0px",
+            "textShadow": "oklch(0.15 0.02 200 / 0.6) 0px 1px 0px"
+          }
+        }
+      ]
+    }
+  ],
+  "palettes": {
+    "chromium-light": {
+      "--color-accent": {
+        "before": "oklch(0.66 0.2 227)",
+        "after": "oklch(0.66 0.2 227)"
+      },
+      "--color-accent-active": {
+        "before": "oklch(0.5 0.156 227)",
+        "after": "oklch(0.5 0.156 227)"
+      },
+      "--color-accent-hover": {
+        "before": "oklch(0.68 0.17 227)",
+        "after": "oklch(0.68 0.17 227)"
+      },
+      "--color-border": {
+        "before": "oklch(0.77 0.02 200)",
+        "after": "oklch(0.77 0.02 200)"
+      },
+      "--color-border-disabled": {
+        "before": "oklch(0.83 0.02 200)",
+        "after": "oklch(0.83 0.02 200)"
+      },
+      "--color-border-focus": {
+        "before": "oklch(0.38 0.2 245)",
+        "after": "oklch(0.38 0.2 245)"
+      },
+      "--color-border-primary": {
+        "before": "oklch(0.345 0.182 245)",
+        "after": "oklch(0.345 0.182 245)"
+      },
+      "--color-border-secondary": {
+        "before": "oklch(0.9 0.02 200 / 0.6)",
+        "after": "oklch(0.9 0.02 200 / 0.6)"
+      },
+      "--color-error": {
+        "before": "oklch(0.68 0.246 15)",
+        "after": "oklch(0.68 0.246 15)"
+      },
+      "--color-error-soft": {
+        "before": "oklch(0.68 0.246 15 / 0.25)",
+        "after": "oklch(0.68 0.246 15 / 0.25)"
+      },
+      "--color-info": {
+        "before": "oklch(0.68 0.123 202)",
+        "after": "oklch(0.68 0.123 202)"
+      },
+      "--color-info-soft": {
+        "before": "oklch(0.68 0.123 202 / 0.3)",
+        "after": "oklch(0.68 0.123 202 / 0.3)"
+      },
+      "--color-ink-inverse": {
+        "before": "oklch(1 0.02 200)",
+        "after": "oklch(1 0.02 200)"
+      },
+      "--color-ink-muted": {
+        "before": "oklch(0.62 0.02 200)",
+        "after": "oklch(0.62 0.02 200)"
+      },
+      "--color-ink-primary": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-ink-secondary": {
+        "before": "oklch(0.52 0.02 200)",
+        "after": "oklch(0.52 0.02 200)"
+      },
+      "--color-neon-blue": {
+        "before": "oklch(0.88 0.15 202)",
+        "after": "oklch(0.88 0.15 202)"
+      },
+      "--color-neon-green": {
+        "before": "oklch(0.88 0.25 148)",
+        "after": "oklch(0.88 0.25 148)"
+      },
+      "--color-neon-orange": {
+        "before": "oklch(0.7 0.2 43)",
+        "after": "oklch(0.7 0.2 43)"
+      },
+      "--color-neon-pink": {
+        "before": "oklch(0.7 0.32 328)",
+        "after": "oklch(0.7 0.32 328)"
+      },
+      "--color-neon-red": {
+        "before": "oklch(0.7 0.3 15)",
+        "after": "oklch(0.7 0.3 15)"
+      },
+      "--color-neon-white": {
+        "before": "oklch(1 0 0)",
+        "after": "oklch(1 0 0)"
+      },
+      "--color-neon-yellow": {
+        "before": "oklch(0.97 0.21 110)",
+        "after": "oklch(0.97 0.21 110)"
+      },
+      "--color-neutral": {
+        "before": "oklch(0.9 0.02 200)",
+        "after": "oklch(0.9 0.02 200)"
+      },
+      "--color-primary": {
+        "before": "oklch(0.38 0.2 245)",
+        "after": "oklch(0.38 0.2 245)"
+      },
+      "--color-primary-active": {
+        "before": "oklch(0.33 0.174 245)",
+        "after": "oklch(0.33 0.174 245)"
+      },
+      "--color-primary-disabled": {
+        "before": "oklch(0.53 0.114 245)",
+        "after": "oklch(0.53 0.114 245)"
+      },
+      "--color-primary-hover": {
+        "before": "oklch(0.44 0.17 245)",
+        "after": "oklch(0.44 0.17 245)"
+      },
+      "--color-primary-soft-pressed": {
+        "before": "oklch(0.28 0.2 245 / 0.6)",
+        "after": "oklch(0.28 0.2 245 / 0.6)"
+      },
+      "--color-shadow-base": {
+        "before": "oklch(0.25 0.02 204.5)",
+        "after": "oklch(0.25 0.02 204.5)"
+      },
+      "--color-shadow-surface-base": {
+        "before": "oklch(1 0.01 245)",
+        "after": "oklch(1 0.01 245)"
+      },
+      "--color-success": {
+        "before": "oklch(0.68 0.205 148)",
+        "after": "oklch(0.68 0.205 148)"
+      },
+      "--color-success-soft": {
+        "before": "oklch(0.68 0.205 148 / 0.25)",
+        "after": "oklch(0.68 0.205 148 / 0.25)"
+      },
+      "--color-surface": {
+        "before": "oklch(0.98 0.005 200)",
+        "after": "oklch(0.98 0.005 200)"
+      },
+      "--color-surface-active": {
+        "before": "oklch(0.88 0.005 200)",
+        "after": "oklch(0.88 0.005 200)"
+      },
+      "--color-surface-disabled": {
+        "before": "oklch(0.78 0.005 200)",
+        "after": "oklch(0.78 0.005 200)"
+      },
+      "--color-surface-hover": {
+        "before": "oklch(0.93 0.005 200)",
+        "after": "oklch(0.93 0.005 200)"
+      },
+      "--color-surface-secondary": {
+        "before": "oklch(0.95 0.005 200)",
+        "after": "oklch(0.95 0.005 200)"
+      },
+      "--color-warning": {
+        "before": "oklch(0.68 0.164 43)",
+        "after": "oklch(0.68 0.164 43)"
+      },
+      "--color-warning-soft": {
+        "before": "oklch(0.68 0.164 43 / 0.3)",
+        "after": "oklch(0.68 0.164 43 / 0.3)"
+      }
+    },
+    "chromium-dark": {
+      "--color-accent": {
+        "before": "oklch(0.48 0.182 227)",
+        "after": "oklch(0.48 0.182 227)"
+      },
+      "--color-accent-active": {
+        "before": "oklch(0.33 0.1456 227)",
+        "after": "oklch(0.33 0.1456 227)"
+      },
+      "--color-accent-hover": {
+        "before": "oklch(0.48 0.1729 227)",
+        "after": "oklch(0.48 0.1729 227)"
+      },
+      "--color-border": {
+        "before": "oklch(0.38 0.02 200)",
+        "after": "oklch(0.38 0.02 200)"
+      },
+      "--color-border-disabled": {
+        "before": "oklch(0.32 0.02 200)",
+        "after": "oklch(0.32 0.02 200)"
+      },
+      "--color-border-focus": {
+        "before": "oklch(0.7 0.2 245)",
+        "after": "oklch(0.7 0.2 245)"
+      },
+      "--color-border-primary": {
+        "before": "oklch(0.52 0.162 245)",
+        "after": "oklch(0.52 0.162 245)"
+      },
+      "--color-border-secondary": {
+        "before": "oklch(0.25 0.02 200 / 0.6)",
+        "after": "oklch(0.25 0.02 200 / 0.6)"
+      },
+      "--color-error": {
+        "before": "oklch(0.78 0.246 15)",
+        "after": "oklch(0.78 0.246 15)"
+      },
+      "--color-error-soft": {
+        "before": "oklch(0.78 0.246 15 / 0.22)",
+        "after": "oklch(0.78 0.246 15 / 0.22)"
+      },
+      "--color-info": {
+        "before": "oklch(0.78 0.123 202)",
+        "after": "oklch(0.78 0.123 202)"
+      },
+      "--color-info-soft": {
+        "before": "oklch(0.78 0.123 202 / 0.22)",
+        "after": "oklch(0.78 0.123 202 / 0.22)"
+      },
+      "--color-ink-inverse": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-ink-muted": {
+        "before": "oklch(0.5 0.01 200)",
+        "after": "oklch(0.5 0.01 200)"
+      },
+      "--color-ink-primary": {
+        "before": "oklch(0.92 0.01 200)",
+        "after": "oklch(0.92 0.01 200)"
+      },
+      "--color-ink-secondary": {
+        "before": "oklch(0.7 0.01 200)",
+        "after": "oklch(0.7 0.01 200)"
+      },
+      "--color-neon-blue": {
+        "before": "oklch(0.88 0.15 202)",
+        "after": "oklch(0.88 0.15 202)"
+      },
+      "--color-neon-green": {
+        "before": "oklch(0.88 0.25 148)",
+        "after": "oklch(0.88 0.25 148)"
+      },
+      "--color-neon-orange": {
+        "before": "oklch(0.7 0.2 43)",
+        "after": "oklch(0.7 0.2 43)"
+      },
+      "--color-neon-pink": {
+        "before": "oklch(0.7 0.32 328)",
+        "after": "oklch(0.7 0.32 328)"
+      },
+      "--color-neon-red": {
+        "before": "oklch(0.7 0.3 15)",
+        "after": "oklch(0.7 0.3 15)"
+      },
+      "--color-neon-white": {
+        "before": "oklch(1 0 0)",
+        "after": "oklch(1 0 0)"
+      },
+      "--color-neon-yellow": {
+        "before": "oklch(0.97 0.21 110)",
+        "after": "oklch(0.97 0.21 110)"
+      },
+      "--color-neutral": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-primary": {
+        "before": "oklch(0.48 0.2 245)",
+        "after": "oklch(0.48 0.2 245)"
+      },
+      "--color-primary-active": {
+        "before": "oklch(0.37 0.16 245)",
+        "after": "oklch(0.37 0.16 245)"
+      },
+      "--color-primary-disabled": {
+        "before": "oklch(0.21 0.096 245)",
+        "after": "oklch(0.21 0.096 245)"
+      },
+      "--color-primary-hover": {
+        "before": "oklch(0.51 0.18 245)",
+        "after": "oklch(0.51 0.18 245)"
+      },
+      "--color-primary-soft-pressed": {
+        "before": "oklch(0.38 0.2 245 / 0.6)",
+        "after": "oklch(0.38 0.2 245 / 0.6)"
+      },
+      "--color-shadow-base": {
+        "before": "oklch(0.25 0.02 204.5)",
+        "after": "oklch(0.25 0.02 204.5)"
+      },
+      "--color-shadow-surface-base": {
+        "before": "oklch(0.92 0.01 204.5)",
+        "after": "oklch(0.92 0.01 204.5)"
+      },
+      "--color-success": {
+        "before": "oklch(0.78 0.205 148)",
+        "after": "oklch(0.78 0.205 148)"
+      },
+      "--color-success-soft": {
+        "before": "oklch(0.78 0.205 148 / 0.2)",
+        "after": "oklch(0.78 0.205 148 / 0.2)"
+      },
+      "--color-surface": {
+        "before": "oklch(0.15 0.005 200)",
+        "after": "oklch(0.15 0.005 200)"
+      },
+      "--color-surface-active": {
+        "before": "oklch(0.25 0.005 200)",
+        "after": "oklch(0.25 0.005 200)"
+      },
+      "--color-surface-disabled": {
+        "before": "oklch(0.35 0.005 200)",
+        "after": "oklch(0.35 0.005 200)"
+      },
+      "--color-surface-hover": {
+        "before": "oklch(0.2 0.005 200)",
+        "after": "oklch(0.2 0.005 200)"
+      },
+      "--color-surface-secondary": {
+        "before": "oklch(0.18 0.005 200)",
+        "after": "oklch(0.18 0.005 200)"
+      },
+      "--color-warning": {
+        "before": "oklch(0.78 0.164 43)",
+        "after": "oklch(0.78 0.164 43)"
+      },
+      "--color-warning-soft": {
+        "before": "oklch(0.78 0.164 43 / 0.22)",
+        "after": "oklch(0.78 0.164 43 / 0.22)"
+      }
+    },
+    "firefox-light": {
+      "--color-accent": {
+        "before": "oklch(0.66 0.2 227)",
+        "after": "oklch(0.66 0.2 227)"
+      },
+      "--color-accent-active": {
+        "before": "oklch(0.5 0.156 227)",
+        "after": "oklch(0.5 0.156 227)"
+      },
+      "--color-accent-hover": {
+        "before": "oklch(0.68 0.17 227)",
+        "after": "oklch(0.68 0.17 227)"
+      },
+      "--color-border": {
+        "before": "oklch(0.77 0.02 200)",
+        "after": "oklch(0.77 0.02 200)"
+      },
+      "--color-border-disabled": {
+        "before": "oklch(0.83 0.02 200)",
+        "after": "oklch(0.83 0.02 200)"
+      },
+      "--color-border-focus": {
+        "before": "oklch(0.38 0.2 245)",
+        "after": "oklch(0.38 0.2 245)"
+      },
+      "--color-border-primary": {
+        "before": "oklch(0.345 0.182 245)",
+        "after": "oklch(0.345 0.182 245)"
+      },
+      "--color-border-secondary": {
+        "before": "oklch(0.9 0.02 200 / 0.6)",
+        "after": "oklch(0.9 0.02 200 / 0.6)"
+      },
+      "--color-error": {
+        "before": "oklch(0.68 0.246 15)",
+        "after": "oklch(0.68 0.246 15)"
+      },
+      "--color-error-soft": {
+        "before": "oklch(0.68 0.246 15 / 0.25)",
+        "after": "oklch(0.68 0.246 15 / 0.25)"
+      },
+      "--color-info": {
+        "before": "oklch(0.68 0.123 202)",
+        "after": "oklch(0.68 0.123 202)"
+      },
+      "--color-info-soft": {
+        "before": "oklch(0.68 0.123 202 / 0.3)",
+        "after": "oklch(0.68 0.123 202 / 0.3)"
+      },
+      "--color-ink-inverse": {
+        "before": "oklch(1 0.02 200)",
+        "after": "oklch(1 0.02 200)"
+      },
+      "--color-ink-muted": {
+        "before": "oklch(0.62 0.02 200)",
+        "after": "oklch(0.62 0.02 200)"
+      },
+      "--color-ink-primary": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-ink-secondary": {
+        "before": "oklch(0.52 0.02 200)",
+        "after": "oklch(0.52 0.02 200)"
+      },
+      "--color-neon-blue": {
+        "before": "oklch(0.88 0.15 202)",
+        "after": "oklch(0.88 0.15 202)"
+      },
+      "--color-neon-green": {
+        "before": "oklch(0.88 0.25 148)",
+        "after": "oklch(0.88 0.25 148)"
+      },
+      "--color-neon-orange": {
+        "before": "oklch(0.7 0.2 43)",
+        "after": "oklch(0.7 0.2 43)"
+      },
+      "--color-neon-pink": {
+        "before": "oklch(0.7 0.32 328)",
+        "after": "oklch(0.7 0.32 328)"
+      },
+      "--color-neon-red": {
+        "before": "oklch(0.7 0.3 15)",
+        "after": "oklch(0.7 0.3 15)"
+      },
+      "--color-neon-white": {
+        "before": "oklch(1 0 0)",
+        "after": "oklch(1 0 0)"
+      },
+      "--color-neon-yellow": {
+        "before": "oklch(0.97 0.21 110)",
+        "after": "oklch(0.97 0.21 110)"
+      },
+      "--color-neutral": {
+        "before": "oklch(0.9 0.02 200)",
+        "after": "oklch(0.9 0.02 200)"
+      },
+      "--color-primary": {
+        "before": "oklch(0.38 0.2 245)",
+        "after": "oklch(0.38 0.2 245)"
+      },
+      "--color-primary-active": {
+        "before": "oklch(0.33 0.174 245)",
+        "after": "oklch(0.33 0.174 245)"
+      },
+      "--color-primary-disabled": {
+        "before": "oklch(0.53 0.114 245)",
+        "after": "oklch(0.53 0.114 245)"
+      },
+      "--color-primary-hover": {
+        "before": "oklch(0.44 0.17 245)",
+        "after": "oklch(0.44 0.17 245)"
+      },
+      "--color-primary-soft-pressed": {
+        "before": "oklch(0.28 0.2 245 / 0.6)",
+        "after": "oklch(0.28 0.2 245 / 0.6)"
+      },
+      "--color-shadow-base": {
+        "before": "oklch(0.25 0.02 204.5)",
+        "after": "oklch(0.25 0.02 204.5)"
+      },
+      "--color-shadow-surface-base": {
+        "before": "oklch(1 0.01 245)",
+        "after": "oklch(1 0.01 245)"
+      },
+      "--color-success": {
+        "before": "oklch(0.68 0.205 148)",
+        "after": "oklch(0.68 0.205 148)"
+      },
+      "--color-success-soft": {
+        "before": "oklch(0.68 0.205 148 / 0.25)",
+        "after": "oklch(0.68 0.205 148 / 0.25)"
+      },
+      "--color-surface": {
+        "before": "oklch(0.98 0.005 200)",
+        "after": "oklch(0.98 0.005 200)"
+      },
+      "--color-surface-active": {
+        "before": "oklch(0.88 0.005 200)",
+        "after": "oklch(0.88 0.005 200)"
+      },
+      "--color-surface-disabled": {
+        "before": "oklch(0.78 0.005 200)",
+        "after": "oklch(0.78 0.005 200)"
+      },
+      "--color-surface-hover": {
+        "before": "oklch(0.93 0.005 200)",
+        "after": "oklch(0.93 0.005 200)"
+      },
+      "--color-surface-secondary": {
+        "before": "oklch(0.95 0.005 200)",
+        "after": "oklch(0.95 0.005 200)"
+      },
+      "--color-warning": {
+        "before": "oklch(0.68 0.164 43)",
+        "after": "oklch(0.68 0.164 43)"
+      },
+      "--color-warning-soft": {
+        "before": "oklch(0.68 0.164 43 / 0.3)",
+        "after": "oklch(0.68 0.164 43 / 0.3)"
+      }
+    },
+    "firefox-dark": {
+      "--color-accent": {
+        "before": "oklch(0.48 0.182 227)",
+        "after": "oklch(0.48 0.182 227)"
+      },
+      "--color-accent-active": {
+        "before": "oklch(0.33 0.1456 227)",
+        "after": "oklch(0.33 0.1456 227)"
+      },
+      "--color-accent-hover": {
+        "before": "oklch(0.48 0.1729 227)",
+        "after": "oklch(0.48 0.1729 227)"
+      },
+      "--color-border": {
+        "before": "oklch(0.38 0.02 200)",
+        "after": "oklch(0.38 0.02 200)"
+      },
+      "--color-border-disabled": {
+        "before": "oklch(0.32 0.02 200)",
+        "after": "oklch(0.32 0.02 200)"
+      },
+      "--color-border-focus": {
+        "before": "oklch(0.7 0.2 245)",
+        "after": "oklch(0.7 0.2 245)"
+      },
+      "--color-border-primary": {
+        "before": "oklch(0.52 0.162 245)",
+        "after": "oklch(0.52 0.162 245)"
+      },
+      "--color-border-secondary": {
+        "before": "oklch(0.25 0.02 200 / 0.6)",
+        "after": "oklch(0.25 0.02 200 / 0.6)"
+      },
+      "--color-error": {
+        "before": "oklch(0.78 0.246 15)",
+        "after": "oklch(0.78 0.246 15)"
+      },
+      "--color-error-soft": {
+        "before": "oklch(0.78 0.246 15 / 0.22)",
+        "after": "oklch(0.78 0.246 15 / 0.22)"
+      },
+      "--color-info": {
+        "before": "oklch(0.78 0.123 202)",
+        "after": "oklch(0.78 0.123 202)"
+      },
+      "--color-info-soft": {
+        "before": "oklch(0.78 0.123 202 / 0.22)",
+        "after": "oklch(0.78 0.123 202 / 0.22)"
+      },
+      "--color-ink-inverse": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-ink-muted": {
+        "before": "oklch(0.5 0.01 200)",
+        "after": "oklch(0.5 0.01 200)"
+      },
+      "--color-ink-primary": {
+        "before": "oklch(0.92 0.01 200)",
+        "after": "oklch(0.92 0.01 200)"
+      },
+      "--color-ink-secondary": {
+        "before": "oklch(0.7 0.01 200)",
+        "after": "oklch(0.7 0.01 200)"
+      },
+      "--color-neon-blue": {
+        "before": "oklch(0.88 0.15 202)",
+        "after": "oklch(0.88 0.15 202)"
+      },
+      "--color-neon-green": {
+        "before": "oklch(0.88 0.25 148)",
+        "after": "oklch(0.88 0.25 148)"
+      },
+      "--color-neon-orange": {
+        "before": "oklch(0.7 0.2 43)",
+        "after": "oklch(0.7 0.2 43)"
+      },
+      "--color-neon-pink": {
+        "before": "oklch(0.7 0.32 328)",
+        "after": "oklch(0.7 0.32 328)"
+      },
+      "--color-neon-red": {
+        "before": "oklch(0.7 0.3 15)",
+        "after": "oklch(0.7 0.3 15)"
+      },
+      "--color-neon-white": {
+        "before": "oklch(1 0 0)",
+        "after": "oklch(1 0 0)"
+      },
+      "--color-neon-yellow": {
+        "before": "oklch(0.97 0.21 110)",
+        "after": "oklch(0.97 0.21 110)"
+      },
+      "--color-neutral": {
+        "before": "oklch(0.25 0.02 200)",
+        "after": "oklch(0.25 0.02 200)"
+      },
+      "--color-primary": {
+        "before": "oklch(0.48 0.2 245)",
+        "after": "oklch(0.48 0.2 245)"
+      },
+      "--color-primary-active": {
+        "before": "oklch(0.37 0.16 245)",
+        "after": "oklch(0.37 0.16 245)"
+      },
+      "--color-primary-disabled": {
+        "before": "oklch(0.21 0.096 245)",
+        "after": "oklch(0.21 0.096 245)"
+      },
+      "--color-primary-hover": {
+        "before": "oklch(0.51 0.18 245)",
+        "after": "oklch(0.51 0.18 245)"
+      },
+      "--color-primary-soft-pressed": {
+        "before": "oklch(0.38 0.2 245 / 0.6)",
+        "after": "oklch(0.38 0.2 245 / 0.6)"
+      },
+      "--color-shadow-base": {
+        "before": "oklch(0.25 0.02 204.5)",
+        "after": "oklch(0.25 0.02 204.5)"
+      },
+      "--color-shadow-surface-base": {
+        "before": "oklch(0.92 0.01 204.5)",
+        "after": "oklch(0.92 0.01 204.5)"
+      },
+      "--color-success": {
+        "before": "oklch(0.78 0.205 148)",
+        "after": "oklch(0.78 0.205 148)"
+      },
+      "--color-success-soft": {
+        "before": "oklch(0.78 0.205 148 / 0.2)",
+        "after": "oklch(0.78 0.205 148 / 0.2)"
+      },
+      "--color-surface": {
+        "before": "oklch(0.15 0.005 200)",
+        "after": "oklch(0.15 0.005 200)"
+      },
+      "--color-surface-active": {
+        "before": "oklch(0.25 0.005 200)",
+        "after": "oklch(0.25 0.005 200)"
+      },
+      "--color-surface-disabled": {
+        "before": "oklch(0.35 0.005 200)",
+        "after": "oklch(0.35 0.005 200)"
+      },
+      "--color-surface-hover": {
+        "before": "oklch(0.2 0.005 200)",
+        "after": "oklch(0.2 0.005 200)"
+      },
+      "--color-surface-secondary": {
+        "before": "oklch(0.18 0.005 200)",
+        "after": "oklch(0.18 0.005 200)"
+      },
+      "--color-warning": {
+        "before": "oklch(0.78 0.164 43)",
+        "after": "oklch(0.78 0.164 43)"
+      },
+      "--color-warning-soft": {
+        "before": "oklch(0.78 0.164 43 / 0.22)",
+        "after": "oklch(0.78 0.164 43 / 0.22)"
+      }
+    }
+  },
+  "switcherChecks": [
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "light",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "dark",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "light",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "dark",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "light",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "dark",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "light",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "dark",
+      "automatic": true,
+      "forcedAndPersisted": true,
+      "liveOsChange": true,
+      "zeroValuesAndReset": true
+    }
+  ],
+  "customizationChecks": [
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "light",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.38 0.2 245)",
+      "expectedPrimary": "oklch(0.38 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "development",
+      "mode": "dark",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.48 0.2 245)",
+      "expectedPrimary": "oklch(0.48 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "light",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.38 0.2 245)",
+      "expectedPrimary": "oklch(0.38 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "chromium",
+      "phase": "production",
+      "mode": "dark",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.48 0.2 245)",
+      "expectedPrimary": "oklch(0.48 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "light",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.38 0.2 245)",
+      "expectedPrimary": "oklch(0.38 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "development",
+      "mode": "dark",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.48 0.2 245)",
+      "expectedPrimary": "oklch(0.48 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "light",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.38 0.2 245)",
+      "expectedPrimary": "oklch(0.38 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    },
+    {
+      "browser": "firefox",
+      "phase": "production",
+      "mode": "dark",
+      "paddingInline": "27px",
+      "paddingBlock": "11px",
+      "tooltipWidth": "213px",
+      "interestDelay": "123ms 456ms",
+      "primary": "oklch(0.48 0.2 245)",
+      "expectedPrimary": "oklch(0.48 0.2 245)",
+      "inheritedPublicSettings": true,
+      "rootPrimaryOverride": true
+    }
+  ],
+  "browsers": [
+    {
+      "engine": "chromium",
+      "version": "147.0.7727.15"
+    },
+    {
+      "engine": "firefox",
+      "version": "148.0.2"
+    }
+  ],
+  "vite": "8.0.10"
+}

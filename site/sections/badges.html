@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Badges</h1>
-    <p class="mb-8 text-ink-secondary">
+    <h1 class="docs-mb-6">Badges</h1>
+    <p class="docs-mb-8 docs-text-ink-secondary">
         The <code>.badge</code> component renders a compact pill label for
         counts, statuses, or categories. It shares the visual family of
         <code>.kbd</code> (rounded, bordered, top-edge highlight) but is
@@ -8,16 +8,16 @@
         modifiers built from the theme's state tokens.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Variants</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Variants</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Default is the neutral surface; <code>.-primary</code> mirrors
             the filled <code>.btn.cta</code> look. The four state
             modifiers — <code>.-success</code>, <code>.-warning</code>,
             <code>.-error</code>, <code>.-info</code> — use translucent
             tints from the matching theme tokens with full-strength borders.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-wrap docs-items-center docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <span class="badge">Default</span>
             <span class="badge -primary">Primary</span>
             <span class="badge -success">Success</span>
@@ -27,14 +27,14 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Counts</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Counts</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Single-character contents render as a circle thanks to the
             shared <code>min-inline-size = block-size</code> rule;
             multi-digit counts grow inline.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-wrap docs-items-center docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <span class="badge">1</span>
             <span class="badge">7</span>
             <span class="badge">42</span>
@@ -44,13 +44,13 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Status with Dot</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Status with Dot</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Pair the optional <code>.badge__dot</code> pip with a state
             modifier for a status indicator.
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-wrap docs-items-center docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <span class="badge -success"><span class="badge__dot"></span>Online</span>
             <span class="badge -warning"><span class="badge__dot"></span>Pending</span>
             <span class="badge -error"><span class="badge__dot"></span>Offline</span>
@@ -58,45 +58,45 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Inline With Prose</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Inline With Prose</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Badges sit on the surrounding text baseline and inherit
             font-size, so they scale naturally inside paragraphs and
             headings — every dimension is in <code>em</code>.
         </p>
-        <div class="space-y-3 rounded-lg border border-border bg-surface-secondary p-4">
-            <p class="text-sm">
+        <div class="docs-space-y-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <p class="docs-text-sm">
                 Smaller text — Inbox <span class="badge -primary">12</span> waiting messages.
             </p>
             <p>
                 Body text — Build status <span class="badge -success">passing</span>
                 and PR <span class="badge -info">draft</span>.
             </p>
-            <p class="text-lg">
+            <p class="docs-text-lg">
                 Larger text — Subscription <span class="badge -warning">expiring soon</span>.
             </p>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">On Headings &amp; Buttons</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">On Headings &amp; Buttons</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Em-sized badges scale with their host element automatically.
         </p>
-        <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface-secondary p-4">
-            <h3 class="text-2xl font-semibold">
+        <div class="docs-flex docs-flex-col docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <h3 class="docs-text-2xl docs-font-semibold">
                 Settings <span class="badge -info">Beta</span>
             </h3>
-            <h4 class="text-lg font-medium">
+            <h4 class="docs-text-lg docs-font-medium">
                 Notifications <span class="badge -error">3</span>
             </h4>
-            <div class="flex items-center gap-3">
-                <button class="btn inline-flex items-center gap-2">
+            <div class="docs-flex docs-items-center docs-gap-3">
+                <button class="btn docs-inline-flex docs-items-center docs-gap-2">
                     Inbox
                     <span class="badge -primary">12</span>
                 </button>
-                <button class="btn quiet inline-flex items-center gap-2">
+                <button class="btn quiet docs-inline-flex docs-items-center docs-gap-2">
                     Tasks
                     <span class="badge">5</span>
                 </button>

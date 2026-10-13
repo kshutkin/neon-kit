@@ -1,0 +1,261 @@
+@import '../tokens.css';
+
+/* Navigation component — element-agnostic interactive rows for sidebar
+   navigation, horizontal tabs, and radio-input segmented controls.
+
+   Selectors target `.nav__item` (not specific elements), so consumers may
+   render items as <a>, <button>, <label>, <li>, or <div>. Use the most
+   semantic option for the use-case:
+     - Page navigation                → <a href>      (+ aria-current="page")
+     - In-page tabs                   → <button role="tab">  (+ aria-selected)
+     - Form-bound segmented control   → <input type="radio"> + <label>
+
+   Active state is opt-in via the `.-active` modifier class. ARIA hooks
+   (`aria-current`, `aria-selected`) are author concerns and are not styled
+   here so consumers can choose semantics independently of visuals.
+
+   Three layout variants:
+     .nav.-vertical   sidebar (flat, full-width rows)
+     .nav.-tabs       horizontal tabs (elevated panel-style bar)
+     .nav.-segmented  segmented control (inset track, raised checked thumb)
+
+   The radio-segmented form uses the standard markup
+       <input type="radio" class="sr-only" id="x" name="seg">
+       <label class="nav__item" for="x">…</label>
+   The hidden input remains focusable; its :focus-visible ring is mirrored
+   onto the adjacent label via the sibling combinator below.
+*/
+
+.nav {
+    display: flex;
+    gap: calc(var(--neon-spacing, 0.25rem) * 1);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    /* Default to horizontal; -vertical overrides. */
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Element-agnostic interactive row. Picks up hover / :focus-visible /
+   active / disabled background swaps from the shared utility. Layout
+   (padding, radius, alignment) is set here so the same row reads well
+   inside any of the three nav variants. */
+.nav__item {
+    composes: interactive-row from '../shared.module.css';
+
+    /* Reset native control styles so the same class works on
+       <button>, <a>, <label>, and <input>-paired labels. */
+    appearance: none;
+    border: 0;
+    font: inherit;
+    text-decoration: none;
+    text-align: start;
+    user-select: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--neon-spacing, 0.25rem) * 2);
+
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 3);
+    border-radius: calc(var(--neon-spacing, 0.25rem) * 1.5);
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+/* Active state — opt-in modifier. ARIA hooks like aria-current / aria-selected
+   are intentionally NOT styled; pair them with `.-active` when relevant. */
+.nav__item.-active {
+    background-color: var(--neon-color-primary, var(--_color-primary));
+    font-weight: var(--neon-font-weight-semibold, 600);
+    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    /* Beat the utility's hover/focus-visible bg-swap so the active row
+       stays primary-colored when hovered. */
+    &:hover,
+    &:focus-visible {
+        background-color: var(--neon-color-primary, var(--_color-primary));
+    }
+}
+
+/* ───────────────────────── Variant: vertical / sidebar ──────────────────── */
+
+.nav.-vertical {
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(var(--neon-spacing, 0.25rem) * 0.5);
+}
+
+.nav.-vertical .nav__item {
+    /* Full-width, left-aligned rows. */
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+/* ───────────────────────── Variant: horizontal tabs ─────────────────────── */
+
+/* The tab bar sits on a recessed track with a bottom border. The active
+   tab raises out of the track using the same chrome as `.panel` /
+   `.btn` (full `shadow-drop` + `inset-shadow-highlight`) so it has a
+   strong lift; a 1px band painted under its bottom edge masks the
+   track's border so the tab and the content panel below read as a
+   single continuous raised surface. */
+.nav.-tabs {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+
+    gap: calc(var(--neon-spacing, 0.25rem) * 1);
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5) 0;
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 2);
+    /* Pull the bar down 1px so .-active items can sit flush on the
+       neighboring panel's top border. */
+    margin-block-end: -1px;
+    align-items: stretch;
+}
+
+.nav.-tabs .nav__item {
+    /* Same padding/border on every tab → identical heights and baselines.
+       The transparent border reserves space so .-active swapping in a
+       solid border doesn't shift layout. */
+    border-radius: calc(var(--neon-spacing, 0.25rem) * 1.5)
+        calc(var(--neon-spacing, 0.25rem) * 1.5) 0 0;
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 3.5);
+    border: 1px solid transparent;
+    border-bottom: 0;
+    position: relative;
+}
+
+.nav.-tabs .nav__item.-active {
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(--neon-color-surface, var(--_color-surface));
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    --_shadow: var(--neon-shadow-drop, var(--_shadow-drop));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    text-shadow: none;
+    z-index: 1;
+    /* Clip the drop-shadow on the bottom edge so it doesn't cast a line
+       onto the panel below — the tab and panel should read as a single
+       continuous surface. The 1px overhang preserves the `::after`
+       masking band that bridges the shared border. Top/sides keep the
+       elevation cue. */
+    clip-path: inset(-8px -8px -1px -8px);
+
+    &:hover,
+    &:focus-visible {
+        background-color: var(--neon-color-surface, var(--_color-surface));
+    }
+
+    /* 1px band at the very bottom of the tab, painted in surface color, so
+       it sits on top of the track's `border-b` and the panel's top border
+       — making the tab and panel visually share a single surface. */
+    &::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        block-size: 1px;
+        background: var(--neon-color-surface, var(--_color-surface));
+    }
+}
+
+/* ───────────────────────── Variant: segmented control ───────────────────── */
+
+/* Recessed track with a raised "thumb" (the active or :checked item).
+   Designed to host either <button>s or <input type="radio"> + <label>
+   pairs. Use a tight gap so segments visually share the track. */
+.nav.-segmented {
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    --_inset-shadow: var(
+        --neon-inset-shadow-pressed,
+        var(--_inset-shadow-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    display: inline-flex;
+    gap: calc(var(--neon-spacing, 0.25rem) * 0.5);
+    padding: calc(var(--neon-spacing, 0.25rem) * 1);
+    border: 1px solid var(--neon-color-border, var(--_color-border));
+    border-radius: calc(var(--neon-spacing, 0.25rem) * 2);
+}
+
+.nav.-segmented .nav__item {
+    border-radius: calc(var(--neon-spacing, 0.25rem) * 1);
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 1);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 3);
+}
+
+/* Active / radio-checked thumb. The `:has()`-free form keeps support
+   broad: we target the label that immediately follows a checked radio. */
+.nav.-segmented .nav__item.-active,
+.nav.-segmented input[type='radio']:checked + .nav__item {
+    background-color: light-dark(
+        var(--neon-color-surface, var(--_color-surface)),
+        var(--neon-color-primary, var(--_color-primary))
+    );
+    font-weight: var(--neon-font-weight-semibold, 600);
+    color: light-dark(
+        var(--neon-color-ink-primary, var(--_color-ink-primary)),
+        var(--neon-color-ink-inverse, var(--_color-ink-inverse))
+    );
+    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    &:hover,
+    &:focus-visible {
+        background-color: light-dark(
+            var(--neon-color-surface, var(--_color-surface)),
+            var(--neon-color-primary, var(--_color-primary))
+        );
+    }
+}
+
+/* Mirror the hidden radio's :focus-visible state onto its visible label so
+   keyboard users see the focus indicator on the actual rendered control.
+   The radio itself uses the `.sr-only` utility to stay focusable but
+   visually hidden. */
+.nav.-segmented input[type='radio']:focus-visible + .nav__item {
+    background-color: var(
+        --neon-color-surface-hover,
+        var(--_color-surface-hover)
+    );
+}
+
+.nav.-segmented input[type='radio']:focus-visible:checked + .nav__item {
+    background-color: light-dark(
+        var(--neon-color-surface, var(--_color-surface)),
+        var(--neon-color-primary, var(--_color-primary))
+    );
+    outline: 2px solid var(--neon-color-primary, var(--_color-primary));
+    outline-offset: 2px;
+}

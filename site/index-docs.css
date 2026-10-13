@@ -1,10 +1,7 @@
-/* Docs entry — Vite/Tailwind compiles this to serve the docs site.
-   The published package still ships raw CSS via ../index.css and friends. */
-@import "../theme/index.css";
-/* Dark theme is opt-in. Docs include it so `data-theme="dark"` flips the page.
-   Imported into the `theme` layer to match theme.css so cascade ordering is
-   identical to a built-in dark scope. */
-@import "../theme/theme-dark.css" layer(theme);
+@import '../theme-vanilla/dist/index.css';
+@import './layout.css';
+
+/* Plain CSS documentation entry. Layout helpers belong to the site. */
 
 /* Docs shell — document-level scrolling with a fixed sidebar.
 
@@ -18,27 +15,30 @@
    sidesteps the bug entirely. */
 
 :root {
-    --docs-topbar-height: 4rem;
+    --_docs-topbar-height: 4rem;
 }
 
 .docs-topbar {
-    @apply bg-surface border-b border-border;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(--neon-color-surface, var(--_color-surface));
 
     position: sticky;
     inset-block-start: 0;
     z-index: 3;
     display: flex;
     align-items: center;
-    min-block-size: var(--docs-topbar-height);
-    padding-block: --spacing(3);
+    min-block-size: var(--_docs-topbar-height);
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 3);
     padding-inline: 0;
 }
 
 .docs-wordmark {
-    @apply text-ink-primary;
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
     flex: 0 0 auto;
     inline-size: 18rem;
-    padding-inline: --spacing(4);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 4);
     font-weight: 700;
     font-size: 1.25rem;
     letter-spacing: -0.01em;
@@ -47,20 +47,20 @@
 
 .docs-topbar__nav {
     flex: 1 1 auto;
-    padding-inline-start: --spacing(8);
-    padding-inline-end: --spacing(4);
+    padding-inline-start: calc(var(--neon-spacing, 0.25rem) * 8);
+    padding-inline-end: calc(var(--neon-spacing, 0.25rem) * 4);
 }
 
 .docs-topbar theme-switcher {
     flex: 0 0 auto;
-    padding-inline-end: --spacing(8);
+    padding-inline-end: calc(var(--neon-spacing, 0.25rem) * 8);
 }
 
 .docs-aside {
     position: fixed;
-    inset-block-start: var(--docs-topbar-height);
+    inset-block-start: var(--_docs-topbar-height);
     inset-inline-start: 0;
-    block-size: calc(100vh - var(--docs-topbar-height));
+    block-size: calc(100vh - var(--_docs-topbar-height));
     overflow-y: auto;
     z-index: 1;
 }
@@ -68,11 +68,10 @@
 .docs-main {
     /* Match `.docs-aside`'s width (w-72 = 18rem). */
     margin-inline-start: 18rem;
-    min-block-size: calc(100vh - var(--docs-topbar-height));
+    min-block-size: calc(100vh - var(--_docs-topbar-height));
 }
 
 .docs-tabs {
-    padding-inline: --spacing(8);
-    padding-block-start: --spacing(4);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 8);
+    padding-block-start: calc(var(--neon-spacing, 0.25rem) * 4);
 }
-

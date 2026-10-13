@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import menuCss from '../components/menu.css?inline';
+import menuCss from '../../theme-vanilla/dist/components/overlays.css?inline';
 
 /**
  * @param {Element} element

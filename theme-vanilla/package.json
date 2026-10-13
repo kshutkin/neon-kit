@@ -1,0 +1,50 @@
+{
+    "name": "@neon-kit/theme-vanilla",
+    "version": "0.0.1",
+    "description": "Plain CSS for classical Neon Kit markup, built from the shared theme modules.",
+    "license": "MIT",
+    "author": "Konstantin Shutkin",
+    "type": "module",
+    "style": "./dist/index.css",
+    "exports": {
+        "./package.json": "./package.json",
+        "./index.css": "./dist/index.css",
+        "./theme.css": "./dist/theme.css",
+        "./reset-normalize.css": "./dist/reset-normalize.css",
+        "./components.css": "./dist/components.css",
+        "./effects.css": "./dist/effects.css",
+        "./components/button.css": "./dist/components/button.css",
+        "./components/forms.css": "./dist/components/forms.css",
+        "./components/overlays.css": "./dist/components/overlays.css",
+        "./components/navigation.css": "./dist/components/navigation.css",
+        "./components/labels.css": "./dist/components/labels.css",
+        "./components/pickers.css": "./dist/components/pickers.css",
+        "./components/table.css": "./dist/components/table.css",
+        "./components/links.css": "./dist/components/links.css"
+    },
+    "files": [
+        "dist"
+    ],
+    "sideEffects": [
+        "**/*.css"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kshutkin/neon-kit.git",
+        "directory": "theme-vanilla"
+    },
+    "bugs": "https://github.com/kshutkin/neon-kit/issues",
+    "homepage": "https://github.com/kshutkin/neon-kit/blob/main/theme-vanilla/README.md",
+    "scripts": {
+        "build": "node scripts/build.mjs",
+        "prepack": "pkgprn",
+        "test": "node --test tests/build.test.mjs"
+    },
+    "devDependencies": {
+        "@neon-kit/style-build": "workspace:*",
+        "@neon-kit/theme": "workspace:*",
+        "lightningcss": "^1.30.2",
+        "postcss": "^8.5.29",
+        "postcss-selector-parser": "^7.1.6"
+    }
+}

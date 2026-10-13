@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
+import { vanillaStyles } from './site/vanilla-styles.mjs';
 
 const ROOT = resolve(import.meta.dirname, 'site');
 const OUT = resolve(import.meta.dirname, 'dist-docs');
@@ -40,7 +40,7 @@ const LOCAL_ALIASES = [
 ];
 
 const ROUTES = {
-  about: { title: 'About', desc: 'Neon Kit is a Tailwind-based theme paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
+  about: { title: 'About', desc: 'Neon Kit is a CSS Modules theme with a plain CSS package, paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
   'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
   icons:            { title: 'Icons',           desc: 'The full set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules.' },
   'icon-web-component': { title: 'Icon Web Component', desc: '<neon-icon> - Light-DOM custom element for rendering @neon-kit/icons definitions as inline SVG.' },
@@ -283,15 +283,18 @@ Sitemap: ${SITE_ORIGIN}${BASE}sitemap.xml
 export default defineConfig({
   root: ROOT,
   base: BASE,
-  plugins: [tailwindcss(), prerenderPlugin()],
+  plugins: [
+    vanillaStyles(resolve(import.meta.dirname, 'theme'), resolve(import.meta.dirname, 'theme-vanilla/dist')),
+    prerenderPlugin(),
+  ],
   resolve: {
     alias: LOCAL_ALIASES,
   },
-  esbuild: {
-    jsx: 'automatic',
-    jsxImportSource: '@slimlib/jsx',
+  oxc: {
+    jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' },
   },
   optimizeDeps: {
+    entries: [resolve(ROOT, 'index.html')],
     exclude: LOCAL_MODULES,
   },
   server: {

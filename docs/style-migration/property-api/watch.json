@@ -1,0 +1,8 @@
+{
+  "browser": "147.0.7727.15",
+  "source": "tokens.css",
+  "documentationRebuild": true,
+  "browserStyleUpdate": true,
+  "before": "oklch(0.38 0.2 245)",
+  "after": "oklch(0.38 0.2 315)"
+}

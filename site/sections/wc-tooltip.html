@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Tooltip — Web Component</h1>
-    <p class="mb-6 text-ink-secondary">
+    <h1 class="docs-mb-6">Tooltip — Web Component</h1>
+    <p class="docs-mb-6 docs-text-ink-secondary">
         <code>&lt;neon-tooltip&gt;</code> is an autonomous custom element. Drop
         it inside the element you want to annotate; it turns its own markup
         into a popover styled by <code>@neon-kit/theme</code> and wires the
@@ -8,41 +8,41 @@
         <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Installation</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Installation</h2>
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
 
 // In your bundle entry:
-import '@neon-kit/theme/index.css';
+import '@neon-kit/theme-vanilla/index.css';
 import '@neon-kit/web-components/tooltip';</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Basic</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Basic</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Plain text inside the element becomes the tooltip body. Default
             trigger is <code>hover focus</code>; on a <code>&lt;button&gt;</code>
             parent you also get free click-to-toggle from the platform.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn">
                 Hover me<neon-tooltip>Hello world</neon-tooltip>
             </button>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Generated ID</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Generated ID</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             The component generates its own <code>id</code> and points the
             parent trigger at it with <code>aria-describedby</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn">
                 Inspect me<neon-tooltip>Generated IDs keep this relationship stable.</neon-tooltip>
             </button>
         </div>
-        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;button aria-describedby="neon-tooltip-k4p9x2m1a"&gt;
+        <pre class="docs-mt-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;button aria-describedby="neon-tooltip-k4p9x2m1a"&gt;
   Inspect me
   &lt;neon-tooltip id="neon-tooltip-k4p9x2m1a" popover="manual"&gt;
     Generated IDs keep this relationship stable.
@@ -50,13 +50,13 @@ import '@neon-kit/web-components/tooltip';</code></pre>
 &lt;/button&gt;</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Placement</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Placement</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Set <code>placement</code> to one of <code>top</code> (default),
             <code>right</code>, <code>bottom</code>, or <code>left</code>.
         </p>
-        <div class="flex flex-wrap gap-3 rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-flex docs-flex-wrap docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn">Top<neon-tooltip placement="top">Top placement</neon-tooltip></button>
             <button type="button" class="btn">Right<neon-tooltip placement="right">Right placement</neon-tooltip></button>
             <button type="button" class="btn">Bottom<neon-tooltip placement="bottom">Bottom placement</neon-tooltip></button>
@@ -64,14 +64,14 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Rich content</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Rich content</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Use markup for emphasis, icons, and keyboard shortcuts. Do not put
             interactive elements such as links, buttons, or form controls inside
             a tooltip.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <button type="button" class="btn">
                 Show rich tooltip<neon-tooltip placement="bottom">
                     <strong>Keyboard shortcut</strong>
@@ -84,13 +84,13 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Non-button parents</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Non-button parents</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Works on any focusable element. Void elements (<code>&lt;input&gt;</code>,
             <code>&lt;img&gt;</code>) cannot host children — wrap them.
         </p>
-        <div class="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-flex docs-flex-wrap docs-items-center docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <a class="link" href="#">
                 Focus me<neon-tooltip>Tooltips work on links too.</neon-tooltip>
             </a>
@@ -103,68 +103,68 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">API</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">API</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             <code>&lt;neon-tooltip&gt;</code> is the popover itself — there is no
             wrapper DOM. The element it lives inside becomes the trigger.
         </p>
 
-        <h3 class="mb-2">Attributes</h3>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse">
+        <h3 class="docs-mb-2">Attributes</h3>
+        <div class="docs-overflow-x-auto docs-mb-6">
+            <table class="docs-w-full docs-border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary">
-                        <th class="border border-border px-4 py-2 text-left">Attribute</th>
-                        <th class="border border-border px-4 py-2 text-left">Values</th>
-                        <th class="border border-border px-4 py-2 text-left">Default</th>
-                        <th class="border border-border px-4 py-2 text-left">Notes</th>
+                    <tr class="docs-bg-surface-secondary">
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Attribute</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Values</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Default</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>placement</code></td>
-                        <td class="border border-border px-4 py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
-                        <td class="border border-border px-4 py-2"><code>top</code></td>
-                        <td class="border border-border px-4 py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>placement</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>top</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>trigger</code></td>
-                        <td class="border border-border px-4 py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
-                        <td class="border border-border px-4 py-2"><code>hover focus</code></td>
-                        <td class="border border-border px-4 py-2">Set to an empty string (<code>trigger=""</code>) to opt out of all automatic triggers and drive the tooltip programmatically.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>trigger</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>hover focus</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Set to an empty string (<code>trigger=""</code>) to opt out of all automatic triggers and drive the tooltip programmatically.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <h3 class="mb-2">Popover methods</h3>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse">
+        <h3 class="docs-mb-2">Popover methods</h3>
+        <div class="docs-overflow-x-auto docs-mb-6">
+            <table class="docs-w-full docs-border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary">
-                        <th class="border border-border px-4 py-2 text-left">Method</th>
-                        <th class="border border-border px-4 py-2 text-left">Description</th>
+                    <tr class="docs-bg-surface-secondary">
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Method</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>showPopover()</code></td>
-                        <td class="border border-border px-4 py-2">Open the tooltip immediately using the native Popover API.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>showPopover()</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Open the tooltip immediately using the native Popover API.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>hidePopover()</code></td>
-                        <td class="border border-border px-4 py-2">Close the tooltip using the native Popover API.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>hidePopover()</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Close the tooltip using the native Popover API.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <h3 class="mb-2">DOM contract</h3>
-        <p class="mb-3 text-ink-secondary">
+        <h3 class="docs-mb-2">DOM contract</h3>
+        <p class="docs-mb-3 docs-text-ink-secondary">
             On connect, the component:
         </p>
-        <ul class="mb-4 list-disc pl-6 text-ink-secondary">
+        <ul class="docs-mb-4 docs-list-disc docs-pl-6 docs-text-ink-secondary">
             <li>Generates an <code>id</code>.</li>
             <li>Sets <code>popover="manual"</code>.</li>
             <li>Adds the <code>tooltip</code> class plus the placement class (<code>-top</code>, <code>-bottom</code>, <code>-left</code>, <code>-right</code>).</li>
@@ -175,35 +175,35 @@ import '@neon-kit/web-components/tooltip';</code></pre>
         </ul>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Accessibility pattern</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Accessibility pattern</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Implements the
             <a class="link" href="https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/">WAI-ARIA tooltip pattern</a>.
             The tooltip is rendered into the browser's top layer via the native
             popover API, so it escapes overflow and stacking-context ancestors and
             stays reachable by assistive technology without ARIA portal hacks.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             A default tooltip role is applied through ElementInternals. The
             tooltip body may include presentational markup such as icons,
             emphasis, and keyboard shortcuts, but it must not contain
             interactive controls.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             The component adds the tooltip's ID to the trigger's
             <code>aria-describedby</code> ID-reference list so screen readers
             announce the tooltip text alongside the trigger's accessible name.
             Existing description references are preserved.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             For the <code>focus</code> trigger to fire, the parent must be
             focusable. In development builds the component logs a
             <code>console.debug</code> hint when the parent is clearly not
             focusable (e.g. a <code>&lt;span&gt;</code> without
             <code>tabindex</code>).
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Keyboard focus opens the tooltip immediately and moving focus away
             closes it immediately. Hover waits <code>400ms</code> before opening
             and <code>500ms</code> before closing. <kbd class="kbd">Esc</kbd>

@@ -1,0 +1,1250 @@
+[
+  {
+    "image": "light/badges.png",
+    "before": {
+      "width": 1440,
+      "height": 1400
+    },
+    "after": {
+      "width": 1440,
+      "height": 1400
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/buttons.png",
+    "before": {
+      "width": 1440,
+      "height": 1957
+    },
+    "after": {
+      "width": 1440,
+      "height": 1957
+    },
+    "changedPercent": 0.012,
+    "meanDifference": 0.006
+  },
+  {
+    "image": "light/buttons-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/colors.png",
+    "before": {
+      "width": 1440,
+      "height": 3493
+    },
+    "after": {
+      "width": 1440,
+      "height": 3493
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/combobox-multi.png",
+    "before": {
+      "width": 1440,
+      "height": 1848
+    },
+    "after": {
+      "width": 1440,
+      "height": 1848
+    },
+    "changedPercent": 0.196,
+    "meanDifference": 0.177
+  },
+  {
+    "image": "light/combobox-multi-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.025,
+    "meanDifference": 0.022
+  },
+  {
+    "image": "light/combobox-single.png",
+    "before": {
+      "width": 1440,
+      "height": 1819
+    },
+    "after": {
+      "width": 1440,
+      "height": 1819
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/combobox-single-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.003,
+    "meanDifference": 0.003
+  },
+  {
+    "image": "light/datepicker-range.png",
+    "before": {
+      "width": 1440,
+      "height": 1402
+    },
+    "after": {
+      "width": 1440,
+      "height": 1402
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/datepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 1772
+    },
+    "after": {
+      "width": 1440,
+      "height": 1772
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/datepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/details.png",
+    "before": {
+      "width": 1440,
+      "height": 1330
+    },
+    "after": {
+      "width": 1440,
+      "height": 1330
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/details-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/dialogs.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/dialogs-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/forms.png",
+    "before": {
+      "width": 1440,
+      "height": 4207
+    },
+    "after": {
+      "width": 1440,
+      "height": 4207
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/icon-web-component.png",
+    "before": {
+      "width": 1440,
+      "height": 2284
+    },
+    "after": {
+      "width": 1440,
+      "height": 2284
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/jsx-menu.png",
+    "before": {
+      "width": 1440,
+      "height": 1416
+    },
+    "after": {
+      "width": 1440,
+      "height": 1416
+    },
+    "changedPercent": 0.031,
+    "meanDifference": 0.034
+  },
+  {
+    "image": "light/jsx-menu-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/jsx-tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2174
+    },
+    "after": {
+      "width": 1440,
+      "height": 2174
+    },
+    "changedPercent": 0.02,
+    "meanDifference": 0.022
+  },
+  {
+    "image": "light/jsx-tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/kbd.png",
+    "before": {
+      "width": 1440,
+      "height": 1406
+    },
+    "after": {
+      "width": 1440,
+      "height": 1406
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/links.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/menus.png",
+    "before": {
+      "width": 1440,
+      "height": 1814
+    },
+    "after": {
+      "width": 1440,
+      "height": 1814
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/menus-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/navigation.png",
+    "before": {
+      "width": 1440,
+      "height": 2403
+    },
+    "after": {
+      "width": 1440,
+      "height": 2403
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/panels.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/shadows.png",
+    "before": {
+      "width": 1440,
+      "height": 2844
+    },
+    "after": {
+      "width": 1440,
+      "height": 2844
+    },
+    "changedPercent": 1.138,
+    "meanDifference": 1.321
+  },
+  {
+    "image": "light/tables.png",
+    "before": {
+      "width": 1440,
+      "height": 4376
+    },
+    "after": {
+      "width": 1440,
+      "height": 4376
+    },
+    "changedPercent": 0.415,
+    "meanDifference": 0.527
+  },
+  {
+    "image": "light/tags.png",
+    "before": {
+      "width": 1440,
+      "height": 1199
+    },
+    "after": {
+      "width": 1440,
+      "height": 1199
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/timepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2029
+    },
+    "after": {
+      "width": 1440,
+      "height": 2029
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/timepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2757
+    },
+    "after": {
+      "width": 1440,
+      "height": 2757
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/typography.png",
+    "before": {
+      "width": 1440,
+      "height": 2647
+    },
+    "after": {
+      "width": 1440,
+      "height": 2647
+    },
+    "changedPercent": 0,
+    "meanDifference": 0
+  },
+  {
+    "image": "light/utilities.png",
+    "before": {
+      "width": 1440,
+      "height": 8174
+    },
+    "after": {
+      "width": 1440,
+      "height": 7586
+    },
+    "changedPercent": 12.595,
+    "meanDifference": 17.484
+  },
+  {
+    "image": "light/wc-combobox.png",
+    "before": {
+      "width": 1440,
+      "height": 2912
+    },
+    "after": {
+      "width": 1440,
+      "height": 2912
+    },
+    "changedPercent": 0.015,
+    "meanDifference": 0.017
+  },
+  {
+    "image": "light/wc-combobox-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/wc-datepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2865
+    },
+    "after": {
+      "width": 1440,
+      "height": 2865
+    },
+    "changedPercent": 0.015,
+    "meanDifference": 0.017
+  },
+  {
+    "image": "light/wc-datepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/wc-menu.png",
+    "before": {
+      "width": 1440,
+      "height": 2392
+    },
+    "after": {
+      "width": 1440,
+      "height": 2392
+    },
+    "changedPercent": 0.018,
+    "meanDifference": 0.02
+  },
+  {
+    "image": "light/wc-menu-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/wc-multicombobox.png",
+    "before": {
+      "width": 1440,
+      "height": 3356
+    },
+    "after": {
+      "width": 1440,
+      "height": 3356
+    },
+    "changedPercent": 0.048,
+    "meanDifference": 0.049
+  },
+  {
+    "image": "light/wc-multicombobox-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.085,
+    "meanDifference": 0.089
+  },
+  {
+    "image": "light/wc-timepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2865
+    },
+    "after": {
+      "width": 1440,
+      "height": 2865
+    },
+    "changedPercent": 0.015,
+    "meanDifference": 0.017
+  },
+  {
+    "image": "light/wc-timepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "light/wc-tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2945
+    },
+    "after": {
+      "width": 1440,
+      "height": 2945
+    },
+    "changedPercent": 0.015,
+    "meanDifference": 0.016
+  },
+  {
+    "image": "light/wc-tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.044,
+    "meanDifference": 0.048
+  },
+  {
+    "image": "dark/badges.png",
+    "before": {
+      "width": 1440,
+      "height": 1400
+    },
+    "after": {
+      "width": 1440,
+      "height": 1400
+    },
+    "changedPercent": 0.326,
+    "meanDifference": 0.39
+  },
+  {
+    "image": "dark/buttons.png",
+    "before": {
+      "width": 1440,
+      "height": 1957
+    },
+    "after": {
+      "width": 1440,
+      "height": 1957
+    },
+    "changedPercent": 0.272,
+    "meanDifference": 0.304
+  },
+  {
+    "image": "dark/buttons-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.383,
+    "meanDifference": 0.508
+  },
+  {
+    "image": "dark/colors.png",
+    "before": {
+      "width": 1440,
+      "height": 3493
+    },
+    "after": {
+      "width": 1440,
+      "height": 3493
+    },
+    "changedPercent": 0.146,
+    "meanDifference": 0.21
+  },
+  {
+    "image": "dark/combobox-multi.png",
+    "before": {
+      "width": 1440,
+      "height": 1848
+    },
+    "after": {
+      "width": 1440,
+      "height": 1848
+    },
+    "changedPercent": 0.384,
+    "meanDifference": 0.427
+  },
+  {
+    "image": "dark/combobox-multi-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.364,
+    "meanDifference": 0.499
+  },
+  {
+    "image": "dark/combobox-single.png",
+    "before": {
+      "width": 1440,
+      "height": 1819
+    },
+    "after": {
+      "width": 1440,
+      "height": 1819
+    },
+    "changedPercent": 0.159,
+    "meanDifference": 0.254
+  },
+  {
+    "image": "dark/combobox-single-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.31,
+    "meanDifference": 0.466
+  },
+  {
+    "image": "dark/datepicker-range.png",
+    "before": {
+      "width": 1440,
+      "height": 1402
+    },
+    "after": {
+      "width": 1440,
+      "height": 1402
+    },
+    "changedPercent": 0.243,
+    "meanDifference": 0.344
+  },
+  {
+    "image": "dark/datepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 1772
+    },
+    "after": {
+      "width": 1440,
+      "height": 1772
+    },
+    "changedPercent": 0.186,
+    "meanDifference": 0.275
+  },
+  {
+    "image": "dark/datepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.277,
+    "meanDifference": 0.447
+  },
+  {
+    "image": "dark/details.png",
+    "before": {
+      "width": 1440,
+      "height": 1330
+    },
+    "after": {
+      "width": 1440,
+      "height": 1330
+    },
+    "changedPercent": 0.448,
+    "meanDifference": 0.483
+  },
+  {
+    "image": "dark/details-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.486,
+    "meanDifference": 0.566
+  },
+  {
+    "image": "dark/dialogs.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.395,
+    "meanDifference": 0.514
+  },
+  {
+    "image": "dark/dialogs-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.353,
+    "meanDifference": 0.287
+  },
+  {
+    "image": "dark/forms.png",
+    "before": {
+      "width": 1440,
+      "height": 4207
+    },
+    "after": {
+      "width": 1440,
+      "height": 4207
+    },
+    "changedPercent": 0.113,
+    "meanDifference": 0.176
+  },
+  {
+    "image": "dark/icon-web-component.png",
+    "before": {
+      "width": 1440,
+      "height": 2284
+    },
+    "after": {
+      "width": 1440,
+      "height": 2284
+    },
+    "changedPercent": 0.069,
+    "meanDifference": 0.107
+  },
+  {
+    "image": "dark/jsx-menu.png",
+    "before": {
+      "width": 1440,
+      "height": 1416
+    },
+    "after": {
+      "width": 1440,
+      "height": 1416
+    },
+    "changedPercent": 0.25,
+    "meanDifference": 0.36
+  },
+  {
+    "image": "dark/jsx-menu-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.348,
+    "meanDifference": 0.507
+  },
+  {
+    "image": "dark/jsx-tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2174
+    },
+    "after": {
+      "width": 1440,
+      "height": 2174
+    },
+    "changedPercent": 0.177,
+    "meanDifference": 0.243
+  },
+  {
+    "image": "dark/jsx-tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.386,
+    "meanDifference": 0.529
+  },
+  {
+    "image": "dark/kbd.png",
+    "before": {
+      "width": 1440,
+      "height": 1406
+    },
+    "after": {
+      "width": 1440,
+      "height": 1406
+    },
+    "changedPercent": 0.354,
+    "meanDifference": 0.414
+  },
+  {
+    "image": "dark/links.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.277,
+    "meanDifference": 0.44
+  },
+  {
+    "image": "dark/menus.png",
+    "before": {
+      "width": 1440,
+      "height": 1814
+    },
+    "after": {
+      "width": 1440,
+      "height": 1814
+    },
+    "changedPercent": 0.286,
+    "meanDifference": 0.333
+  },
+  {
+    "image": "dark/menus-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.396,
+    "meanDifference": 0.52
+  },
+  {
+    "image": "dark/navigation.png",
+    "before": {
+      "width": 1440,
+      "height": 2403
+    },
+    "after": {
+      "width": 1440,
+      "height": 2403
+    },
+    "changedPercent": 0.266,
+    "meanDifference": 0.418
+  },
+  {
+    "image": "dark/panels.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.339,
+    "meanDifference": 0.477
+  },
+  {
+    "image": "dark/shadows.png",
+    "before": {
+      "width": 1440,
+      "height": 2844
+    },
+    "after": {
+      "width": 1440,
+      "height": 2844
+    },
+    "changedPercent": 1.278,
+    "meanDifference": 1.457
+  },
+  {
+    "image": "dark/tables.png",
+    "before": {
+      "width": 1440,
+      "height": 4376
+    },
+    "after": {
+      "width": 1440,
+      "height": 4376
+    },
+    "changedPercent": 0.495,
+    "meanDifference": 0.631
+  },
+  {
+    "image": "dark/tags.png",
+    "before": {
+      "width": 1440,
+      "height": 1199
+    },
+    "after": {
+      "width": 1440,
+      "height": 1199
+    },
+    "changedPercent": 0.381,
+    "meanDifference": 0.46
+  },
+  {
+    "image": "dark/timepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2029
+    },
+    "after": {
+      "width": 1440,
+      "height": 2029
+    },
+    "changedPercent": 0.137,
+    "meanDifference": 0.225
+  },
+  {
+    "image": "dark/timepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.289,
+    "meanDifference": 0.452
+  },
+  {
+    "image": "dark/tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2757
+    },
+    "after": {
+      "width": 1440,
+      "height": 2757
+    },
+    "changedPercent": 0.315,
+    "meanDifference": 0.392
+  },
+  {
+    "image": "dark/tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.463,
+    "meanDifference": 0.558
+  },
+  {
+    "image": "dark/typography.png",
+    "before": {
+      "width": 1440,
+      "height": 2647
+    },
+    "after": {
+      "width": 1440,
+      "height": 2647
+    },
+    "changedPercent": 2.091,
+    "meanDifference": 3.738
+  },
+  {
+    "image": "dark/utilities.png",
+    "before": {
+      "width": 1440,
+      "height": 8174
+    },
+    "after": {
+      "width": 1440,
+      "height": 7586
+    },
+    "changedPercent": 19.962,
+    "meanDifference": 35.109
+  },
+  {
+    "image": "dark/wc-combobox.png",
+    "before": {
+      "width": 1440,
+      "height": 2912
+    },
+    "after": {
+      "width": 1440,
+      "height": 2912
+    },
+    "changedPercent": 0.135,
+    "meanDifference": 0.184
+  },
+  {
+    "image": "dark/wc-combobox-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.333,
+    "meanDifference": 0.5
+  },
+  {
+    "image": "dark/wc-datepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2865
+    },
+    "after": {
+      "width": 1440,
+      "height": 2865
+    },
+    "changedPercent": 0.137,
+    "meanDifference": 0.188
+  },
+  {
+    "image": "dark/wc-datepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.349,
+    "meanDifference": 0.509
+  },
+  {
+    "image": "dark/wc-menu.png",
+    "before": {
+      "width": 1440,
+      "height": 2392
+    },
+    "after": {
+      "width": 1440,
+      "height": 2392
+    },
+    "changedPercent": 0.176,
+    "meanDifference": 0.23
+  },
+  {
+    "image": "dark/wc-menu-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.445,
+    "meanDifference": 0.567
+  },
+  {
+    "image": "dark/wc-multicombobox.png",
+    "before": {
+      "width": 1440,
+      "height": 3356
+    },
+    "after": {
+      "width": 1440,
+      "height": 3356
+    },
+    "changedPercent": 0.175,
+    "meanDifference": 0.208
+  },
+  {
+    "image": "dark/wc-multicombobox-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.437,
+    "meanDifference": 0.576
+  },
+  {
+    "image": "dark/wc-timepicker.png",
+    "before": {
+      "width": 1440,
+      "height": 2865
+    },
+    "after": {
+      "width": 1440,
+      "height": 2865
+    },
+    "changedPercent": 0.13,
+    "meanDifference": 0.183
+  },
+  {
+    "image": "dark/wc-timepicker-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.34,
+    "meanDifference": 0.503
+  },
+  {
+    "image": "dark/wc-tooltip.png",
+    "before": {
+      "width": 1440,
+      "height": 2945
+    },
+    "after": {
+      "width": 1440,
+      "height": 2945
+    },
+    "changedPercent": 0.139,
+    "meanDifference": 0.186
+  },
+  {
+    "image": "dark/wc-tooltip-interaction.png",
+    "before": {
+      "width": 1440,
+      "height": 1000
+    },
+    "after": {
+      "width": 1440,
+      "height": 1000
+    },
+    "changedPercent": 0.365,
+    "meanDifference": 0.518
+  }
+]

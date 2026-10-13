@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Tooltip — JSX</h1>
-    <p class="mb-6 text-ink-secondary">
+    <h1 class="docs-mb-6">Tooltip — JSX</h1>
+    <p class="docs-mb-6 docs-text-ink-secondary">
         <code>Tooltip</code> is a <code>@slimlib/jsx</code> component that
         decorates one trigger element with the same popover-based Neon tooltip
         behavior as <code>&lt;neon-tooltip&gt;</code>. It returns the trigger
@@ -8,46 +8,46 @@
         in Light DOM.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Installation</h2>
-        <pre class="rounded-lg border border-border bg-surface-secondary p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components @slimlib/jsx
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Installation</h2>
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components @slimlib/jsx
 
-import '@neon-kit/theme/index.css';
+import '@neon-kit/theme-vanilla/index.css';
 import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Basic</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Basic</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Pass the trigger as the component child and the informational helper
             text as <code>content</code>. Default trigger is
             <code>hover focus</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6" data-jsx-tooltip-demo="basic"></div>
-        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;Tooltip content="Persists the current draft."&gt;
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" data-jsx-tooltip-demo="basic"></div>
+        <pre class="docs-mt-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;Tooltip content="Persists the current draft."&gt;
     &lt;button type="button" class="btn"&gt;Save&lt;/button&gt;
 &lt;/Tooltip&gt;</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Placement</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Placement</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Set <code>placement</code> to <code>top</code>,
             <code>right</code>, <code>bottom</code>, or <code>left</code>.
         </p>
-        <div class="flex flex-wrap gap-3 rounded-lg border border-border bg-surface-secondary p-6" data-jsx-tooltip-demo="placement"></div>
+        <div class="docs-flex docs-flex-wrap docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" data-jsx-tooltip-demo="placement"></div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Rich Informational Content</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Rich Informational Content</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             <code>content</code> accepts JSX for non-interactive structure such
             as titles, body copy, icons, and keyboard shortcuts. Tooltips are
             informational helpers and must not contain links, buttons, inputs,
             or other interactive controls.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6" data-jsx-tooltip-demo="rich"></div>
-        <pre class="mt-4 rounded-lg border border-border bg-surface-secondary p-4"><code>&lt;Tooltip
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" data-jsx-tooltip-demo="rich"></div>
+        <pre class="docs-mt-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;Tooltip
     placement="bottom"
     content={
         &lt;&gt;
@@ -66,63 +66,63 @@ import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
 &lt;/Tooltip&gt;</code></pre>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">API</h2>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">API</h2>
+        <div class="docs-overflow-x-auto docs-mb-6">
+            <table class="docs-w-full docs-border-collapse">
                 <thead>
-                    <tr class="bg-surface-secondary">
-                        <th class="border border-border px-4 py-2 text-left">Prop</th>
-                        <th class="border border-border px-4 py-2 text-left">Values</th>
-                        <th class="border border-border px-4 py-2 text-left">Default</th>
-                        <th class="border border-border px-4 py-2 text-left">Notes</th>
+                    <tr class="docs-bg-surface-secondary">
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Prop</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Values</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Default</th>
+                        <th class="docs-border docs-border-border docs-px-4 docs-py-2 docs-text-left">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>children</code></td>
-                        <td class="border border-border px-4 py-2">One <code>HTMLElement</code></td>
-                        <td class="border border-border px-4 py-2">Required</td>
-                        <td class="border border-border px-4 py-2">The trigger element to decorate.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>children</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">One <code>HTMLElement</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Required</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">The trigger element to decorate.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>content</code></td>
-                        <td class="border border-border px-4 py-2">JSX child content</td>
-                        <td class="border border-border px-4 py-2">Required</td>
-                        <td class="border border-border px-4 py-2">Informational, non-interactive tooltip body.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>content</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">JSX child content</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Required</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Informational, non-interactive tooltip body.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>placement</code></td>
-                        <td class="border border-border px-4 py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
-                        <td class="border border-border px-4 py-2"><code>top</code></td>
-                        <td class="border border-border px-4 py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>placement</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>top</code> | <code>bottom</code> | <code>left</code> | <code>right</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>top</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Adds a matching <code>-&lt;placement&gt;</code> class.</td>
                     </tr>
                     <tr>
-                        <td class="border border-border px-4 py-2"><code>trigger</code></td>
-                        <td class="border border-border px-4 py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
-                        <td class="border border-border px-4 py-2"><code>hover focus</code></td>
-                        <td class="border border-border px-4 py-2">Use <code>trigger=""</code> to disable automatic triggers.</td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>trigger</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Space-separated subset of <code>hover</code> <code>focus</code> <code>click</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2"><code>hover focus</code></td>
+                        <td class="docs-border docs-border-border docs-px-4 docs-py-2">Use <code>trigger=""</code> to disable automatic triggers.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Accessibility Pattern</h2>
-        <p class="mb-4 text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Accessibility Pattern</h2>
+        <p class="docs-mb-4 docs-text-ink-secondary">
             The generated popover receives <code>role="tooltip"</code> and its ID
             is added to the trigger's <code>aria-describedby</code> ID-reference
             list, preserving existing description references. The component also
             wires anchor positioning so hover and focus opens place the popover
             against the trigger.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             Hover waits <code>400ms</code> before opening and <code>500ms</code>
             before closing. Keyboard focus opens and closes the tooltip
             immediately; click activation is also immediate.
         </p>
-        <p class="mb-4 text-ink-secondary">
+        <p class="docs-mb-4 docs-text-ink-secondary">
             In development builds the component warns when the trigger child is
             invalid or when a focus tooltip is attached to a non-focusable
             trigger.

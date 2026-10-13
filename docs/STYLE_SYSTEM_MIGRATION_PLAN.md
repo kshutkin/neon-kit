@@ -1,7 +1,8 @@
 # Neon Kit style and rendering migration
 
 Status: accepted migration direction. Step 1 completed on 2026-10-07;
-steps 2 and 3 completed on 2026-10-09. Steps 4–6 are pending.
+steps 2 and 3 completed on 2026-10-09; step 4 completed on 2026-10-10.
+Steps 5 and 6 are pending.
 
 The old global selector API does not need compatibility: Neon Kit has not yet
 been released. JSX components should import their own CSS Modules through
@@ -22,12 +23,14 @@ and keep JSX components in light DOM while sharing the same visual rules.
 
 ## Current constraints
 
-- `@neon-kit/theme/index.css` imports Tailwind's theme and utilities, the
-  package ships source CSS, and its component sheets use `@apply`, `@utility`,
-  `@theme`, and Tailwind's `--spacing()` function. The documentation site also
-  uses Tailwind utilities in HTML and CSS. Removing the dependency requires
-  translating these declarations and the site markup, then comparing the
-  rendered result with the current theme.
+- `@neon-kit/theme` now ships ordinary token/reset sources and 15 component
+  CSS Modules, with no Tailwind directives or functions. The separate
+  `theme-vanilla` build emits the full plain CSS catalogue and selective groups.
+  Documentation layout helpers are site-owned CSS. The main documentation
+  still uses the vanilla bundle while its existing renderers use literal
+  classes; step 5 will give migrated renderer showcases their own isolated
+  documents, as already exercised by the style slice. Root Tailwind tooling
+  dependencies remain until the step 6 cutover.
 - Web and JSX components use literal class names, including names embedded in
   DOM queries and controller selectors. The web components currently render in
   light DOM. `docs/adr/0001-rendering-mode.md` explicitly chose that mode and
@@ -182,8 +185,9 @@ output, not an intermediate public theme file. A later CDN build can choose
 its own packaging without changing the reset and token source boundaries.
 
 The shadow base should include token defaults used by all leaf sheets. For a
-public override such as `--neon-primary`, derive an internal default with
-`var(--neon-primary, light-dark(<light color>, <dark color>))`; do not assign a default
+public override such as `--neon-color-primary`, read it with
+`var(--neon-color-primary, var(--_color-primary))`, with the private default
+defining the light/dark color pair; do not assign a default
 to the public variable in the shadow sheet, which would mask an inherited
 page override. The component's standard appearance must work with no page
 variables. Page variables and host attributes can then customize
@@ -194,6 +198,20 @@ Lit is a useful model for sharing scoped styles, but its documented theming
 also uses inherited CSS custom properties with local fallbacks. The target is
 self-contained default rendering with optional inheritance for customization,
 not a shadow tree isolated from inherited values.
+
+### Custom-property names and compatibility output
+
+Public customization inputs use `--neon-*`, for example `--neon-color-border`,
+`--neon-primary-hue`, and `--neon-menu-item-padding-inline`. Internal defaults
+and working values use `--_*`, for example `--_color-border` and `--_shadow`.
+Neon palette colors use names such as `--neon-color-blue` without repeating the
+brand prefix. Keep `dashedIdents: false` so separately adopted theme and component
+sheets share stable names. The external `interestfor` polyfill's `--interest-delay`
+is an interoperability bridge, not a Neon customization input.
+
+Authored sources contain standard unprefixed properties and selectors. Consumer
+pipelines own browser compatibility transformations. Vendor-only cosmetic rules
+without a standard equivalent are removed.
 
 ### Native color-scheme contract
 
@@ -237,7 +255,7 @@ use this package. The aggregate entry covers the full current theme: tokens,
 document reset, component markup, and Neon visual effects. Fonts remain a
 document concern.
 
-A provisional export layout, following the repo's explicit CSS subpaths, is:
+The implemented export layout follows the repo's explicit CSS subpaths:
 
 | Export | Contents |
 | --- | --- |
@@ -247,7 +265,8 @@ A provisional export layout, following the repo's explicit CSS subpaths, is:
 | `@neon-kit/theme-vanilla/components.css` | All public component markup styles and required shared visual rules |
 | Selected `@neon-kit/theme-vanilla/components/<group>.css` entries | A small set of useful component groups, with their required style dependency closure |
 
-The precise group list is deferred until the catalogue is inventoried. A
+The component groups are button, forms, overlays, navigation, labels, pickers,
+table, and links. `effects.css` exposes the shared helpers and effects. A
 consumer can include the full entry or select tokens, reset, and the component
 groups it needs, similar to today's theme imports. Selective component outputs
 include required composed rules and defaults; global reset and document
@@ -265,15 +284,14 @@ needs a deliberate public class contract owned by `theme-vanilla`: use
 predictable, documented names for public markup classes, or add explicit
 aliases built from the same style sources. Keep private component classes
 free to use generated names. Public classes must not have hidden `composes`
-requirements. This needs a small build proof before settling the
-emitter strategy. The accepted [public CSS policy](style-migration/PUBLIC_CSS_API.md)
+requirements. The step 4 packed-browser proof validates the emitter strategy. The accepted [public CSS policy](style-migration/PUBLIC_CSS_API.md)
 uses the existing component/element stems and family modifier conventions,
 with no required package prefix; consumer CSS collisions are accepted.
 CSS Modules exports remain scoped even when components expose or consume their
 class strings. Vanilla documentation examples use separate documents from
 CSS Modules component examples, with no globally loaded vanilla catalogue in
-the shared shell. Trial an explicit mapping from documented public classes
-to source module exports, including composed rules and pseudo/state selectors.
+the shared shell. The explicit mapping from documented public classes to source module exports
+includes composed rules and pseudo/state selectors.
 The vanilla build must produce a complete usable public class, or document an
 intentional public base-plus-variant combination; generated hashes must not
 be required in hand-written markup. A compiler naming policy or generated
@@ -360,6 +378,10 @@ the vanilla package.
    from `data-theme` to root `color-scheme`. Compare
    automatic and forced light/dark states, as well as interactive states,
    against the baseline.
+   **Completed 2026-10-10:** [theme translation, output contract, and validation](style-migration/STEP_4_THEME.md).
+   Packed aggregate/selective CSS, ordinary CSS Modules, native shadow sheets,
+   the complete palette, and switcher states pass in Chromium and Firefox.
+   The complete documentation catalogue was compared with the baseline.
 5. **Migrate components in dependency order.** Move generated-control
    components first, then tooltip and menu once their slot and external-target
    contracts are settled in follow-up design work. Slots and parts are not
@@ -378,13 +400,19 @@ the vanilla package.
    migration for consumers and release the packages with appropriate
    Changesets. A standalone CDN build is outside this migration.
 
-## Decisions to settle
+## Settled package decisions
 
-1. Which emitter strategy should implement the accepted public class mapping
-   and composition contract in `theme-vanilla`? Validate state selectors,
-   composition, and collisions in the first slice.
-2. Which small set of selective CSS groups should `theme-vanilla` export, and
-   how should their load order and overlap behave?
+1. `theme-vanilla` owns an explicit public catalogue. Its build uses the core
+   composition graph, expands class aliases with a selector AST (including
+   nested `:has()`, `:not()`, and `:is()` selectors), detects conflicting owners,
+   and emits flattened CSS with copied local assets. Renderer hashes stay
+   private. Visual declarations are authored only in `theme`.
+2. The eight selective component groups above and `effects.css` include their
+   required composition/default closure. Document reset and scheme opt-in are
+   separate entries. Each entry declares `neon.theme`, `neon.reset`, and
+   `neon.components` layers in that order. Aggregate and overlapping selective
+   imports keep the same class semantics regardless of load order; unlayered
+   application rules can override them.
 
 The step 2 proof settles `@neon-kit/vite-plugin-style-build`, `styleBuild()`, and
 the `.css?neon` named class exports plus ordered `sheets` API. The class export
@@ -395,7 +423,7 @@ CDN build remain future work.
 
 ## Remaining browser validation
 
-The step 2 fixture validates scheme inheritance in Chromium and Firefox:
+The step 2 fixture and step 4 real-theme proof validate scheme inheritance in Chromium and Firefox:
 unstyled page under a dark OS preference, page opt-in under both preferences,
 forced root light/dark, per-host override, and nested web components. Repeat
 these checks when the real theme and component catalogue are migrated, together

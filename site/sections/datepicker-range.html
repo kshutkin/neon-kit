@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Datepicker — Range</h1>
-    <p class="mb-8 text-ink-secondary">
+    <h1 class="docs-mb-6">Datepicker — Range</h1>
+    <p class="docs-mb-8 docs-text-ink-secondary">
         A range-selection variant of <code>.datepicker</code>. Same field
         chrome, same single overlay — the only differences live on the
         day cells. The user picks the first endpoint, navigates to bring
@@ -12,15 +12,15 @@
         the stored start/end pair.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Plain</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Plain</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             <code>data-range</code> on the wrapper switches the picker
             into range mode. The field shows
             <code>YYYY-MM-DD / YYYY-MM-DD</code> once both endpoints
             have been picked.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <div class="datepicker" data-datepicker data-range>
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>
@@ -33,15 +33,15 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Pre-filled with Clear</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Pre-filled with Clear</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             <code>data-value="YYYY-MM-DD/YYYY-MM-DD"</code> seeds an
             initial range. <code>data-clearable</code> shows a clear
             button — clicking it wipes both endpoints and resets the
             wrapper out of pending state.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <div class="datepicker" data-datepicker data-range data-clearable data-value="2026-04-08/2026-04-22">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>
@@ -57,9 +57,9 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Static Views</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Static Views</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Two day-grid snapshots side-by-side: the left panel shows a
             committed range (<code>.-range-start</code>,
             <code>.-in-range</code>, <code>.-range-end</code>); the
@@ -68,10 +68,10 @@
             switches to a dashed outline and the band fill softens so
             the user can read the preview as tentative.
         </p>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="docs-grid docs-grid-cols-1 docs-gap-4 docs-md-3a-grid-cols-2">
             <!-- Committed range -->
             <div class="datepicker">
-                <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+                <div class="panel docs-p-0" style="white-space: normal; text-overflow: clip;">
                     <header class="datepicker__nav">
                         <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous month">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
@@ -130,7 +130,7 @@
 
             <!-- Pending range -->
             <div class="datepicker -range-pending">
-                <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+                <div class="panel docs-p-0" style="white-space: normal; text-overflow: clip;">
                     <header class="datepicker__nav">
                         <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous month">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
@@ -189,14 +189,14 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">RTL</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">RTL</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Range styling uses logical end / start radii so the
             endpoints connect to the band correctly regardless of
             writing direction.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6" dir="rtl">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" dir="rtl">
             <div class="datepicker" data-datepicker data-range data-clearable data-value="2026-04-08/2026-04-22">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD / YYYY-MM-DD" data-dp-input>

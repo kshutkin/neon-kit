@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Tags</h1>
-    <p class="mb-8 text-ink-secondary">
+    <h1 class="docs-mb-6">Tags</h1>
+    <p class="docs-mb-8 docs-text-ink-secondary">
         The <code>.tag</code> component is a labelled chip with a built-in
         remove button. It shares the visual family of <code>.badge</code>
         (rounded, bordered, top-edge highlight, em-sized) but with squarer
@@ -8,15 +8,15 @@
         <code>.tag__remove</code> close affordance.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Variants</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Variants</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Same modifier set as <code>.badge</code>: default neutral
             surface, <code>.-primary</code> filled, plus state tints
             (<code>.-success</code>, <code>.-warning</code>,
             <code>.-error</code>, <code>.-info</code>).
         </p>
-        <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-flex docs-flex-wrap docs-items-center docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <span class="tag">
                 Default
                 <button type="button" class="tag__remove" aria-label="Remove Default">
@@ -68,14 +68,14 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Tag List</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Tag List</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             The optional <code>.tag-list</code> wrapper provides a flex
             row with consistent <code>em</code>-sized gaps so a list of
             chips wraps cleanly inside any container.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-4">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
             <span class="tag-list">
                 <span class="tag">
                     JavaScript
@@ -121,16 +121,16 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">In a Form Field</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">In a Form Field</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Pair tags with an <code>.input</code> to build a token-style
             multi-select. The input's inset-pressed shadow doubles as the
             container affordance.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-4">
-            <label class="mb-2 block text-sm font-medium" for="tag-recipients">Recipients</label>
-            <div class="input flex flex-wrap items-center gap-2" style="min-block-size: 2.5rem;">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <label class="docs-mb-2 docs-block docs-text-sm docs-font-medium" for="tag-recipients">Recipients</label>
+            <div class="input docs-flex docs-flex-wrap docs-items-center docs-gap-2" style="min-block-size: 2.5rem;">
                 <span class="tag">
                     alice@example.com
                     <button type="button" class="tag__remove" aria-label="Remove alice@example.com">
@@ -147,20 +147,20 @@
                         </svg>
                     </button>
                 </span>
-                <input id="tag-recipients" type="text" class="grow border-0 bg-transparent p-0 shadow-none focus:outline-none" placeholder="Add another…" style="box-shadow: none; min-inline-size: 8rem;">
+                <input id="tag-recipients" type="text" class="docs-grow docs-border-0 docs-bg-transparent docs-p-0 docs-shadow-none docs-focus-3a-outline-none" placeholder="Add another…" style="box-shadow: none; min-inline-size: 8rem;">
             </div>
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Sizing</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Sizing</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Every <code>.tag</code> dimension — including the remove
             button — is set in <code>em</code>, so wrapping a list in a
             different font-size scales chips and controls together.
         </p>
-        <div class="flex flex-col gap-3 rounded-lg border border-border bg-surface-secondary p-4">
-            <div class="text-sm">
+        <div class="docs-flex docs-flex-col docs-gap-3 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4">
+            <div class="docs-text-sm">
                 <span class="tag">
                     Small
                     <button type="button" class="tag__remove" aria-label="Remove small">
@@ -180,7 +180,7 @@
                     </button>
                 </span>
             </div>
-            <div class="text-lg">
+            <div class="docs-text-lg">
                 <span class="tag">
                     Large
                     <button type="button" class="tag__remove" aria-label="Remove large">
@@ -190,7 +190,7 @@
                     </button>
                 </span>
             </div>
-            <div class="text-2xl">
+            <div class="docs-text-2xl">
                 <span class="tag">
                     Huge
                     <button type="button" class="tag__remove" aria-label="Remove huge">

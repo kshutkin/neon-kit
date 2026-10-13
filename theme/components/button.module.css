@@ -1,0 +1,164 @@
+@import '../tokens.css';
+
+.btn {
+    composes: panel disabled-control focus-ring-swap from '../shared.module.css';
+    &:not(:disabled):not([aria-disabled='true']):hover {
+        @media (hover: hover) {
+            background-color: var(
+                --neon-color-surface-hover,
+                var(--_color-surface-hover)
+            );
+        }
+    }
+    &:not(:disabled):not([aria-disabled='true']):active {
+        background-color: var(
+            --neon-color-surface-active,
+            var(--_color-surface-active)
+        );
+        --_shadow: 0 0 #0000;
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+        --_inset-shadow: var(
+            --neon-inset-shadow-pressed,
+            var(--_inset-shadow-pressed)
+        );
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+    }
+}
+
+.btn.quiet {
+    border-color: transparent;
+    background-color: transparent;
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: 0 0 #0000;
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    &:not(:disabled):not([aria-disabled='true']):hover {
+        @media (hover: hover) {
+            border-style: solid;
+            border-width: 1px;
+            border-color: var(--neon-color-border, var(--_color-border));
+            --_shadow: var(
+                --neon-shadow-drop-subtle,
+                var(--_shadow-drop-subtle)
+            );
+            box-shadow: var(--_inset-shadow, 0 0 transparent),
+                var(--_shadow, 0 0 transparent);
+            --_inset-shadow: var(
+                --neon-inset-shadow-highlight,
+                var(--_inset-shadow-highlight)
+            );
+            box-shadow: var(--_inset-shadow, 0 0 transparent),
+                var(--_shadow, 0 0 transparent);
+            text-shadow: var(
+                --neon-text-shadow-embossed,
+                var(--_text-shadow-embossed)
+            );
+        }
+    }
+    &:not(:disabled):not([aria-disabled='true']):active {
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--neon-color-border, var(--_color-border));
+        background-color: var(
+            --neon-color-surface-active,
+            var(--_color-surface-active)
+        );
+        color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+        --_shadow: 0 0 #0000;
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+        --_inset-shadow: var(
+            --neon-inset-shadow-pressed,
+            var(--_inset-shadow-pressed)
+        );
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+        text-shadow: var(
+            --neon-text-shadow-embossed,
+            var(--_text-shadow-embossed)
+        );
+    }
+}
+
+.btn.large {
+    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 2);
+    font-size: var(--neon-text-lg, 1.125rem);
+    line-height: var(
+        --neon-line-height,
+        var(--neon-text-lg--line-height, calc(1.75 / 1.125))
+    );
+    font-weight: var(--neon-font-weight-semibold, 600);
+}
+
+/* CTA disabled treatment differs from `disabled-control` (keeps the
+   primary fill instead of fading to surface-disabled), so the disabled
+   chain stays inline. The focus-ring-swap utility still applies. */
+.btn.cta {
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(
+        --neon-color-border-primary,
+        var(--_color-border-primary)
+    );
+    &:focus-visible {
+        border-color: var(
+            --neon-color-border-focus,
+            var(--_color-border-focus)
+        );
+    }
+    background-color: var(--neon-color-primary, var(--_color-primary));
+    font-weight: var(--neon-font-weight-medium, 500);
+    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    --_shadow: 0 0 #0000;
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight-pressed,
+        var(--_inset-shadow-highlight-pressed)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+    &:not(:disabled):not([aria-disabled='true']):hover {
+        @media (hover: hover) {
+            background-color: var(
+                --neon-color-primary-hover,
+                var(--_color-primary-hover)
+            );
+        }
+    }
+    &:not(:disabled):not([aria-disabled='true']):active {
+        background-color: var(
+            --neon-color-primary-active,
+            var(--_color-primary-active)
+        );
+        --_inset-shadow: var(
+            --neon-inset-shadow-highlight-pressed,
+            var(--_inset-shadow-highlight-pressed)
+        );
+        box-shadow: var(--_inset-shadow, 0 0 transparent),
+            var(--_shadow, 0 0 transparent);
+    }
+    &:disabled {
+        border-color: var(
+            --neon-color-border-disabled,
+            var(--_color-border-disabled)
+        );
+        background-color: var(
+            --neon-color-primary-disabled,
+            var(--_color-primary-disabled)
+        );
+        color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    }
+}
+
+.btn.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

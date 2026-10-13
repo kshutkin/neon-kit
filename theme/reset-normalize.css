@@ -6,56 +6,49 @@
 ::after,
 ::before,
 ::backdrop {
-  /* backdrop idea from preflight*/
-  box-sizing: border-box; /* 1 */
-  margin: 0; /* 2 */
+    /* backdrop idea from preflight*/
+    box-sizing: border-box; /* 1 */
+    margin: 0; /* 2 */
 }
 
-:where(:root),
-:host {
-  /* from sanitize.css, preflight */
-  /* 3. Add accessible line-height */
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%; /* 2 preflight, help when in horizontal mode on iOS, check? */
-  tab-size: 4; /* 3 preflight, opinionated tab size */
-  -webkit-tap-highlight-color: transparent; /* 7 preflight, check? */
-}
-
-/* 4. Improve text rendering */
 :where(:root) {
-  -webkit-font-smoothing: antialiased;
+    /* from sanitize.css, preflight */
+    /* 3. Add accessible line-height */
+    line-height: 1.5;
+    text-size-adjust: 100%; /* 2 preflight, help when in horizontal mode on iOS, check? */
+    tab-size: 4; /* 3 preflight, opinionated tab size */
 }
 
 :where(body) {
-  line-height: inherit;
+    line-height: inherit;
 }
 
 /* 5. Improve media defaults */
 :where(img, video, canvas, svg, audio, iframe, embed, object) {
-  vertical-align: middle; /* from sanitize.css, we do not touch display/max-size/height as it brings other issues */
+    vertical-align: middle; /* from sanitize.css, we do not touch display/max-size/height as it brings other issues */
 }
 
 /* 7. Avoid text overflows */
 :where(h1, h2, h3, h4, h5, h6) {
-  overflow-wrap: break-word;
-  text-wrap: balance; /* pretty wrap on headings */
+    overflow-wrap: break-word;
+    text-wrap: balance; /* pretty wrap on headings */
 }
 /* 8. Improve line wrapping */
 :where(p) {
-  overflow-wrap: break-word;
-  text-wrap: pretty;
-  hyphens: auto;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+    hyphens: auto;
 }
 
 :where(hr) {
-  color: inherit; /* reset firefox color */
+    color: inherit; /* reset firefox color */
 }
 
 /* sanitize.css (CC0-1.0) */
 
 /* Safari uses inset */
 :where(iframe) {
-  border-style: none;
+    border-style: none;
 }
 
 /**
@@ -65,7 +58,7 @@
 /* TODO: icon class? */
 
 :where(svg:not([fill])) {
-  fill: currentColor;
+    fill: currentColor;
 }
 
 /**
@@ -75,12 +68,12 @@
 
 /* TODO: move to a table class */
 :where(table) {
-  border-collapse: collapse; /* 1 */
-  border-color: currentColor; /* 2 */
+    border-collapse: collapse; /* 1 */
+    border-color: currentColor; /* 2 */
 }
 
 :where(fieldset) {
-  border: 1px solid gray; /* use some token? */
+    border: 1px solid gray; /* use some token? */
 }
 
 /**
@@ -88,7 +81,7 @@
  */
 
 :where(textarea) {
-  resize: vertical; /* 3 */
+    resize: vertical; /* 3 */
 }
 
 /* Accessibility
@@ -98,8 +91,8 @@
  * Change the cursor on busy elements in all browsers (opinionated).
  */
 
-:where([aria-busy="true" i]) {
-  cursor: progress;
+:where([aria-busy='true' i]) {
+    cursor: progress;
 }
 
 /*
@@ -107,26 +100,26 @@
  * inoperable elements in all browsers (opinionated).
  */
 
-:where([aria-disabled="true" i], [disabled]) {
-  cursor: not-allowed;
+:where([aria-disabled='true' i], [disabled]) {
+    cursor: not-allowed;
 }
 
 /* https://github.com/jensimmons/cssremedy */
 
 /* from https://github.com/jensimmons/cssremedy/issues/45 */
 :where(picture) {
-  display: contents;
+    display: contents;
 }
 
 :where(source) {
-  display: none;
+    display: none;
 } /* Firefox only */
 
 /*
 https://github.com/twbs/bootstrap/issues/19634#issue-144122534
 */
 :where(audio) {
-  width: 100%;
+    width: 100%;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -137,18 +130,18 @@ https://github.com/twbs/bootstrap/issues/19634#issue-144122534
   */
 
 :where(sub, sup) {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
 }
 
 :where(sub) {
-  bottom: -0.25em;
+    bottom: -0.25em;
 }
 
 :where(sup) {
-  top: -0.5em;
+    top: -0.5em;
 }
 
 /* Forms
@@ -159,10 +152,10 @@ https://github.com/twbs/bootstrap/issues/19634#issue-144122534
   */
 
 :where(button, input, optgroup, select, textarea) {
-  /* border-width: 1px; does not work in Safari for selects anyway, need to reset appearance? */
-  font-family: inherit; /* 1 */
-  font-size: 100%; /* 1 */
-  line-height: 1.15; /* 1 */
+    /* border-width: 1px; does not work in Safari for selects anyway, need to reset appearance? */
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 1 */
+    line-height: 1.15; /* 1 */
 }
 
 /**
@@ -171,5 +164,5 @@ https://github.com/twbs/bootstrap/issues/19634#issue-144122534
   */
 
 :where(legend) {
-  padding: 0; /* 3 */
+    padding: 0; /* 3 */
 }

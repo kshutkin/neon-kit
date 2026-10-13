@@ -1,0 +1,93 @@
+@import '../tokens.css';
+
+/* Keyboard-shortcut hint — a small "nameplate" style sign.
+
+   Visually shares the family of `.btn` (rounded, bordered, top-edge
+   highlight, embossed text) but is non-interactive and intentionally flat:
+   no drop shadow, slightly muted surface, tighter proportions, monospaced
+   characters so a key sits like a printed legend on a physical keycap.
+
+   Single-key markup:
+       <kbd class="kbd">K</kbd>
+
+   Combo markup — wrap individual keys in `.kbd-keys` so they share a
+   consistent baseline, equal heights, and equal visual gaps:
+       <span class="kbd-keys">
+           <kbd class="kbd">⌘</kbd>
+           <kbd class="kbd">⇧</kbd>
+           <kbd class="kbd">K</kbd>
+       </span>
+
+   Alignment notes:
+   - Each `.kbd` is a flex box with `min-inline-size = block-size`, so
+     single-character keys (letters, digits, glyphs like ⌘ ⇧ ⌥ ⌃ ↵ ⌫ ↑ ↓)
+     render as identical squares regardless of glyph width.
+   - Multi-character labels (Esc, Tab, Ctrl) keep the same height and
+     stretch horizontally with even side padding.
+   - `line-height: 1` plus `align-items: center` removes ascender/descender
+     drift so glyphs of different visual height (e.g. ⌘ vs k vs g) sit on
+     the same optical center line.
+*/
+
+.kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(
+        --neon-color-surface-secondary,
+        var(--_color-surface-secondary)
+    );
+    white-space: nowrap;
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+
+    user-select: none;
+    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+
+    /* Monospaced + tabular numerals so digits and letters share width. */
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125em;
+    font-weight: 500;
+    line-height: 1;
+
+    /* Square-by-default sign proportions; multi-char labels grow inline. */
+    block-size: 1.6em;
+    min-inline-size: 1.6em;
+    padding-inline: 0.4em;
+
+    /* Sit on the surrounding text baseline. */
+    vertical-align: middle;
+    cursor: default;
+}
+
+/* Wrapper that aligns a sequence of `.kbd` keys with even visual gaps.
+   Gap is in `em` so a row of keys nested inside larger / smaller text
+   keeps proportional spacing without per-context overrides. */
+.kbd-keys {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    vertical-align: middle;
+}
+
+/* Optional textual separator between keys (e.g. "+"). Muted, monospaced,
+   matched to the kbd font-size so it lines up with the keycaps. */
+.kbd-keys__sep {
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        monospace;
+    font-size: 0.8125em;
+    line-height: 1;
+    user-select: none;
+}

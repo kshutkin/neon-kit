@@ -2,6 +2,7 @@ packages:
   - core
   - jsx-components
   - theme
+  - theme-vanilla
   - web-components
   - icons
   - style-build

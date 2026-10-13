@@ -1,0 +1,322 @@
+@import '../tokens.css';
+
+/* Tooltip / hint popover — built on the native `popover` attribute,
+   CSS anchor positioning, and declarative invokers (`interestfor` for
+   hover/focus hints, `commandfor` for click/keyboard commands).
+
+   Why this shape:
+   - `popover` puts the element in the browser's top layer, so it always
+     paints above siblings regardless of `overflow: hidden`, `transform`,
+     `filter`, or any other stacking-context trap on ancestors.
+   - The trigger that invokes the popover via `interestfor`,
+     `commandfor`, or `popovertarget` becomes the popover's implicit
+     anchor, so positioning is declarative — no wrapper element, no
+     portal, no JS to recompute on scroll/resize.
+   - Because it's a regular block element while open, the body can hold
+     rich templates: headings, lists, code, kbd, badges, even buttons.
+
+   Minimal markup (hover / focus / long-press where supported):
+       <button class="btn" interestfor="tip-save"
+               aria-describedby="tip-save">Save</button>
+       <div id="tip-save" popover="hint" class="tooltip -top" role="tooltip">
+           Saves the current document.
+           <div class="tooltip__arrow"></div>
+       </div>
+
+   Click / keyboard command:
+       <button class="btn" commandfor="tip-save"
+               command="toggle-popover">Save</button>
+
+   Rich body — anything goes. Optional helpers `.tooltip__title`,
+   `.tooltip__body`, `.tooltip__meta` mirror the dialog header/body/footer
+   shape but for a smaller floating layer.
+
+   Placement modifiers (default is `-top`):
+       .tooltip.-top       — above the anchor
+       .tooltip.-bottom    — below the anchor
+       .tooltip.-left      — left of the anchor (inline-start)
+       .tooltip.-right     — right of the anchor (inline-end)
+
+   Accessibility:
+   - Add `role="tooltip"` for short label-style popovers, and reference it
+     from the trigger with `aria-describedby="tip-id"` so AT users hear
+     the description alongside the trigger's accessible name.
+   - For richer popovers (titles, paragraphs, actions) drop `role="tooltip"`
+     and rely on the popover semantics + a heading inside.
+*/
+
+:where([interestfor]) {
+    --_tooltip-open-delay: 400ms;
+    --_tooltip-close-delay: 500ms;
+
+    /* Native property plus the custom property consumed by the
+       `interestfor` polyfill. */
+    interest-delay: var(--neon-tooltip-open-delay, var(--_tooltip-open-delay))
+        var(--neon-tooltip-close-delay, var(--_tooltip-close-delay));
+    --interest-delay: var(--neon-tooltip-open-delay, var(--_tooltip-open-delay))
+        var(--neon-tooltip-close-delay, var(--_tooltip-close-delay));
+}
+
+.tooltip[popover] {
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(--neon-color-surface, var(--_color-surface));
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    --_shadow: var(--neon-shadow-drop, var(--_shadow-drop));
+    --_inset-shadow: var(
+        --neon-inset-shadow-highlight,
+        var(--_inset-shadow-highlight)
+    );
+    box-shadow: var(--_inset-shadow, 0 0 transparent),
+        var(--_shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+
+    /* Reset UA `[popover]` defaults that conflict with anchor
+       positioning. Per MDN's "Using position-area to position popovers"
+       note: clear `margin` and `inset` so `position-area` (and any
+       offset margins we set below) resolve cleanly across browsers.
+
+       We also override the UA `position: fixed` to `position: absolute`.
+       Top-layer popovers paint above siblings regardless of `position`,
+       but Chromium currently mis-applies the document scroll offset to
+       anchor-positioned popovers when `position: fixed`. `absolute`
+       computes the anchor math correctly while still rendering in the
+       top layer (so `overflow: hidden` / `transform` ancestors don't
+       clip us). */
+    position: absolute;
+    margin: 0;
+    inset: auto;
+
+    /* Tight reading proportions; rich variants can override the cap by
+       setting `max-inline-size` directly or via the custom property. */
+    --_tooltip-max-inline-size: calc(var(--neon-spacing, 0.25rem) * 72);
+    inline-size: max-content;
+    max-inline-size: var(
+        --neon-tooltip-max-inline-size,
+        var(--_tooltip-max-inline-size)
+    );
+    block-size: auto;
+    max-block-size: none;
+
+    padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5);
+    padding-inline: calc(var(--neon-spacing, 0.25rem) * 2.5);
+
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: start;
+    white-space: normal;
+
+    /* Let the arrow extend past the bubble edge. */
+    overflow: visible;
+
+    /* Open / closed transitions. `display` and `overlay` need
+       `transition-behavior: allow-discrete` to animate while the
+       element is being shown / hidden by the top-layer machinery.
+       Both initial (closed) and final (open) styles must be set so the
+       transition has values to interpolate between — see also the
+       `@starting-style` rule below. */
+    opacity: 0;
+    scale: 0.97;
+    transition: opacity 100ms ease-out, scale 100ms ease-out,
+        translate 100ms ease-out, overlay 100ms ease-out allow-discrete,
+        display 100ms ease-out allow-discrete;
+}
+
+/* Open state — interpolation target. */
+.tooltip[popover]:popover-open {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+}
+
+/* Initial frame for the open transition. Without this, the element
+   would jump straight to `:popover-open` styles because the browser
+   has no prior state to interpolate from (it was `display: none`). */
+@starting-style {
+    .tooltip[popover]:popover-open {
+        opacity: 0;
+        scale: 0.97;
+    }
+}
+
+/* ---------- Optional structural helpers --------------------------------- */
+
+.tooltip__title {
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    margin-block-end: calc(var(--neon-spacing, 0.25rem) * 1);
+}
+
+.tooltip__body {
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.tooltip__meta {
+    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    margin-block-start: calc(var(--neon-spacing, 0.25rem) * 2);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--neon-spacing, 0.25rem) * 2);
+    font-size: 0.75rem;
+}
+
+/* ---------- Arrow ------------------------------------------------------- */
+
+/* A rotated square that picks up the bubble's border + surface so the
+   seam between bubble and arrow is invisible. Two of its sides are
+   clipped away so only the outward-facing corner reads as a triangle.
+   Positioned inside the bubble (`position: absolute`) — works because
+   the popover is itself a positioned containing block.
+
+   Arrow geometry is driven by inherited custom properties set on the
+   popover by the placement rules and `@position-try` fallbacks below.
+   Plumbing it through vars lets a named try-block override BOTH the
+   body's `position-area` and the arrow side in one declaration, so the
+   arrow follows the body when the browser flips us — no JS required. */
+.tooltip__arrow {
+    position: absolute;
+    inline-size: calc(var(--neon-spacing, 0.25rem) * 2);
+    block-size: calc(var(--neon-spacing, 0.25rem) * 2);
+    background-color: inherit;
+    border: inherit;
+    rotate: 45deg;
+    pointer-events: none;
+    inset-block-start: var(--_tooltip-arrow-inset-block-start);
+    inset-inline-start: var(--_tooltip-arrow-inset-inline-start);
+    translate: var(--_tooltip-arrow-translate);
+    clip-path: var(--_tooltip-arrow-clip);
+}
+
+/* ---------- Named position-try fallbacks --------------------------------
+
+   Each fallback is the OPPOSITE-side counterpart of one primary
+   placement. It overrides BOTH the body's `position-area` / margin AND
+   the arrow custom properties, so when `position-try-fallbacks` engages
+   the arrow geometry follows the flipped body.
+
+   Arrow clip-path notes: the arrow square is rotated 45°, so its
+   original top-left / top-right / bottom-right / bottom-left corners
+   map to top / right / bottom / left after rotation. To get a triangle
+   pointing TOWARD the trigger we KEEP the three corners that face
+   AWAY from the trigger — the dropped corner becomes the arrow tip. */
+
+@position-try --tooltip-flip-bottom {
+    position-area: bottom;
+    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-inline: 0;
+    /* Tooltip below trigger → arrow points UP. */
+    --_tooltip-arrow-inset-block-start: 0;
+    --_tooltip-arrow-inset-inline-start: 50%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, -20% 120%);
+}
+
+@position-try --tooltip-flip-top {
+    position-area: top;
+    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-inline: 0;
+    /* Tooltip above trigger → arrow points DOWN. */
+    --_tooltip-arrow-inset-block-start: 100%;
+    --_tooltip-arrow-inset-inline-start: 50%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(120% -20%, 120% 120%, -20% 120%);
+}
+
+@position-try --tooltip-flip-right {
+    position-area: right;
+    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-block: 0;
+    /* Tooltip right of trigger → arrow points LEFT. */
+    --_tooltip-arrow-inset-block-start: 50%;
+    --_tooltip-arrow-inset-inline-start: 0;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% 120%, -20% 120%);
+}
+
+@position-try --tooltip-flip-left {
+    position-area: left;
+    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-block: 0;
+    /* Tooltip left of trigger → arrow points RIGHT. */
+    --_tooltip-arrow-inset-block-start: 50%;
+    --_tooltip-arrow-inset-inline-start: 100%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, 120% 120%);
+}
+
+/* ---------- Placement: top (default) ------------------------------------ */
+
+.tooltip[popover],
+.tooltip[popover].-top {
+    position-area: top;
+    /* Symmetric margin so the trigger gap is preserved when the named
+       `--tooltip-flip-bottom` fallback engages and flips us downward. */
+    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    position-try-fallbacks: --tooltip-flip-bottom;
+
+    /* Tooltip above trigger → arrow points DOWN. The original
+       Top-Left corner rotates to Top (flat base); the Bottom-Right
+       corner rotates to Bottom (tip). KEEP TR, BR, BL; DROP TL. */
+    --_tooltip-arrow-inset-block-start: 100%;
+    --_tooltip-arrow-inset-inline-start: 50%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(120% -20%, 120% 120%, -20% 120%);
+}
+
+/* ---------- Placement: bottom ------------------------------------------- */
+
+.tooltip[popover].-bottom {
+    position-area: bottom;
+    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-inline: 0;
+    position-try-fallbacks: --tooltip-flip-top;
+
+    /* Tooltip below trigger → arrow points UP. The original
+       Bottom-Right corner rotates to Bottom (flat base); the Top-Left
+       corner rotates to Top (tip). KEEP TL, TR, BL; DROP BR. */
+    --_tooltip-arrow-inset-block-start: 0;
+    --_tooltip-arrow-inset-inline-start: 50%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, -20% 120%);
+}
+
+/* ---------- Placement: left (inline-start) ------------------------------ */
+
+.tooltip[popover].-left {
+    position-area: left;
+    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-block: 0;
+    position-try-fallbacks: --tooltip-flip-right;
+
+    /* Tooltip left of trigger → arrow points RIGHT. The original
+       Bottom-Left corner rotates to Left (flat base); the Top-Right
+       corner rotates to Right (tip). KEEP TL, TR, BR; DROP BL. */
+    --_tooltip-arrow-inset-block-start: 50%;
+    --_tooltip-arrow-inset-inline-start: 100%;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% -20%, 120% 120%);
+}
+
+/* ---------- Placement: right (inline-end) ------------------------------- */
+
+.tooltip[popover].-right {
+    position-area: right;
+    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
+    margin-block: 0;
+    position-try-fallbacks: --tooltip-flip-left;
+
+    /* Tooltip right of trigger → arrow points LEFT. The original
+       Top-Right corner rotates to Right (flat base); the Bottom-Left
+       corner rotates to Left (tip). KEEP TL, BR, BL; DROP TR. */
+    --_tooltip-arrow-inset-block-start: 50%;
+    --_tooltip-arrow-inset-inline-start: 0;
+    --_tooltip-arrow-translate: -50% -50%;
+    --_tooltip-arrow-clip: polygon(-20% -20%, 120% 120%, -20% 120%);
+}

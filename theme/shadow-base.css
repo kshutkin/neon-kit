@@ -1,0 +1,29 @@
+@import './tokens.css';
+
+/* Internal defaults only. The host inherits the page's color-scheme.
+   Fonts are named with a fallback; loading them belongs to the document. */
+:host {
+    font-family: var(--neon-font-sans, var(--_font-sans));
+    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    line-height: 1.5;
+}
+:where(*, ::before, ::after) {
+    box-sizing: border-box;
+    margin: 0;
+}
+:where(button, input, optgroup, select, textarea) {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+}
+:where(svg) {
+    vertical-align: middle;
+}
+:where(svg:not([fill])) {
+    fill: currentColor;
+}
+:focus-visible {
+    outline: 2px solid
+        var(--neon-color-border-focus, var(--_color-border-focus));
+    outline-offset: 2px;
+}

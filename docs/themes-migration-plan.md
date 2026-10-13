@@ -1,5 +1,8 @@
 # Multi-theme migration plan
 
+Status: historical proposal, superseded by the native `color-scheme` contract in
+[the accepted style migration plan](STYLE_SYSTEM_MIGRATION_PLAN.md).
+
 Move neon-kit from the current paired-token model (`--color-x` +
 `--color-x-dark`, consumed via Tailwind `dark:` variants) to a
 daisyUI-style scoped-token model: a single set of semantic tokens,

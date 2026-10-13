@@ -1,6 +1,6 @@
 <main>
-    <h1 class="mb-6">Datepicker</h1>
-    <p class="mb-8 text-ink-secondary">
+    <h1 class="docs-mb-6">Datepicker</h1>
+    <p class="docs-mb-8 docs-text-ink-secondary">
         A typeable date field paired with a popover that hosts three
         navigable views — days inside a month, months inside a year, and
         years inside a decade. The field reuses the inset-well chrome of
@@ -12,14 +12,14 @@
         <code>dir="rtl"</code>.
     </p>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Plain</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Plain</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             The minimum: a typeable input and a calendar trigger that
             opens the day grid. Click the header label to step up to the
             month view, then again to the year view.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <div class="datepicker" data-datepicker>
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
@@ -32,14 +32,14 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">With Clear</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">With Clear</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Adding <code>data-clearable</code> shows a clear button when
             the field has a value — same affordance language as
             <code>.combobox__clear</code>.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6">
             <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
@@ -55,9 +55,9 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Field States</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Field States</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Same six-state vocabulary every text-like control ships:
             empty/disabled, empty/read-only, both filled equivalents,
             invalid, and labelled inside a form. State hooks land on
@@ -67,7 +67,7 @@
             input's <code>disabled</code> attribute. Only the field
             appearance is shown — the calendar popover is unchanged.
         </p>
-        <div class="grid gap-4 rounded-lg border border-border bg-surface-secondary p-4 md:grid-cols-2">
+        <div class="docs-grid docs-gap-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4 docs-md-3a-grid-cols-2">
             <label class="field-stack">
                 <span class="field-label">Disabled (empty)</span>
                 <div class="datepicker">
@@ -141,18 +141,18 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">Static Views</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">Static Views</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Each of the three overlays rendered inline so the layout is
             visible without opening a popover. Each cell is a real
             <code>&lt;button&gt;</code>; tab through to confirm
             keyboard reachability.
         </p>
 
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="docs-grid docs-grid-cols-1 docs-gap-4 docs-md-3a-grid-cols-3">
             <!-- Days view -->
-            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+            <div class="panel docs-p-0" style="white-space: normal; text-overflow: clip;">
                 <header class="datepicker__nav">
                     <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous month">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
@@ -209,7 +209,7 @@
             </div>
 
             <!-- Months view -->
-            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+            <div class="panel docs-p-0" style="white-space: normal; text-overflow: clip;">
                 <header class="datepicker__nav">
                     <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous year">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
@@ -236,7 +236,7 @@
             </div>
 
             <!-- Years view -->
-            <div class="panel p-0" style="white-space: normal; text-overflow: clip;">
+            <div class="panel docs-p-0" style="white-space: normal; text-overflow: clip;">
                 <header class="datepicker__nav">
                     <button class="datepicker__nav-btn" type="button" data-dir="prev" aria-label="Previous decade">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
@@ -268,14 +268,14 @@
         </div>
     </section>
 
-    <section class="mb-8">
-        <h2 class="mb-4">RTL</h2>
-        <p class="mb-3 text-sm text-ink-secondary">
+    <section class="docs-mb-8">
+        <h2 class="docs-mb-4">RTL</h2>
+        <p class="docs-mb-3 docs-text-sm docs-text-ink-secondary">
             Setting <code>dir="rtl"</code> on any ancestor flips the
             field, the trailing trigger, the prev/next chevrons, and the
             popover anchor side — no per-component code required.
         </p>
-        <div class="rounded-lg border border-border bg-surface-secondary p-6" dir="rtl">
+        <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" dir="rtl">
             <div class="datepicker" data-datepicker data-clearable data-value="2026-04-15">
                 <div class="datepicker__field">
                     <input class="datepicker__input" type="text" placeholder="YYYY-MM-DD" data-dp-input>
