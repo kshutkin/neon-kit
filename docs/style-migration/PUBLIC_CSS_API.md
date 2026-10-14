@@ -95,12 +95,13 @@ conflicting independent public owners fail the build. This does not force
 renderer modules into the public naming scheme. Visual declarations are shared sources, not a second manually
 maintained stylesheet catalogue.
 
-The CSS entries are `index.css`, `theme.css`, `reset-normalize.css`,
+The CSS entries are `index.css`, `tokens.css`, `theme.css`, `reset-normalize.css`,
 `components.css`, `effects.css`, and `components/{button,forms,overlays,
 navigation,labels,pickers,table,links}.css`. All components
 and helpers are included regardless of whether they appeared in Tailwind's
 content scan. Selective outputs include their required composed rules and
-local defaults. Document reset and root scheme opt-in are explicit choices
+require one shared `tokens.css` import for defaults. The aggregate includes
+tokens exactly once. Document reset and root scheme opt-in are explicit choices
 outside the aggregate entry. Every entry declares the layer order `neon.theme`, `neon.reset`,
 `neon.components`; overlapping imports keep the same semantics in either order.
 See [step 4](STEP_4_THEME.md) for output and browser checks.

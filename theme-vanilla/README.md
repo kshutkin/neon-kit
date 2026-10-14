@@ -23,9 +23,10 @@ are available for CSS-aware bundlers; every output is flattened ordinary CSS.
 
 | Entry | Contents |
 | --- | --- |
-| `theme.css` | Public document tokens, font family fallback, page colors/focus, OS scheme opt-in |
+| `tokens.css` | Shared internal defaults with optional public overrides; no document styling |
+| `theme.css` | Font family fallback, page colors/focus, OS scheme opt-in |
 | `reset-normalize.css` | Document reset |
-| `components.css` | Complete component/helper/effect catalogue with required token defaults |
+| `components.css` | Complete component/helper/effect catalogue |
 | `effects.css` | Shared surface/state helpers, metal, foil, and Neon glow effects |
 | `components/button.css` | Buttons and variants |
 | `components/forms.css` | Input, select, textarea, checkbox, radio, field, fieldset, and affixes |
@@ -36,9 +37,24 @@ are available for CSS-aware bundlers; every output is flattened ordinary CSS.
 | `components/table.css` | Tables, stripes, and sortable header states |
 | `components/links.css` | Links |
 
-Selective component entries include their composed rules and token defaults.
-They do not opt the document into an OS scheme or apply a document reset. Those
-are explicit imports; the aggregate includes them. Cascade order is declared as
+Import `tokens.css` once when selecting individual entries, including `theme.css`.
+Component and effect entries include their composed rules and require this shared
+base. Tokens do not opt the document into an OS scheme or apply a document reset;
+those remain explicit imports. The aggregate includes tokens exactly once, plus
+document styles, reset, and the full component catalogue.
+
+```js
+import '@neon-kit/theme-vanilla/tokens.css';
+import '@neon-kit/theme-vanilla/components/button.css';
+import '@neon-kit/theme-vanilla/components/forms.css';
+
+// Optional document styling and reset:
+import '@neon-kit/theme-vanilla/theme.css';
+import '@neon-kit/theme-vanilla/reset-normalize.css';
+```
+
+The same entries can be loaded through separate `<link>` elements. No entry
+imports another stylesheet. Cascade order is declared as
 `neon.theme`, `neon.reset`, `neon.components`. Overlapping entries retain the same
 class semantics in either order. Unlayered application CSS can override them.
 

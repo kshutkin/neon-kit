@@ -19,6 +19,20 @@ const theme = dirname(
     new URL('../../theme/package.json', import.meta.url).pathname
 );
 
+function readRootDefaults(stylesheet) {
+    const defaults = [];
+    stylesheet.walkDecls((declaration) => {
+        if (
+            declaration.prop.startsWith('--_') &&
+            declaration.parent.type === 'rule' &&
+            declaration.parent.selector.includes(':root')
+        ) {
+            defaults.push([declaration.prop, declaration.value]);
+        }
+    });
+    return defaults;
+}
+
 test('complete and selective outputs contain only mapped public classes and native CSS', async () => {
     const directory = await mkdtemp(resolve(tmpdir(), 'neon-vanilla-build-'));
     try {
@@ -32,13 +46,31 @@ test('complete and selective outputs contain only mapped public classes and nati
                 (name) => `components/${name}`
             ),
         ];
+        const tokens = postcss.parse(
+            await readFile(resolve(directory, 'tokens.css'), 'utf8')
+        );
+        const defaults = readRootDefaults(tokens);
+        assert.ok(defaults.some(([name]) => name === '--_font-sans'));
+        assert.ok(defaults.some(([name]) => name === '--_spacing'));
+        tokens.walkDecls((declaration) => {
+            assert.ok(
+                declaration.prop.startsWith('--'),
+                `tokens.css must not apply document styling: ${declaration.prop}`
+            );
+        });
         for (const file of files.filter((name) => name.endsWith('.css'))) {
             const css = await readFile(resolve(directory, file), 'utf8');
             assert.doesNotMatch(
                 css,
                 /@import|@apply|@theme|@utility|composes:|--tw-|--neon-spacing\(|--theme\(/
             );
-            postcss.parse(css).walkRules((rule) => {
+            const stylesheet = postcss.parse(css);
+            assert.deepEqual(
+                readRootDefaults(stylesheet),
+                ['tokens.css', 'index.css'].includes(file) ? defaults : [],
+                `${file}: token defaults belong only in the shared base and aggregate`
+            );
+            stylesheet.walkRules((rule) => {
                 selectorParser()
                     .astSync(rule.selector)
                     .walkClasses((node) => {
@@ -105,6 +137,10 @@ test('selective asset URLs resolve within the package and preserve query and fra
         await writeFile(
             resolve(source, 'theme.css'),
             ':root { color-scheme: light dark; }'
+        );
+        await writeFile(
+            resolve(source, 'tokens.css'),
+            ':root { --_art-color: red; }'
         );
         await writeFile(resolve(source, 'reset-normalize.css'), '');
         await writeFile(

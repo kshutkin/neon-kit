@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
+import tokensCss from '../../theme-vanilla/dist/tokens.css?inline';
 import menuCss from '../../theme-vanilla/dist/components/overlays.css?inline';
 
 /**
@@ -22,7 +23,7 @@ function getTextRect(element, expectedText) {
 function mountMenu() {
     const style = document.createElement('style');
     style.dataset.menuTestStyles = '';
-    style.textContent = menuCss;
+    style.textContent = `${tokensCss}\n${menuCss}`;
     document.head.appendChild(style);
     document.body.innerHTML = `
         <div class="menu" style="width: 20rem;">

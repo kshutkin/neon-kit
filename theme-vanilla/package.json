@@ -9,6 +9,7 @@
     "exports": {
         "./package.json": "./package.json",
         "./index.css": "./dist/index.css",
+        "./tokens.css": "./dist/tokens.css",
         "./theme.css": "./dist/theme.css",
         "./reset-normalize.css": "./dist/reset-normalize.css",
         "./components.css": "./dist/components.css",

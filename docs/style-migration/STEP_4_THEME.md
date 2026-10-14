@@ -24,8 +24,8 @@ selector mapping and output build.
 
 `tokens.css` defines private defaults at `:root` and `:host`. Component declarations
 read public properties such as `--neon-color-surface` with a private fallback.
-`theme.css` exposes the document's public token defaults, page colors, font family,
-and `color-scheme: light dark`. Semantic colors and shadow pigments use
+`theme.css` applies the document's page colors, font family, and
+`color-scheme: light dark`. Semantic colors and shadow pigments use
 `light-dark()`. Numeric dark-state lightness is folded into the corresponding
 color branches rather than using `light-dark()` for a number.
 
@@ -57,9 +57,10 @@ ordinary CSS with no runtime dependencies or required consumer plugin.
 | Entry | Contents |
 | --- | --- |
 | `index.css` | Full document theme, reset, component markup, helpers, and effects |
-| `theme.css` | Public document tokens, page defaults, and OS scheme opt-in |
+| `tokens.css` | Shared token defaults and optional public overrides |
+| `theme.css` | Page defaults and OS scheme opt-in |
 | `reset-normalize.css` | Document reset |
-| `components.css` | Complete visual catalogue and token defaults |
+| `components.css` | Complete visual catalogue |
 | `effects.css` | Shared surface/state helpers and metal, foil, and glow effects |
 | `components/button.css` | Buttons and variants |
 | `components/forms.css` | Controls, field/fieldset, labels, hints/errors, and affixes |
@@ -69,6 +70,10 @@ ordinary CSS with no runtime dependencies or required consumer plugin.
 | `components/pickers.css` | Combobox, datepicker, timepicker, and referenced form rules |
 | `components/table.css` | Table chrome, striping, and sorting states |
 | `components/links.css` | Links |
+
+Selective entries require one `tokens.css` import for their shared defaults.
+The aggregate includes those defaults exactly once. Document theme styles and
+reset remain optional imports when selecting components individually.
 
 The build expands the core composition graph into explicit public selector aliases
 using a selector AST. It rewrites classes inside nested pseudo selectors as well

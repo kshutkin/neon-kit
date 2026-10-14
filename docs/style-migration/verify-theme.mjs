@@ -103,7 +103,7 @@ await writeFile(
 );
 await writeFile(
     resolve(app, 'selected.html'),
-    `<!doctype html>${link('theme')}${link('reset-normalize')}${link(
+    `<!doctype html>${link('tokens')}${link('theme')}${link('reset-normalize')}${link(
         'components/button'
     )}${link('components/forms')}${link('components/navigation')}${markup}`
 );
@@ -113,7 +113,7 @@ await writeFile(
         'components/forms'
     )}${link('components/button')}${link('reset-normalize')}${link(
         'theme'
-    )}${markup}`
+    )}${link('tokens')}${markup}`
 );
 await writeFile(
     resolve(app, 'modules.html'),
@@ -162,7 +162,7 @@ await writeFile(
       <button id="interest" interestfor="tip">Interest</button>
       <div id="tip" class="tooltip" popover>Tip</div>
       <button class="btn cta" id="primary">Primary</button>
-      <span id="token" style="color: var(--neon-color-primary)">Token</span>
+      <span id="token" style="color: var(--neon-color-primary, var(--_color-primary))">Token</span>
     </div>`
 );
 const config = {
@@ -389,12 +389,13 @@ try {
                                     .slice(2)
                                     .replace('color-neon-', 'color-');
                                 const publicName = `--neon-${suffix}`;
-                                if (!root.getPropertyValue(publicName).trim()) {
+                                const privateName = `--_${suffix}`;
+                                if (!root.getPropertyValue(privateName).trim()) {
                                     throw new Error(
-                                        `Missing public token ${publicName}`
+                                        `Missing token default ${privateName}`
                                     );
                                 }
-                                element.style.color = `var(${publicName})`;
+                                element.style.color = `var(${publicName}, var(${privateName}))`;
                                 result[name] = {
                                     before,
                                     after: getComputedStyle(element).color,

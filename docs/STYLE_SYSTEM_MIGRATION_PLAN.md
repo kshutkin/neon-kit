@@ -260,7 +260,8 @@ The implemented export layout follows the repo's explicit CSS subpaths:
 | Export | Contents |
 | --- | --- |
 | `@neon-kit/theme-vanilla/index.css` | Full classical theme |
-| `@neon-kit/theme-vanilla/theme.css` | Document token defaults and color-scheme opt-in |
+| `@neon-kit/theme-vanilla/tokens.css` | Shared internal token defaults and optional public override inputs |
+| `@neon-kit/theme-vanilla/theme.css` | Document styling and color-scheme opt-in |
 | `@neon-kit/theme-vanilla/reset-normalize.css` | Document reset |
 | `@neon-kit/theme-vanilla/components.css` | All public component markup styles and required shared visual rules |
 | Selected `@neon-kit/theme-vanilla/components/<group>.css` entries | A small set of useful component groups, with their required style dependency closure |
@@ -269,7 +270,8 @@ The component groups are button, forms, overlays, navigation, labels, pickers,
 table, and links. `effects.css` exposes the shared helpers and effects. A
 consumer can include the full entry or select tokens, reset, and the component
 groups it needs, similar to today's theme imports. Selective component outputs
-include required composed rules and defaults; global reset and document
+include required composed rules. Import `tokens.css` once as their shared base;
+the aggregate includes those defaults exactly once. Global reset and document
 scheme opt-in remain explicit choices. Define load order and overrides for
 these entries and keep overlapping entries equivalent in cascade behavior.
 Flatten local dependencies for the initial plain CSS outputs; reference only

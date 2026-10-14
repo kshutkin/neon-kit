@@ -34,6 +34,12 @@ export async function buildVanilla(
         resolve: async (specifier, importer) =>
             resolve(dirname(importer), specifier),
     };
+    const tokenModules = await compileStyle(
+        resolve(themeDirectory, 'tokens.css'),
+        host
+    );
+    const tokenDependencies = new Set(tokenModules.map((module) => module.id));
+    const tokens = tokenModules.map((module) => module.css).join('\n');
     const aliases = new Map();
     const owners = new Map();
     const graphs = new Map();
@@ -205,6 +211,7 @@ export async function buildVanilla(
         ...new Map(
             files
                 .flatMap((file) => graphs.get(file))
+                .filter((module) => !tokenDependencies.has(module.id))
                 .map((module) => [module.id, module])
         ).values(),
     ];
@@ -220,6 +227,7 @@ export async function buildVanilla(
     const theme = (
         await compileStyle(resolve(themeDirectory, 'theme.css'), host)
     )
+        .filter((module) => !tokenDependencies.has(module.id))
         .map((module) => module.css)
         .join('\n');
     const reset = await readFile(
@@ -238,6 +246,10 @@ export async function buildVanilla(
         }
     }
     await writeFile(
+        resolve(outputDirectory, 'tokens.css'),
+        `${layers}@layer neon.theme {\n${tokens}\n}\n`
+    );
+    await writeFile(
         resolve(outputDirectory, 'theme.css'),
         `${layers}@layer neon.theme {\n${theme}\n}\n`
     );
@@ -251,7 +263,7 @@ export async function buildVanilla(
     );
     await writeFile(
         resolve(outputDirectory, 'index.css'),
-        `${layers}@layer neon.theme {\n${theme}\n}\n@layer neon.reset {\n${reset}\n}\n@layer neon.components {\n${components}\n}\n`
+        `${layers}@layer neon.theme {\n${tokens}\n${theme}\n}\n@layer neon.reset {\n${reset}\n}\n@layer neon.components {\n${components}\n}\n`
     );
     if (graphs.has('shared.module.css')) {
         await writeFile(
