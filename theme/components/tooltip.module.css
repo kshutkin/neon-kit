@@ -75,10 +75,9 @@
         var(--_shadow, 0 0 transparent);
     text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
 
-    /* Reset UA `[popover]` defaults that conflict with anchor
-       positioning. Per MDN's "Using position-area to position popovers"
-       note: clear `margin` and `inset` so `position-area` (and any
-       offset margins we set below) resolve cleanly across browsers.
+    /* Reset UA `[popover]` defaults that conflict with anchor positioning.
+       Start with zero margins and automatic insets; placement rules below
+       reserve the anchor gap using insets.
 
        Keep fixed positioning: Firefox cannot resolve the named anchor
        for an absolute top-layer tooltip under a fixed-position trigger.
@@ -195,7 +194,7 @@
 /* ---------- Named position-try fallbacks --------------------------------
 
    Each fallback is the OPPOSITE-side counterpart of one primary
-   placement. It overrides BOTH the body's `position-area` / margin AND
+   placement. It overrides BOTH the body's `position-area` / inset AND
    the arrow custom properties, so when `position-try-fallbacks` engages
    the arrow geometry follows the flipped body.
 
@@ -207,8 +206,8 @@
 
 @position-try --tooltip-flip-bottom {
     position-area: bottom;
-    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-inline: 0;
+    inset: auto;
+    inset-block: calc(var(--neon-spacing, 0.25rem) * 2);
     /* Tooltip below trigger → arrow points UP. */
     --_tooltip-arrow-inset-block-start: 0;
     --_tooltip-arrow-inset-inline-start: 50%;
@@ -218,8 +217,8 @@
 
 @position-try --tooltip-flip-top {
     position-area: top;
-    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-inline: 0;
+    inset: auto;
+    inset-block: calc(var(--neon-spacing, 0.25rem) * 2);
     /* Tooltip above trigger → arrow points DOWN. */
     --_tooltip-arrow-inset-block-start: 100%;
     --_tooltip-arrow-inset-inline-start: 50%;
@@ -229,8 +228,8 @@
 
 @position-try --tooltip-flip-right {
     position-area: right;
-    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-block: 0;
+    inset: auto;
+    inset-inline: calc(var(--neon-spacing, 0.25rem) * 2);
     /* Tooltip right of trigger → arrow points LEFT. */
     --_tooltip-arrow-inset-block-start: 50%;
     --_tooltip-arrow-inset-inline-start: 0;
@@ -240,8 +239,8 @@
 
 @position-try --tooltip-flip-left {
     position-area: left;
-    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-block: 0;
+    inset: auto;
+    inset-inline: calc(var(--neon-spacing, 0.25rem) * 2);
     /* Tooltip left of trigger → arrow points RIGHT. */
     --_tooltip-arrow-inset-block-start: 50%;
     --_tooltip-arrow-inset-inline-start: 100%;
@@ -254,9 +253,11 @@
 .tooltip[popover],
 .tooltip[popover].-top {
     position-area: top;
-    /* Symmetric margin so the trigger gap is preserved when the named
-       `--tooltip-flip-bottom` fallback engages and flips us downward. */
-    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
+    /* Use symmetric insets for the gap. A document margin reset can match
+       a shadow host and override its margins; insets keep both renderers
+       aligned, including when a named fallback flips the placement. */
+    inset: auto;
+    inset-block: calc(var(--neon-spacing, 0.25rem) * 2);
     position-try-fallbacks: --tooltip-flip-bottom;
 
     /* Tooltip above trigger → arrow points DOWN. The original
@@ -272,8 +273,8 @@
 
 .tooltip[popover].-bottom {
     position-area: bottom;
-    margin-block: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-inline: 0;
+    inset: auto;
+    inset-block: calc(var(--neon-spacing, 0.25rem) * 2);
     position-try-fallbacks: --tooltip-flip-top;
 
     /* Tooltip below trigger → arrow points UP. The original
@@ -289,8 +290,8 @@
 
 .tooltip[popover].-left {
     position-area: left;
-    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-block: 0;
+    inset: auto;
+    inset-inline: calc(var(--neon-spacing, 0.25rem) * 2);
     position-try-fallbacks: --tooltip-flip-right;
 
     /* Tooltip left of trigger → arrow points RIGHT. The original
@@ -306,8 +307,8 @@
 
 .tooltip[popover].-right {
     position-area: right;
-    margin-inline: calc(var(--neon-spacing, 0.25rem) * 2);
-    margin-block: 0;
+    inset: auto;
+    inset-inline: calc(var(--neon-spacing, 0.25rem) * 2);
     position-try-fallbacks: --tooltip-flip-left;
 
     /* Tooltip right of trigger → arrow points LEFT. The original

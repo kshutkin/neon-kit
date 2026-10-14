@@ -110,6 +110,17 @@ describe('compileStyle()', () => {
 });
 
 describe('host projection', () => {
+    it('projects zero-specificity composed defaults without treating descendants as hosts', async () => {
+        const files = new Map(sources);
+        files.set('/styles/border.module.css', ':where(.border) { border: 1px solid; } :where(.border .label) { color: red; } :where(.border, .border .label) { opacity: .5; }');
+        const graph = await compileStyle('/styles/link.module.css', createHost(files), { hostExport: 'link' });
+        const defaults = graph.find((module) => module.id === '/styles/border.module.css');
+        expect(defaults.css).toContain(`:host(:where(.${defaults.exports.border}))`);
+        expect(defaults.css).toContain(`:where(.${defaults.exports.border} .${defaults.exports.label})`);
+        expect(defaults.css).not.toContain(`:host(:where(.${defaults.exports.border} .${defaults.exports.label}))`);
+        expect(defaults.css).toContain(`:where(.${defaults.exports.border}, .${defaults.exports.border} .${defaults.exports.label})`);
+    });
+
     it('projects composed roots, keeps descendant classes and composes original source maps', async () => {
         const files = new Map(sources);
         files.set('/styles/link.module.css', `.link { composes: border from "./border.module.css"; &[popover]:not(:popover-open) { display: none; } &::before { content: ''; } } .link:hover > .label { color: red; }`);

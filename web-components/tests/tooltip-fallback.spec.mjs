@@ -31,11 +31,17 @@ const supportsNamedTry = typeof CSS !== 'undefined'
     && CSS.supports('position-try-fallbacks: --x');
 
 describe('<neon-tooltip> placement fallback', () => {
+    let documentReset;
+
     beforeEach(() => {
         document.body.innerHTML = '';
+        documentReset = document.createElement('style');
+        documentReset.textContent = '* { margin: 0; }';
+        document.head.append(documentReset);
     });
 
     afterEach(() => {
+        documentReset.remove();
         document.body.innerHTML = '';
         document.body.style.minHeight = '';
         window.scrollTo(0, 0);
@@ -56,6 +62,7 @@ describe('<neon-tooltip> placement fallback', () => {
         const popRect = tip.getBoundingClientRect();
         const triggerRect = btn.getBoundingClientRect();
         expect(popRect.left).toBeGreaterThanOrEqual(triggerRect.right);
+        await expect.poll(() => tip.getBoundingClientRect().left - btn.getBoundingClientRect().right).toBeCloseTo(8, 1);
     });
 
     it.skipIf(!supportsNamedTry)('flips to bottom when there is no room on top', async () => {
@@ -71,6 +78,7 @@ describe('<neon-tooltip> placement fallback', () => {
         const popRect = tip.getBoundingClientRect();
         const triggerRect = btn.getBoundingClientRect();
         expect(popRect.top).toBeGreaterThanOrEqual(triggerRect.bottom);
+        await expect.poll(() => tip.getBoundingClientRect().top - btn.getBoundingClientRect().bottom).toBeCloseTo(8, 1);
     });
 
     it('keeps top placement under a fixed-position trigger', async () => {
@@ -101,5 +109,28 @@ describe('<neon-tooltip> placement fallback', () => {
             return Math.abs(popover.bottom + 8 - anchor.top);
         }).toBeLessThan(1);
     });
+
+    for (const placement of ['top', 'right', 'bottom', 'left']) {
+        it(`preserves the ${placement} anchor gap under a document margin reset`, async () => {
+            const trigger = mount(`<button>Anchor<neon-tooltip placement="${placement}">Tooltip</neon-tooltip></button>`, {
+                position: 'fixed', left: '200px', top: '300px',
+            });
+            const tooltip = trigger.querySelector('neon-tooltip');
+            tooltip.showPopover();
+            const gap = () => {
+                const anchor = trigger.getBoundingClientRect();
+                const bubble = tooltip.getBoundingClientRect();
+                return {
+                    top: anchor.top - bubble.bottom,
+                    right: bubble.left - anchor.right,
+                    bottom: bubble.top - anchor.bottom,
+                    left: anchor.left - bubble.right,
+                }[placement];
+            };
+            await expect.poll(gap).toBeCloseTo(8, 1);
+            tooltip.style.setProperty('--neon-spacing', '0.5rem');
+            await expect.poll(gap).toBeCloseTo(16, 1);
+        });
+    }
 
 });

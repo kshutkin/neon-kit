@@ -34,8 +34,10 @@ pseudo-elements outside that function. Descendant selectors retain their scoped
 classes. Base sheets without those classes remain identical and shareable.
 Source maps continue to refer to authored source text.
 
-This projection expects the root class directly in the leading compound;
-it does not infer host ownership from arbitrary ancestor selectors or classes
+This projection accepts the root class directly in the leading compound or
+inside `:where()` when its argument is a compound selector. Zero-specificity
+defaults remain weaker than the component root after projection. It does not
+infer host ownership from arbitrary ancestor selectors or classes
 nested inside `:is()`. Components with generated internal wrappers use ordinary
 native imports instead.
 

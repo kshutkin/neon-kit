@@ -1,6 +1,7 @@
 @import './tokens.css';
-/* Core structural block for elevated box items like panels and buttons */
-.panel {
+/* Structural defaults for composed components. Keep them weaker than each
+   component's own class, even when another module emits these defaults later. */
+:where(.panel) {
     position: relative;
     display: inline-block;
     border-radius: 0.25rem;

@@ -1,4 +1,5 @@
 import styles from '@neon-kit/theme/components/menu.module.css';
+import sharedCss from '@neon-kit/theme/shared.module.css?inline';
 import { classSelector } from '@neon-kit/core/utils';
 const styledSelector = (selector) => selector.replace(/\.([\w-]+)/g, (_, name) => classSelector(styles[name] ?? name));
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -83,6 +84,46 @@ describe('Menu JSX component', () => {
         expect(menuElement.getAttribute('aria-labelledby')).toBe(triggerElement.id);
         expect(item.getAttribute('role')).toBe('menuitem');
         expect(item.getAttribute('tabindex')).toBe('0');
+    });
+
+    it('keeps labels and end adornments aligned when shared defaults load last', () => {
+        const shortcut = document.createElement('span');
+        shortcut.className = styles.menu__shortcut;
+        shortcut.textContent = '⌘N';
+        const chevron = document.createElement('span');
+        chevron.className = styles.menu__chevron;
+        chevron.textContent = '›';
+        let items;
+        const { menuElement } = mountMenu(() => {
+            items = [
+                MenuItem({ children: ['New file', shortcut] }),
+                MenuItem({ children: 'Open' }),
+                MenuItem({ children: ['Export as', chevron] }),
+            ];
+            const group = document.createElement('div');
+            group.className = styles.menu__group;
+            group.append(...items);
+            return group;
+        });
+        const lateDefaults = document.createElement('style');
+        lateDefaults.textContent = sharedCss;
+        document.head.append(lateDefaults);
+        try {
+            menuElement.showPopover();
+            expect(getComputedStyle(menuElement).display).toBe('grid');
+            expect(getComputedStyle(menuElement).padding).toBe('0px');
+            const labels = items.map((item) => {
+                const range = document.createRange();
+                range.selectNodeContents(document.createTreeWalker(item, NodeFilter.SHOW_TEXT).nextNode());
+                return range.getBoundingClientRect();
+            });
+            expect(labels[1].left).toBeCloseTo(labels[0].left, 1);
+            expect(labels[2].left).toBeCloseTo(labels[0].left, 1);
+            expect(items[0].getBoundingClientRect().height).toBe(items[1].getBoundingClientRect().height);
+            expect(shortcut.getBoundingClientRect().right).toBeCloseTo(chevron.getBoundingClientRect().right, 1);
+        } finally {
+            lateDefaults.remove();
+        }
     });
 
     it('moves focus in DOM order and includes disabled items', async () => {

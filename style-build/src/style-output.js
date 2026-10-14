@@ -15,6 +15,20 @@ export function rewriteStyleUrls(module, replacements) {
     });
 }
 
+/** @param {import('lightningcss').Selector} compound @param {Set<string>} classes */
+function containsHostClass(compound, classes) {
+    return compound.some((part) => {
+        let matches = part.type === 'class' && classes.has(part.name);
+        if (part.type === 'pseudo-class' && part.kind === 'where') {
+            matches = part.selectors.every((selector) =>
+                selector.every((component) => component.type !== 'combinator'))
+                && part.selectors.some((selector) =>
+                    selector.some((component) => component.type === 'class' && classes.has(component.name)));
+        }
+        return matches;
+    });
+}
+
 /** Project a component root and its composed classes onto the shadow host.
  * @param {{ id: string, css: string, map?: string }} module
  * @param {Set<string>} classes
@@ -28,7 +42,7 @@ export function projectStyleHost(module, classes) {
             const boundary = selector.findIndex((part) => part.type === 'combinator');
             const compound = boundary < 0 ? selector : selector.slice(0, boundary);
             let result = selector;
-            if (compound.some((part) => part.type === 'class' && classes.has(part.name))) {
+            if (containsHostClass(compound, classes)) {
                 const pseudoElement = compound.findIndex((part) => part.type === 'pseudo-element');
                 const host = pseudoElement < 0 ? compound : compound.slice(0, pseudoElement);
                 const suffix = pseudoElement < 0 ? [] : compound.slice(pseudoElement);
