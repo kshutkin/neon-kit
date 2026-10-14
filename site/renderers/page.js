@@ -60,10 +60,16 @@ content.addEventListener('submit', (event) => {
     }
 });
 bindAuthoredStyles(content);
+addEventListener('message', (event) => {
+    if (event.source === window.parent && event.origin === location.origin) {
+        if (event.data?.type === 'neon-docs:theme') {
+            syncPageTheme();
+        } else if (event.data?.type === 'neon-docs:measure') {
+            reportHeight();
+        }
+    }
+});
 syncPageTheme();
-if (window.parent !== window) {
-    new MutationObserver(syncPageTheme).observe(window.parent.document.documentElement, { attributes: true, attributeFilter: ['style'] });
-}
 if (slug.startsWith('wc-')) {
     await import('../wc.js');
 } else if (slug === 'jsx-menu') {
@@ -81,10 +87,5 @@ new MutationObserver(() => bindAuthoredStyles(content)).observe(content, { child
 function reportHeight() {
     window.parent.postMessage({ type: 'neon-docs:height', height: document.body.scrollHeight }, location.origin);
 }
-addEventListener('message', (event) => {
-    if (event.source === window.parent && event.origin === location.origin && event.data?.type === 'neon-docs:measure') {
-        reportHeight();
-    }
-});
 new ResizeObserver(reportHeight).observe(document.body);
 window.rendererReady = true;

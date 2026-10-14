@@ -293,6 +293,11 @@
                 frame.style.height = `${Math.max(400, event.data.height)}px`;
             }
         });
+        // Keep theme observation in this document so removed frames can be collected.
+        new MutationObserver(() => {
+            const frame = contentInner.querySelector('iframe[data-renderer-example]');
+            frame?.contentWindow?.postMessage({ type: 'neon-docs:theme' }, location.origin);
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
         addEventListener('popstate', render);
         render();
 
