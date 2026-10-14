@@ -1,68 +1,6 @@
 @import './tokens.css';
 
 :where(:root) {
-    /* Document defaults are public variables. Shadow roots keep their own
-       private defaults so an inherited public override remains optional. */
-    --neon-font-sans: var(--_font-sans);
-    --neon-color-white: var(--_color-white);
-    --neon-color-blue: var(--_color-blue);
-    --neon-color-green: var(--_color-green);
-    --neon-color-pink: var(--_color-pink);
-    --neon-color-yellow: var(--_color-yellow);
-    --neon-color-orange: var(--_color-orange);
-    --neon-color-red: var(--_color-red);
-    --neon-neutral-hue: var(--_neutral-hue);
-    --neon-neutral-chroma: var(--_neutral-chroma);
-    --neon-surface-chroma: var(--_surface-chroma);
-    --neon-color-neutral: var(--_color-neutral);
-    --neon-color-ink-primary: var(--_color-ink-primary);
-    --neon-color-ink-secondary: var(--_color-ink-secondary);
-    --neon-color-ink-muted: var(--_color-ink-muted);
-    --neon-color-ink-inverse: var(--_color-ink-inverse);
-    --neon-color-surface: var(--_color-surface);
-    --neon-color-surface-secondary: var(--_color-surface-secondary);
-    --neon-color-surface-hover: var(--_color-surface-hover);
-    --neon-color-surface-active: var(--_color-surface-active);
-    --neon-color-surface-disabled: var(--_color-surface-disabled);
-    --neon-primary-lightness: var(--_primary-lightness);
-    --neon-primary-chroma: var(--_primary-chroma);
-    --neon-primary-hue: var(--_primary-hue);
-    --neon-accent-hue-offset: var(--_accent-hue-offset);
-    --neon-state-chroma-scale: var(--_state-chroma-scale);
-    --neon-color-primary: var(--_color-primary);
-    --neon-color-primary-hover: var(--_color-primary-hover);
-    --neon-color-primary-active: var(--_color-primary-active);
-    --neon-color-primary-disabled: var(--_color-primary-disabled);
-    --neon-color-border: var(--_color-border);
-    --neon-color-border-secondary: var(--_color-border-secondary);
-    --neon-color-border-primary: var(--_color-border-primary);
-    --neon-color-border-focus: var(--_color-border-focus);
-    --neon-color-border-disabled: var(--_color-border-disabled);
-    --neon-color-shadow-base: var(--_color-shadow-base);
-    --neon-color-shadow-surface-base: var(--_color-shadow-surface-base);
-    --neon-color-success: var(--_color-success);
-    --neon-color-warning: var(--_color-warning);
-    --neon-color-error: var(--_color-error);
-    --neon-color-info: var(--_color-info);
-    --neon-color-success-soft: var(--_color-success-soft);
-    --neon-color-warning-soft: var(--_color-warning-soft);
-    --neon-color-error-soft: var(--_color-error-soft);
-    --neon-color-info-soft: var(--_color-info-soft);
-    --neon-color-primary-soft-pressed: var(--_color-primary-soft-pressed);
-    --neon-color-accent: var(--_color-accent);
-    --neon-color-accent-hover: var(--_color-accent-hover);
-    --neon-color-accent-active: var(--_color-accent-active);
-    --neon-inset-shadow-highlight: var(--_inset-shadow-highlight);
-    --neon-inset-shadow-highlight-pressed: var(
-        --_inset-shadow-highlight-pressed
-    );
-    --neon-inset-shadow-pressed: var(--_inset-shadow-pressed);
-    --neon-shadow-drop: var(--_shadow-drop);
-    --neon-shadow-drop-subtle: var(--_shadow-drop-subtle);
-    --neon-text-shadow-embossed: var(--_text-shadow-embossed);
-    --neon-text-shadow-debossed: var(--_text-shadow-debossed);
-    --neon-spacing: var(--_spacing);
-
     color-scheme: light dark;
     font-family: var(--neon-font-sans, var(--_font-sans));
 }
