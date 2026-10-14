@@ -1,3 +1,6 @@
+import tooltipStyles from '@neon-kit/theme/components/tooltip.module.css';
+import buttonStyles from '@neon-kit/theme/components/button.module.css';
+import kbdStyles from '@neon-kit/theme/components/kbd.module.css';
 import { render } from '@slimlib/jsx';
 import { Tooltip } from '@neon-kit/jsx-components/tooltip';
 
@@ -18,7 +21,7 @@ function mountDemos() {
     if (basicDemo) {
         disposers.push(render(() => (
             <Tooltip content="Persists the current draft.">
-                <button type="button" class="btn">Save</button>
+                <button type="button" class={buttonStyles['btn']}>Save</button>
             </Tooltip>
         ), basicDemo));
     }
@@ -28,16 +31,16 @@ function mountDemos() {
         disposers.push(render(() => (
             <>
                 <Tooltip placement="top" content="Top placement">
-                    <button type="button" class="btn">Top</button>
+                    <button type="button" class={buttonStyles['btn']}>Top</button>
                 </Tooltip>
                 <Tooltip placement="right" content="Right placement">
-                    <button type="button" class="btn">Right</button>
+                    <button type="button" class={buttonStyles['btn']}>Right</button>
                 </Tooltip>
                 <Tooltip placement="bottom" content="Bottom placement">
-                    <button type="button" class="btn">Bottom</button>
+                    <button type="button" class={buttonStyles['btn']}>Bottom</button>
                 </Tooltip>
                 <Tooltip placement="left" content="Left placement">
-                    <button type="button" class="btn">Left</button>
+                    <button type="button" class={buttonStyles['btn']}>Left</button>
                 </Tooltip>
             </>
         ), placementDemo));
@@ -50,18 +53,18 @@ function mountDemos() {
                 placement="bottom"
                 content={
                     <>
-                        <div class="tooltip__title">Keyboard shortcut</div>
-                        <div class="tooltip__body">Open command search.</div>
-                        <div class="tooltip__meta">
-                            <span class="kbd-keys">
-                                <kbd class="kbd">⌘</kbd>
-                                <kbd class="kbd">K</kbd>
+                        <div class={tooltipStyles['tooltip__title']}>Keyboard shortcut</div>
+                        <div class={tooltipStyles['tooltip__body']}>Open command search.</div>
+                        <div class={tooltipStyles['tooltip__meta']}>
+                            <span class={kbdStyles['kbd-keys']}>
+                                <kbd class={kbdStyles['kbd']}>⌘</kbd>
+                                <kbd class={kbdStyles['kbd']}>K</kbd>
                             </span>
                         </div>
                     </>
                 }
             >
-                <button type="button" class="btn">Command search</button>
+                <button type="button" class={buttonStyles['btn']}>Command search</button>
             </Tooltip>
         ), richDemo));
     }

@@ -4,11 +4,14 @@
 import {
     attributes,
     defineElement,
+    shadowStyles,
     internals,
     props,
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
+import { sheets as iconStyles } from '@neon-kit/theme/shadow-icon.css?neon';
 import { effect, signal } from '@slimlib/store';
 import { SvgIcon } from './svg-icon.jsx';
 
@@ -24,6 +27,7 @@ import { SvgIcon } from './svg-icon.jsx';
 defineElement(
     'neon-icon',
     [
+        shadowStyles([...new Set([...shadowBase, ...iconStyles])]),
         withInternals(),
         attributes({
             label: stringAttribute,
@@ -71,7 +75,7 @@ defineElement(
 
         return () => {
             const def = state.icon || loadedIconDef();
-            return def ? SvgIcon(def) : null;
+            return def ? SvgIcon(def, { 'aria-hidden': 'true' }) : null;
         };
     },
 );

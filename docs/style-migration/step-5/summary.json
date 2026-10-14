@@ -1,0 +1,1053 @@
+{
+  "scope": "Built workspace renderer entries without source aliases; packed release checks remain step 6.",
+  "results": [
+    {
+      "consumer": "web",
+      "mode": "development",
+      "browser": "chromium",
+      "version": "147.0.7727.15",
+      "state": {
+        "fields": {
+          "choice": "a",
+          "many": "a",
+          "date": "2026-10-13",
+          "time": "09:00"
+        },
+        "labels": [
+          "label"
+        ],
+        "focus": true,
+        "valid": true,
+        "noGlobal": true,
+        "sharedBase": true,
+        "icon": "24px",
+        "iconColor": "rgb(4, 5, 6)",
+        "font": "\"Hanken Grotesk\", sans-serif",
+        "colors": [
+          "oklch(0.98 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.98 0.005 200)"
+        ]
+      }
+    },
+    {
+      "consumer": "web",
+      "mode": "development",
+      "browser": "firefox",
+      "version": "148.0.2",
+      "state": {
+        "fields": {
+          "choice": "a",
+          "many": "a",
+          "date": "2026-10-13",
+          "time": "09:00"
+        },
+        "labels": [
+          "label"
+        ],
+        "focus": true,
+        "valid": true,
+        "noGlobal": true,
+        "sharedBase": true,
+        "icon": "24px",
+        "iconColor": "rgb(4, 5, 6)",
+        "font": "\"Hanken Grotesk\", sans-serif",
+        "colors": [
+          "oklch(0.98 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.98 0.005 200)"
+        ]
+      }
+    },
+    {
+      "consumer": "web",
+      "mode": "production",
+      "browser": "chromium",
+      "version": "147.0.7727.15",
+      "state": {
+        "fields": {
+          "choice": "a",
+          "many": "a",
+          "date": "2026-10-13",
+          "time": "09:00"
+        },
+        "labels": [
+          "label"
+        ],
+        "focus": true,
+        "valid": true,
+        "noGlobal": true,
+        "sharedBase": true,
+        "icon": "24px",
+        "iconColor": "rgb(4, 5, 6)",
+        "font": "\"Hanken Grotesk\", sans-serif",
+        "colors": [
+          "oklch(0.98 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.98 0.005 200)"
+        ]
+      }
+    },
+    {
+      "consumer": "web",
+      "mode": "production",
+      "browser": "firefox",
+      "version": "148.0.2",
+      "state": {
+        "fields": {
+          "choice": "a",
+          "many": "a",
+          "date": "2026-10-13",
+          "time": "09:00"
+        },
+        "labels": [
+          "label"
+        ],
+        "focus": true,
+        "valid": true,
+        "noGlobal": true,
+        "sharedBase": true,
+        "icon": "24px",
+        "iconColor": "rgb(4, 5, 6)",
+        "font": "\"Hanken Grotesk\", sans-serif",
+        "colors": [
+          "oklch(0.98 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.15 0.005 200)",
+          "oklch(0.98 0.005 200)"
+        ]
+      }
+    },
+    {
+      "consumer": "jsx",
+      "mode": "development",
+      "browser": "chromium",
+      "version": "147.0.7727.15",
+      "state": {
+        "normalCssModules": true,
+        "plugin": false,
+        "background": "oklch(0.98 0.005 200)"
+      }
+    },
+    {
+      "consumer": "jsx",
+      "mode": "development",
+      "browser": "firefox",
+      "version": "148.0.2",
+      "state": {
+        "normalCssModules": true,
+        "plugin": false,
+        "background": "oklch(0.98 0.005 200)"
+      }
+    },
+    {
+      "consumer": "jsx",
+      "mode": "production",
+      "browser": "chromium",
+      "version": "147.0.7727.15",
+      "state": {
+        "normalCssModules": true,
+        "plugin": false,
+        "background": "oklch(0.98 0.005 200)"
+      }
+    },
+    {
+      "consumer": "jsx",
+      "mode": "production",
+      "browser": "firefox",
+      "version": "148.0.2",
+      "state": {
+        "normalCssModules": true,
+        "plugin": false,
+        "background": "oklch(0.98 0.005 200)"
+      }
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "navigation": "vanilla → web → JSX; parent theme and overrides",
+      "mode": "development",
+      "browser": "chromium"
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "development",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "navigation": "vanilla → web → JSX; parent theme and overrides",
+      "mode": "development",
+      "browser": "firefox"
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "development",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "navigation": "vanilla → web → JSX; parent theme and overrides",
+      "mode": "production",
+      "browser": "chromium"
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "production",
+      "browser": "chromium",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "light",
+      "state": {
+        "scheme": "light",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "navigation": "vanilla → web → JSX; parent theme and overrides",
+      "mode": "production",
+      "browser": "firefox"
+    },
+    {
+      "documentation": "wc-combobox",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-multicombobox",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-datepicker",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-timepicker",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-menu",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "wc-tooltip",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "icon-web-component",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-menu",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    },
+    {
+      "documentation": "jsx-tooltip",
+      "mode": "production",
+      "browser": "firefox",
+      "scheme": "dark",
+      "state": {
+        "scheme": "dark",
+        "publicClasses": 0,
+        "shadowHosts": true,
+        "vanillaSheets": 0
+      }
+    }
+  ]
+}

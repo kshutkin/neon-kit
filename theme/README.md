@@ -9,6 +9,8 @@ there is no Tailwind requirement and no public HTML class bundle in this package
 - `tokens.css`: defaults for document and shadow styling roots. Optional public
   overrides use `--neon-*` names, such as `--neon-color-border` and
   `--neon-primary-hue`; `--_*` names are internal defaults and working values.
+- `shadow-control.css` and `shadow-icon.css`: shadow-only host layout for generated
+  form controls and icons.
 - `theme.css`: document token defaults and `color-scheme: light dark` opt-in.
 - `reset-normalize.css`: document reset.
 - `shadow-base.css`: internal reset, font fallback, focus, and token defaults.

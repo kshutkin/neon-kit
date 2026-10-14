@@ -1,4 +1,5 @@
 import { DEV } from 'esm-env';
+import styles from '@neon-kit/theme/components/tooltip.module.css';
 
 import { effect } from '@slimlib/store';
 
@@ -96,18 +97,19 @@ export function Tooltip(props) {
             triggerElement,
             readPlacementProp(props.placement),
             readTriggerProp(props.trigger),
+            [styles.tooltip, Object.fromEntries(['top', 'bottom', 'left', 'right'].map((name) => [name, styles[`-${name}`]]))],
         ]);
     };
 
     const tooltipElement = /** @type {HTMLDivElement} */ (
         <div
             ref={attachTooltip}
-            class={`tooltip -${readTooltipPlacement(readPlacementProp(props.placement))}`}
+            class={`${styles.tooltip} ${styles[`-${readTooltipPlacement(readPlacementProp(props.placement))}`]}`}
             role="tooltip"
             popover="manual"
         >
             {props.content}
-            <div class="tooltip__arrow" />
+            <div class={styles.tooltip__arrow} />
         </div>
     );
 

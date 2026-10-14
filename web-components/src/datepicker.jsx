@@ -6,7 +6,7 @@
  * `value`, `defaultValue`, `min`, `max`, `step`, `required`, `disabled`,
  * `readOnly`, `valueAsNumber`, `valueAsDate`, `stepUp()` and `stepDown()`.
  *
- * Per ADR 0001 the element renders into Light DOM (no shadow root).
+ * Generated controls render in shadow DOM.
  *
  * Rewritten on `@slimlib/element`'s `defineElement` form mirroring
  * `combobox.jsx`. Public API is assigned directly onto the host inside
@@ -15,11 +15,16 @@
  * running their side effects directly in the setter.
  */
 import { DEV } from 'esm-env';
+import * as styles from '@neon-kit/theme/components/datepicker.module.css?neon';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
+import { sheets as controlStyles } from '@neon-kit/theme/shadow-control.css?neon';
+import { classSelector } from '@neon-kit/core/utils';
 
 import {
     attributes,
     booleanAttribute,
     defineElement,
+    shadowStyles,
     formAssociated,
     internals,
     onConnect,
@@ -37,6 +42,7 @@ import { effect, signal } from '@slimlib/store';
 
 import { SvgIcon } from './svg-icon.jsx';
 import {
+    connectFormLabels,
     defineBooleanProperty,
     defineFormControlApi,
     defineReadonlyProperty,
@@ -51,18 +57,18 @@ import calendar from '@neon-kit/icons/outline/calendar';
 
 let nextId = 0;
 
-const FIELD_CLASS = 'datepicker__field';
-const INPUT_CLASS = 'datepicker__input';
-const CLEAR_CLASS = 'datepicker__clear';
-const TRIGGER_CLASS = 'datepicker__trigger';
-const ICON_CLASS = 'datepicker__icon';
-const POPOVER_CLASS = 'datepicker__popover';
-const NAV_CLASS = 'datepicker__nav';
-const NAV_BUTTON_CLASS = 'datepicker__nav-btn';
-const VIEW_SWITCH_CLASS = 'datepicker__view-switch';
-const GRID_CLASS = 'datepicker__grid';
-const WEEKDAY_CLASS = 'datepicker__weekday';
-const CELL_CLASS = 'datepicker__cell';
+const FIELD_CLASS = styles['datepicker__field'];
+const INPUT_CLASS = styles['datepicker__input'];
+const CLEAR_CLASS = styles['datepicker__clear'];
+const TRIGGER_CLASS = styles['datepicker__trigger'];
+const ICON_CLASS = styles['datepicker__icon'];
+const POPOVER_CLASS = styles['datepicker__popover'];
+const NAV_CLASS = styles['datepicker__nav'];
+const NAV_BUTTON_CLASS = styles['datepicker__nav-btn'];
+const VIEW_SWITCH_CLASS = styles['datepicker__view-switch'];
+const GRID_CLASS = styles['datepicker__grid'];
+const WEEKDAY_CLASS = styles['datepicker__weekday'];
+const CELL_CLASS = styles['datepicker__cell'];
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_STEP_DAYS = 1;
@@ -91,7 +97,6 @@ const renderDatepicker = (host) => {
     const popoverId = `${idPrefix}-pop`;
     const anchorName = `--${idPrefix}-anchor`;
 
-    if (!host.classList.contains('datepicker')) host.classList.add('datepicker');
 
     // ---- Reactive props and state ------------------------------------
     const state = props({
@@ -257,7 +262,7 @@ const renderDatepicker = (host) => {
     };
 
     const updateValidity = () => {
-        if (!host.contains(input)) return;
+        if (!host.shadowRoot?.contains(input)) return;
         if (!willValidateNow()) {
             input.removeAttribute('aria-invalid');
             elementInternals.setValidity({});
@@ -355,13 +360,15 @@ const renderDatepicker = (host) => {
         cell.dataset.date = formatDate(dateMs);
         const { day } = partsFromDateMs(dateMs);
         cell.textContent = String(day);
-        if (muted) cell.classList.add('-muted');
+        if (muted) {
+            cell.classList.add(styles['-muted']);
+        }
         if (dateMs === todayDateMs()) {
-            cell.classList.add('-today');
+            cell.classList.add(styles['-today']);
             cell.dataset.today = '';
         }
         if (cell.dataset.date === state.value) {
-            cell.classList.add('-selected');
+            cell.classList.add(styles['-selected']);
             cell.setAttribute('aria-pressed', 'true');
         }
         if (!isDateSelectable(dateMs)) {
@@ -373,7 +380,7 @@ const renderDatepicker = (host) => {
 
     const renderDays = () => {
         const grid = document.createElement('div');
-        grid.className = `${GRID_CLASS} -days`;
+        grid.className = `${GRID_CLASS} ${styles['-days']}`;
 
         for (const weekday of WEEKDAY_SHORT) {
             const item = document.createElement('div');
@@ -403,7 +410,7 @@ const renderDatepicker = (host) => {
 
     const renderMonths = () => {
         const grid = document.createElement('div');
-        grid.className = `${GRID_CLASS} -months`;
+        grid.className = `${GRID_CLASS} ${styles['-months']}`;
         const { year } = partsFromDateMs(cursorDateMs());
         const sel = parseDate(state.value);
         const selParts = sel == null ? null : partsFromDateMs(sel);
@@ -415,9 +422,11 @@ const renderDatepicker = (host) => {
             cell.className = CELL_CLASS;
             cell.dataset.month = String(month);
             cell.textContent = MONTH_SHORT[month];
-            if (todayParts.year === year && todayParts.month === month) cell.classList.add('-today');
+            if (todayParts.year === year && todayParts.month === month) {
+                cell.classList.add(styles['-today']);
+            }
             if (selParts && selParts.year === year && selParts.month === month) {
-                cell.classList.add('-selected');
+                cell.classList.add(styles['-selected']);
                 cell.setAttribute('aria-pressed', 'true');
             }
             grid.appendChild(cell);
@@ -427,7 +436,7 @@ const renderDatepicker = (host) => {
 
     const renderYears = () => {
         const grid = document.createElement('div');
-        grid.className = `${GRID_CLASS} -years`;
+        grid.className = `${GRID_CLASS} ${styles['-years']}`;
         const { year } = partsFromDateMs(cursorDateMs());
         const startYear = year - (year % 12) - 1;
         const sel = parseDate(state.value);
@@ -441,10 +450,14 @@ const renderDatepicker = (host) => {
             cell.className = CELL_CLASS;
             cell.dataset.year = String(cellYear);
             cell.textContent = String(cellYear);
-            if (i === 0 || i > 12) cell.classList.add('-muted');
-            if (cellYear === todayYear) cell.classList.add('-today');
+            if (i === 0 || i > 12) {
+                cell.classList.add(styles['-muted']);
+            }
+            if (cellYear === todayYear) {
+                cell.classList.add(styles['-today']);
+            }
             if (cellYear === selYear) {
-                cell.classList.add('-selected');
+                cell.classList.add(styles['-selected']);
                 cell.setAttribute('aria-pressed', 'true');
             }
             grid.appendChild(cell);
@@ -485,13 +498,13 @@ const renderDatepicker = (host) => {
     const setValueFromString = (raw, opts) => applyValue(normalizeValue(raw), opts);
 
     const dispatchInput = () => {
-        host.dispatchEvent(new Event('input', { bubbles: true }));
+        host.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     };
 
     const dispatchChangeIfNeeded = () => {
         if (lastCommittedValue === state.value) return;
         lastCommittedValue = state.value;
-        host.dispatchEvent(new Event('change', { bubbles: true }));
+        host.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     };
 
     const commitInputValue = () => {
@@ -547,7 +560,7 @@ const renderDatepicker = (host) => {
             : null;
         const target = selectedCell
             ?? popover.querySelector('[data-today]')
-            ?? popover.querySelector(`.${CELL_CLASS}:not(:disabled)`);
+            ?? popover.querySelector(`${classSelector(CELL_CLASS)}:not(:disabled)`);
         if (target instanceof HTMLElement) target.focus();
     };
 
@@ -671,16 +684,16 @@ const renderDatepicker = (host) => {
             return;
         }
         const target = /** @type {Element | null} */ (e.target);
-        const cell = /** @type {HTMLElement | null} */ (target?.closest(`.${CELL_CLASS}`) ?? null);
+        const cell = /** @type {HTMLElement | null} */ (target?.closest(`${classSelector(CELL_CLASS)}`) ?? null);
         if (!cell) return;
         const grid = cell.parentElement;
         if (!grid) return;
         const cells = /** @type {HTMLElement[]} */ (
-            Array.from(grid.querySelectorAll(`.${CELL_CLASS}:not(:disabled)`))
+            Array.from(grid.querySelectorAll(`${classSelector(CELL_CLASS)}:not(:disabled)`))
         );
         const index = cells.indexOf(cell);
         if (index === -1) return;
-        const columns = grid.classList.contains('-days') ? 7 : 4;
+        const columns = grid.classList.contains(styles['-days']) ? 7 : 4;
         const isRtl = getComputedStyle(grid).direction === 'rtl';
         const left = isRtl ? 1 : -1;
         const right = -left;
@@ -825,7 +838,10 @@ const renderDatepicker = (host) => {
     });
 
     // ---- Lifecycle wiring -----------------------------------------
+    /** @type {(() => void) | undefined} */
+    let disconnectLabels;
     onConnect(() => {
+        disconnectLabels = connectFormLabels(host, elementInternals, input);
         const ac = new AbortController();
         listeners = ac;
         const opts = { signal: ac.signal };
@@ -841,6 +857,8 @@ const renderDatepicker = (host) => {
     });
 
     onDisconnect(() => {
+        disconnectLabels?.();
+        disconnectLabels = undefined;
         listeners?.abort();
         listeners = null;
     });
@@ -861,7 +879,7 @@ const renderDatepicker = (host) => {
         }
     });
 
-    return [fieldEl, popover];
+    return <div class={styles.datepicker}>{fieldEl}{popover}</div>;
 };
 
 // ---- Date helpers --------------------------------------------------
@@ -1006,6 +1024,7 @@ defineElement(
             autocomplete: [stringAttribute[0]],
             'data-clearable': [booleanAttribute[0]],
         }),
+        shadowStyles([...new Set([...shadowBase, ...controlStyles, ...styles.sheets])]),
         withInternals(),
         withValidation(),
         formAssociated(),

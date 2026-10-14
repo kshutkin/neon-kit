@@ -95,6 +95,9 @@ importers:
       '@neon-kit/core':
         specifier: workspace:*
         version: link:../core
+      '@neon-kit/theme':
+        specifier: workspace:*
+        version: link:../theme
       '@slimlib/jsx':
         specifier: ^0.5.0
         version: 0.5.0(@slimlib/store@2.2.2)
@@ -175,6 +178,9 @@ importers:
       '@neon-kit/core':
         specifier: workspace:*
         version: link:../core
+      '@neon-kit/theme':
+        specifier: workspace:*
+        version: link:../theme
       '@slimlib/element':
         specifier: ^0.5.0
         version: 0.5.0(@slimlib/jsx@0.5.0(@slimlib/store@2.2.2))(@slimlib/store@2.2.2)
@@ -191,6 +197,9 @@ importers:
       '@neon-kit/icons':
         specifier: workspace:*
         version: link:../icons
+      '@neon-kit/style-build':
+        specifier: workspace:*
+        version: link:../style-build
       '@rollup-extras/plugin-clean':
         specifier: ^2.0.1
         version: 2.0.1(rollup@4.60.4)

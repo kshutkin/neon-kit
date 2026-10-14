@@ -42,3 +42,8 @@ export function isFocusable(element, flags = 0) {
         && (tabindex !== null
             || element.matches('button, a[href], area[href], input, select, textarea, summary, iframe, audio[controls], video[controls], [contenteditable=""], [contenteditable="true"]'));
 }
+
+/** @param {string} classes @returns {string} */
+export function classSelector(classes) {
+    return classes.trim().split(/\s+/).filter(Boolean).map((name) => `.${CSS.escape(name)}`).join('');
+}

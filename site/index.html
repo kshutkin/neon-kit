@@ -63,10 +63,7 @@
     <script src="./combobox.js" type="module"></script>
     <script src="./datepicker.js" type="module"></script>
     <script src="./timepicker.js" type="module"></script>
-    <script src="./jsx-menu.jsx" type="module"></script>
-    <script src="./jsx-tooltip.jsx" type="module"></script>
     <script src="./icons.js" type="module"></script>
-    <script src="./wc.js" type="module"></script>
     <script type="module">
         const fragments = import.meta.glob('./sections/*.html', { query: '?raw', import: 'default', eager: true });
 
@@ -223,7 +220,15 @@
             // Skip overwriting innerHTML on initial render if the page was prerendered
             // with content already in place — avoids a flash.
             if (!(firstRender && contentInner.children.length > 0)) {
-                contentInner.innerHTML = fragmentFor(slug) ?? '';
+                contentInner.innerHTML = slug.startsWith('wc-') || slug.startsWith('jsx-') || slug === 'icon-web-component'
+                    ? `<iframe data-renderer-example title="${routes[slug].title}" src="${BASE}renderers/index.html?component=${encodeURIComponent(slug)}" style="width:100%;height:1000px;border:0;display:block"></iframe>`
+                    : fragmentFor(slug) ?? '';
+            }
+            const frame = contentInner.querySelector('iframe[data-renderer-example]');
+            if (frame) {
+                const measure = () => frame.contentWindow?.postMessage({ type: 'neon-docs:measure' }, location.origin);
+                frame.onload = measure;
+                measure();
             }
             firstRender = false;
             setActiveLink(slug);
@@ -282,6 +287,12 @@
             }
         });
 
+        addEventListener('message', (event) => {
+            const frame = contentInner.querySelector('iframe[data-renderer-example]');
+            if (frame && event.source === frame.contentWindow && event.origin === location.origin && event.data?.type === 'neon-docs:height' && Number.isFinite(event.data.height)) {
+                frame.style.height = `${Math.max(400, event.data.height)}px`;
+            }
+        });
         addEventListener('popstate', render);
         render();
 

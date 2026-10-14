@@ -1,21 +1,22 @@
 <main>
     <h1 class="docs-mb-6">Menu — Web Component</h1>
     <p class="docs-mb-6 docs-text-ink-secondary">
-        <code>&lt;neon-menu&gt;</code> is a Light-DOM custom element that adds
+        <code>&lt;neon-menu&gt;</code> is a shadow-DOM custom element that adds
         keyboard behavior to the theme's menu markup: a roving
         <code>tabindex</code> across <code>&lt;neon-menu-item&gt;</code> rows, arrow-key
         navigation, <code>Home</code> / <code>End</code> jump, and activation
         with <code>Enter</code> / <code>Space</code>. Disabled items (<code>[disabled]</code> or
         <code>aria-disabled="true"</code>) remain focusable but cannot be activated. See the
-        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0002-shared-css-modules-and-shadow-dom.md">rendering-mode ADR</a>.
     </p>
 
     <section class="docs-mb-8">
         <h2 class="docs-mb-4">Installation</h2>
-        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/web-components
+pnpm add -D @neon-kit/vite-plugin-style-build
 
+// Configure styleBuild() in Vite (see Getting Started).
 // In your bundle entry:
-import '@neon-kit/theme-vanilla/index.css';
 import '@neon-kit/web-components/menu';</code></pre>
     </section>
 
@@ -32,31 +33,31 @@ import '@neon-kit/web-components/menu';</code></pre>
             <button type="button" class="btn" popovertarget="wc-demo-menu">
                 Open menu
             </button>
-            <neon-menu id="wc-demo-menu" popover class="menu">
-                <neon-menu-item class="menu__item">
+            <neon-menu id="wc-demo-menu" popover >
+                <neon-menu-item >
                     New file
                     <span class="menu__shortcut kbd-keys">
                         <kbd class="kbd">⌘</kbd>
                         <kbd class="kbd">N</kbd>
                     </span>
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Open
                     <span class="menu__shortcut kbd-keys">
                         <kbd class="kbd">⌘</kbd>
                         <kbd class="kbd">O</kbd>
                     </span>
                 </neon-menu-item>
-                <neon-menu-item class="menu__item" disabled>
+                <neon-menu-item  disabled>
                     Save (disabled)
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Project Neon
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Theme tokens
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Tooltip notes
                 </neon-menu-item>
             </neon-menu>
@@ -80,35 +81,35 @@ import '@neon-kit/web-components/menu';</code></pre>
             <button type="button" class="btn" popovertarget="wc-nested-menu">
                 Open nested menu
             </button>
-            <neon-menu id="wc-nested-menu" popover class="menu">
-                <neon-menu-item class="menu__item">
+            <neon-menu id="wc-nested-menu" popover >
+                <neon-menu-item >
                     Rename
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Duplicate
                 </neon-menu-item>
                 <neon-menu-item
-                    class="menu__item"
+
                     popovertarget="wc-nested-export-menu"
                 >
                     Export as
                     <svg class="menu__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
-                    <neon-menu id="wc-nested-export-menu" popover class="menu -inline-end">
-                        <neon-menu-item class="menu__item">
+                    <neon-menu id="wc-nested-export-menu" popover placement="inline-end">
+                        <neon-menu-item >
                             PDF document
                         </neon-menu-item>
-                        <neon-menu-item class="menu__item">
+                        <neon-menu-item >
                             Markdown file
                         </neon-menu-item>
-                        <neon-menu-item class="menu__item">
+                        <neon-menu-item >
                             HTML page
                         </neon-menu-item>
                     </neon-menu>
                 </neon-menu-item>
-                <neon-menu-item class="menu__item">
+                <neon-menu-item >
                     Archive
                 </neon-menu-item>
-                <neon-menu-item class="menu__item" disabled>
+                <neon-menu-item  disabled>
                     Delete permanently
                 </neon-menu-item>
             </neon-menu>
@@ -123,8 +124,8 @@ import '@neon-kit/web-components/menu';</code></pre>
         <h2 class="docs-mb-4">API</h2>
         <p class="docs-mb-4 docs-text-ink-secondary">
             <code>&lt;neon-menu&gt;</code> is an autonomous custom element. It
-            does not create any DOM of its own — it consumes the theme's
-            <code>.menu</code> markup and adds keyboard behavior on top.
+            renders a default slot in its shadow root and owns its scoped theme
+            classes. The host remains the native popover target.
             <code>&lt;neon-menu-item&gt;</code> owns item semantics and disabled
             click suppression.
         </p>
@@ -132,11 +133,11 @@ import '@neon-kit/web-components/menu';</code></pre>
         <h3 class="docs-mb-2">Markup contract</h3>
         <p class="docs-mb-4 docs-text-ink-secondary">
             Rows must be authored as
-            <code>&lt;neon-menu-item class="menu__item"&gt;</code> descendants.
+            <code>&lt;neon-menu-item &gt;</code> descendants.
             Each menu queries its Light-DOM descendants and owns the items whose
             nearest ancestor <code>&lt;neon-menu&gt;</code> is that menu, so a nested
             <code>&lt;neon-menu&gt;</code> creates a submenu ownership boundary. The item
-            element does not render its own children, so labels, shortcuts,
+            element projects its authored children through a default slot, so labels, shortcuts,
             icons, checkmarks, and chevrons remain consumer-authored markup. One
             direct text run or unclassified element fills the label column;
             <code>.menu__label</code> is only needed to group multiple label nodes.

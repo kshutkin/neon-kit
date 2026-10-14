@@ -1,3 +1,6 @@
+import menuStyles from '@neon-kit/theme/components/menu.module.css';
+import buttonStyles from '@neon-kit/theme/components/button.module.css';
+import kbdStyles from '@neon-kit/theme/components/kbd.module.css';
 import { render, svg } from '@slimlib/jsx';
 import { Menu, MenuItem } from '@neon-kit/jsx-components/menu';
 
@@ -19,12 +22,12 @@ function mountDemos() {
         disposers.push(render(() => (
             <Menu
                 content={
-                    <div class="menu__group">
+                    <div class={menuStyles['menu__group']}>
                         <MenuItem>
                             New file
-                            <span class="menu__shortcut kbd-keys">
-                                <kbd class="kbd">⌘</kbd>
-                                <kbd class="kbd">N</kbd>
+                            <span class={`${menuStyles['menu__shortcut']} ${kbdStyles['kbd-keys']}`}>
+                                <kbd class={kbdStyles['kbd']}>⌘</kbd>
+                                <kbd class={kbdStyles['kbd']}>N</kbd>
                             </span>
                         </MenuItem>
                         <MenuItem>
@@ -36,7 +39,7 @@ function mountDemos() {
                     </div>
                 }
             >
-                <button type="button" class="btn">Actions</button>
+                <button type="button" class={buttonStyles['btn']}>Actions</button>
             </Menu>
         ), basicDemo));
     }
@@ -46,14 +49,14 @@ function mountDemos() {
         disposers.push(render(() => (
             <Menu
                 content={
-                    <div class="menu__group">
+                    <div class={menuStyles['menu__group']}>
                         <MenuItem>
                             Rename
                         </MenuItem>
                         <Menu
                             placement="inline-end"
                             content={
-                                <div class="menu__group">
+                                <div class={menuStyles['menu__group']}>
                                     <MenuItem>
                                         PDF document
                                     </MenuItem>
@@ -67,7 +70,7 @@ function mountDemos() {
                                 Export as
                                 {svg(() => (
                                     <svg
-                                        class="menu__chevron"
+                                        class={menuStyles['menu__chevron']}
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke-width="2"
@@ -89,7 +92,7 @@ function mountDemos() {
                     </div>
                 }
             >
-                <button type="button" class="btn">Project actions</button>
+                <button type="button" class={buttonStyles['btn']}>Project actions</button>
             </Menu>
         ), nestedDemo));
     }

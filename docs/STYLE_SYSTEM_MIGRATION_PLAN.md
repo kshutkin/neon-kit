@@ -2,7 +2,7 @@
 
 Status: accepted migration direction. Step 1 completed on 2026-10-07;
 steps 2 and 3 completed on 2026-10-09; step 4 completed on 2026-10-10.
-Steps 5 and 6 are pending.
+Step 5 completed on 2026-10-13; step 6 is pending.
 
 The old global selector API does not need compatibility: Neon Kit has not yet
 been released. JSX components should import their own CSS Modules through
@@ -385,9 +385,15 @@ the vanilla package.
 5. **Migrate components in dependency order.** Move generated-control
    components first, then tooltip and menu once their slot and external-target
    contracts are settled in follow-up design work. Slots and parts are not
-   build-tooling gates. Migrate JSX components to bundler-provided class maps
-   and native CSS Modules imports. Preserve form behavior and keyboard
+   build-tooling gates. Migrate JSX components to bundler-provided class maps;
+   web components use native sheet imports. Preserve form behavior and keyboard
    interaction with browser tests after each component.
+   **Completed 2026-10-13:** [component contracts, implementation, and validation](style-migration/STEP_5_COMPONENTS.md).
+   Generated controls and icons use open shadow roots. Menu and tooltip hosts
+   remain external popover targets with default slots and projected host styles.
+   WC/JSX suites, built consumers, and isolated documentation pass in Chromium
+   and Firefox. Detailed slots/parts remain deferred; packed release gates stay
+   in step 6.
 6. **Publish and cut over.** Build and pack all affected packages. Verify an
    isolated Vite consumer can load JSX styles and web components using the
    separately installed plugin, that a plain HTML page can use both the

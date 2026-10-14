@@ -2,8 +2,8 @@
  * `<neon-menu>` — keyboard navigation + roving tabindex for
  * `<neon-menu-item>` children styled by `@neon-kit/theme`.
  *
- * The element is Light DOM: it expects items to be authored as
- * `<neon-menu-item>` elements. Menu item contents remain fully
+ * Authored light-DOM items are projected through a default shadow slot
+ * as `<neon-menu-item>` elements. Menu item contents remain fully
  * consumer-authored.
  *
  * - Roving tabindex across owned `<neon-menu-item>` rows, including disabled
@@ -13,7 +13,7 @@
  * - Enter / Space activate an enabled focused item via `click()`.
  * - `role="menu"` on the host. `<neon-menu-item>` provides item role.
  *
- * Per ADR 0001 the element renders into Light DOM (no shadow root).
+ * Hosts render a default slot in shadow DOM; authored items stay in light DOM.
  */
 import {
     ContextRequestEvent,
@@ -21,6 +21,7 @@ import {
     booleanAttribute,
     createContext,
     defineElement,
+    shadowStyles,
     internals,
     onConnect,
     onDisconnect,
@@ -31,6 +32,9 @@ import {
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
+import * as menuStyles from '@neon-kit/theme/components/menu.module.css?neon&host=menu';
+import * as itemStyles from '@neon-kit/theme/components/menu.module.css?neon&host=menu__item';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
 import { queryChildren } from '@slimlib/jsx/query-children';
 import { effect } from '@slimlib/store';
 
@@ -65,6 +69,16 @@ const MenuRootContext = createContext(Symbol());
 const renderMenu = (host) => {
     const elementInternals = internals();
     elementInternals.role = 'menu';
+    host.classList.add(...menuStyles.menu.split(' '));
+    const state = props({ placement: 'block-end' });
+    effect(() => {
+        const placements = /** @type {const} */ (['block-start', 'inline-start', 'inline-end']);
+        host.classList.remove(...placements.map((name) => menuStyles[`-${name}`]));
+        const placement = placements.find((name) => name === state.placement);
+        if (placement !== undefined) {
+            host.classList.add(menuStyles[`-${placement}`]);
+        }
+    });
     const rootController = requestContext(MenuRootContext);
     /** @type {import('@slimlib/store').Signal<readonly HTMLElement[]>} */
     const itemQuery = queryChildren(/** @type {HTMLElement} */ (host), OWNED_ITEM_SELECTOR);
@@ -86,6 +100,7 @@ const renderMenu = (host) => {
         const listenerOptions = { signal: abortController.signal };
         host.addEventListener('keydown', menuController.handleKeyDown, listenerOptions);
         host.addEventListener('focusin', menuController.handleFocusIn, listenerOptions);
+        host.addEventListener('beforetoggle', /** @type {EventListener} */ (menuController.handleBeforeToggle), listenerOptions);
         host.addEventListener('toggle', /** @type {EventListener} */ ((event) => {
             labelController.sync(
                 /** @type {ToggleEvent & { source?: HTMLElement | null }} */ (event).source,
@@ -114,16 +129,18 @@ const renderMenu = (host) => {
         };
     });
 
-    return null;
+    return document.createElement('slot');
 };
 
 /**
  * Public instance type of the `<neon-menu>` element.
  *
- * @typedef {HTMLElement} NeonMenuElement
+ * @typedef {HTMLElement & { placement: string }} NeonMenuElement
  */
 
 defineElement('neon-menu', [
+    shadowStyles([...new Set([...shadowBase, ...menuStyles.sheets])]),
+    attributes({ placement: [stringAttribute[0]] }),
     withInternals(),
     rootContextProvider(MenuRootContext, () => createMenuRootController()),
 ], renderMenu);
@@ -147,6 +164,7 @@ function requestMenuRootController(host) {
 const renderMenuItem = (host) => {
     const elementInternals = internals();
     elementInternals.role = 'menuitem';
+    host.classList.add(...itemStyles.menu__item.split(' '));
 
     // Reactive attribute state. The attributes() middleware routes
     // `disabled` / `aria-disabled` / `popovertarget` changes through
@@ -262,7 +280,7 @@ const renderMenuItem = (host) => {
         };
     });
 
-    return null;
+    return document.createElement('slot');
 };
 
 /**
@@ -272,6 +290,7 @@ const renderMenuItem = (host) => {
  */
 
 defineElement('neon-menu-item', [
+    shadowStyles([...new Set([...shadowBase, ...itemStyles.sheets])]),
     withInternals(),
     attributes({
         disabled: [booleanAttribute[0]],

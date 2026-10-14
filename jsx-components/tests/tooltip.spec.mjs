@@ -1,3 +1,6 @@
+import styles from '@neon-kit/theme/components/tooltip.module.css';
+import { classSelector } from '@neon-kit/core/utils';
+const styledSelector = (selector) => selector.replace(/\.([\w-]+)/g, (_, name) => classSelector(styles[name] ?? name));
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import axe from 'axe-core';
 import { createElement, Fragment, render } from '@slimlib/jsx';
@@ -44,7 +47,7 @@ function mountTooltip(content, options = {}) {
     }), host);
     renderDisposers.push(dispose);
 
-    const tooltipElement = /** @type {HTMLElement} */ (triggerElement.querySelector('.tooltip'));
+    const tooltipElement = /** @type {HTMLElement} */ (triggerElement.querySelector(styledSelector('.tooltip')));
     return { dispose, host, tooltipElement, triggerElement };
 }
 
@@ -73,11 +76,11 @@ describe('Tooltip JSX component', () => {
         expect(tooltipElement.parentElement).toBe(triggerElement);
         expect(tooltipElement.hasAttribute('popover')).toBe(true);
         expect(tooltipElement.getAttribute('role')).toBe('tooltip');
-        expect(tooltipElement.classList.contains('tooltip')).toBe(true);
-        expect(tooltipElement.classList.contains('-top')).toBe(true);
+        expect(tooltipElement.classList.contains(styles['tooltip'] ?? 'tooltip')).toBe(true);
+        expect(tooltipElement.classList.contains(styles['-top'] ?? '-top')).toBe(true);
         expect(tooltipElement.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(triggerElement.getAttribute('aria-describedby')).toBe(tooltipElement.id);
-        expect(tooltipElement.querySelector('.tooltip__arrow')).not.toBeNull();
+        expect(tooltipElement.querySelector(styledSelector('.tooltip__arrow'))).not.toBeNull();
     });
 
     it('accepts the JSX single-child array shape for the trigger', () => {
@@ -91,7 +94,7 @@ describe('Tooltip JSX component', () => {
         }), host);
         renderDisposers.push(dispose);
 
-        const tooltipElement = /** @type {HTMLElement} */ (triggerElement.querySelector('.tooltip'));
+        const tooltipElement = /** @type {HTMLElement} */ (triggerElement.querySelector(styledSelector('.tooltip')));
         expect(host.firstElementChild).toBe(triggerElement);
         expect(tooltipElement).not.toBeNull();
         expect(triggerElement.getAttribute('aria-describedby')).toBe(tooltipElement.id);
@@ -99,9 +102,9 @@ describe('Tooltip JSX component', () => {
 
     it('renders rich non-interactive JSX content', () => {
         const content = createElement(Fragment, null,
-            createElement('div', { class: 'tooltip__title' }, 'Shortcut'),
-            createElement('p', { class: 'tooltip__body' }, 'Open command search.'),
-            createElement('div', { class: 'tooltip__meta' },
+            createElement('div', { class: styles.tooltip__title }, 'Shortcut'),
+            createElement('p', { class: styles.tooltip__body }, 'Open command search.'),
+            createElement('div', { class: styles.tooltip__meta },
                 createElement('kbd', { class: 'kbd' }, 'Ctrl'),
                 ' + ',
                 createElement('kbd', { class: 'kbd' }, 'K'),
@@ -109,8 +112,8 @@ describe('Tooltip JSX component', () => {
         );
         const { tooltipElement } = mountTooltip(content);
 
-        expect(tooltipElement.querySelector('.tooltip__title')?.textContent).toBe('Shortcut');
-        expect(tooltipElement.querySelector('.tooltip__body')?.textContent).toBe('Open command search.');
+        expect(tooltipElement.querySelector(styledSelector('.tooltip__title'))?.textContent).toBe('Shortcut');
+        expect(tooltipElement.querySelector(styledSelector('.tooltip__body'))?.textContent).toBe('Open command search.');
         expect(tooltipElement.querySelectorAll('button, a[href], input, select, textarea')).toHaveLength(0);
     });
 
@@ -118,12 +121,12 @@ describe('Tooltip JSX component', () => {
         for (const placement of ['top', 'right', 'bottom', 'left']) {
             document.body.innerHTML = '';
             const { tooltipElement } = mountTooltip('Hint.', { placement });
-            expect(tooltipElement.classList.contains(`-${placement}`)).toBe(true);
+            expect(tooltipElement.classList.contains(styles[`-${placement}`] ?? `-${placement}`)).toBe(true);
         }
 
         document.body.innerHTML = '';
         const { tooltipElement } = mountTooltip('Hint.', { placement: 'somewhere' });
-        expect(tooltipElement.classList.contains('-top')).toBe(true);
+        expect(tooltipElement.classList.contains(styles['-top'] ?? '-top')).toBe(true);
     });
 
     it('updates placement and trigger when reactive props change', async () => {
@@ -135,10 +138,10 @@ describe('Tooltip JSX component', () => {
             trigger,
         });
 
-        expect(tooltipElement.classList.contains('-top')).toBe(true);
+        expect(tooltipElement.classList.contains(styles['-top'] ?? '-top')).toBe(true);
         placement.set('bottom');
         await tick();
-        expect(tooltipElement.classList.contains('-bottom')).toBe(true);
+        expect(tooltipElement.classList.contains(styles['-bottom'] ?? '-bottom')).toBe(true);
 
         triggerElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         expect(tooltipElement.matches(':popover-open')).toBe(true);
@@ -313,8 +316,8 @@ describe('Tooltip JSX component', () => {
 
     it('has no axe violations for a rich informational tooltip', async () => {
         mountTooltip(createElement(Fragment, null,
-            createElement('div', { class: 'tooltip__title' }, 'Shortcut'),
-            createElement('p', { class: 'tooltip__body' }, 'Open command search.'),
+            createElement('div', { class: styles.tooltip__title }, 'Shortcut'),
+            createElement('p', { class: styles.tooltip__body }, 'Open command search.'),
             createElement('kbd', { class: 'kbd' }, 'Ctrl + K'),
         ));
 

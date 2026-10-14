@@ -1,0 +1,3 @@
+/* Icon size and color follow the surrounding text. */
+:host { display: inline-flex; inline-size: 1em; block-size: 1em; color: inherit; font: inherit; vertical-align: middle; }
+svg { inline-size: 100%; block-size: 100%; }

@@ -50,6 +50,18 @@ exact ambient declarations. Relative names use suffix patterns; two different
 sources sharing a pattern are rejected. Use package-qualified imports to avoid
 that ambiguity.
 
+For a component root on the shadow host, select its export:
+
+```js
+import { menu, sheets } from '@neon-kit/theme/components/menu.module.css?neon&host=menu';
+```
+
+The compiler projects that root and its composed helper classes onto `:host(...)`.
+Apply the returned class string to the host and adopt the sheets in its shadow
+root. Nested states and host pseudo-elements are preserved. Host variants have
+separate cache identities and CSS assets; unchanged base sheets remain shared.
+This allows a menu or tooltip host to remain an externally targeted popover.
+
 ## Assets and source maps
 
 Native CSS stays in distinct shared assets. Generated JS facades contain native

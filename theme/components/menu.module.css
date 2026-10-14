@@ -37,6 +37,9 @@
 */
 
 .menu {
+    box-sizing: border-box;
+    font-family: var(--neon-font-sans, var(--_font-sans));
+    line-height: 1.5;
     composes: panel from '../shared.module.css';
     margin: calc(var(--neon-spacing, var(--_spacing)) * 0);
     padding: calc(var(--neon-spacing, var(--_spacing)) * 0);

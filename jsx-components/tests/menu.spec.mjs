@@ -1,3 +1,6 @@
+import styles from '@neon-kit/theme/components/menu.module.css';
+import { classSelector } from '@neon-kit/core/utils';
+const styledSelector = (selector) => selector.replace(/\.([\w-]+)/g, (_, name) => classSelector(styles[name] ?? name));
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import axe from 'axe-core';
 import { render } from '@slimlib/jsx';
@@ -44,7 +47,7 @@ function mountMenu(createContent, options = {}) {
         placement: options.placement,
     }), host);
     renderDisposers.push(dispose);
-    const menuElement = /** @type {HTMLElement} */ (host.querySelector('.menu'));
+    const menuElement = /** @type {HTMLElement} */ (host.querySelector(styledSelector('.menu')));
     return { dispose, host, menuElement, triggerElement };
 }
 
@@ -124,7 +127,7 @@ describe('Menu JSX component', () => {
         });
         await nextTask();
         const addedItem = document.createElement('button');
-        addedItem.className = 'menu__item';
+        addedItem.className = styles.menu__item;
         addedItem.textContent = 'Charlie';
 
         menuElement.append(addedItem);
@@ -180,15 +183,15 @@ describe('Menu JSX component', () => {
         }, { placement });
 
         expect(item.hasAttribute('aria-disabled')).toBe(false);
-        expect(menuElement.classList.contains('-block-start')).toBe(true);
+        expect(menuElement.classList.contains(styles['-block-start'] ?? '-block-start')).toBe(true);
 
         disabled.set(true);
         placement.set('inline-end');
         await Promise.resolve();
 
         expect(item.getAttribute('aria-disabled')).toBe('true');
-        expect(menuElement.classList.contains('-block-start')).toBe(false);
-        expect(menuElement.classList.contains('-inline-end')).toBe(true);
+        expect(menuElement.classList.contains(styles['-block-start'] ?? '-block-start')).toBe(false);
+        expect(menuElement.classList.contains(styles['-inline-end'] ?? '-inline-end')).toBe(true);
     });
 
     it('opens from its trigger and focuses the first item', async () => {
@@ -342,7 +345,7 @@ describe('Menu JSX component', () => {
         renderDisposers.push(dispose);
 
         expect(host.textContent).toBe('Actions');
-        expect(host.querySelector('.menu')).toBeNull();
+        expect(host.querySelector(styledSelector('.menu'))).toBeNull();
         expect(debug).toHaveBeenCalledWith(
             'Menu: expected exactly one HTMLButtonElement child to use as the trigger.',
             'Actions',

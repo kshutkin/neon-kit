@@ -8,7 +8,7 @@
  * By default values are `HH:MM`; add the boolean `seconds` attribute to
  * accept and display `HH:MM:SS`.
  *
- * Light DOM only - see docs/adr/0001-rendering-mode.md.
+ * Generated controls render in shadow DOM.
  *
  * Rebuilt on `@slimlib/element`'s `defineElement` form mirroring
  * `combobox.jsx`. Public API is assigned directly onto the host inside
@@ -17,11 +17,17 @@
  * running their side effects directly in the setter.
  */
 import { DEV } from 'esm-env';
+import * as comboStyles from '@neon-kit/theme/components/combobox.module.css?neon';
+import * as styles from '@neon-kit/theme/components/timepicker.module.css?neon';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
+import { sheets as controlStyles } from '@neon-kit/theme/shadow-control.css?neon';
+import { classSelector } from '@neon-kit/core/utils';
 
 import {
     attributes,
     booleanAttribute,
     defineElement,
+    shadowStyles,
     formAssociated,
     internals,
     onConnect,
@@ -39,6 +45,7 @@ import { effect, signal } from '@slimlib/store';
 
 import { SvgIcon } from './svg-icon.jsx';
 import {
+    connectFormLabels,
     defineBooleanProperty,
     defineFormControlApi,
     defineReadonlyProperty,
@@ -52,17 +59,17 @@ import clock from '@neon-kit/icons/outline/clock';
 
 let nextId = 0;
 
-const FIELD_CLASS = 'timepicker__field';
-const INPUT_CLASS = 'timepicker__input';
-const CLEAR_CLASS = 'timepicker__clear';
-const TRIGGER_CLASS = 'timepicker__trigger';
-const ICON_CLASS = 'timepicker__icon';
-const POPOVER_CLASS = 'timepicker__popover';
-const LIST_CLASS = 'timepicker__list';
-const OPTION_CLASS = 'combobox__option';
-const OPTION_LABEL_CLASS = 'combobox__option-label';
-const OPTION_CHECK_CLASS = 'combobox__option-check';
-const EMPTY_CLASS = 'combobox__empty';
+const FIELD_CLASS = styles['timepicker__field'];
+const INPUT_CLASS = styles['timepicker__input'];
+const CLEAR_CLASS = styles['timepicker__clear'];
+const TRIGGER_CLASS = styles['timepicker__trigger'];
+const ICON_CLASS = styles['timepicker__icon'];
+const POPOVER_CLASS = styles['timepicker__popover'];
+const LIST_CLASS = styles['timepicker__list'];
+const OPTION_CLASS = styles['combobox__option'];
+const OPTION_LABEL_CLASS = styles['combobox__option-label'];
+const OPTION_CHECK_CLASS = styles['combobox__option-check'];
+const EMPTY_CLASS = comboStyles.combobox__empty;
 
 const DEFAULT_STEP_SECONDS = 60;
 const DAY_SECONDS = 24 * 60 * 60;
@@ -84,7 +91,6 @@ const renderTimepicker = (host) => {
     const listId = `${idPrefix}-list`;
     const anchorName = `--${idPrefix}-anchor`;
 
-    if (!host.classList.contains('timepicker')) host.classList.add('timepicker');
 
     // ---- Reactive props and state -----------------------------------
     const state = props({
@@ -173,7 +179,8 @@ const renderTimepicker = (host) => {
 
     const resolveList = () => {
         if (!state.list) return null;
-        const el = host.ownerDocument.getElementById(state.list);
+        const root = host.getRootNode();
+        const el = root instanceof Document || root instanceof ShadowRoot ? root.getElementById(state.list) : null;
         return el instanceof HTMLDataListElement ? el : null;
     };
 
@@ -270,7 +277,7 @@ const renderTimepicker = (host) => {
     };
 
     const updateValidity = () => {
-        if (!host.contains(input)) return;
+        if (!host.shadowRoot?.contains(input)) return;
         if (!willValidateNow()) {
             input.removeAttribute('aria-invalid');
             elementInternals.setValidity({});
@@ -370,10 +377,10 @@ const renderTimepicker = (host) => {
     const setActive = (row) => {
         if (activeId) {
             const previous = listEl.querySelector(`#${cssEscape(activeId)}`);
-            previous?.classList.remove('-active');
+            previous?.classList.remove(comboStyles['-active']);
         }
         if (row) {
-            row.classList.add('-active');
+            row.classList.add(comboStyles['-active']);
             activeId = row.id;
             input.setAttribute('aria-activedescendant', row.id);
             scrollRowIntoList(row, 'nearest');
@@ -484,13 +491,13 @@ const renderTimepicker = (host) => {
     };
 
     const dispatchInput = () => {
-        host.dispatchEvent(new Event('input', { bubbles: true }));
+        host.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     };
 
     const dispatchChangeIfNeeded = () => {
         if (lastCommittedValue === state.value) return;
         lastCommittedValue = state.value;
-        host.dispatchEvent(new Event('change', { bubbles: true }));
+        host.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     };
 
     const commitInputValue = () => {
@@ -628,7 +635,7 @@ const renderTimepicker = (host) => {
     /** @param {MouseEvent} e */
     const onListClick = (e) => {
         const target = /** @type {Element | null} */ (e.target);
-        const row = /** @type {HTMLButtonElement | null} */ (target?.closest(`.${OPTION_CLASS}`) ?? null);
+        const row = /** @type {HTMLButtonElement | null} */ (target?.closest(`${classSelector(OPTION_CLASS)}`) ?? null);
         if (!row) return;
         selectRow(row);
     };
@@ -792,7 +799,10 @@ const renderTimepicker = (host) => {
     });
 
     // ---- Lifecycle wiring -----------------------------------------
+    /** @type {(() => void) | undefined} */
+    let disconnectLabels;
     onConnect(() => {
+        disconnectLabels = connectFormLabels(host, elementInternals, input);
         const ac = new AbortController();
         listeners = ac;
         const opts = { signal: ac.signal };
@@ -807,6 +817,8 @@ const renderTimepicker = (host) => {
     });
 
     onDisconnect(() => {
+        disconnectLabels?.();
+        disconnectLabels = undefined;
         listeners?.abort();
         listeners = null;
     });
@@ -827,7 +839,7 @@ const renderTimepicker = (host) => {
         }
     });
 
-    return [fieldEl, popover];
+    return <div class={styles.timepicker}>{fieldEl}{popover}</div>;
 };
 
 // ---- Time helpers --------------------------------------------------
@@ -955,6 +967,7 @@ defineElement(
             seconds: [booleanAttribute[0]],
             'data-clearable': [booleanAttribute[0]],
         }),
+        shadowStyles([...new Set([...shadowBase, ...controlStyles, ...styles.sheets])]),
         withInternals(),
         withValidation(),
         formAssociated(),

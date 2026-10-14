@@ -3,8 +3,8 @@
  * markup into a popover-based tooltip and wires its parent element as
  * the trigger.
  *
- * The element IS the popover (via the native `popover` attribute), so
- * there is no extra DOM created or torn down. The parent element is
+ * The host is the popover (via the native `popover` attribute). Its
+ * shadow root contains a default slot and the decorative arrow. The parent element is
  * the trigger; the tooltip body is whatever you put inside
  * `<neon-tooltip>`.
  *
@@ -14,7 +14,7 @@
  *   trigger     Space-separated: `hover` `focus` `click`. Defaults
  *               to `hover focus` when the attribute is absent.
  *
- * Per ADR 0001 the element renders into Light DOM (no shadow root).
+ * Authored content stays in light DOM and is projected through a default slot.
  *
  * Attribute changes flow through `props()` and normal reactive effects,
  * so placement / trigger changes commit on Slimlib's effect schedule.
@@ -22,6 +22,7 @@
 import {
     attributes,
     defineElement,
+    shadowStyles,
     internals,
     onConnect,
     onDisconnect,
@@ -29,6 +30,8 @@ import {
     stringAttribute,
     withInternals,
 } from '@slimlib/element';
+import * as styles from '@neon-kit/theme/components/tooltip.module.css?neon&host=tooltip';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
 import { effect } from '@slimlib/store';
 
 import {
@@ -38,6 +41,8 @@ import {
 } from '@neon-kit/core/tooltip';
 import { generateId } from '@neon-kit/core/utils';
 
+const placements = /** @type {const} */ (['top', 'bottom', 'left', 'right']);
+
 /**
  * @param {HTMLElement} host
  */
@@ -46,7 +51,7 @@ const renderTooltip = (host) => {
 
     host.setAttribute('popover', 'manual');
     host.id = generateId('neon-tooltip');
-    host.classList.add('tooltip');
+    host.classList.add(...styles.tooltip.split(' '));
     elementInternals.role = 'tooltip';
 
     const state = props({
@@ -65,8 +70,8 @@ const renderTooltip = (host) => {
         if (updateTooltipController) {
             updateTooltipController({ placement, trigger });
         } else {
-            host.classList.remove('-top', '-bottom', '-left', '-right');
-            host.classList.add(`-${readTooltipPlacement(placement)}`);
+            host.classList.remove(...placements.map((name) => styles[`-${name}`]));
+            host.classList.add(styles[`-${readTooltipPlacement(placement)}`]);
         }
     });
 
@@ -78,6 +83,7 @@ const renderTooltip = (host) => {
                 triggerElement,
                 state.placement,
                 state.trigger,
+                [styles.tooltip, Object.fromEntries(placements.map((name) => [name, styles[`-${name}`]]))],
             ]);
         }
     });
@@ -88,7 +94,7 @@ const renderTooltip = (host) => {
         destroyTooltipController = undefined;
     });
 
-    return <div class="tooltip__arrow" />;
+    return [<slot />, <div class={styles.tooltip__arrow} aria-hidden="true" />];
 };
 
 /**
@@ -101,6 +107,7 @@ if (isPopoverSupported()) {
     defineElement(
         'neon-tooltip',
         [
+            shadowStyles([...new Set([...shadowBase, ...styles.sheets])]),
             withInternals(),
             attributes({
                 placement: [stringAttribute[0]],

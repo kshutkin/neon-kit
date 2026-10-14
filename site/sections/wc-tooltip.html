@@ -4,16 +4,17 @@
         <code>&lt;neon-tooltip&gt;</code> is an autonomous custom element. Drop
         it inside the element you want to annotate; it turns its own markup
         into a popover styled by <code>@neon-kit/theme</code> and wires the
-        parent as the trigger. Renders Light DOM only — see the
-        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+        parent as the trigger. Its shadow root projects authored light-DOM content through a default slot — see the
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0002-shared-css-modules-and-shadow-dom.md">rendering-mode ADR</a>.
     </p>
 
     <section class="docs-mb-8">
         <h2 class="docs-mb-4">Installation</h2>
-        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/web-components
+pnpm add -D @neon-kit/vite-plugin-style-build
 
+// Configure styleBuild() in Vite (see Getting Started).
 // In your bundle entry:
-import '@neon-kit/theme-vanilla/index.css';
 import '@neon-kit/web-components/tooltip';</code></pre>
     </section>
 

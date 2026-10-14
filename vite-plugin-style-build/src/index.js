@@ -24,6 +24,16 @@ function facade(exports, imports) {
     return `${imports.map((url, index) => `import sheet${index} from ${JSON.stringify(url)} with { type: 'css' };`).join('\n')}\n${classes}\nexport const sheets = [${imports.map((url, index) => `sheet${index}`).join(',')}];`;
 }
 
+/** @param {string} source */
+function nativeRequest(source) {
+    const separator = source.indexOf('?');
+    const file = separator < 0 ? source : source.slice(0, separator);
+    const query = new URLSearchParams(separator < 0 ? '' : source.slice(separator + 1));
+    return file.endsWith('.css') && query.has('neon')
+        ? { file, hostExport: query.get('host') ?? undefined }
+        : undefined;
+}
+
 /** @typedef {{ declarations?: string }} StyleBuildOptions */
 
 /**
@@ -82,9 +92,10 @@ export function styleBuild(options = {}) {
         return new URL(path, origin).href;
     }
 
-    /** @param {string} id */
-    async function compile(id) {
-        let pending = compiledEntries.get(id);
+    /** @param {string} id @param {string | undefined} hostExport */
+    async function compile(id, hostExport) {
+        const cacheKey = `${id}\0${hostExport ?? ''}`;
+        let pending = compiledEntries.get(cacheKey);
         if (!pending) {
             pending = compileStyle(id, {
                 read: (file) => readFile(file, 'utf8'),
@@ -95,8 +106,8 @@ export function styleBuild(options = {}) {
                     }
                     return resolved;
                 },
-            }, { sourceMap: configuration.command === 'serve' ? configuration.css.devSourcemap : Boolean(configuration.build.sourcemap), projectRoot });
-            compiledEntries.set(id, pending);
+            }, { sourceMap: configuration.command === 'serve' ? configuration.css.devSourcemap : Boolean(configuration.build.sourcemap), projectRoot, hostExport });
+            compiledEntries.set(cacheKey, pending);
         }
         try {
             const modules = await pending;
@@ -107,7 +118,7 @@ export function styleBuild(options = {}) {
             entryDependencies.set(id, new Set(modules.map((module) => module.id)));
             return modules;
         } catch (error) {
-            compiledEntries.delete(id);
+            compiledEntries.delete(cacheKey);
             throw error;
         }
     }
@@ -224,8 +235,9 @@ export function styleBuild(options = {}) {
                 name: 'neon-native-style-external',
                 async resolveId(source, importer) {
                     let result;
-                    if (source.endsWith('.css?neon')) {
-                        const id = await resolveSource(source.slice(0, -5), importer);
+                    const request = nativeRequest(source);
+                    if (request !== undefined) {
+                        const id = await resolveSource(request.file, importer);
                         if (!id) {
                             throw new Error(`Cannot resolve native style import ${source}`);
                         }
@@ -258,22 +270,23 @@ export function styleBuild(options = {}) {
         },
         async resolveId(source, importer, context) {
             let result;
+            const request = nativeRequest(source);
             if (source.startsWith(assetPrefix)) {
                 result = { id: source, external: true };
             } else if (configuration.command === 'serve' && source.startsWith(`${basePath()}__neon_styles/`)) {
                 result = { id: absoluteEndpoint(source), external: true };
-            } else if (source.endsWith('.css?neon')) {
+            } else if (request !== undefined) {
                 if (context?.ssr || this.environment.config.consumer === 'server') {
                     throw new Error('Native CSS sheet imports require a browser build; SSR is not supported');
                 }
-                const resolved = await this.resolve(source.slice(0, -5), importer, { skipSelf: true });
+                const resolved = await this.resolve(request.file, importer, { skipSelf: true });
                 if (!resolved || resolved.external) {
                     throw new Error(`Cannot resolve native style import ${source}`);
                 }
                 if (configuration.command === 'serve') {
                     result = { id: absoluteEndpoint(developmentEntry(resolved.id, source)), external: true };
                 } else {
-                    const modules = await compile(resolved.id);
+                    const modules = await compile(resolved.id, request.hostExport);
                     await declare(source, modules[modules.length - 1]);
                     const imports = [];
                     for (const module of modules) {
@@ -329,7 +342,7 @@ export function styleBuild(options = {}) {
                             if (typeof entry.id !== 'string' || !entry.id.endsWith('.css') || typeof entry.specifier !== 'string' || !isFileServingAllowed(entry.id, server)) {
                                 throw new Error('Native style source is outside Vite filesystem permissions');
                             }
-                            const modules = await compile(entry.id);
+                            const modules = await compile(entry.id, nativeRequest(entry.specifier)?.hostExport);
                             await declare(entry.specifier, modules[modules.length - 1]);
                             const imports = [];
                             for (const module of modules) {
@@ -366,7 +379,9 @@ export function styleBuild(options = {}) {
                 let affected = false;
                 for (const [id, dependencies] of entryDependencies) {
                     if (dependencies.has(context.file)) {
-                        compiledEntries.delete(id);
+                        for (const key of compiledEntries.keys()) {
+                            if (key.startsWith(`${id}\0`)) { compiledEntries.delete(key); }
+                        }
                         affected = true;
                     }
                 }

@@ -9,7 +9,7 @@
     </nav>
 
     <p class="docs-mb-6 docs-text-ink-secondary">
-        <code>&lt;neon-icon&gt;</code> is a Light-DOM custom element that renders
+        <code>&lt;neon-icon&gt;</code> is a shadow-DOM custom element that renders
         <code>@neon-kit/icons</code> definitions as inline SVG. Use it when
         authoring HTML directly or when a component boundary makes a custom
         element more convenient than importing and placing SVG yourself. For
@@ -29,7 +29,7 @@ import '@neon-kit/web-components/icon';</code></pre>
         <p class="docs-mb-4 docs-text-ink-secondary">
             Set <code>name</code> to <code>&lt;variant&gt;/&lt;icon&gt;</code>, matching
             the icon package subpath layout. The element dynamic-imports the
-            requested module and renders into Light DOM so it inherits
+            requested module and renders into a shadow root and inherits
             <code>currentColor</code>.
         </p>
         <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;neon-icon name="outline/bars-3"&gt;&lt;/neon-icon&gt;

@@ -1,4 +1,4 @@
-import { transform } from 'lightningcss';
+import { Features, transform } from 'lightningcss';
 
 /**
  * Rewrite URL values through the CSS AST, composing the input source map.
@@ -8,19 +8,56 @@ import { transform } from 'lightningcss';
  * @returns {{ css: string, map?: string }}
  */
 export function rewriteStyleUrls(module, replacements) {
+    return transformStyle(module, {
+        Url(url) {
+            return { ...url, url: replacements[url.url] ?? url.url };
+        },
+    });
+}
+
+/** Project a component root and its composed classes onto the shadow host.
+ * @param {{ id: string, css: string, map?: string }} module
+ * @param {Set<string>} classes
+ */
+export function projectStyleHost(module, classes) {
+    // Expand nesting before projection: attributes outside :host(...) cannot
+    // match the shadow host, including those produced by a nested & rule.
+    const flattened = transformStyle(module, {}, { include: Features.Nesting });
+    return transformStyle({ ...module, ...flattened }, {
+        Selector(selector) {
+            const boundary = selector.findIndex((part) => part.type === 'combinator');
+            const compound = boundary < 0 ? selector : selector.slice(0, boundary);
+            let result = selector;
+            if (compound.some((part) => part.type === 'class' && classes.has(part.name))) {
+                const pseudoElement = compound.findIndex((part) => part.type === 'pseudo-element');
+                const host = pseudoElement < 0 ? compound : compound.slice(0, pseudoElement);
+                const suffix = pseudoElement < 0 ? [] : compound.slice(pseudoElement);
+                result = [
+                    { type: 'pseudo-class', kind: 'host', selectors: host },
+                    ...suffix,
+                    ...(boundary < 0 ? [] : selector.slice(boundary)),
+                ];
+            }
+            return result;
+        },
+    });
+}
+
+/** @param {{ id: string, css: string, map?: string }} module
+ * @param {import('lightningcss').Visitor<{}>} visitor
+ * @param {Partial<import('lightningcss').TransformOptions<{}>>} [options]
+ */
+function transformStyle(module, visitor, options = {}) {
     const input = module.map ? JSON.parse(module.map) : undefined;
     const result = transform({
+        ...options,
         // Use the map's logical source name so composition does not introduce
         // a second, generated source when projectRoot made it relative.
         filename: input?.sources[0] ?? module.id,
         code: Buffer.from(module.css),
         sourceMap: module.map !== undefined,
         inputSourceMap: module.map,
-        visitor: {
-            Url(url) {
-                return { ...url, url: replacements[url.url] ?? url.url };
-            },
-        },
+        visitor,
     });
     let map = result.map?.toString();
     if (map && module.map) {

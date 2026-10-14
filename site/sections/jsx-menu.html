@@ -11,7 +11,8 @@
         <h2 class="docs-mb-4">Installation</h2>
         <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/jsx-components @slimlib/jsx
 
-import '@neon-kit/theme-vanilla/index.css';
+import styles from '@neon-kit/theme/components/menu.module.css';
+import buttons from '@neon-kit/theme/components/button.module.css';
 import { Menu, MenuItem } from '@neon-kit/jsx-components/menu';</code></pre>
     </section>
 
@@ -25,14 +26,14 @@ import { Menu, MenuItem } from '@neon-kit/jsx-components/menu';</code></pre>
         <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" data-jsx-menu-demo="basic"></div>
         <pre class="docs-mt-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;Menu
     content={
-        &lt;div class="menu__group"&gt;
+        &lt;div class={styles.menu__group}&gt;
             &lt;MenuItem onClick={createFile}&gt;New file&lt;/MenuItem&gt;
             &lt;MenuItem&gt;Open&lt;/MenuItem&gt;
             &lt;MenuItem disabled&gt;Delete&lt;/MenuItem&gt;
         &lt;/div&gt;
     }
 &gt;
-    &lt;button type="button" class="btn"&gt;Actions&lt;/button&gt;
+    &lt;button type="button" class={buttons.btn}&gt;Actions&lt;/button&gt;
 &lt;/Menu&gt;</code></pre>
     </section>
 

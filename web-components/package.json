@@ -65,9 +65,9 @@
         "theme"
     ],
     "scripts": {
-        "build": "rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/web-components:.dts/index.d.ts -m @neon-kit/web-components/tooltip:.dts/tooltip.d.ts -m @neon-kit/web-components/menu:.dts/menu.d.ts -m @neon-kit/web-components/combobox:.dts/combobox.d.ts -m @neon-kit/web-components/multicombobox:.dts/multicombobox.d.ts -m @neon-kit/web-components/datepicker:.dts/datepicker.d.ts -m @neon-kit/web-components/timepicker:.dts/timepicker.d.ts -m @neon-kit/web-components/icon:.dts/icon.d.ts && node scripts/append-globals.mjs",
+        "build": "node scripts/style-types.mjs && rollup -c && tsc -p tsconfig.dts.json && dts-buddy types/index.d.ts -m @neon-kit/web-components:.dts/index.d.ts -m @neon-kit/web-components/tooltip:.dts/tooltip.d.ts -m @neon-kit/web-components/menu:.dts/menu.d.ts -m @neon-kit/web-components/combobox:.dts/combobox.d.ts -m @neon-kit/web-components/multicombobox:.dts/multicombobox.d.ts -m @neon-kit/web-components/datepicker:.dts/datepicker.d.ts -m @neon-kit/web-components/timepicker:.dts/timepicker.d.ts -m @neon-kit/web-components/icon:.dts/icon.d.ts && node scripts/append-globals.mjs",
         "prepack": "pkgprn --flatten types,dist",
-        "test": "vitest run --coverage --config ../vitest.config.js",
+        "test": "node scripts/style-types.mjs && vitest run --coverage --config ../vitest.config.js",
         "test:types": "tsc -p tsconfig.types.json"
     },
     "peerDependencies": {
@@ -78,7 +78,8 @@
     },
     "dependencies": {
         "@neon-kit/core": "workspace:*",
-        "esm-env": "^1.2.2"
+        "esm-env": "^1.2.2",
+        "@neon-kit/theme": "workspace:*"
     },
     "devDependencies": {
         "@neon-kit/icons": "workspace:*",
@@ -86,6 +87,8 @@
         "@rollup-extras/plugin-mangle": "^0.1.2",
         "@rollup/plugin-node-resolve": "^16.0.3",
         "rollup": "^4.60.4",
-        "rollup-plugin-esbuild": "^6.2.1"
-    }
+        "rollup-plugin-esbuild": "^6.2.1",
+        "@neon-kit/style-build": "workspace:*"
+    },
+    "sideEffects": true
 }

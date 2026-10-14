@@ -1,12 +1,12 @@
 import { transform } from 'lightningcss';
-import { rewriteStyleUrls } from './style-output.js';
+import { rewriteStyleUrls, projectStyleHost } from './style-output.js';
 
 /**
  * @typedef {{ id: string, kind: 'import' | 'compose' }} StyleDependency
  * @typedef {{ url: string, placeholder: string, loc: import('lightningcss').SourceLocation }} StyleUrl
  * @typedef {{ id: string, css: string, exports: Record<string, string>, dependencies: StyleDependency[], assets: string[], urls: StyleUrl[], map?: string }} CompiledStyleModule
  * @typedef {{ read(id: string): Promise<string>, resolve(specifier: string, importer: string): Promise<string> }} StyleHost
- * @typedef {{ sourceMap?: boolean, projectRoot?: string }} CompileStyleOptions
+ * @typedef {{ sourceMap?: boolean, projectRoot?: string, hostExport?: string }} CompileStyleOptions
  * @typedef {{ id: string, css: string, map?: string, sourceExports: import('lightningcss').CSSModuleExports, classNames: Set<string>, dependencies: StyleDependency[], compositionTargets: Map<string, string>, assets: string[], urls: StyleUrl[] }} SourceModule
  */
 
@@ -186,7 +186,7 @@ export async function compileStyle(entryId, host, options = {}) {
         return classString;
     }
 
-    return orderedIds.map((id) => {
+    const output = orderedIds.map((id) => {
         const module = /** @type {SourceModule} */ (modules.get(id));
         /** @type {Record<string, string>} */
         const exports = {};
@@ -197,4 +197,18 @@ export async function compileStyle(entryId, host, options = {}) {
         }
         return { id, css: module.css, exports, dependencies: module.dependencies, assets: module.assets, urls: module.urls, map: module.map };
     });
+    if (options.hostExport !== undefined) {
+        const rootClass = output.at(-1)?.exports[options.hostExport];
+        if (typeof rootClass !== 'string' || !rootClass) {
+            throw new Error(`${entryId}: missing host export ${options.hostExport}`);
+        }
+        const classes = new Set(rootClass.split(' '));
+        for (const module of output) {
+            // Leave unrelated base/token sheets intact so their identity stays shared.
+            if (Object.values(module.exports).some((value) => value.split(' ').some((name) => classes.has(name)))) {
+                Object.assign(module, projectStyleHost(module, classes));
+            }
+        }
+    }
+    return output;
 }

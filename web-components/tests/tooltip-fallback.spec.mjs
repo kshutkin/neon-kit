@@ -3,71 +3,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 // Side-effect import registers `<neon-tooltip>`.
 import '../src/tooltip.jsx';
 
-// Tooltip fallback tests need real anchor positioning + CSS flip rules.
-// Make sure a stylesheet that wires `position-area`,
-// `position-try-fallbacks` and the `.tooltip` class is loaded once. We
-// inline a Tailwind-free subset because the shipped CSS uses `@apply`
-// and `--spacing()` which the browser will not parse on its own.
-async function ensureThemeLoaded() {
-    if (document.querySelector('style[data-neon-tooltip-theme]')) return;
-    const style = document.createElement('style');
-    style.dataset.neonTooltipTheme = '';
-    style.textContent = `
-        @position-try --tooltip-flip-bottom {
-            position-area: bottom;
-            margin-block: 8px;
-            margin-inline: 0;
-        }
-        @position-try --tooltip-flip-top {
-            position-area: top;
-            margin-block: 8px;
-            margin-inline: 0;
-        }
-        @position-try --tooltip-flip-right {
-            position-area: right;
-            margin-inline: 8px;
-            margin-block: 0;
-        }
-        @position-try --tooltip-flip-left {
-            position-area: left;
-            margin-inline: 8px;
-            margin-block: 0;
-        }
-        .tooltip[popover] {
-            position: absolute;
-            margin: 0;
-            inset: auto;
-            inline-size: max-content;
-            max-inline-size: 18rem;
-            padding: 4px 8px;
-            opacity: 1;
-        }
-        .tooltip[popover].-top {
-            position-area: top;
-            margin-block: 8px;
-            position-try-fallbacks: --tooltip-flip-bottom;
-        }
-        .tooltip[popover].-bottom {
-            position-area: bottom;
-            margin-block: 8px;
-            margin-inline: 0;
-            position-try-fallbacks: --tooltip-flip-top;
-        }
-        .tooltip[popover].-left {
-            position-area: left;
-            margin-inline: 8px;
-            margin-block: 0;
-            position-try-fallbacks: --tooltip-flip-right;
-        }
-        .tooltip[popover].-right {
-            position-area: right;
-            margin-inline: 8px;
-            margin-block: 0;
-            position-try-fallbacks: --tooltip-flip-left;
-        }
-    `;
-    document.head.appendChild(style);
-}
+// Use the component's adopted sheets to validate real host anchor positioning.
+
 
 /**
  * @param {string} html
@@ -94,13 +31,14 @@ const supportsNamedTry = typeof CSS !== 'undefined'
     && CSS.supports('position-try-fallbacks: --x');
 
 describe('<neon-tooltip> placement fallback', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
         document.body.innerHTML = '';
-        await ensureThemeLoaded();
     });
 
     afterEach(() => {
         document.body.innerHTML = '';
+        document.body.style.minHeight = '';
+        window.scrollTo(0, 0);
     });
 
     it.skipIf(!supportsNamedTry)('flips to right when there is no room on the left', async () => {
@@ -135,7 +73,7 @@ describe('<neon-tooltip> placement fallback', () => {
         expect(popRect.top).toBeGreaterThanOrEqual(triggerRect.bottom);
     });
 
-    it('keeps top placement when there is room on top', async () => {
+    it('keeps top placement under a fixed-position trigger', async () => {
         const btn = mount(
             `<button>x<neon-tooltip placement="top">Hint.</neon-tooltip></button>`,
             { position: 'fixed', left: '200px', top: '300px' },
@@ -149,4 +87,19 @@ describe('<neon-tooltip> placement fallback', () => {
         const triggerRect = btn.getBoundingClientRect();
         expect(popRect.bottom).toBeLessThanOrEqual(triggerRect.top);
     });
+    it('anchors to a trigger after the document scrolls', async () => {
+        document.body.style.minHeight = '1800px';
+        const trigger = mount('<button>x<neon-tooltip>Hint.</neon-tooltip></button>', {
+            position: 'absolute', left: '200px', top: '1000px',
+        });
+        window.scrollTo(0, 700);
+        const tooltip = trigger.querySelector('neon-tooltip');
+        tooltip.showPopover();
+        await expect.poll(() => {
+            const anchor = trigger.getBoundingClientRect();
+            const popover = tooltip.getBoundingClientRect();
+            return Math.abs(popover.bottom + 8 - anchor.top);
+        }).toBeLessThan(1);
+    });
+
 });

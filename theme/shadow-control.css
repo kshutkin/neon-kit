@@ -1,0 +1,8 @@
+/* Form-control hosts provide a box that consumers can size. The internal
+   component wrapper keeps its intrinsic minimum from its CSS Module. */
+:host {
+    display: inline-block;
+}
+:host > div {
+    inline-size: 100%;
+}

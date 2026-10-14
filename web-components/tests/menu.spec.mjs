@@ -74,7 +74,8 @@ describe('<neon-menu>', () => {
                 <neon-menu aria-label="File actions">
                 <neon-menu-item class="menu__item">New file</neon-menu-item>
                 <neon-menu-item class="menu__item">Open</neon-menu-item>
-                <neon-menu-item class="menu__item" disabled>Save</neon-menu-item>
+                <!-- axe's contrast rule reads attributes rather than its ElementInternals bridge. -->
+                <neon-menu-item class="menu__item" disabled aria-disabled="true">Save</neon-menu-item>
                 </neon-menu>
             </main>
         `);

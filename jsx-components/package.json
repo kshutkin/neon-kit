@@ -48,7 +48,8 @@
     },
     "dependencies": {
         "@neon-kit/core": "workspace:*",
-        "esm-env": "^1.2.2"
+        "esm-env": "^1.2.2",
+        "@neon-kit/theme": "workspace:*"
     },
     "devDependencies": {
         "@rollup-extras/plugin-clean": "^2.0.1",
@@ -56,5 +57,8 @@
         "@rollup/plugin-node-resolve": "^16.0.3",
         "rollup": "^4.60.4",
         "rollup-plugin-esbuild": "^6.2.1"
-    }
+    },
+    "sideEffects": [
+        "**/*.css"
+    ]
 }

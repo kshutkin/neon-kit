@@ -1,3 +1,5 @@
+import * as styles from '@neon-kit/theme/components/tooltip.module.css?neon';
+import { queryInternal, queryAllInternal, styleClass, hasStyleClasses, activeElement } from './style-queries.mjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import axe from 'axe-core';
 
@@ -47,13 +49,13 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>Save<neon-tooltip>Saves the document.</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.hasAttribute('popover')).toBe(true);
-        expect(tip.classList.contains('tooltip')).toBe(true);
-        expect(tip.classList.contains('-top')).toBe(true);
+        expect(hasStyleClasses(tip, styleClass(styles, 'tooltip'))).toBe(true);
+        expect(hasStyleClasses(tip, styleClass(styles, '-top'))).toBe(true);
         expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
-        expect(tip.querySelector('.tooltip__arrow')).not.toBeNull();
+        expect(queryInternal(tip, '.tooltip__arrow', styles)).not.toBeNull();
         expect(tip.getAttribute('role')).toBeNull();
     });
 
@@ -61,7 +63,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>Save<neon-tooltip id="save-tip">Saves the document.</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(tip.id).not.toBe('save-tip');
         expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
@@ -71,24 +73,24 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip placement="right">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        expect(tip.classList.contains('-right')).toBe(true);
-        expect(tip.classList.contains('-top')).toBe(false);
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
+        expect(hasStyleClasses(tip, styleClass(styles, '-right'))).toBe(true);
+        expect(hasStyleClasses(tip, styleClass(styles, '-top'))).toBe(false);
     });
 
     it('falls back to top for unknown placement values', () => {
         const btn = mount(
             `<button>x<neon-tooltip placement="somewhere">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        expect(tip.classList.contains('-top')).toBe(true);
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
+        expect(hasStyleClasses(tip, styleClass(styles, '-top'))).toBe(true);
     });
 
     it('enforces manual popover mode', () => {
         const btn = mount(
             `<button>x<neon-tooltip popover="auto">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.getAttribute('popover')).toBe('manual');
     });
 
@@ -96,7 +98,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip><strong>Rich</strong> body</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.hasAttribute('role')).toBe(false);
     });
 
@@ -113,14 +115,14 @@ describe('<neon-tooltip>', () => {
         const link = mount(
             `<a href="#x">help<neon-tooltip>Hint.</neon-tooltip></a>`,
         );
-        const tip = /** @type {HTMLElement} */ (link.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(link, 'neon-tooltip', styles));
         expect(link.hasAttribute('popovertarget')).toBe(false);
         expect(link.getAttribute('aria-describedby')).toBe(tip.id);
     });
 
     it('cleans up parent attributes on disconnect', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         const id = tip.id;
         expect(btn.getAttribute('aria-describedby')).toBe(id);
 
@@ -132,7 +134,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button style="anchor-name: --existing">x<neon-tooltip>y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.style.getPropertyValue('position-anchor')).toBe('--existing');
 
         tip.remove();
@@ -143,7 +145,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip style="position-anchor: --custom">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.style.getPropertyValue('position-anchor')).toBe('--custom');
 
         tip.remove();
@@ -154,7 +156,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button style="anchor-name: --existing">x<neon-tooltip style="position-anchor: --custom">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(tip.style.getPropertyValue('position-anchor')).toBe('--custom');
     });
 
@@ -165,7 +167,7 @@ describe('<neon-tooltip>', () => {
         document.body.appendChild(host);
 
         shadow.appendChild(tip);
-        expect(tip.classList.contains('tooltip')).toBe(true);
+        expect(hasStyleClasses(tip, styleClass(styles, 'tooltip'))).toBe(true);
         expect(tip.id).toMatch(/^neon-tooltip-[a-z0-9]{9}$/);
         expect(tip.style.getPropertyValue('position-anchor')).toBe('');
 
@@ -174,12 +176,12 @@ describe('<neon-tooltip>', () => {
 
     it('updates placement when the attribute changes', async () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
-        expect(tip.classList.contains('-top')).toBe(true);
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
+        expect(hasStyleClasses(tip, styleClass(styles, '-top'))).toBe(true);
         tip.setAttribute('placement', 'bottom');
         await tick();
-        expect(tip.classList.contains('-bottom')).toBe(true);
-        expect(tip.classList.contains('-top')).toBe(false);
+        expect(hasStyleClasses(tip, styleClass(styles, '-bottom'))).toBe(true);
+        expect(hasStyleClasses(tip, styleClass(styles, '-top'))).toBe(false);
     });
 
     it('extends consumer-set aria-describedby and restores it on disconnect', () => {
@@ -188,8 +190,8 @@ describe('<neon-tooltip>', () => {
             <p id="external-second">Second external description.</p>
             <button aria-describedby="external-first external-second">x<neon-tooltip>y</neon-tooltip></button>
         `;
-        const btn = /** @type {HTMLButtonElement} */ (document.querySelector('button'));
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const btn = /** @type {HTMLButtonElement} */ (queryInternal(document, 'button', styles));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(btn.getAttribute('aria-describedby'))
             .toBe(`external-first external-second ${tip.id}`);
 
@@ -201,7 +203,7 @@ describe('<neon-tooltip>', () => {
         const span = mount(
             `<span tabindex="0">x<neon-tooltip trigger="click">y</neon-tooltip></span>`,
         );
-        const tip = /** @type {HTMLElement} */ (span.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(span, 'neon-tooltip', styles));
         expect(span.hasAttribute('popovertarget')).toBe(false);
 
         span.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -215,7 +217,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
@@ -229,7 +231,7 @@ describe('<neon-tooltip>', () => {
 
     it('ignores trigger show and hide events that match the current popover state', () => {
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         tip.showPopover();
         btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
@@ -243,7 +245,7 @@ describe('<neon-tooltip>', () => {
     it('opens immediately on keyboard focus', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip trigger="focus">y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
         expect(tip.matches(':popover-open')).toBe(true);
@@ -252,7 +254,7 @@ describe('<neon-tooltip>', () => {
 
     it('closes immediately when keyboard focus moves away', () => {
         const btn = mount(`<button>x<neon-tooltip trigger="focus">y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
         const nextButton = document.createElement('button');
         document.body.appendChild(nextButton);
 
@@ -265,7 +267,7 @@ describe('<neon-tooltip>', () => {
     it('opens and closes on hover delays', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         btn.dispatchEvent(new Event('pointerenter'));
         expect(tip.matches(':popover-open')).toBe(false);
@@ -284,7 +286,7 @@ describe('<neon-tooltip>', () => {
     it('does not re-open from a delayed hover show when already open', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         tip.showPopover();
         btn.dispatchEvent(new Event('pointerenter'));
@@ -295,7 +297,7 @@ describe('<neon-tooltip>', () => {
     it('cancels a delayed hover close when the tooltip is entered', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         /** @type {any} */ (tip).showPopover();
         btn.dispatchEvent(new Event('pointerleave'));
@@ -307,7 +309,7 @@ describe('<neon-tooltip>', () => {
     it('does not hide on delayed hover close when already closed', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {HTMLElement} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         btn.dispatchEvent(new Event('pointerleave'));
         vi.advanceTimersByTime(500);
@@ -317,7 +319,7 @@ describe('<neon-tooltip>', () => {
     it('keeps focus-triggered tooltip open while focus remains on the trigger', () => {
         vi.useFakeTimers();
         const btn = mount(`<button>x<neon-tooltip>y</neon-tooltip></button>`);
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         tip.showPopover();
         btn.focus();
@@ -331,8 +333,8 @@ describe('<neon-tooltip>', () => {
         const shadow = host.attachShadow({ mode: 'open' });
         shadow.innerHTML = '<button>x<neon-tooltip>y</neon-tooltip></button>';
         document.body.appendChild(host);
-        const btn = /** @type {HTMLButtonElement} */ (shadow.querySelector('button'));
-        const tip = /** @type {any} */ (shadow.querySelector('neon-tooltip'));
+        const btn = /** @type {HTMLButtonElement} */ (queryInternal(shadow, 'button', styles));
+        const tip = /** @type {any} */ (queryInternal(shadow, 'neon-tooltip', styles));
 
         tip.showPopover();
         btn.focus();
@@ -357,7 +359,7 @@ describe('<neon-tooltip>', () => {
         const span = mount(
             `<span tabindex="0">x<neon-tooltip trigger="click">y</neon-tooltip></span>`,
         );
-        const tip = /** @type {HTMLElement} */ (span.querySelector('neon-tooltip'));
+        const tip = /** @type {HTMLElement} */ (queryInternal(span, 'neon-tooltip', styles));
 
         span.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         expect(tip.matches(':popover-open')).toBe(true);
@@ -370,7 +372,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
         expect(btn.hasAttribute('popovertarget')).toBe(false);
         tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);
@@ -382,7 +384,7 @@ describe('<neon-tooltip>', () => {
         const btn = mount(
             `<button>x<neon-tooltip trigger="">y</neon-tooltip></button>`,
         );
-        const tip = /** @type {any} */ (btn.querySelector('neon-tooltip'));
+        const tip = /** @type {any} */ (queryInternal(btn, 'neon-tooltip', styles));
 
         tip.showPopover();
         expect(tip.matches(':popover-open')).toBe(true);

@@ -1,7 +1,7 @@
 <main>
     <h1 class="docs-mb-6">Multicombobox — Web Component</h1>
     <p class="docs-mb-6 docs-text-ink-secondary">
-        <code>&lt;neon-multicombobox&gt;</code> is a Light-DOM,
+        <code>&lt;neon-multicombobox&gt;</code> is a shadow-DOM,
         form-associated custom element that wraps the theme's
         <code>.combobox.-multi</code> markup with a multi-select,
         filterable, keyboard-friendly popover. List options as plain
@@ -12,15 +12,16 @@
         submission appends one <code>FormData</code> entry per selected
         value (matching native <code>&lt;select multiple&gt;</code>
         semantics). See the
-        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0001-rendering-mode.md">rendering-mode ADR</a>.
+        <a class="link" href="https://github.com/kshutkin/neon-kit/blob/main/docs/adr/0002-shared-css-modules-and-shadow-dom.md">rendering-mode ADR</a>.
     </p>
 
     <section class="docs-mb-8">
         <h2 class="docs-mb-4">Installation</h2>
-        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/web-components
+pnpm add -D @neon-kit/vite-plugin-style-build
 
+// Configure styleBuild() in Vite (see Getting Started).
 // In your bundle entry:
-import '@neon-kit/theme-vanilla/index.css';
 import '@neon-kit/web-components/multicombobox';</code></pre>
     </section>
 
@@ -78,23 +79,6 @@ import '@neon-kit/web-components/multicombobox';</code></pre>
             </form>
             <pre id="wc-mcb-form-out" class="docs-mt-4 docs-rounded docs-border docs-border-border docs-p-3 docs-text-sm" hidden></pre>
         </div>
-        <script type="module">
-            const form = document.getElementById('wc-mcb-form');
-            const out = document.getElementById('wc-mcb-form-out');
-            if (form && out) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const data = new FormData(form);
-                    const result = {};
-                    for (const [k, v] of data.entries()) {
-                        if (k in result) result[k].push(v);
-                        else result[k] = [v];
-                    }
-                    out.textContent = JSON.stringify(result, null, 2);
-                    out.hidden = false;
-                });
-            }
-        </script>
     </section>
 
     <section class="docs-mb-8">

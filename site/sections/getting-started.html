@@ -31,15 +31,22 @@ import '@neon-kit/theme-vanilla/index.css';</code></pre>
             elements to manage interaction, keyboard behavior, and form
             participation for supported controls.
         </p>
-        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme-vanilla @neon-kit/web-components
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/web-components
+pnpm add -D @neon-kit/vite-plugin-style-build
 
 // In your bundle entry:
-import '@neon-kit/theme-vanilla/index.css';
-import '@neon-kit/web-components/tooltip';</code></pre>
+import '@neon-kit/web-components/tooltip';
+
+// vite.config.js
+import { defineConfig } from 'vite';
+import { styleBuild } from '@neon-kit/vite-plugin-style-build';
+export default defineConfig({ plugins: [styleBuild()] });</code></pre>
         <p class="docs-mt-4 docs-text-ink-secondary">
-            Web components render in Light DOM and do not attach shadow roots.
-            The host page must include <code>@neon-kit/theme-vanilla/index.css</code>
-            or a theme-equivalent stylesheet for them to render correctly.
+            Web components adopt their theme sheets into shadow roots. Authored menu
+            items, tooltip content, and combobox options stay in light DOM.
+            JSX components import ordinary CSS Modules and use Vite's built-in
+            support. Fonts and <code>color-scheme</code> belong to the document;
+            opt into OS mode with <code>:root { color-scheme: light dark; }</code>.
         </p>
     </section>
 </main>

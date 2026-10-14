@@ -94,3 +94,22 @@ it('rejects ambiguous relative authoring patterns and reserved sheet exports', a
     await writeFile(resolve(directory, 'main.js'), `import { sheets } from './style.module.css?neon'; import { sheets as second } from './second/main.js'; globalThis.nativeSheets = [sheets, second];`);
     await expect(compile(directory)).rejects.toThrow('Ambiguous native style declaration');
 });
+
+it('emits distinct host variants while sharing base sheets with unprojected entries', async () => {
+    const directory = await fixture('@import "./base.css"; .menu { &[popover]:not(:popover-open) { display: none; } &::before { content: ""; } }');
+    await writeFile(resolve(directory, 'base.css'), ':host { line-height: 1.5; }');
+    await writeFile(resolve(directory, 'main.js'), `
+        import { sheets as internal } from './style.module.css?neon';
+        import { sheets as host } from './style.module.css?neon&host=menu';
+        globalThis.nativeSheets = [internal, host];
+    `);
+    const output = await compile(directory);
+    const sheets = await Promise.all(output.files.filter((file) => file.endsWith('.css'))
+        .map((file) => readFile(resolve(output.assets, file), 'utf8')));
+    expect(sheets).toHaveLength(3);
+    expect(sheets.filter((sheet) => sheet.includes('line-height'))).toHaveLength(1);
+    expect(sheets.some((sheet) => /:host\(\.[^)]*\[popover\]:not\(:popover-open\)\)/.test(sheet))).toBe(true);
+    expect(sheets.some((sheet) => /:host\(\.[^)]*\):{1,2}before/.test(sheet))).toBe(true);
+    expect(sheets.some((sheet) => !sheet.includes(':host') && sheet.includes('[popover]'))).toBe(true);
+    expect(await readFile(resolve(directory, 'native-styles.d.ts'), 'utf8')).toContain('?neon&host=menu');
+});

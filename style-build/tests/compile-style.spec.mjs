@@ -108,3 +108,22 @@ describe('compileStyle()', () => {
         expect(() => createStyleDeclaration('./button.css?neon', { exports: { sheets: 'bad' } })).toThrow('reserved');
     });
 });
+
+describe('host projection', () => {
+    it('projects composed roots, keeps descendant classes and composes original source maps', async () => {
+        const files = new Map(sources);
+        files.set('/styles/link.module.css', `.link { composes: border from "./border.module.css"; &[popover]:not(:popover-open) { display: none; } &::before { content: ''; } } .link:hover > .label { color: red; }`);
+        const plain = await compileStyle('/styles/link.module.css', createHost(files), { sourceMap: true });
+        const host = await compileStyle('/styles/link.module.css', createHost(files), { hostExport: 'link', sourceMap: true });
+        expect(host.at(-1).exports).toEqual(plain.at(-1).exports);
+        expect(host[0]).toEqual(plain[0]);
+        expect(host[1].css).toContain(':host(');
+        expect(host.at(-1).css).toContain(':host(');
+        const root = host.at(-1).exports.link.split(' ')[0];
+        expect(host.at(-1).css).toContain(`:host(.${root}[popover]:not(:popover-open))`);
+        expect(host.at(-1).css).toMatch(new RegExp(`:host\\(\\.${root}\\):{1,2}before`));
+        expect(host.at(-1).css).toContain(`. ${host.at(-1).exports.label}`.replace('. ', '.'));
+        expect(JSON.parse(host.at(-1).map).sourcesContent[0]).toBe(files.get('/styles/link.module.css'));
+        await expect(compileStyle('/styles/link.module.css', createHost(files), { hostExport: 'missing' })).rejects.toThrow('missing host export');
+    });
+});

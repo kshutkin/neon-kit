@@ -25,6 +25,20 @@ sheet appears once, before its importer. Conflicting composed declarations still
 need an explicit source ordering policy. `.module.css` uses scoped classes;
 plain `.css` keeps global selectors. Custom properties remain unscoped.
 
+## Shadow host roots
+
+Pass `{ hostExport: 'menu' }` to `compileStyle` when an exported root class
+belongs on the host. Its composed classes are projected too. The compiler
+expands nesting, converts the leading root compound to `:host(...)`, and keeps
+pseudo-elements outside that function. Descendant selectors retain their scoped
+classes. Base sheets without those classes remain identical and shareable.
+Source maps continue to refer to authored source text.
+
+This projection expects the root class directly in the leading compound;
+it does not infer host ownership from arbitrary ancestor selectors or classes
+nested inside `:is()`. Components with generated internal wrappers use ordinary
+native imports instead.
+
 ## Output helpers
 
 ```js

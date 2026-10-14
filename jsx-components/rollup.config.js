@@ -11,7 +11,7 @@ const sourceDirectory = resolve(here, 'src');
 
 const input = Object.fromEntries(
     readdirSync(sourceDirectory)
-        .filter((name) => /\.(jsx?|tsx?)$/.test(name))
+        .filter((name) => !name.endsWith('.d.ts') && /\.(jsx?|tsx?)$/.test(name))
         .map((name) => [name.replace(/\.[^.]+$/, ''), resolve(sourceDirectory, name)]),
 );
 

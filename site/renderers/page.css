@@ -1,0 +1,10 @@
+@import '../../theme/tokens.css';
+@import '../../theme/reset-normalize.css';
+@import '../layout.css';
+
+/* The example document owns its typography and reset. It loads no vanilla catalogue. */
+:root { color-scheme: light dark; font-family: var(--neon-font-sans, var(--_font-sans)); line-height: 1.5; }
+body { margin: 0; color: var(--neon-color-ink-primary, var(--_color-ink-primary)); background: var(--neon-color-surface, var(--_color-surface)); }
+:where(*, ::before, ::after) { box-sizing: border-box; }
+:where(button, input, select, textarea) { font: inherit; }
+neon-menu-item { cursor: default; }

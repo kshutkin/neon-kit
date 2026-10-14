@@ -1,3 +1,5 @@
+import * as styles from '@neon-kit/theme/components/datepicker.module.css?neon';
+import { queryInternal, queryAllInternal, styleClass, hasStyleClasses, activeElement } from './style-queries.mjs';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import '../src/datepicker.jsx';
@@ -35,19 +37,19 @@ describe('<neon-datepicker>', () => {
     it('renders the theme datepicker field and day grid', async () => {
         const picker = mount(`<neon-datepicker value="2026-04-15" placeholder="Start date"></neon-datepicker>`);
         await nextFrame();
-        expect(picker.classList.contains('datepicker')).toBe(true);
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.datepicker__input'));
-        const trigger = picker.querySelector('.datepicker__trigger');
-        const popover = picker.querySelector('.datepicker__popover');
-        const cells = picker.querySelectorAll('.datepicker__grid.-days .datepicker__cell');
+        expect(hasStyleClasses(picker.shadowRoot.firstElementChild, styleClass(styles, 'datepicker'))).toBe(true);
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.datepicker__input', styles));
+        const trigger = queryInternal(picker, '.datepicker__trigger', styles);
+        const popover = queryInternal(picker, '.datepicker__popover', styles);
+        const cells = queryAllInternal(picker, '.datepicker__grid.-days .datepicker__cell', styles);
 
         expect(input).toBeTruthy();
         expect(input.placeholder).toBe('Start date');
         expect(trigger).toBeTruthy();
         expect(popover).toBeTruthy();
-        expect(picker.querySelector('.datepicker__view-switch')?.textContent).toBe('April 2026');
+        expect(queryInternal(picker, '.datepicker__view-switch', styles)?.textContent).toBe('April 2026');
         expect(cells.length).toBe(35);
-        expect(picker.querySelector('[data-date="2026-04-15"]')?.classList.contains('-selected')).toBe(true);
+        expect(hasStyleClasses(queryInternal(picker, '[data-date="2026-04-15"]', styles), styleClass(styles, '-selected'))).toBe(true);
     });
 
     it('participates in form submission via ElementInternals', () => {
@@ -57,7 +59,7 @@ describe('<neon-datepicker>', () => {
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
-        const picker = /** @type {any} */ (form.querySelector('neon-datepicker'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-datepicker', styles));
         expect(picker.value).toBe('2026-04-15');
         expect(new FormData(form).get('startsOn')).toBe('2026-04-15');
     });
@@ -94,7 +96,7 @@ describe('<neon-datepicker>', () => {
 
     it('typing dispatches input and change for valid dates', () => {
         const picker = /** @type {any} */ (mount(`<neon-datepicker></neon-datepicker>`));
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.datepicker__input'));
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.datepicker__input', styles));
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -113,7 +115,7 @@ describe('<neon-datepicker>', () => {
     it('keeps invalid typed text visible while exposing an empty value and badInput validity', async () => {
         const picker = /** @type {any} */ (mount(`<neon-datepicker value="2026-04-15"></neon-datepicker>`));
         await nextFrame();
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.datepicker__input'));
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.datepicker__input', styles));
 
         input.value = '2026-99-99';
         input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -131,8 +133,8 @@ describe('<neon-datepicker>', () => {
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
-        const picker = /** @type {any} */ (form.querySelector('neon-datepicker'));
-        const trigger = /** @type {HTMLButtonElement} */ (picker.querySelector('.datepicker__trigger'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-datepicker', styles));
+        const trigger = /** @type {HTMLButtonElement} */ (queryInternal(picker, '.datepicker__trigger', styles));
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -140,7 +142,7 @@ describe('<neon-datepicker>', () => {
 
         trigger.click();
         await nextFrame();
-        /** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-15"]')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-date="2026-04-15"]', styles)).click();
         expect(picker.value).toBe('2026-04-15');
         expect(new FormData(form).get('startsOn')).toBe('2026-04-15');
         expect(inputs).toBe(1);
@@ -149,24 +151,24 @@ describe('<neon-datepicker>', () => {
 
     it('switches between day, month and year views', async () => {
         const picker = mount(`<neon-datepicker value="2026-04-15"></neon-datepicker>`);
-        /** @type {HTMLButtonElement} */ (picker.querySelector('.datepicker__trigger')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '.datepicker__trigger', styles)).click();
         await nextFrame();
 
-        /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-dp-switch]', styles)).click();
         await nextFrame();
-        expect(picker.querySelector('.datepicker__grid')?.classList.contains('-months')).toBe(true);
-        expect(picker.querySelector('.datepicker__view-switch')?.textContent).toBe('2026');
+        expect(hasStyleClasses(queryInternal(picker, '.datepicker__grid', styles), styleClass(styles, '-months'))).toBe(true);
+        expect(queryInternal(picker, '.datepicker__view-switch', styles)?.textContent).toBe('2026');
 
-        /** @type {HTMLButtonElement} */ (picker.querySelector('[data-month="4"]')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-month="4"]', styles)).click();
         await nextFrame();
-        expect(picker.querySelector('.datepicker__grid')?.classList.contains('-days')).toBe(true);
-        expect(picker.querySelector('.datepicker__view-switch')?.textContent).toBe('May 2026');
+        expect(hasStyleClasses(queryInternal(picker, '.datepicker__grid', styles), styleClass(styles, '-days'))).toBe(true);
+        expect(queryInternal(picker, '.datepicker__view-switch', styles)?.textContent).toBe('May 2026');
 
-        /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-dp-switch]', styles)).click();
         await nextFrame();
-        /** @type {HTMLButtonElement} */ (picker.querySelector('[data-dp-switch]')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-dp-switch]', styles)).click();
         await nextFrame();
-        expect(picker.querySelector('.datepicker__grid')?.classList.contains('-years')).toBe(true);
+        expect(hasStyleClasses(queryInternal(picker, '.datepicker__grid', styles), styleClass(styles, '-years'))).toBe(true);
     });
 
     it('data-clearable clears value and dispatches input/change', async () => {
@@ -176,7 +178,7 @@ describe('<neon-datepicker>', () => {
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
         picker.addEventListener('change', () => changes++);
-        const clear = /** @type {HTMLButtonElement} */ (picker.querySelector('.datepicker__clear'));
+        const clear = /** @type {HTMLButtonElement} */ (queryInternal(picker, '.datepicker__clear', styles));
 
         expect(clear.style.display).not.toBe('none');
         clear.click();
@@ -194,7 +196,7 @@ describe('<neon-datepicker>', () => {
             </form>
         `));
         await nextFrame();
-        const picker = /** @type {any} */ (form.querySelector('neon-datepicker'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-datepicker', styles));
         picker.value = '2026-05-20';
         expect(picker.value).toBe('2026-05-20');
         form.reset();
@@ -218,8 +220,8 @@ describe('<neon-datepicker>', () => {
     it('disables out-of-range days in the calendar grid', async () => {
         const picker = mount(`<neon-datepicker value="2026-04-15" min="2026-04-10" max="2026-04-20"></neon-datepicker>`);
         await nextFrame();
-        expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-09"]')).disabled).toBe(true);
-        expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-10"]')).disabled).toBe(false);
-        expect(/** @type {HTMLButtonElement} */ (picker.querySelector('[data-date="2026-04-21"]')).disabled).toBe(true);
+        expect(/** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-date="2026-04-09"]', styles)).disabled).toBe(true);
+        expect(/** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-date="2026-04-10"]', styles)).disabled).toBe(false);
+        expect(/** @type {HTMLButtonElement} */ (queryInternal(picker, '[data-date="2026-04-21"]', styles)).disabled).toBe(true);
     });
 });

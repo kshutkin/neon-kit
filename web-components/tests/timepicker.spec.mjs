@@ -1,3 +1,5 @@
+import * as styles from '@neon-kit/theme/components/timepicker.module.css?neon';
+import { queryInternal, queryAllInternal, styleClass, hasStyleClasses, activeElement } from './style-queries.mjs';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import '../src/timepicker.jsx';
@@ -35,11 +37,11 @@ describe('<neon-timepicker>', () => {
     it('renders the theme timepicker field and generated option list', async () => {
         const picker = mount(`<neon-timepicker step="3600" placeholder="Start time"></neon-timepicker>`);
         await nextFrame();
-        expect(picker.classList.contains('timepicker')).toBe(true);
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
-        const trigger = picker.querySelector('.timepicker__trigger');
-        const popover = picker.querySelector('.timepicker__popover');
-        const rows = picker.querySelectorAll('.combobox__option');
+        expect(hasStyleClasses(picker.shadowRoot.firstElementChild, styleClass(styles, 'timepicker'))).toBe(true);
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.timepicker__input', styles));
+        const trigger = queryInternal(picker, '.timepicker__trigger', styles);
+        const popover = queryInternal(picker, '.timepicker__popover', styles);
+        const rows = queryAllInternal(picker, '.combobox__option', styles);
         expect(input).toBeTruthy();
         expect(input.placeholder).toBe('Start time');
         expect(trigger).toBeTruthy();
@@ -56,7 +58,7 @@ describe('<neon-timepicker>', () => {
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
-        const picker = /** @type {any} */ (form.querySelector('neon-timepicker'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-timepicker', styles));
         expect(picker.value).toBe('09:30');
         expect(new FormData(form).get('startsAt')).toBe('09:30');
     });
@@ -99,7 +101,7 @@ describe('<neon-timepicker>', () => {
         picker.value = '09:30:15';
         await nextFrame();
         expect(picker.value).toBe('09:30:15');
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.timepicker__input', styles));
         expect(input.placeholder).toBe('HH:MM:SS');
     });
 
@@ -112,7 +114,7 @@ describe('<neon-timepicker>', () => {
 
     it('typing dispatches input and change, and normalizes lenient input on commit', () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker></neon-timepicker>`));
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.timepicker__input', styles));
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -131,7 +133,7 @@ describe('<neon-timepicker>', () => {
     it('keeps invalid typed text visible while exposing an empty value and badInput validity', async () => {
         const picker = /** @type {any} */ (mount(`<neon-timepicker value="10:00"></neon-timepicker>`));
         await nextFrame();
-        const input = /** @type {HTMLInputElement} */ (picker.querySelector('.timepicker__input'));
+        const input = /** @type {HTMLInputElement} */ (queryInternal(picker, '.timepicker__input', styles));
 
         input.value = '25:00';
         input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -149,8 +151,8 @@ describe('<neon-timepicker>', () => {
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
-        const picker = /** @type {any} */ (form.querySelector('neon-timepicker'));
-        const trigger = /** @type {HTMLButtonElement} */ (picker.querySelector('.timepicker__trigger'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-timepicker', styles));
+        const trigger = /** @type {HTMLButtonElement} */ (queryInternal(picker, '.timepicker__trigger', styles));
         let inputs = 0;
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
@@ -158,7 +160,7 @@ describe('<neon-timepicker>', () => {
 
         trigger.click();
         await nextFrame();
-        const rows = picker.querySelectorAll('.combobox__option');
+        const rows = queryAllInternal(picker, '.combobox__option', styles);
         /** @type {HTMLButtonElement} */ (rows[9]).click();
         expect(picker.value).toBe('09:00');
         expect(new FormData(form).get('startsAt')).toBe('09:00');
@@ -173,7 +175,7 @@ describe('<neon-timepicker>', () => {
         let changes = 0;
         picker.addEventListener('input', () => inputs++);
         picker.addEventListener('change', () => changes++);
-        const clear = /** @type {HTMLButtonElement} */ (picker.querySelector('.timepicker__clear'));
+        const clear = /** @type {HTMLButtonElement} */ (queryInternal(picker, '.timepicker__clear', styles));
 
         expect(clear.style.display).not.toBe('none');
         clear.click();
@@ -191,7 +193,7 @@ describe('<neon-timepicker>', () => {
             </form>
         `));
         await nextFrame();
-        const picker = /** @type {any} */ (form.querySelector('neon-timepicker'));
+        const picker = /** @type {any} */ (queryInternal(form, 'neon-timepicker', styles));
         picker.value = '11:30';
         expect(picker.value).toBe('11:30');
         form.reset();
@@ -227,7 +229,7 @@ describe('<neon-timepicker>', () => {
         `);
         await nextFrame();
 
-        const labels = Array.from(picker.querySelectorAll('.combobox__option-label')).map((row) => row.textContent);
+        const labels = Array.from(queryAllInternal(picker, '.combobox__option-label', styles)).map((row) => row.textContent);
         expect(labels).toEqual(['Opening', 'Closing']);
     });
 });

@@ -58,6 +58,8 @@
 }
 
 .tooltip[popover] {
+    box-sizing: border-box;
+    font-family: var(--neon-font-sans, var(--_font-sans));
     border-radius: 0.25rem;
     border-style: solid;
     border-width: 1px;
@@ -78,14 +80,10 @@
        note: clear `margin` and `inset` so `position-area` (and any
        offset margins we set below) resolve cleanly across browsers.
 
-       We also override the UA `position: fixed` to `position: absolute`.
-       Top-layer popovers paint above siblings regardless of `position`,
-       but Chromium currently mis-applies the document scroll offset to
-       anchor-positioned popovers when `position: fixed`. `absolute`
-       computes the anchor math correctly while still rendering in the
-       top layer (so `overflow: hidden` / `transform` ancestors don't
-       clip us). */
-    position: absolute;
+       Keep fixed positioning: Firefox cannot resolve the named anchor
+       for an absolute top-layer tooltip under a fixed-position trigger.
+       Fixed and scrolled triggers are covered in both supported engines. */
+    position: fixed;
     margin: 0;
     inset: auto;
 

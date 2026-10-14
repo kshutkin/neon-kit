@@ -1,4 +1,6 @@
 import { DEV } from 'esm-env';
+import styles from '@neon-kit/theme/components/menu.module.css';
+import { classSelector } from '@neon-kit/core/utils';
 
 import {
     createMenuController,
@@ -15,8 +17,8 @@ import { effect } from '@slimlib/store';
  * @import { Child } from '@slimlib/jsx'
  */
 
-const MENU_SELECTOR = '.menu';
-const ITEM_SELECTOR = '.menu__item';
+const MENU_SELECTOR = classSelector(styles.menu);
+const ITEM_SELECTOR = classSelector(styles.menu__item);
 const OWNED_ITEM_SELECTOR = `:scope ${ITEM_SELECTOR}:not(:scope ${MENU_SELECTOR} ${ITEM_SELECTOR})`;
 const MENU_SELECTORS = {
     menu: MENU_SELECTOR,
@@ -111,7 +113,7 @@ function getMenuRootController(element) {
         : element.closest(MENU_SELECTOR);
     while (menu instanceof HTMLElement) {
         rootController = menuRootControllers.get(menu) ?? rootController;
-        menu = menu.parentElement?.closest(MENU_SELECTOR);
+        menu = menu.parentElement?.closest(MENU_SELECTOR) ?? null;
     }
     return rootController;
 }
@@ -175,9 +177,9 @@ export function Menu(props) {
         const currentPlacement = readPlacement(placement);
         const placementClass = currentPlacement === 'block-end'
             ? ''
-            : ` -${currentPlacement}`;
+            : ` ${styles[`-${currentPlacement}`]}`;
         const customClass = readClassName(className);
-        return `menu${placementClass}${customClass === '' ? '' : ` ${customClass}`}`;
+        return `${styles.menu}${placementClass}${customClass === '' ? '' : ` ${customClass}`}`;
     };
     const menuClass = typeof placement === 'function' || typeof className === 'function'
         ? readMenuClass
@@ -237,6 +239,7 @@ export function Menu(props) {
         const listenerOptions = { signal: listenerController.signal };
         menuNode.addEventListener('keydown', menuController.handleKeyDown, listenerOptions);
         menuNode.addEventListener('focusin', menuController.handleFocusIn, listenerOptions);
+        menuNode.addEventListener('beforetoggle', /** @type {EventListener} */ (menuController.handleBeforeToggle), listenerOptions);
         menuNode.addEventListener('toggle', /** @type {EventListener} */ ((event) => {
             labelController?.sync(
                 /** @type {ToggleEvent & { source?: HTMLElement | null }} */ (event).source,
@@ -304,7 +307,9 @@ export function MenuItem(props) {
     /** @type {HTMLButtonElement | undefined} */
     let buttonElement;
     let disposed = false;
+    /** @type {string | undefined} */
     let managedHasPopup;
+    /** @type {string | undefined} */
     let managedExpanded;
     let ownsHasPopup = false;
     let ownsExpanded = false;
@@ -434,7 +439,7 @@ export function MenuItem(props) {
 
     const readItemClass = () => {
         const customClass = readClassName(className);
-        return `menu__item${customClass === '' ? '' : ` ${customClass}`}`;
+        return `${styles.menu__item}${customClass === '' ? '' : ` ${customClass}`}`;
     };
     const itemClass = typeof className === 'function' ? readItemClass : readItemClass();
     const readAriaDisabled = () => readDisabled() ? 'true' : undefined;

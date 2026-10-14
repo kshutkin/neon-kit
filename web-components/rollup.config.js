@@ -13,7 +13,7 @@ const srcDir = resolve(here, 'src');
 // per-file layout (one file per `exports` subpath) is preserved.
 const input = Object.fromEntries(
     readdirSync(srcDir)
-        .filter((name) => /\.(jsx?|tsx?)$/.test(name))
+        .filter((name) => !name.endsWith('.d.ts') && /\.(jsx?|tsx?)$/.test(name))
         .map((name) => [name.replace(/\.[^.]+$/, ''), resolve(srcDir, name)]),
 );
 

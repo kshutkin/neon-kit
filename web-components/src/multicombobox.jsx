@@ -7,19 +7,26 @@
  * hides the raw `<option>`s. Add `selected` to any number of options
  * to seed the initial selection.
  *
- * Per ADR 0001 the element renders into Light DOM (no shadow root).
+ * Generated controls render in shadow DOM; authored options remain in light DOM.
  *
  * Rewritten on `@slimlib/element`'s `defineElement` form mirroring
  * `combobox.jsx`. The public API is assigned directly onto the host
  * inside the render closure; pre-connect property writes (`el.values =
  * [...]` before mount) are captured by snapshot+strip in render.
  */
+import { connectFormLabels } from './form-control-utils.js';
 import { DEV } from 'esm-env';
+import * as styles from '@neon-kit/theme/components/combobox.module.css?neon';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
+import { sheets as controlStyles } from '@neon-kit/theme/shadow-control.css?neon';
+import * as tags from '@neon-kit/theme/components/tag.module.css?neon';
+import { classSelector } from '@neon-kit/core/utils';
 
 import {
     attributes,
     booleanAttribute,
     defineElement,
+    shadowStyles,
     formAssociated,
     internals,
     onConnect,
@@ -27,6 +34,7 @@ import {
     onFormDisabled,
     onFormReset,
     onFormStateRestore,
+    onMount,
     props,
     stringAttribute,
     withInternals,
@@ -40,20 +48,20 @@ import chevronDown from '@neon-kit/icons/outline/chevron-down';
 
 let nextId = 0;
 
-const FIELD_CLASS = 'combobox__field';
-const POPOVER_CLASS = 'combobox__popover';
-const SEARCH_CLASS = 'combobox__search';
-const LIST_CLASS = 'combobox__list';
-const OPTION_CLASS = 'combobox__option';
-const OPTION_LABEL_CLASS = 'combobox__option-label';
-const VALUES_CLASS = 'combobox__values';
-const PLACEHOLDER_CLASS = 'combobox__placeholder';
-const CLEAR_CLASS = 'combobox__clear';
-const CHEVRON_CLASS = 'combobox__chevron';
-const EMPTY_CLASS = 'combobox__empty';
-const TAG_CLASS = 'tag';
-const TAG_REMOVE_CLASS = 'tag__remove';
-const CHECKBOX_CLASS = 'checkbox';
+const FIELD_CLASS = styles['combobox__field'];
+const POPOVER_CLASS = styles['combobox__popover'];
+const SEARCH_CLASS = styles['combobox__search'];
+const LIST_CLASS = styles['combobox__list'];
+const OPTION_CLASS = styles['combobox__option'];
+const OPTION_LABEL_CLASS = styles['combobox__option-label'];
+const VALUES_CLASS = styles['combobox__values'];
+const PLACEHOLDER_CLASS = styles['combobox__placeholder'];
+const CLEAR_CLASS = styles['combobox__clear'];
+const CHEVRON_CLASS = styles['combobox__chevron'];
+const EMPTY_CLASS = styles['combobox__empty'];
+const TAG_CLASS = tags.tag;
+const TAG_REMOVE_CLASS = tags.tag__remove;
+const CHECKBOX_CLASS = styles['checkbox'];
 
 /**
  * @typedef {{ values: string[], options: HTMLOptionElement[] }} ChangeDetail
@@ -89,8 +97,6 @@ const renderMulticombobox = (host) => {
     const popoverId = `${idPrefix}-pop`;
     const listId = `${idPrefix}-list`;
 
-    if (!host.classList.contains('combobox')) host.classList.add('combobox');
-    if (!host.classList.contains('-multi')) host.classList.add('-multi');
 
     // ---- Adopt pre-set `values` ---------------------------------------
     // `values` keeps a hand-written accessor (the getter is derived from
@@ -136,7 +142,7 @@ const renderMulticombobox = (host) => {
         <span class={PLACEHOLDER_CLASS}>{state.placeholder}</span>
     );
     const valuesEl = /** @type {HTMLSpanElement} */ (
-        <span class={`tag-list ${VALUES_CLASS}`} />
+        <span class={`${tags['tag-list']} ${VALUES_CLASS}`} />
     );
     const clearEl = /** @type {HTMLButtonElement} */ (
         <button type="button" class={CLEAR_CLASS} aria-label="Clear all selections" tabindex="-1" />
@@ -160,12 +166,14 @@ const renderMulticombobox = (host) => {
             {chevronEl}
         </button>
     );
+    /** @type {HTMLElement} */ (host).focus = (options) => fieldButton.focus(options);
+    /** @type {HTMLElement} */ (host).blur = () => fieldButton.blur();
     fieldButton.setAttribute('popovertarget', popoverId);
 
     const searchInput = /** @type {HTMLInputElement} */ (
         <input
             type="search"
-            class="input"
+            class={styles.input}
             autocomplete="off"
             role="combobox"
             aria-autocomplete="list"
@@ -282,10 +290,10 @@ const renderMulticombobox = (host) => {
     const setActive = (row) => {
         if (activeId) {
             const prev = listEl.querySelector(`#${cssEscape(activeId)}`);
-            prev?.classList.remove('-active');
+            prev?.classList.remove(styles['-active']);
         }
         if (row) {
-            row.classList.add('-active');
+            row.classList.add(styles['-active']);
             activeId = row.id;
             searchInput.setAttribute('aria-activedescendant', row.id);
             row.scrollIntoView({ block: 'nearest' });
@@ -370,7 +378,7 @@ const renderMulticombobox = (host) => {
             const v = row.dataset.value ?? '';
             const checked = sel.has(v);
             const cb = /** @type {HTMLInputElement | null} */ (
-                row.querySelector(`.${CHECKBOX_CLASS}`)
+                row.querySelector(`${classSelector(CHECKBOX_CLASS)}`)
             );
             if (cb && cb.checked !== checked) cb.checked = checked;
             row.setAttribute('aria-selected', checked ? 'true' : 'false');
@@ -443,6 +451,7 @@ const renderMulticombobox = (host) => {
             host.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,
+                    composed: true,
                     detail: /** @type {ChangeDetail} */ ({
                         values: options().filter((o) => next.has(o.value)).map((o) => o.value),
                         options: options().filter((o) => next.has(o.value)),
@@ -513,7 +522,8 @@ const renderMulticombobox = (host) => {
     // anchor outside the host's tree. So mount imperatively here and
     // return `null` from render rather than returning JSX nodes whose
     // mount happens AFTER this function returns.
-    host.append(fieldButton, popover);
+    const container = /** @type {HTMLElement} */ (<div class={`${styles.combobox} ${styles['-multi']}`}>{fieldButton}{popover}<slot hidden /></div>);
+    /** @type {ShadowRoot} */ (host.shadowRoot).append(container);
     collectOptions();
     initialValues = resolveInitialValues();
     applyValues(presetValues ?? initialValues, { silent: true });
@@ -563,6 +573,7 @@ const renderMulticombobox = (host) => {
         host.dispatchEvent(
             new CustomEvent('input', {
                 bubbles: true,
+                composed: true,
                 detail: /** @type {InputDetail} */ ({ query: q }),
             }),
         );
@@ -614,7 +625,7 @@ const renderMulticombobox = (host) => {
     const onListClick = (e) => {
         const target = /** @type {Element | null} */ (e.target);
         if (!target) return;
-        const row = /** @type {HTMLLabelElement | null} */ (target.closest(`.${OPTION_CLASS}`));
+        const row = /** @type {HTMLLabelElement | null} */ (target.closest(classSelector(OPTION_CLASS)));
         if (!row) return;
         if (rows.includes(row)) setActive(row);
     };
@@ -624,7 +635,7 @@ const renderMulticombobox = (host) => {
         const target = /** @type {HTMLInputElement | null} */ (e.target);
         if (!target || target.type !== 'checkbox') return;
         e.stopPropagation();
-        const row = /** @type {HTMLLabelElement | null} */ (target.closest(`.${OPTION_CLASS}`));
+        const row = /** @type {HTMLLabelElement | null} */ (target.closest(classSelector(OPTION_CLASS)));
         if (!row) return;
         const v = row.dataset.value ?? '';
         if (!v) return;
@@ -678,7 +689,10 @@ const renderMulticombobox = (host) => {
     };
 
     // ---- Lifecycle wiring ---------------------------------------------
+    /** @type {(() => void) | undefined} */
+    let disconnectLabels;
     onConnect(() => {
+        disconnectLabels = connectFormLabels(host, elementInternals, fieldButton, [searchInput]);
         const ac = new AbortController();
         listeners = ac;
         const opts = { signal: ac.signal };
@@ -703,6 +717,8 @@ const renderMulticombobox = (host) => {
     });
 
     onDisconnect(() => {
+        disconnectLabels?.();
+        disconnectLabels = undefined;
         listeners?.abort();
         listeners = null;
         mo?.disconnect();
@@ -724,6 +740,7 @@ const renderMulticombobox = (host) => {
         }
     });
 
+    onMount(() => () => container.remove());
     return null;
 };
 
@@ -759,6 +776,7 @@ defineElement(
             name: stringAttribute,
             'data-clearable': [booleanAttribute[0]],
         }),
+        shadowStyles([...new Set([...shadowBase, ...controlStyles, ...styles.sheets, ...tags.sheets])]),
         withInternals(),
         withValidation(),
         formAssociated(),

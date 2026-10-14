@@ -24,6 +24,7 @@ let closeOpenHoverTooltip = undefined;
  *   triggerElement: HTMLElement,
  *   placement?: string,
  *   trigger?: string,
+ *   classes?: [root: string, placements: Record<string, string>],
  * ]} TooltipControllerOptions
  */
 
@@ -86,13 +87,13 @@ function isTooltipOpen(tooltipElement) {
  * @returns {TooltipController}
  */
 export function createTooltipController(controllerOptions) {
-    const [tooltipElement, triggerElement, placement, trigger] = controllerOptions;
+    const [tooltipElement, triggerElement, placement, trigger, classes] = controllerOptions;
 
     tooltipElement.setAttribute('popover', 'manual');
     if (!tooltipElement.id) {
         tooltipElement.id = generateId('neon-tooltip');
     }
-    tooltipElement.classList.add('tooltip');
+    tooltipElement.classList.add(...(classes?.[0] ?? 'tooltip').split(' '));
 
     /** @type {ReturnType<typeof setTimeout> | undefined} */
     let delayTimer = undefined;
@@ -200,8 +201,8 @@ export function createTooltipController(controllerOptions) {
 
     /** @param {TooltipPlacement} value */
     const applyPlacementClass = (value) => {
-        tooltipElement.classList.remove('-top', '-bottom', '-left', '-right');
-        tooltipElement.classList.add(`-${value}`);
+        tooltipElement.classList.remove(...PLACEMENTS.flatMap((name) => (classes?.[1][name] ?? `-${name}`).split(' ')));
+        tooltipElement.classList.add(...(classes?.[1][value] ?? `-${value}`).split(' '));
     };
 
     /** @param {Set<TooltipTrigger>} triggers */

@@ -1,3 +1,5 @@
+import * as styles from '@neon-kit/theme/shadow-icon.css?neon';
+import { queryInternal, queryAllInternal, styleClass, hasStyleClasses, activeElement } from './style-queries.mjs';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import axe from 'axe-core';
 
@@ -55,7 +57,7 @@ const iconObserver = new MutationObserver((records) => {
             if (!(node instanceof Element)) continue;
             if (node.tagName === 'NEON-ICON') hydrateIcon(node);
             if (node.querySelectorAll) {
-                for (const el of node.querySelectorAll('neon-icon')) hydrateIcon(el);
+                for (const el of queryAllInternal(node, 'neon-icon', styles)) hydrateIcon(el);
             }
         }
         if (record.type === 'attributes' && record.target instanceof Element) {
@@ -106,7 +108,7 @@ describe('<neon-icon>', () => {
         el.icon = bars;
         // Paint settles on a microtask.
         await settle();
-        const svg = el.querySelector('svg');
+        const svg = queryInternal(el, 'svg', styles);
         expect(svg).not.toBeNull();
         expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
         expect(svg?.getAttribute('stroke')).toBe('currentColor');
@@ -115,7 +117,7 @@ describe('<neon-icon>', () => {
     it('dynamic-loads via `name` attribute', async () => {
         document.body.innerHTML = `<neon-icon name="outline/bars-3"></neon-icon>`;
         await settle();
-        const svg = /** @type {SVGSVGElement | null} */ (document.querySelector('neon-icon > svg'));
+        const svg = /** @type {SVGSVGElement | null} */ (queryInternal(queryInternal(document, 'neon-icon', styles), 'svg', styles));
         expect(svg).not.toBeNull();
         expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
         expect(svg?.getAttribute('stroke')).toBe('currentColor');
@@ -127,7 +129,7 @@ describe('<neon-icon>', () => {
         document.body.appendChild(el);
         el.icon = xMark;
         await settle();
-        const path = el.querySelector('svg > path');
+        const path = queryInternal(el, 'svg > path', styles);
         expect(path?.getAttribute('d')).toBe(xMark[4]);
     });
 
@@ -138,7 +140,7 @@ describe('<neon-icon>', () => {
         el.icon = undefined;
         el.setAttribute('name', 'outline/bars-3');
         await settle();
-        const path = el.querySelector('svg > path');
+        const path = queryInternal(el, 'svg > path', styles);
         expect(path?.getAttribute('d')).toBe(bars[4]);
     });
 
@@ -150,9 +152,9 @@ describe('<neon-icon>', () => {
         await settle();
         // Give both promises a chance to resolve in either order.
         await settle();
-        const svg = el.querySelector('svg');
+        const svg = queryInternal(el, 'svg', styles);
         expect(svg?.getAttribute('fill')).toBe('currentColor');
-        const path = svg?.querySelector('path');
+        const path = queryInternal(svg, 'path', styles);
         expect(path?.getAttribute('d')).toBe(check[4]);
     });
 
@@ -160,14 +162,14 @@ describe('<neon-icon>', () => {
         document.body.innerHTML = `<neon-icon name="nonexistent/does-not-exist"></neon-icon>`;
         await settle();
         await settle();
-        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
-        expect(host.querySelector('svg')).toBeNull();
+        const host = /** @type {HTMLElement} */ (queryInternal(document, 'neon-icon', styles));
+        expect(queryInternal(host, 'svg', styles)).toBeNull();
     });
 
     it('renders SVG at 1em × 1em', async () => {
         document.body.innerHTML = `<neon-icon name="outline/bars-3"></neon-icon>`;
         await settle();
-        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
+        const svg = /** @type {SVGSVGElement} */ (queryInternal(queryInternal(document, 'neon-icon', styles), 'svg', styles));
         expect(svg.getAttribute('width')).toBe('1em');
         expect(svg.getAttribute('height')).toBe('1em');
     });
@@ -179,12 +181,12 @@ describe('<neon-icon>', () => {
         el.label = 'Open menu';
         await settle();
 
-        const svg = /** @type {SVGSVGElement} */ (el.querySelector('svg'));
+        const svg = /** @type {SVGSVGElement} */ (queryInternal(el, 'svg', styles));
         expect(el.getAttribute('role')).toBeNull();
         expect(el.getAttribute('aria-label')).toBeNull();
-        expect(svg.hasAttribute('aria-hidden')).toBe(false);
+        expect(svg.getAttribute('aria-hidden')).toBe('true');
         expect(svg.hasAttribute('role')).toBe(false);
-        expect(svg.querySelector('title')).toBeNull();
+        expect(queryInternal(svg, 'title', styles)).toBeNull();
 
         const results = await axe.run(document.body);
         expect(results.violations, formatAxeViolations(results)).toEqual([]);
@@ -193,13 +195,13 @@ describe('<neon-icon>', () => {
     it('uses ElementInternals for the `label` attribute', async () => {
         document.body.innerHTML = `<main><neon-icon name="outline/bars-3" label="Open menu"></neon-icon></main>`;
         await settle();
-        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
-        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
+        const host = /** @type {HTMLElement} */ (queryInternal(document, 'neon-icon', styles));
+        const svg = /** @type {SVGSVGElement} */ (queryInternal(queryInternal(document, 'neon-icon', styles), 'svg', styles));
         expect(host.label).toBe('Open menu');
         expect(host.getAttribute('role')).toBeNull();
         expect(host.getAttribute('aria-label')).toBeNull();
-        expect(svg.hasAttribute('aria-hidden')).toBe(false);
-        expect(svg.querySelector('title')).toBeNull();
+        expect(svg.getAttribute('aria-hidden')).toBe('true');
+        expect(queryInternal(svg, 'title', styles)).toBeNull();
 
         const results = await axe.run(document.body);
         expect(results.violations, formatAxeViolations(results)).toEqual([]);
@@ -208,12 +210,12 @@ describe('<neon-icon>', () => {
     it('accepts host aria-label when the author also supplies a role', async () => {
         document.body.innerHTML = `<main><neon-icon name="outline/bars-3" role="img" aria-label="Open menu"></neon-icon></main>`;
         await settle();
-        const host = /** @type {HTMLElement} */ (document.querySelector('neon-icon'));
-        const svg = /** @type {SVGSVGElement} */ (document.querySelector('neon-icon > svg'));
+        const host = /** @type {HTMLElement} */ (queryInternal(document, 'neon-icon', styles));
+        const svg = /** @type {SVGSVGElement} */ (queryInternal(queryInternal(document, 'neon-icon', styles), 'svg', styles));
         expect(host.getAttribute('role')).toBe('img');
         expect(host.getAttribute('aria-label')).toBe('Open menu');
-        expect(svg.hasAttribute('aria-hidden')).toBe(false);
-        expect(svg.querySelector('title')).toBeNull();
+        expect(svg.getAttribute('aria-hidden')).toBe('true');
+        expect(queryInternal(svg, 'title', styles)).toBeNull();
 
         const results = await axe.run(document.body);
         expect(results.violations, formatAxeViolations(results)).toEqual([]);
@@ -248,7 +250,7 @@ describe('<neon-icon>', () => {
         document.body.appendChild(el);
         el.icon = barsSolid;
         await settle();
-        const live = /** @type {SVGSVGElement} */ (el.querySelector('svg'));
+        const live = /** @type {SVGSVGElement} */ (queryInternal(el, 'svg', styles));
         const str = serialize(barsSolid);
         const parsed = new DOMParser().parseFromString(str, 'image/svg+xml').documentElement;
 
@@ -256,10 +258,11 @@ describe('<neon-icon>', () => {
         const parsedAttrs = Object.fromEntries(Array.from(parsed.attributes).map((a) => [a.name, a.value]));
         delete parsedAttrs.xmlns;
         delete parsedAttrs['aria-hidden'];
+        delete liveAttrs['aria-hidden'];
         expect(parsedAttrs).toEqual(liveAttrs);
 
-        const livePaths = Array.from(live.querySelectorAll('path'));
-        const parsedPaths = Array.from(parsed.querySelectorAll('path'));
+        const livePaths = Array.from(queryAllInternal(live, 'path', styles));
+        const parsedPaths = Array.from(queryAllInternal(parsed, 'path', styles));
         expect(parsedPaths.length).toBe(livePaths.length);
         for (let i = 0; i < livePaths.length; i += 1) {
             const la = Object.fromEntries(Array.from(livePaths[i].attributes).map((a) => [a.name, a.value]));
@@ -291,7 +294,7 @@ describe('<neon-icon>', () => {
         const el = /** @type {NeonIconElement} */ (document.createElement('neon-icon'));
         document.body.appendChild(el);
         await settle();
-        expect(el.querySelector('svg')).toBeNull();
+        expect(queryInternal(el, 'svg', styles)).toBeNull();
     });
 
     it('renders an `IconDef` with empty shared attrs', async () => {
@@ -299,10 +302,10 @@ describe('<neon-icon>', () => {
         document.body.appendChild(el);
         el.icon = [24, 24, {}, {}, 'M4 4h16v16H4z'];
         await settle();
-        const svg = el.querySelector('svg');
+        const svg = queryInternal(el, 'svg', styles);
         expect(svg).not.toBeNull();
         expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
-        const path = svg?.querySelector('path');
+        const path = queryInternal(svg, 'path', styles);
         expect(path?.getAttribute('d')).toBe('M4 4h16v16H4z');
         expect(path?.getAttributeNames()).toEqual(['d']);
     });

@@ -24,6 +24,8 @@
     "./theme.css": "./theme.css",
     "./reset-normalize.css": "./reset-normalize.css",
     "./shadow-base.css": "./shadow-base.css",
+    "./shadow-control.css": "./shadow-control.css",
+    "./shadow-icon.css": "./shadow-icon.css",
     "./shared.module.css": "./shared.module.css",
     "./components/button.module.css": "./components/button.module.css",
     "./components/links.module.css": "./components/links.module.css",

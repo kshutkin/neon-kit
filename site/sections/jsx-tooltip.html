@@ -10,9 +10,11 @@
 
     <section class="docs-mb-8">
         <h2 class="docs-mb-4">Installation</h2>
-        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/theme @neon-kit/web-components @slimlib/jsx
+        <pre class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>pnpm add @neon-kit/jsx-components @neon-kit/theme @slimlib/jsx
 
-import '@neon-kit/theme-vanilla/index.css';
+import styles from '@neon-kit/theme/components/tooltip.module.css';
+import buttons from '@neon-kit/theme/components/button.module.css';
+import keycaps from '@neon-kit/theme/components/kbd.module.css';
 import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
     </section>
 
@@ -25,7 +27,7 @@ import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
         </p>
         <div class="docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-6" data-jsx-tooltip-demo="basic"></div>
         <pre class="docs-mt-4 docs-rounded-lg docs-border docs-border-border docs-bg-surface-secondary docs-p-4"><code>&lt;Tooltip content="Persists the current draft."&gt;
-    &lt;button type="button" class="btn"&gt;Save&lt;/button&gt;
+    &lt;button type="button" &gt;Save&lt;/button&gt;
 &lt;/Tooltip&gt;</code></pre>
     </section>
 
@@ -51,18 +53,18 @@ import { Tooltip } from '@neon-kit/jsx-components/tooltip';</code></pre>
     placement="bottom"
     content={
         &lt;&gt;
-            &lt;div class="tooltip__title"&gt;Keyboard shortcut&lt;/div&gt;
-            &lt;div class="tooltip__body"&gt;Open command search.&lt;/div&gt;
-            &lt;div class="tooltip__meta"&gt;
-                &lt;span class="kbd-keys"&gt;
-                    &lt;kbd class="kbd"&gt;⌘&lt;/kbd&gt;
-                    &lt;kbd class="kbd"&gt;K&lt;/kbd&gt;
+            &lt;div class={styles.tooltip__title}&gt;Keyboard shortcut&lt;/div&gt;
+            &lt;div class={styles.tooltip__body}&gt;Open command search.&lt;/div&gt;
+            &lt;div class={styles.tooltip__meta}&gt;
+                &lt;span class={keycaps['kbd-keys']}&gt;
+                    &lt;kbd class={keycaps.kbd}&gt;⌘&lt;/kbd&gt;
+                    &lt;kbd class={keycaps.kbd}&gt;K&lt;/kbd&gt;
                 &lt;/span&gt;
             &lt;/div&gt;
         &lt;/&gt;
     }
 &gt;
-    &lt;button type="button" class="btn"&gt;Command search&lt;/button&gt;
+    &lt;button type="button" class={buttons.btn}&gt;Command search&lt;/button&gt;
 &lt;/Tooltip&gt;</code></pre>
     </section>
 

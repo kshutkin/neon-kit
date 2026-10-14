@@ -15,7 +15,7 @@
  * selection)" pattern: focus stays on the search input, the listbox is
  * the popover, and `aria-activedescendant` tracks the highlighted row.
  *
- * Light DOM only — see docs/adr/0001-rendering-mode.md.
+ * Generated controls render in shadow DOM; authored options remain in light DOM.
  *
  * Pilot rewrite on `@slimlib/element`'s `defineElement` form: no
  * shared base class, no Symbol-keyed prototype bridge. The element is
@@ -28,12 +28,18 @@
  * microtask — the spec wraps assertions that follow public writes in a
  * `tick`.
  */
+import { connectFormLabels } from './form-control-utils.js';
 import { DEV } from 'esm-env';
+import * as styles from '@neon-kit/theme/components/combobox.module.css?neon';
+import { sheets as shadowBase } from '@neon-kit/theme/shadow-base.css?neon';
+import { sheets as controlStyles } from '@neon-kit/theme/shadow-control.css?neon';
+import { classSelector } from '@neon-kit/core/utils';
 
 import {
     attributes,
     booleanAttribute,
     defineElement,
+    shadowStyles,
     formAssociated,
     internals,
     onConnect,
@@ -56,18 +62,18 @@ import check from '@neon-kit/icons/outline/check';
 
 let nextId = 0;
 
-const FIELD_CLASS = 'combobox__field';
-const POPOVER_CLASS = 'combobox__popover';
-const SEARCH_CLASS = 'combobox__search';
-const LIST_CLASS = 'combobox__list';
-const OPTION_CLASS = 'combobox__option';
-const OPTION_LABEL_CLASS = 'combobox__option-label';
-const OPTION_CHECK_CLASS = 'combobox__option-check';
-const VALUE_CLASS = 'combobox__value';
-const PLACEHOLDER_CLASS = 'combobox__placeholder';
-const CLEAR_CLASS = 'combobox__clear';
-const CHEVRON_CLASS = 'combobox__chevron';
-const EMPTY_CLASS = 'combobox__empty';
+const FIELD_CLASS = styles['combobox__field'];
+const POPOVER_CLASS = styles['combobox__popover'];
+const SEARCH_CLASS = styles['combobox__search'];
+const LIST_CLASS = styles['combobox__list'];
+const OPTION_CLASS = styles['combobox__option'];
+const OPTION_LABEL_CLASS = styles['combobox__option-label'];
+const OPTION_CHECK_CLASS = styles['combobox__option-check'];
+const VALUE_CLASS = styles['combobox__value'];
+const PLACEHOLDER_CLASS = styles['combobox__placeholder'];
+const CLEAR_CLASS = styles['combobox__clear'];
+const CHEVRON_CLASS = styles['combobox__chevron'];
+const EMPTY_CLASS = styles['combobox__empty'];
 
 /**
  * @typedef {{ value: string, option: HTMLOptionElement | null }} ChangeDetail
@@ -96,7 +102,6 @@ const renderCombobox = (host) => {
     const popoverId = `${idPrefix}-pop`;
     const listId = `${idPrefix}-list`;
 
-    if (!host.classList.contains('combobox')) host.classList.add('combobox');
 
     // ---- Reactive props (synchronously declared at render top) --------
     // `props()` installs reactive accessors for these keys on `host` and
@@ -155,12 +160,14 @@ const renderCombobox = (host) => {
             {chevronEl}
         </button>
     );
+    /** @type {HTMLElement} */ (host).focus = (options) => fieldButton.focus(options);
+    /** @type {HTMLElement} */ (host).blur = () => fieldButton.blur();
     fieldButton.setAttribute('popovertarget', popoverId);
 
     const searchInput = /** @type {HTMLInputElement} */ (
         <input
             type="search"
-            class="input"
+            class={styles.input}
             autocomplete="off"
             role="combobox"
             aria-autocomplete="list"
@@ -258,10 +265,10 @@ const renderCombobox = (host) => {
     const setActive = (row) => {
         if (activeId) {
             const prev = listEl.querySelector(`#${cssEscape(activeId)}`);
-            prev?.classList.remove('-active');
+            prev?.classList.remove(styles['-active']);
         }
         if (row) {
-            row.classList.add('-active');
+            row.classList.add(styles['-active']);
             activeId = row.id;
             searchInput.setAttribute('aria-activedescendant', row.id);
             row.scrollIntoView({ block: 'nearest' });
@@ -340,7 +347,7 @@ const renderCombobox = (host) => {
         // The validation anchor must be a descendant of the host.
         // Skip while the returned JSX hasn't been mounted yet — the
         // initial validity gets committed explicitly from onMount().
-        if (!host.contains(fieldButton)) return;
+        if (!host.shadowRoot?.contains(fieldButton)) return;
         if (state.required && !selected()) {
             elementInternals.setValidity(
                 { valueMissing: true },
@@ -414,6 +421,7 @@ const renderCombobox = (host) => {
             host.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,
+                    composed: true,
                     detail: /** @type {ChangeDetail} */ ({ value: opt?.value ?? '', option: opt }),
                 }),
             );
@@ -530,6 +538,7 @@ const renderCombobox = (host) => {
         host.dispatchEvent(
             new CustomEvent('input', {
                 bubbles: true,
+                composed: true,
                 detail: /** @type {InputDetail} */ ({ query: q }),
             }),
         );
@@ -578,7 +587,7 @@ const renderCombobox = (host) => {
     const onListClick = (e) => {
         const target = /** @type {Element | null} */ (e.target);
         if (!target) return;
-        const row = /** @type {HTMLButtonElement | null} */ (target.closest(`.${OPTION_CLASS}`));
+        const row = /** @type {HTMLButtonElement | null} */ (target.closest(classSelector(OPTION_CLASS)));
         if (!row || row.disabled) return;
         selectRow(row);
     };
@@ -634,7 +643,10 @@ const renderCombobox = (host) => {
     };
 
     // ---- Lifecycle wiring ---------------------------------------------
+    /** @type {(() => void) | undefined} */
+    let disconnectLabels;
     onConnect(() => {
+        disconnectLabels = connectFormLabels(host, elementInternals, fieldButton, [searchInput]);
         const ac = new AbortController();
         listeners = ac;
         const opts = { signal: ac.signal };
@@ -657,6 +669,8 @@ const renderCombobox = (host) => {
     });
 
     onDisconnect(() => {
+        disconnectLabels?.();
+        disconnectLabels = undefined;
         listeners?.abort();
         listeners = null;
         mo?.disconnect();
@@ -677,7 +691,7 @@ const renderCombobox = (host) => {
         }
     });
 
-    return [fieldButton, popover];
+    return <div class={styles.combobox}>{fieldButton}{popover}<slot hidden /></div>;
 };
 
 /**
@@ -720,6 +734,7 @@ defineElement(
             name: stringAttribute,
             'data-clearable': [booleanAttribute[0]],
         }),
+        shadowStyles([...new Set([...shadowBase, ...controlStyles, ...styles.sheets])]),
         withInternals(),
         withValidation(),
         formAssociated(),

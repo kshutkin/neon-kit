@@ -17,6 +17,7 @@ import { generateId, getActiveElement, isDisabled } from './utils.js';
  *     handleKeyDown: (event: KeyboardEvent) => void;
  *     handleFocusIn: (event: FocusEvent) => void;
  *     handleToggle: (event: ToggleEvent) => void;
+ *     handleBeforeToggle: (event: ToggleEvent) => void;
  * }} MenuController
  * @typedef {{
  *     sync: (preferredTrigger?: HTMLElement | null) => void;
@@ -281,6 +282,15 @@ export function createMenuController(host, getRootController, getItems, selector
             const focusedItem = getEventItem(event.target);
             if (focusedItem !== undefined) {
                 setRovingTabindex(focusedItem);
+            }
+        },
+        handleBeforeToggle(event) {
+            // Restore while focus ownership is observable. Firefox may clear
+            // focus during native closing, before the queued toggle event.
+            if (event.target === host && event.newState === 'closed'
+                && canRestoreFocusFrom(getActiveElement(host))
+                && canRestoreFocusTo(restoreFocusElement)) {
+                restoreFocusElement.focus();
             }
         },
         handleToggle(event) {

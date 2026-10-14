@@ -93,10 +93,10 @@ const interactionSelectors = {
     tooltip: '#content-inner button[interestfor]',
     'wc-menu': '#content-inner [popovertarget="wc-demo-menu"]',
     'wc-tooltip': '#content-inner button:has(neon-tooltip)',
-    'wc-combobox': '#content-inner neon-combobox .combobox__field',
-    'wc-multicombobox': '#content-inner neon-multicombobox .combobox__field',
-    'wc-datepicker': '#content-inner neon-datepicker .datepicker__trigger',
-    'wc-timepicker': '#content-inner neon-timepicker .timepicker__trigger',
+    'wc-combobox': '#content-inner neon-combobox button[aria-haspopup=listbox]',
+    'wc-multicombobox': '#content-inner neon-multicombobox button[aria-haspopup=listbox]',
+    'wc-datepicker': '#content-inner neon-datepicker button[aria-label="Open calendar"]',
+    'wc-timepicker': '#content-inner neon-timepicker button[aria-label="Open time list"]',
     'jsx-menu': '[data-jsx-menu-demo="basic"] button[popovertarget]',
     'jsx-tooltip': '[data-jsx-tooltip-demo="basic"] button',
 };
@@ -105,15 +105,24 @@ async function renderedState(page) {
     return page.evaluate((names) => {
         const content = document.querySelector('#content-inner');
         const rootStyle = getComputedStyle(document.documentElement);
+        const roots = [content];
+        for (const root of roots) {
+            for (const element of root.querySelectorAll('*')) {
+                if (element.shadowRoot) { roots.push(element.shadowRoot); }
+            }
+        }
+        const elements = roots.flatMap((root) => [...root.querySelectorAll('*')]);
+        let focused = document.activeElement;
+        while (focused?.shadowRoot?.activeElement) { focused = focused.shadowRoot.activeElement; }
         return {
             markup: content.outerHTML,
             tokens: Object.fromEntries(names.map((name) => [name, rootStyle.getPropertyValue(name).trim()])),
-            classes: [...new Set([...content.querySelectorAll('[class]')].flatMap((element) => [...element.classList]))].sort(),
-            hosts: [...content.querySelectorAll('*')].filter((element) => element.localName.startsWith('neon-')).map((element) => ({
-                tag: element.localName, shadowRoot: Boolean(element.shadowRoot),
+            classes: [...new Set(elements.filter((element) => element.hasAttribute('class')).flatMap((element) => [...element.classList]))].sort(),
+            hosts: elements.filter((element) => element.localName.startsWith('neon-')).map((element) => ({
+                tag: element.localName, shadowRoot: Boolean(element.shadowRoot), shadowMarkup: element.shadowRoot?.innerHTML,
             })),
-            openPopovers: [...content.querySelectorAll(':popover-open')].map((element) => element.outerHTML),
-            focus: document.activeElement?.outerHTML,
+            openPopovers: elements.filter((element) => element.matches(':popover-open')).map((element) => element.outerHTML),
+            focus: focused?.outerHTML,
             fontFamily: getComputedStyle(content).fontFamily,
         };
     }, tokenNames);
@@ -147,36 +156,43 @@ try {
             const errors = [];
             page.on('pageerror', (error) => errors.push(error.message));
             await page.goto(new URL(`${route}/`, origin).href);
-            await page.locator('#content-inner h1').first().waitFor();
+            let renderer = page;
+            if (route.startsWith('wc-') || route.startsWith('jsx-') || route === 'icon-web-component') {
+                const frame = page.locator('iframe[data-renderer-example]');
+                await frame.waitFor();
+                renderer = await (await frame.elementHandle()).contentFrame();
+                await renderer.waitForFunction(() => window.rendererReady);
+            }
+            await renderer.locator('#content-inner h1').first().waitFor();
             // JSX demos and icon examples initialize through dynamic imports.
             if (route.startsWith('jsx-')) {
-                await page.locator(`[data-jsx-${route.slice(4)}-demo="basic"] button`).first().waitFor();
+                await renderer.locator(`[data-jsx-${route.slice(4)}-demo="basic"] button`).first().waitFor();
             }
             if (route === 'icon-web-component') {
-                await page.locator('#content-inner neon-icon svg').first().waitFor();
+                await renderer.locator('#content-inner neon-icon svg').first().waitFor();
             }
-            await page.evaluate(() => document.fonts.ready);
+            await renderer.evaluate(() => document.fonts.ready);
             const directory = resolve(destination, theme);
             await mkdir(directory, { recursive: true });
-            const record = { route, theme, errors, idle: await renderedState(page), screenshots: [] };
+            const record = { route, theme, errors, idle: await renderedState(renderer), screenshots: [] };
             const idlePath = resolve(directory, `${route}.png`);
             await page.screenshot({ path: idlePath, fullPage: true, animations: 'disabled' });
             record.screenshots.push(relative(destination, idlePath));
             if (interactionSelectors[route]) {
-                const trigger = page.locator(interactionSelectors[route]).first();
+                const trigger = renderer.locator(interactionSelectors[route]).first();
                 await trigger.scrollIntoViewIfNeeded();
                 if (route.includes('tooltip')) {
                     await trigger.hover();
-                    await page.locator('#content-inner :popover-open').first().waitFor();
+                    await renderer.locator('#content-inner :popover-open').first().waitFor();
                 } else if (route === 'buttons') {
                     await trigger.focus();
                 } else {
                     await trigger.click();
                     if (route !== 'details') {
-                        await page.locator('#content-inner :popover-open, #content-inner dialog[open]').first().waitFor();
+                        await renderer.locator('#content-inner :popover-open, #content-inner dialog[open]').first().waitFor();
                     }
                 }
-                record.interaction = { action: route.includes('tooltip') ? 'hover' : route === 'buttons' ? 'focus' : 'click', selector: interactionSelectors[route], ...await renderedState(page) };
+                record.interaction = { action: route.includes('tooltip') ? 'hover' : route === 'buttons' ? 'focus' : 'click', selector: interactionSelectors[route], ...await renderedState(renderer) };
                 const interactionPath = resolve(directory, `${route}-interaction.png`);
                 await page.screenshot({ path: interactionPath, animations: 'disabled' });
                 record.screenshots.push(relative(destination, interactionPath));

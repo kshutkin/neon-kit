@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { styleBuild } from '@neon-kit/vite-plugin-style-build';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { vanillaStyles } from './site/vanilla-styles.mjs';
@@ -15,6 +16,7 @@ const LOCAL_MODULES = [
   '@neon-kit/core/tooltip',
   '@neon-kit/core/utils',
   '@neon-kit/jsx-components/tooltip',
+  '@neon-kit/jsx-components/menu',
   '@neon-kit/web-components',
   '@neon-kit/web-components/tooltip',
   '@neon-kit/web-components/menu',
@@ -28,6 +30,7 @@ const LOCAL_MODULES = [
 const LOCAL_ALIASES = [
   { find: /^@neon-kit\/core\/tooltip$/, replacement: resolve(CORE_SRC, 'tooltip.js') },
   { find: /^@neon-kit\/core\/utils$/, replacement: resolve(CORE_SRC, 'utils.js') },
+  { find: /^@neon-kit\/jsx-components\/menu$/, replacement: resolve(JSX_COMPONENTS_SRC, 'menu.jsx') },
   { find: /^@neon-kit\/jsx-components\/tooltip$/, replacement: resolve(JSX_COMPONENTS_SRC, 'tooltip.jsx') },
   { find: /^@neon-kit\/web-components$/, replacement: resolve(WC_SRC, 'index.js') },
   { find: /^@neon-kit\/web-components\/tooltip$/, replacement: resolve(WC_SRC, 'tooltip.jsx') },
@@ -40,10 +43,10 @@ const LOCAL_ALIASES = [
 ];
 
 const ROUTES = {
-  about: { title: 'About', desc: 'Neon Kit is a CSS Modules theme with a plain CSS package, paired with optional Light-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
-  'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional Light-DOM web components that use the shared theme CSS.' },
+  about: { title: 'About', desc: 'Neon Kit is a CSS Modules theme with a plain CSS package, paired with optional shadow-DOM web components built on native browser features and shipped as raw CSS and unbundled JS.' },
+  'getting-started': { title: 'Getting Started', desc: 'Install Neon Kit, import the theme stylesheet, and add optional shadow-DOM web components that use the shared theme CSS.' },
   icons:            { title: 'Icons',           desc: 'The full set of heroicon-derived SVG icons distributed as tree-shakeable ESM modules.' },
-  'icon-web-component': { title: 'Icon Web Component', desc: '<neon-icon> - Light-DOM custom element for rendering @neon-kit/icons definitions as inline SVG.' },
+  'icon-web-component': { title: 'Icon Web Component', desc: '<neon-icon> - shadow-DOM custom element for rendering @neon-kit/icons definitions as inline SVG.' },
   buttons:    { title: 'Buttons',    desc: 'Button variants and states in the Neon theme — default, primary CTA, ghost, and danger styles.', section: 'css', item: 'buttons' },
   panels:     { title: 'Panels',     desc: 'Panel and surface tokens — backgrounds, borders, and elevation in the Neon theme.', section: 'css', item: 'panels' },
   details:    { title: 'Details',    desc: 'Native <details> disclosures with Neon panel styling, custom summary chevrons, focus states, and disabled-looking states.', section: 'css', item: 'details' },
@@ -66,13 +69,14 @@ const ROUTES = {
   links:      { title: 'Links',      desc: 'Link styles and states in the Neon theme — default, hover, visited, and active.', section: 'css', item: 'links' },
   shadows:    { title: 'Shadows',    desc: 'Shadow and inset highlight utilities for elevation in the Neon theme.', section: 'css', item: 'shadows' },
   utilities:  { title: 'Utilities',  desc: 'Utility classes that complement the Neon theme tokens.', section: 'css', item: 'utilities' },
-  'wc-tooltip': { title: 'Tooltip (WC)', desc: 'Customized built-in <button is="neon-tooltip"> — a Light-DOM web component wrapping the Neon tooltip styles.', section: 'wc', item: 'tooltip' },
+  'wc-tooltip': { title: 'Tooltip (WC)', desc: '<neon-tooltip> — a shadow-DOM web component wrapping the Neon tooltip styles.', section: 'wc', item: 'tooltip' },
+  'jsx-menu': { title: 'Menu (JSX)', desc: 'Menu and MenuItem JSX components using shared CSS Modules and native popovers.', section: 'jsx', item: 'menus' },
   'jsx-tooltip': { title: 'Tooltip (JSX)', desc: 'JSX Tooltip component built with @slimlib/jsx — decorates one trigger element with a popover-based informational helper.', section: 'jsx', item: 'tooltip' },
-  'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — Light-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.', section: 'wc', item: 'menus' },
-  'wc-combobox': { title: 'Combobox (WC)', desc: '<neon-combobox> — Light-DOM, form-associated combobox web component with filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-single' },
-  'wc-multicombobox': { title: 'Multicombobox (WC)', desc: '<neon-multicombobox> — Light-DOM, form-associated multi-select combobox web component with tag chips, filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-multi' },
-  'wc-datepicker': { title: 'Datepicker (WC)', desc: '<neon-datepicker> - Light-DOM, form-associated datepicker web component with native date-input style APIs and ElementInternals form participation.', section: 'wc', item: 'datepicker' },
-  'wc-timepicker': { title: 'Timepicker (WC)', desc: '<neon-timepicker> - Light-DOM, form-associated timepicker web component with native time-input style APIs, optional seconds, and ElementInternals form participation.', section: 'wc', item: 'timepicker' },
+  'wc-menu':    { title: 'Menu (WC)',    desc: '<neon-menu> — shadow-DOM web component adding roving tabindex, type-ahead, and arrow-key navigation to the Neon menu styles.', section: 'wc', item: 'menus' },
+  'wc-combobox': { title: 'Combobox (WC)', desc: '<neon-combobox> — shadow-DOM, form-associated combobox web component with filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-single' },
+  'wc-multicombobox': { title: 'Multicombobox (WC)', desc: '<neon-multicombobox> — shadow-DOM, form-associated multi-select combobox web component with tag chips, filtering, keyboard navigation, and ElementInternals form participation.', section: 'wc', item: 'combobox-multi' },
+  'wc-datepicker': { title: 'Datepicker (WC)', desc: '<neon-datepicker> - shadow-DOM, form-associated datepicker web component with native date-input style APIs and ElementInternals form participation.', section: 'wc', item: 'datepicker' },
+  'wc-timepicker': { title: 'Timepicker (WC)', desc: '<neon-timepicker> - shadow-DOM, form-associated timepicker web component with native time-input style APIs, optional seconds, and ElementInternals form participation.', section: 'wc', item: 'timepicker' },
 };
 
 const DEFAULT_SLUG = 'about';
@@ -85,7 +89,7 @@ const SIDEBAR_ITEMS = [
   { item: 'panels', css: 'panels' },
   { item: 'details', css: 'details' },
   { item: 'dialogs', css: 'dialogs' },
-  { item: 'menus', css: 'menus', wc: 'wc-menu' },
+  { item: 'menus', css: 'menus', wc: 'wc-menu', jsx: 'jsx-menu' },
   { item: 'navigation', css: 'navigation' },
   { item: 'kbd', css: 'kbd' },
   { item: 'badges', css: 'badges' },
@@ -168,6 +172,9 @@ const renderPage = (shell, slug, fragment) => {
     <meta name="twitter:description" content="${escapeAttr(route.desc)}">`;
   html = html.replace('<!-- prerender:head -->', headInjection);
 
+  if (slug.startsWith('wc-') || slug.startsWith('jsx-') || slug === 'icon-web-component') {
+    fragment = `<iframe data-renderer-example title="${route.title}" src="${BASE}renderers/index.html?component=${encodeURIComponent(slug)}" style="width:100%;height:1000px;border:0;display:block"></iframe>`;
+  }
   html = html.replace(
     /(<div id="content-inner"[^>]*>)[\s\S]*?(<\/div>\s*<\/main>)/,
     `$1${fragment}$2`,
@@ -282,9 +289,11 @@ Sitemap: ${SITE_ORIGIN}${BASE}sitemap.xml
 
 export default defineConfig({
   root: ROOT,
+  cacheDir: resolve(import.meta.dirname, 'node_modules/.vite-docs'),
   base: BASE,
   plugins: [
     vanillaStyles(resolve(import.meta.dirname, 'theme'), resolve(import.meta.dirname, 'theme-vanilla/dist')),
+    styleBuild(),
     prerenderPlugin(),
   ],
   resolve: {
@@ -294,8 +303,10 @@ export default defineConfig({
     jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' },
   },
   optimizeDeps: {
-    entries: [resolve(ROOT, 'index.html')],
+    entries: [resolve(ROOT, 'index.html'), resolve(ROOT, 'renderers/index.html')],
     exclude: LOCAL_MODULES,
+    include: ['@slimlib/element', '@slimlib/jsx', '@slimlib/jsx/jsx-runtime', '@slimlib/jsx/jsx-dev-runtime', '@slimlib/jsx/query-children', '@slimlib/store', 'esm-env'],
+    rolldownOptions: { transform: { jsx: { runtime: 'automatic', importSource: '@slimlib/jsx' } } },
   },
   server: {
     fs: {
@@ -305,5 +316,7 @@ export default defineConfig({
   build: {
     outDir: OUT,
     emptyOutDir: true,
+    cssTarget: ['chrome128', 'firefox128'],
+    rolldownOptions: { input: { docs: resolve(ROOT, 'index.html'), renderers: resolve(ROOT, 'renderers/index.html') } },
   },
 });

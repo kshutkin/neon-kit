@@ -1,3 +1,5 @@
+import * as styles from '@neon-kit/theme/components/combobox.module.css?neon';
+import { queryInternal, queryAllInternal, styleClass, hasStyleClasses, activeElement } from './style-queries.mjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import '../src/multicombobox.jsx';
@@ -45,15 +47,15 @@ describe('<neon-multicombobox>', () => {
 
     it('renders empty field with placeholder when no values are selected', () => {
         const cb = mount(`<neon-multicombobox placeholder="Pick…">${COUNTRIES}</neon-multicombobox>`);
-        expect(cb.classList.contains('combobox')).toBe(true);
-        expect(cb.classList.contains('-multi')).toBe(true);
-        const tags = cb.querySelectorAll('.combobox__values .tag');
+        expect(hasStyleClasses(cb.shadowRoot.firstElementChild, styleClass(styles, 'combobox'))).toBe(true);
+        expect(hasStyleClasses(cb.shadowRoot.firstElementChild, styleClass(styles, '-multi'))).toBe(true);
+        const tags = queryAllInternal(cb, '.combobox__values .tag', styles);
         expect(tags.length).toBe(0);
-        const placeholder = /** @type {HTMLElement} */ (cb.querySelector('.combobox__placeholder'));
+        const placeholder = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__placeholder', styles));
         expect(placeholder?.textContent).toBe('Pick…');
         expect(placeholder.hidden).toBe(false);
         // Original <option>s hidden.
-        for (const opt of cb.querySelectorAll(':scope > option')) {
+        for (const opt of queryAllInternal(cb, ':scope > option', styles)) {
             expect(/** @type {HTMLElement} */ (opt).style.display).toBe('none');
         }
     });
@@ -64,23 +66,23 @@ describe('<neon-multicombobox>', () => {
             <option value="uk">United Kingdom</option>
             <option value="de" selected>Germany</option>
         </neon-multicombobox>`);
-        const tags = cb.querySelectorAll('.combobox__values .tag');
+        const tags = queryAllInternal(cb, '.combobox__values .tag', styles);
         expect(tags.length).toBe(2);
         expect(tags[0].textContent?.trim().startsWith('United States')).toBe(true);
         expect(tags[1].textContent?.trim().startsWith('Germany')).toBe(true);
-        const placeholder = /** @type {HTMLElement} */ (cb.querySelector('.combobox__placeholder'));
+        const placeholder = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__placeholder', styles));
         expect(placeholder.hidden).toBe(true);
         expect(/** @type {any} */ (cb).values).toEqual(['us', 'de']);
     });
 
     it('clicking the field opens the popover; Escape closes', async () => {
         const cb = mount(`<neon-multicombobox>${COUNTRIES}</neon-multicombobox>`);
-        const field = /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field'));
-        const popover = /** @type {HTMLElement} */ (cb.querySelector('.combobox__popover'));
+        const field = /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles));
+        const popover = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__popover', styles));
         field.click();
         await nextFrame();
         expect(popover.matches(':popover-open')).toBe(true);
-        const search = /** @type {HTMLInputElement} */ (cb.querySelector('.combobox__search input'));
+        const search = /** @type {HTMLInputElement} */ (queryInternal(cb, '.combobox__search input', styles));
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         await nextFrame();
         expect(popover.matches(':popover-open')).toBe(false);
@@ -88,8 +90,8 @@ describe('<neon-multicombobox>', () => {
 
     it('ArrowDown on the field opens the popover', async () => {
         const cb = mount(`<neon-multicombobox>${COUNTRIES}</neon-multicombobox>`);
-        const field = /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field'));
-        const popover = /** @type {HTMLElement} */ (cb.querySelector('.combobox__popover'));
+        const field = /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles));
+        const popover = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__popover', styles));
         field.focus();
         field.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
         await nextFrame();
@@ -98,16 +100,16 @@ describe('<neon-multicombobox>', () => {
 
     it('typing in the search input filters rows', async () => {
         const cb = mount(`<neon-multicombobox>${COUNTRIES}</neon-multicombobox>`);
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        const search = /** @type {HTMLInputElement} */ (cb.querySelector('.combobox__search input'));
+        const search = /** @type {HTMLInputElement} */ (queryInternal(cb, '.combobox__search input', styles));
         let detail = null;
         cb.addEventListener('input', (e) => {
             detail = /** @type {CustomEvent} */ (e).detail;
         });
         search.value = 'unit';
         search.dispatchEvent(new Event('input', { bubbles: true }));
-        const labels = Array.from(cb.querySelectorAll('.combobox__option-label')).map((r) => r.textContent);
+        const labels = Array.from(queryAllInternal(cb, '.combobox__option-label', styles)).map((r) => r.textContent);
         expect(labels).toEqual(['United States', 'United Kingdom']);
         expect(detail).toEqual({ query: 'unit' });
     });
@@ -120,10 +122,13 @@ describe('<neon-multicombobox>', () => {
             changes++;
             detail = /** @type {CustomEvent} */ (e).detail;
         });
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        const search = /** @type {HTMLInputElement} */ (cb.querySelector('.combobox__search input'));
-        const popover = /** @type {HTMLElement} */ (cb.querySelector('.combobox__popover'));
+        const search = /** @type {HTMLInputElement} */ (queryInternal(cb, '.combobox__search input', styles));
+        const popover = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__popover', styles));
+        // toggle is queued by the browser; wait for initial selection before keys.
+        await expect.poll(() => search.getAttribute('aria-activedescendant'))
+            .toBe(queryAllInternal(cb, '.combobox__option', styles)[0].id);
         // First row already highlighted on open.
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
         // Now on second row (United Kingdom).
@@ -131,7 +136,7 @@ describe('<neon-multicombobox>', () => {
         expect(changes).toBe(1);
         expect(/** @type {any} */ (detail)?.values).toEqual(['uk']);
         expect(popover.matches(':popover-open')).toBe(true);
-        const tags = cb.querySelectorAll('.combobox__values .tag');
+        const tags = queryAllInternal(cb, '.combobox__values .tag', styles);
         expect(tags.length).toBe(1);
         expect(tags[0].textContent?.trim().startsWith('United Kingdom')).toBe(true);
     });
@@ -143,7 +148,7 @@ describe('<neon-multicombobox>', () => {
         </neon-multicombobox>`);
         let changes = 0;
         cb.addEventListener('change', () => changes++);
-        const remove = /** @type {HTMLButtonElement} */ (cb.querySelector('.tag[data-value="us"] .tag__remove'));
+        const remove = /** @type {HTMLButtonElement} */ (queryInternal(cb, '.tag[data-value="us"] .tag__remove', styles));
         remove.click();
         expect(changes).toBe(1);
         expect(/** @type {any} */ (cb).values).toEqual(['uk']);
@@ -154,8 +159,8 @@ describe('<neon-multicombobox>', () => {
             <option value="us" selected>United States</option>
             <option value="uk">United Kingdom</option>
         </neon-multicombobox>`);
-        const popover = /** @type {HTMLElement} */ (cb.querySelector('.combobox__popover'));
-        const remove = /** @type {HTMLButtonElement} */ (cb.querySelector('.tag[data-value="us"] .tag__remove'));
+        const popover = /** @type {HTMLElement} */ (queryInternal(cb, '.combobox__popover', styles));
+        const remove = /** @type {HTMLButtonElement} */ (queryInternal(cb, '.tag[data-value="us"] .tag__remove', styles));
         remove.click();
         await nextFrame();
         expect(popover.matches(':popover-open')).toBe(false);
@@ -208,7 +213,7 @@ describe('<neon-multicombobox>', () => {
                 <neon-multicombobox name="country" required>${COUNTRIES}</neon-multicombobox>
             </form>
         `);
-        const cb = /** @type {any} */ (wrapper.querySelector('neon-multicombobox'));
+        const cb = /** @type {any} */ (queryInternal(wrapper, 'neon-multicombobox', styles));
         expect(cb.checkValidity()).toBe(false);
         cb.values = ['us'];
         expect(cb.checkValidity()).toBe(true);
@@ -226,7 +231,7 @@ describe('<neon-multicombobox>', () => {
             </form>
         `);
         const form = /** @type {HTMLFormElement} */ (wrapper);
-        const cb = /** @type {any} */ (wrapper.querySelector('neon-multicombobox'));
+        const cb = /** @type {any} */ (queryInternal(wrapper, 'neon-multicombobox', styles));
         cb.values = ['fr'];
         expect(cb.values).toEqual(['fr']);
         form.reset();
@@ -240,7 +245,7 @@ describe('<neon-multicombobox>', () => {
         </neon-multicombobox>`);
         let changes = 0;
         cb.addEventListener('change', () => changes++);
-        const clear = /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__clear'));
+        const clear = /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__clear', styles));
         expect(clear.style.display).not.toBe('none');
         clear.click();
         expect(changes).toBe(1);
@@ -252,9 +257,9 @@ describe('<neon-multicombobox>', () => {
         const cb = mount(`<neon-multicombobox>${COUNTRIES}</neon-multicombobox>`);
         let changes = 0;
         cb.addEventListener('change', () => changes++);
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        const rows = cb.querySelectorAll('.combobox__option');
+        const rows = queryAllInternal(cb, '.combobox__option', styles);
         // Clicking the <label> dispatches a click to the inner checkbox,
         // which fires `change`.
         /** @type {HTMLLabelElement} */ (rows[2]).click();
@@ -279,16 +284,16 @@ describe('<neon-multicombobox>', () => {
             <option value="us">United States</option>
             <option value="uk">United Kingdom</option>
         </neon-multicombobox>`);
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        expect(cb.querySelectorAll('.combobox__option').length).toBe(2);
+        expect(queryAllInternal(cb, '.combobox__option', styles).length).toBe(2);
         const opt3 = document.createElement('option');
         opt3.value = 'de';
         opt3.textContent = 'Germany';
         cb.appendChild(opt3);
         await Promise.resolve();
         await nextFrame();
-        expect(cb.querySelectorAll('.combobox__option').length).toBe(3);
+        expect(queryAllInternal(cb, '.combobox__option', styles).length).toBe(3);
     });
 
     it('MutationObserver: removing a selected <option> drops its tag and row', async () => {
@@ -297,17 +302,17 @@ describe('<neon-multicombobox>', () => {
             <option value="uk" selected>United Kingdom</option>
             <option value="de">Germany</option>
         </neon-multicombobox>`);
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        expect(cb.querySelectorAll('.combobox__option').length).toBe(3);
+        expect(queryAllInternal(cb, '.combobox__option', styles).length).toBe(3);
         expect(/** @type {any} */ (cb).values).toEqual(['us', 'uk']);
-        const uk = /** @type {HTMLOptionElement} */ (cb.querySelector(':scope > option[value="uk"]'));
+        const uk = /** @type {HTMLOptionElement} */ (queryInternal(cb, ':scope > option[value="uk"]', styles));
         uk.remove();
         await Promise.resolve();
         await nextFrame();
-        expect(cb.querySelectorAll('.combobox__option').length).toBe(2);
+        expect(queryAllInternal(cb, '.combobox__option', styles).length).toBe(2);
         expect(/** @type {any} */ (cb).values).toEqual(['us']);
-        const tags = cb.querySelectorAll('.combobox__values .tag');
+        const tags = queryAllInternal(cb, '.combobox__values .tag', styles);
         expect(tags.length).toBe(1);
         expect(/** @type {HTMLElement} */ (tags[0]).dataset.value).toBe('us');
     });
@@ -321,15 +326,17 @@ describe('<neon-multicombobox>', () => {
             changes++;
             detail = /** @type {CustomEvent} */ (e).detail;
         });
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        const search = /** @type {HTMLInputElement} */ (cb.querySelector('.combobox__search input'));
+        const search = /** @type {HTMLInputElement} */ (queryInternal(cb, '.combobox__search input', styles));
+        await expect.poll(() => search.getAttribute('aria-activedescendant'))
+            .toBe(queryAllInternal(cb, '.combobox__option', styles)[0].id);
         // First row (United States) is auto-active on open. Press Space to toggle off.
         search.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
         expect(changes).toBe(1);
         expect(/** @type {any} */ (detail)?.values).toEqual([]);
         expect(/** @type {any} */ (cb).values).toEqual([]);
-        expect(cb.querySelectorAll('.combobox__values .tag').length).toBe(0);
+        expect(queryAllInternal(cb, '.combobox__values .tag', styles).length).toBe(0);
     });
 
     it('disabled <option> rows are aria-disabled and cannot be toggled by click or Space', async () => {
@@ -340,12 +347,12 @@ describe('<neon-multicombobox>', () => {
         </neon-multicombobox>`);
         let changes = 0;
         cb.addEventListener('change', () => changes++);
-        /** @type {HTMLButtonElement} */ (cb.querySelector('.combobox__field')).click();
+        /** @type {HTMLButtonElement} */ (queryInternal(cb, '.combobox__field', styles)).click();
         await nextFrame();
-        const rows = cb.querySelectorAll('.combobox__option');
+        const rows = queryAllInternal(cb, '.combobox__option', styles);
         const ukRow = /** @type {HTMLLabelElement} */ (rows[1]);
         expect(ukRow.getAttribute('aria-disabled')).toBe('true');
-        const ukCheckbox = /** @type {HTMLInputElement} */ (ukRow.querySelector('.checkbox'));
+        const ukCheckbox = /** @type {HTMLInputElement} */ (queryInternal(ukRow, '.checkbox', styles));
         expect(ukCheckbox.disabled).toBe(true);
 
         // Clicking the row must not toggle the value or fire change.
@@ -356,7 +363,7 @@ describe('<neon-multicombobox>', () => {
         // Keyboard navigation must skip the disabled row: from the first
         // visible row (us), ArrowDown should land on de, not uk. Then
         // Space toggles de — never uk.
-        const search = /** @type {HTMLInputElement} */ (cb.querySelector('.combobox__search input'));
+        const search = /** @type {HTMLInputElement} */ (queryInternal(cb, '.combobox__search input', styles));
         // Reset to first row.
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true }));
         search.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));

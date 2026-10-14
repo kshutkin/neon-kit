@@ -86,8 +86,12 @@ not a claim that the current baseline has passed Firefox checks.
 
 ## Implementation record
 
-Step 1 captures the existing light-DOM implementation in the
-[migration baseline](../style-migration/README.md). That historical behavior
-remains the running implementation until later steps migrate each component.
+Step 1 captures the historical light-DOM implementation in the
+[migration baseline](../style-migration/README.md). Step 5 migrates the WC
+renderers to open shadow roots and JSX to ordinary CSS Modules. Menu and tooltip
+hosts remain in their original tree as popover targets, with default shadow
+slots for authored content and compiler-projected host styles. Detailed named
+slots and parts remain deferred. [Step 5 results](../style-migration/STEP_5_COMPONENTS.md)
+record the Chromium and Firefox gates; packed publication checks remain step 6.
 The [migration plan](../STYLE_SYSTEM_MIGRATION_PLAN.md) governs those steps;
 this ADR replaces the old parallel light-DOM/CDN entry-point direction.
