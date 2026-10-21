@@ -48,7 +48,7 @@ try {
     const source = await readFile(path, 'utf8');
     await writeFile(
         path,
-        source.replace('--_primary-hue: 245;', '--_primary-hue: 315;')
+        source.replace('--primary-hue: 245;', '--primary-hue: 315;')
     );
     await page.waitForFunction(
         (color) =>

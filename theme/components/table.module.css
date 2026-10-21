@@ -29,7 +29,7 @@
 */
 
 .table {
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     width: 100%;
     caption-side: bottom;
     text-align: start;
@@ -37,7 +37,7 @@
 }
 
 .table caption {
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     font-size: 0.875rem;
     padding-block: 0.5rem;
     text-align: start;
@@ -47,7 +47,7 @@
 .table td {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     padding: 0.5rem 0.75rem;
     vertical-align: top;
     text-align: inherit;
@@ -56,7 +56,7 @@
 .table thead th {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     font-weight: 600;
     text-align: start;
@@ -66,7 +66,7 @@
 .table tfoot th {
     border-top-style: solid;
     border-top-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     font-weight: 500;
 }
 
@@ -86,7 +86,7 @@
 .table.-striped > tbody > tr:nth-child(even) > th {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
@@ -132,7 +132,7 @@
 }
 
 .table thead th > button[type='button']:hover {
-    background-color: var(--neon-color-border, var(--_color-border));
+    background-color: var(--neon-color-border, var(--color-border));
 }
 
 .table thead th > button[type='button']:focus-visible {
@@ -143,7 +143,7 @@
 .table thead th[aria-sort] > button[type='button']::after {
     content: '\2195'; /* ↕ */
     margin-inline-start: auto;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     opacity: 0.6;
     font-size: 0.875em;
     line-height: 1;

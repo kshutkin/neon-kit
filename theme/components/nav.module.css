@@ -67,22 +67,22 @@
 /* Active state — opt-in modifier. ARIA hooks like aria-current / aria-selected
    are intentionally NOT styled; pair them with `.-active` when relevant. */
 .nav__item.-active {
-    background-color: var(--neon-color-primary, var(--_color-primary));
+    background-color: var(--neon-color-primary, var(--color-primary));
     font-weight: var(--neon-font-weight-semibold, 600);
-    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: var(
+    color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     /* Beat the utility's hover/focus-visible bg-swap so the active row
        stays primary-colored when hovered. */
     &:hover,
     &:focus-visible {
-        background-color: var(--neon-color-primary, var(--_color-primary));
+        background-color: var(--neon-color-primary, var(--color-primary));
     }
 }
 
@@ -112,10 +112,10 @@
 .nav.-tabs {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 
     gap: calc(var(--neon-spacing, 0.25rem) * 1);
@@ -141,16 +141,16 @@
 }
 
 .nav.-tabs .nav__item.-active {
-    border-color: var(--neon-color-border, var(--_color-border));
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    --_shadow: var(--neon-shadow-drop, var(--_shadow-drop));
-    --_inset-shadow: var(
+    border-color: var(--neon-color-border, var(--color-border));
+    background-color: var(--neon-color-surface, var(--color-surface));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    --shadow: var(--neon-shadow-drop, var(--shadow-drop));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     text-shadow: none;
     z-index: 1;
@@ -163,7 +163,7 @@
 
     &:hover,
     &:focus-visible {
-        background-color: var(--neon-color-surface, var(--_color-surface));
+        background-color: var(--neon-color-surface, var(--color-surface));
     }
 
     /* 1px band at the very bottom of the tab, painted in surface color, so
@@ -175,7 +175,7 @@
         inset-inline: 0;
         bottom: -1px;
         block-size: 1px;
-        background: var(--neon-color-surface, var(--_color-surface));
+        background: var(--neon-color-surface, var(--color-surface));
     }
 }
 
@@ -185,22 +185,22 @@
    Designed to host either <button>s or <input type="radio"> + <label>
    pairs. Use a tight gap so segments visually share the track. */
 .nav.-segmented {
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
-    --_inset-shadow: var(
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     display: inline-flex;
     gap: calc(var(--neon-spacing, 0.25rem) * 0.5);
     padding: calc(var(--neon-spacing, 0.25rem) * 1);
-    border: 1px solid var(--neon-color-border, var(--_color-border));
+    border: 1px solid var(--neon-color-border, var(--color-border));
     border-radius: calc(var(--neon-spacing, 0.25rem) * 2);
 }
 
@@ -215,27 +215,27 @@
 .nav.-segmented .nav__item.-active,
 .nav.-segmented input[type='radio']:checked + .nav__item {
     background-color: light-dark(
-        var(--neon-color-surface, var(--_color-surface)),
-        var(--neon-color-primary, var(--_color-primary))
+        var(--neon-color-surface, var(--color-surface)),
+        var(--neon-color-primary, var(--color-primary))
     );
     font-weight: var(--neon-font-weight-semibold, 600);
     color: light-dark(
-        var(--neon-color-ink-primary, var(--_color-ink-primary)),
-        var(--neon-color-ink-inverse, var(--_color-ink-inverse))
+        var(--neon-color-ink-primary, var(--color-ink-primary)),
+        var(--neon-color-ink-inverse, var(--color-ink-inverse))
     );
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: var(
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     &:hover,
     &:focus-visible {
         background-color: light-dark(
-            var(--neon-color-surface, var(--_color-surface)),
-            var(--neon-color-primary, var(--_color-primary))
+            var(--neon-color-surface, var(--color-surface)),
+            var(--neon-color-primary, var(--color-primary))
         );
     }
 }
@@ -247,15 +247,15 @@
 .nav.-segmented input[type='radio']:focus-visible + .nav__item {
     background-color: var(
         --neon-color-surface-hover,
-        var(--_color-surface-hover)
+        var(--color-surface-hover)
     );
 }
 
 .nav.-segmented input[type='radio']:focus-visible:checked + .nav__item {
     background-color: light-dark(
-        var(--neon-color-surface, var(--_color-surface)),
-        var(--neon-color-primary, var(--_color-primary))
+        var(--neon-color-surface, var(--color-surface)),
+        var(--neon-color-primary, var(--color-primary))
     );
-    outline: 2px solid var(--neon-color-primary, var(--_color-primary));
+    outline: 2px solid var(--neon-color-primary, var(--color-primary));
     outline-offset: 2px;
 }

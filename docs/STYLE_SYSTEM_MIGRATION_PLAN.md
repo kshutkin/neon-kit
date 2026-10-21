@@ -186,7 +186,7 @@ its own packaging without changing the reset and token source boundaries.
 
 The shadow base should include token defaults used by all leaf sheets. For a
 public override such as `--neon-color-primary`, read it with
-`var(--neon-color-primary, var(--_color-primary))`, with the private default
+`var(--neon-color-primary, var(--color-primary))`, with the private default
 defining the light/dark color pair; do not assign a default
 to the public variable in the shadow sheet, which would mask an inherited
 page override. The component's standard appearance must work with no page
@@ -203,7 +203,7 @@ not a shadow tree isolated from inherited values.
 
 Public customization inputs use `--neon-*`, for example `--neon-color-border`,
 `--neon-primary-hue`, and `--neon-menu-item-padding-inline`. Internal defaults
-and working values use `--_*`, for example `--_color-border` and `--_shadow`.
+and working values use unprefixed names such as `--color-border` and `--shadow`.
 Neon palette colors use names such as `--neon-color-blue` without repeating the
 brand prefix. Keep `dashedIdents: false` so separately adopted theme and component
 sheets share stable names. The external `interestfor` polyfill's `--interest-delay`

@@ -64,7 +64,8 @@ the documented base class; composed hashes are never required in HTML. See the
 
 ## Customization
 
-Public properties use `--neon-*`. Internal `--_*` values are implementation details.
+Public properties use `--neon-*`. Unprefixed names such as `--color-border` and
+`--spacing` are internal implementation details.
 Menu item padding and tooltip delay/width settings also use this public prefix.
 Their private defaults allow public values to inherit from an ancestor.
 

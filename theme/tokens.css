@@ -2,417 +2,417 @@
    are optional overrides; defaults never mask an inherited public value.
    No color-scheme declaration: a component follows the page. */
 :where(:root, :host) {
-    --_font-sans: 'Hanken Grotesk', sans-serif;
-    --_color-white: oklch(100% 0 0);
-    --_color-blue: oklch(88% 0.15 202);
-    --_color-green: oklch(88% 0.25 148);
-    --_color-pink: oklch(70% 0.32 328);
-    --_color-yellow: oklch(97% 0.21 110);
-    --_color-orange: oklch(70% 0.2 43);
-    --_color-red: oklch(70% 0.3 15);
-    --_neutral-hue: 200;
-    --_neutral-chroma: 0.02;
-    --_surface-chroma: calc(
-        var(--neon-neutral-chroma, var(--_neutral-chroma)) * 0.25
+    --font-sans: 'Hanken Grotesk', sans-serif;
+    --color-white: oklch(100% 0 0);
+    --color-blue: oklch(88% 0.15 202);
+    --color-green: oklch(88% 0.25 148);
+    --color-pink: oklch(70% 0.32 328);
+    --color-yellow: oklch(97% 0.21 110);
+    --color-orange: oklch(70% 0.2 43);
+    --color-red: oklch(70% 0.3 15);
+    --neutral-hue: 200;
+    --neutral-chroma: 0.02;
+    --surface-chroma: calc(
+        var(--neon-neutral-chroma, var(--neutral-chroma)) * 0.25
     );
-    --_color-neutral: light-dark(
+    --color-neutral: light-dark(
         oklch(
-            90% var(--neon-neutral-chroma, var(--_neutral-chroma))
-                var(--neon-neutral-hue, var(--_neutral-hue))
+            90% var(--neon-neutral-chroma, var(--neutral-chroma))
+                var(--neon-neutral-hue, var(--neutral-hue))
         ),
         oklch(
-            25% var(--neon-neutral-chroma, var(--_neutral-chroma))
-                var(--neon-neutral-hue, var(--_neutral-hue))
+            25% var(--neon-neutral-chroma, var(--neutral-chroma))
+                var(--neon-neutral-hue, var(--neutral-hue))
         )
     );
-    --_color-ink-primary: light-dark(
+    --color-ink-primary: light-dark(
         oklch(
-            25% var(--neon-neutral-chroma, var(--_neutral-chroma))
-                var(--neon-neutral-hue, var(--_neutral-hue))
+            25% var(--neon-neutral-chroma, var(--neutral-chroma))
+                var(--neon-neutral-hue, var(--neutral-hue))
         ),
         oklch(
-            92% calc(var(--neon-neutral-chroma, var(--_neutral-chroma)) * 0.5)
-                var(--neon-neutral-hue, var(--_neutral-hue))
+            92% calc(var(--neon-neutral-chroma, var(--neutral-chroma)) * 0.5)
+                var(--neon-neutral-hue, var(--neutral-hue))
         )
     );
-    --_color-ink-secondary: light-dark(
+    --color-ink-secondary: light-dark(
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary))
+            from var(--neon-color-ink-primary, var(--color-ink-primary))
                 calc(l + 0.27) c h
         ),
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary))
+            from var(--neon-color-ink-primary, var(--color-ink-primary))
                 calc(l - 0.22) c h
         )
     );
-    --_color-ink-muted: light-dark(
+    --color-ink-muted: light-dark(
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary))
+            from var(--neon-color-ink-primary, var(--color-ink-primary))
                 calc(l + 0.37) c h
         ),
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary))
+            from var(--neon-color-ink-primary, var(--color-ink-primary))
                 calc(l - 0.42) c h
         )
     );
-    --_color-ink-inverse: light-dark(
+    --color-ink-inverse: light-dark(
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary))
+            from var(--neon-color-ink-primary, var(--color-ink-primary))
                 calc(l + 0.75) c h
         ),
         oklch(
-            25% var(--neon-neutral-chroma, var(--_neutral-chroma))
-                var(--neon-neutral-hue, var(--_neutral-hue))
+            25% var(--neon-neutral-chroma, var(--neutral-chroma))
+                var(--neon-neutral-hue, var(--neutral-hue))
         )
     );
-    --_color-surface: light-dark(
+    --color-surface: light-dark(
         oklch(
-            from var(--neon-color-neutral, var(--_color-neutral)) calc(l + 0.08)
-                var(--neon-surface-chroma, var(--_surface-chroma)) h
+            from var(--neon-color-neutral, var(--color-neutral)) calc(l + 0.08)
+                var(--neon-surface-chroma, var(--surface-chroma)) h
         ),
         oklch(
-            from var(--neon-color-neutral, var(--_color-neutral)) calc(l - 0.1)
-                var(--neon-surface-chroma, var(--_surface-chroma)) h
+            from var(--neon-color-neutral, var(--color-neutral)) calc(l - 0.1)
+                var(--neon-surface-chroma, var(--surface-chroma)) h
         )
     );
-    --_color-surface-secondary: light-dark(
+    --color-surface-secondary: light-dark(
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l - 0.03)
-                c h
-        ),
-        oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l + 0.03)
-                c h
-        )
-    );
-    --_color-surface-hover: light-dark(
-        oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l - 0.05)
+            from var(--neon-color-surface, var(--color-surface)) calc(l - 0.03)
                 c h
         ),
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l + 0.05)
+            from var(--neon-color-surface, var(--color-surface)) calc(l + 0.03)
                 c h
         )
     );
-    --_color-surface-active: light-dark(
+    --color-surface-hover: light-dark(
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l - 0.1)
+            from var(--neon-color-surface, var(--color-surface)) calc(l - 0.05)
                 c h
         ),
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l + 0.1)
+            from var(--neon-color-surface, var(--color-surface)) calc(l + 0.05)
                 c h
         )
     );
-    --_color-surface-disabled: light-dark(
+    --color-surface-active: light-dark(
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l - 0.2)
+            from var(--neon-color-surface, var(--color-surface)) calc(l - 0.1)
                 c h
         ),
         oklch(
-            from var(--neon-color-surface, var(--_color-surface)) calc(l + 0.2)
+            from var(--neon-color-surface, var(--color-surface)) calc(l + 0.1)
                 c h
         )
     );
-    --_primary-lightness: 38;
-    --_primary-chroma: 0.2;
-    --_primary-hue: 245;
-    --_accent-hue-offset: 18;
-    --_state-chroma-scale: 0.82;
-    --_color-primary: light-dark(
+    --color-surface-disabled: light-dark(
         oklch(
-            calc(var(--neon-primary-lightness, var(--_primary-lightness)) * 1%)
-                var(--neon-primary-chroma, var(--_primary-chroma))
-                var(--neon-primary-hue, var(--_primary-hue))
+            from var(--neon-color-surface, var(--color-surface)) calc(l - 0.2)
+                c h
+        ),
+        oklch(
+            from var(--neon-color-surface, var(--color-surface)) calc(l + 0.2)
+                c h
+        )
+    );
+    --primary-lightness: 38;
+    --primary-chroma: 0.2;
+    --primary-hue: 245;
+    --accent-hue-offset: 18;
+    --state-chroma-scale: 0.82;
+    --color-primary: light-dark(
+        oklch(
+            calc(var(--neon-primary-lightness, var(--primary-lightness)) * 1%)
+                var(--neon-primary-chroma, var(--primary-chroma))
+                var(--neon-primary-hue, var(--primary-hue))
         ),
         oklch(
             calc(
                     (
                             var(
                                     --neon-primary-lightness,
-                                    var(--_primary-lightness)
+                                    var(--primary-lightness)
                                 ) + 10
                         ) * 1%
                 )
-                var(--neon-primary-chroma, var(--_primary-chroma))
-                var(--neon-primary-hue, var(--_primary-hue))
+                var(--neon-primary-chroma, var(--primary-chroma))
+                var(--neon-primary-hue, var(--primary-hue))
         )
     );
-    --_color-primary-hover: light-dark(
+    --color-primary-hover: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l + 0.06)
+            from var(--neon-color-primary, var(--color-primary)) calc(l + 0.06)
                 calc(c * 0.85) h
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l + 0.03)
+            from var(--neon-color-primary, var(--color-primary)) calc(l + 0.03)
                 calc(c * 0.9) h
         )
     );
-    --_color-primary-active: light-dark(
+    --color-primary-active: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l - 0.05)
+            from var(--neon-color-primary, var(--color-primary)) calc(l - 0.05)
                 calc(c * 0.87) h
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l - 0.11)
+            from var(--neon-color-primary, var(--color-primary)) calc(l - 0.11)
                 calc(c * 0.8) h
         )
     );
-    --_color-primary-disabled: light-dark(
+    --color-primary-disabled: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l + 0.15)
+            from var(--neon-color-primary, var(--color-primary)) calc(l + 0.15)
                 calc(c * 0.57) h
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l - 0.27)
+            from var(--neon-color-primary, var(--color-primary)) calc(l - 0.27)
                 calc(c * 0.48) h
         )
     );
-    --_color-border: light-dark(
+    --color-border: light-dark(
         oklch(
-            from var(--neon-color-neutral, var(--_color-neutral)) calc(l - 0.13)
+            from var(--neon-color-neutral, var(--color-neutral)) calc(l - 0.13)
                 c h
         ),
         oklch(
-            from var(--neon-color-neutral, var(--_color-neutral)) calc(l + 0.13)
+            from var(--neon-color-neutral, var(--color-neutral)) calc(l + 0.13)
                 c h
         )
     );
-    --_color-border-secondary: oklch(
-        from var(--neon-color-neutral, var(--_color-neutral)) l c h / 0.6
+    --color-border-secondary: oklch(
+        from var(--neon-color-neutral, var(--color-neutral)) l c h / 0.6
     );
-    --_color-border-primary: light-dark(
+    --color-border-primary: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary))
+            from var(--neon-color-primary, var(--color-primary))
                 calc(l - 0.035) calc(c * 0.91) h
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l + 0.04)
+            from var(--neon-color-primary, var(--color-primary)) calc(l + 0.04)
                 calc(c * 0.81) h
         )
     );
-    --_color-border-focus: light-dark(
+    --color-border-focus: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) min(l, 0.38) c
+            from var(--neon-color-primary, var(--color-primary)) min(l, 0.38) c
                 h
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) max(l, 0.7) c
+            from var(--neon-color-primary, var(--color-primary)) max(l, 0.7) c
                 h
         )
     );
-    --_color-border-disabled: light-dark(
+    --color-border-disabled: light-dark(
         oklch(
-            from var(--neon-color-border, var(--_color-border)) calc(l + 0.06) c
+            from var(--neon-color-border, var(--color-border)) calc(l + 0.06) c
                 h
         ),
         oklch(
-            from var(--neon-color-border, var(--_color-border)) calc(l - 0.06) c
+            from var(--neon-color-border, var(--color-border)) calc(l - 0.06) c
                 h
         )
     );
-    --_color-shadow-base: light-dark(
+    --color-shadow-base: light-dark(
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary)) l c
+            from var(--neon-color-ink-primary, var(--color-ink-primary)) l c
                 calc(
-                    h * 0.9 + var(--neon-primary-hue, var(--_primary-hue)) * 0.1
+                    h * 0.9 + var(--neon-primary-hue, var(--primary-hue)) * 0.1
                 )
         ),
         oklch(
-            25% var(--neon-neutral-chroma, var(--_neutral-chroma))
+            25% var(--neon-neutral-chroma, var(--neutral-chroma))
                 calc(
-                    var(--neon-neutral-hue, var(--_neutral-hue)) * 0.9 +
-                        var(--neon-primary-hue, var(--_primary-hue)) * 0.1
+                    var(--neon-neutral-hue, var(--neutral-hue)) * 0.9 +
+                        var(--neon-primary-hue, var(--primary-hue)) * 0.1
                 )
         )
     );
-    --_color-shadow-surface-base: light-dark(
+    --color-shadow-surface-base: light-dark(
         oklch(
-            from var(--neon-color-ink-inverse, var(--_color-ink-inverse)) l
-                calc(var(--neon-primary-chroma, var(--_primary-chroma)) * 0.05)
-                var(--neon-primary-hue, var(--_primary-hue))
+            from var(--neon-color-ink-inverse, var(--color-ink-inverse)) l
+                calc(var(--neon-primary-chroma, var(--primary-chroma)) * 0.05)
+                var(--neon-primary-hue, var(--primary-hue))
         ),
         oklch(
-            from var(--neon-color-ink-primary, var(--_color-ink-primary)) l c
+            from var(--neon-color-ink-primary, var(--color-ink-primary)) l c
                 calc(
-                    h * 0.9 + var(--neon-primary-hue, var(--_primary-hue)) * 0.1
+                    h * 0.9 + var(--neon-primary-hue, var(--primary-hue)) * 0.1
                 )
         )
     );
-    --_color-success: light-dark(
+    --color-success: light-dark(
         oklch(
-            from var(--neon-color-green, var(--_color-green))
+            from var(--neon-color-green, var(--color-green))
                 var(--neon-state-target-lightness, 0.68)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         ),
         oklch(
-            from var(--neon-color-green, var(--_color-green))
+            from var(--neon-color-green, var(--color-green))
                 var(--neon-state-target-lightness, 0.78)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         )
     );
-    --_color-warning: light-dark(
+    --color-warning: light-dark(
         oklch(
-            from var(--neon-color-orange, var(--_color-orange))
+            from var(--neon-color-orange, var(--color-orange))
                 var(--neon-state-target-lightness, 0.68)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         ),
         oklch(
-            from var(--neon-color-orange, var(--_color-orange))
+            from var(--neon-color-orange, var(--color-orange))
                 var(--neon-state-target-lightness, 0.78)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         )
     );
-    --_color-error: light-dark(
+    --color-error: light-dark(
         oklch(
-            from var(--neon-color-red, var(--_color-red))
+            from var(--neon-color-red, var(--color-red))
                 var(--neon-state-target-lightness, 0.68)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         ),
         oklch(
-            from var(--neon-color-red, var(--_color-red))
+            from var(--neon-color-red, var(--color-red))
                 var(--neon-state-target-lightness, 0.78)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         )
     );
-    --_color-info: light-dark(
+    --color-info: light-dark(
         oklch(
-            from var(--neon-color-blue, var(--_color-blue))
+            from var(--neon-color-blue, var(--color-blue))
                 var(--neon-state-target-lightness, 0.68)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         ),
         oklch(
-            from var(--neon-color-blue, var(--_color-blue))
+            from var(--neon-color-blue, var(--color-blue))
                 var(--neon-state-target-lightness, 0.78)
                 calc(
                     c *
                         var(
                             --neon-state-chroma-scale,
-                            var(--_state-chroma-scale)
+                            var(--state-chroma-scale)
                         )
                 )
                 h
         )
     );
-    --_color-success-soft: light-dark(
+    --color-success-soft: light-dark(
         oklch(
-            from var(--neon-color-success, var(--_color-success)) l c h / 0.25
+            from var(--neon-color-success, var(--color-success)) l c h / 0.25
         ),
-        oklch(from var(--neon-color-success, var(--_color-success)) l c h / 0.2)
+        oklch(from var(--neon-color-success, var(--color-success)) l c h / 0.2)
     );
-    --_color-warning-soft: light-dark(
+    --color-warning-soft: light-dark(
         oklch(
-            from var(--neon-color-warning, var(--_color-warning)) l c h / 0.3
+            from var(--neon-color-warning, var(--color-warning)) l c h / 0.3
         ),
         oklch(
-            from var(--neon-color-warning, var(--_color-warning)) l c h / 0.22
+            from var(--neon-color-warning, var(--color-warning)) l c h / 0.22
         )
     );
-    --_color-error-soft: light-dark(
-        oklch(from var(--neon-color-error, var(--_color-error)) l c h / 0.25),
-        oklch(from var(--neon-color-error, var(--_color-error)) l c h / 0.22)
+    --color-error-soft: light-dark(
+        oklch(from var(--neon-color-error, var(--color-error)) l c h / 0.25),
+        oklch(from var(--neon-color-error, var(--color-error)) l c h / 0.22)
     );
-    --_color-info-soft: light-dark(
-        oklch(from var(--neon-color-info, var(--_color-info)) l c h / 0.3),
-        oklch(from var(--neon-color-info, var(--_color-info)) l c h / 0.22)
+    --color-info-soft: light-dark(
+        oklch(from var(--neon-color-info, var(--color-info)) l c h / 0.3),
+        oklch(from var(--neon-color-info, var(--color-info)) l c h / 0.22)
     );
-    --_color-primary-soft-pressed: oklch(
-        from var(--neon-color-primary, var(--_color-primary)) calc(l - 0.1) c h /
+    --color-primary-soft-pressed: oklch(
+        from var(--neon-color-primary, var(--color-primary)) calc(l - 0.1) c h /
             0.6
     );
-    --_color-accent: light-dark(
+    --color-accent: light-dark(
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) calc(l + 0.28)
+            from var(--neon-color-primary, var(--color-primary)) calc(l + 0.28)
                 c
                 calc(
-                    h - var(--neon-accent-hue-offset, var(--_accent-hue-offset))
+                    h - var(--neon-accent-hue-offset, var(--accent-hue-offset))
                 )
         ),
         oklch(
-            from var(--neon-color-primary, var(--_color-primary)) l
+            from var(--neon-color-primary, var(--color-primary)) l
                 calc(c * 0.91)
                 calc(
-                    h - var(--neon-accent-hue-offset, var(--_accent-hue-offset))
+                    h - var(--neon-accent-hue-offset, var(--accent-hue-offset))
                 )
         )
     );
-    --_color-accent-hover: light-dark(
+    --color-accent-hover: light-dark(
         oklch(
-            from var(--neon-color-accent, var(--_color-accent)) calc(l + 0.02)
+            from var(--neon-color-accent, var(--color-accent)) calc(l + 0.02)
                 calc(c * 0.85) h
         ),
         oklch(
-            from var(--neon-color-accent, var(--_color-accent)) l calc(c * 0.95)
+            from var(--neon-color-accent, var(--color-accent)) l calc(c * 0.95)
                 h
         )
     );
-    --_color-accent-active: light-dark(
+    --color-accent-active: light-dark(
         oklch(
-            from var(--neon-color-accent, var(--_color-accent)) calc(l - 0.16)
+            from var(--neon-color-accent, var(--color-accent)) calc(l - 0.16)
                 calc(c * 0.78) h
         ),
         oklch(
-            from var(--neon-color-accent, var(--_color-accent)) calc(l - 0.15)
+            from var(--neon-color-accent, var(--color-accent)) calc(l - 0.15)
                 calc(c * 0.8) h
         )
     );
-    --_inset-shadow-highlight: inset 0 1px
+    --inset-shadow-highlight: inset 0 1px
         light-dark(
             oklch(
                 from
                     var(
                         --neon-color-shadow-surface-base,
-                        var(--_color-shadow-surface-base)
+                        var(--color-shadow-surface-base)
                     )
                     l c h / 0.6
             ),
@@ -420,88 +420,88 @@
                 from
                     var(
                         --neon-color-shadow-surface-base,
-                        var(--_color-shadow-surface-base)
+                        var(--color-shadow-surface-base)
                     )
                     l c h / 0.3
             )
         );
-    --_inset-shadow-highlight-pressed: inset 0 1px
+    --inset-shadow-highlight-pressed: inset 0 1px
         light-dark(
             oklch(
-                from var(--neon-color-primary, var(--_color-primary)) l c h /
+                from var(--neon-color-primary, var(--color-primary)) l c h /
                     0.15
             ),
             oklch(
-                from var(--neon-color-primary, var(--_color-primary)) l c h /
+                from var(--neon-color-primary, var(--color-primary)) l c h /
                     0.25
             )
         );
-    --_inset-shadow-pressed: inset 0 1px 2px
+    --inset-shadow-pressed: inset 0 1px 2px
         light-dark(
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.1
             ),
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.3
             )
         );
-    --_shadow-drop: 0 1px 2px
+    --shadow-drop: 0 1px 2px
         light-dark(
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.2
             ),
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.4
             )
         );
-    --_shadow-drop-subtle: 0 1px 1px
+    --shadow-drop-subtle: 0 1px 1px
         light-dark(
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.1
             ),
             oklch(
-                from var(--neon-color-shadow-base, var(--_color-shadow-base)) l
+                from var(--neon-color-shadow-base, var(--color-shadow-base)) l
                     c h / 0.3
             )
         );
-    --_text-shadow-embossed: 0 1px
+    --text-shadow-embossed: 0 1px
         light-dark(
             oklch(
-                from var(--neon-color-ink-primary, var(--_color-ink-primary)) l
+                from var(--neon-color-ink-primary, var(--color-ink-primary)) l
                     c h / 0.2
             ),
             oklch(
-                15% var(--neon-neutral-chroma, var(--_neutral-chroma))
-                    var(--neon-neutral-hue, var(--_neutral-hue)) / 0.6
+                15% var(--neon-neutral-chroma, var(--neutral-chroma))
+                    var(--neon-neutral-hue, var(--neutral-hue)) / 0.6
             )
         );
-    --_text-shadow-debossed: 0 -1px light-dark(oklch(from
-                        var(--neon-color-ink-primary, var(--_color-ink-primary))
+    --text-shadow-debossed: 0 -1px light-dark(oklch(from
+                        var(--neon-color-ink-primary, var(--color-ink-primary))
                         l c h / 0.2), oklch(15%
-                        var(--neon-neutral-chroma, var(--_neutral-chroma))
-                        var(--neon-neutral-hue, var(--_neutral-hue)) / 0.6)),
+                        var(--neon-neutral-chroma, var(--neutral-chroma))
+                        var(--neon-neutral-hue, var(--neutral-hue)) / 0.6)),
         0 1px
             light-dark(
                 oklch(
-                    from var(--neon-color-surface, var(--_color-surface))
+                    from var(--neon-color-surface, var(--color-surface))
                         calc(l + 0.1) c h / 0.8
                 ),
                 oklch(
-                    from var(--neon-color-surface, var(--_color-surface))
+                    from var(--neon-color-surface, var(--color-surface))
                         calc(l + 0.15) c h / 0.5
                 )
             );
-    --_spacing: 0.25rem;
+    --spacing: 0.25rem;
 }
 
 /* Local shadow slots must not inherit a containing panel's elevation.
    These resets do not change document layout or native control appearance. */
 :where(*, ::before, ::after, ::backdrop) {
-    --_shadow: initial;
-    --_inset-shadow: initial;
+    --shadow: initial;
+    --inset-shadow: initial;
 }

@@ -23,7 +23,8 @@ function readRootDefaults(stylesheet) {
     const defaults = [];
     stylesheet.walkDecls((declaration) => {
         if (
-            declaration.prop.startsWith('--_') &&
+            declaration.prop.startsWith('--') &&
+            !declaration.prop.startsWith('--neon-') &&
             declaration.parent.type === 'rule' &&
             declaration.parent.selector.includes(':root')
         ) {
@@ -50,8 +51,8 @@ test('complete and selective outputs contain only mapped public classes and nati
             await readFile(resolve(directory, 'tokens.css'), 'utf8')
         );
         const defaults = readRootDefaults(tokens);
-        assert.ok(defaults.some(([name]) => name === '--_font-sans'));
-        assert.ok(defaults.some(([name]) => name === '--_spacing'));
+        assert.ok(defaults.some(([name]) => name === '--font-sans'));
+        assert.ok(defaults.some(([name]) => name === '--spacing'));
         tokens.walkDecls((declaration) => {
             assert.ok(
                 declaration.prop.startsWith('--'),
@@ -140,7 +141,7 @@ test('selective asset URLs resolve within the package and preserve query and fra
         );
         await writeFile(
             resolve(source, 'tokens.css'),
-            ':root { --_art-color: red; }'
+            ':root { --art-color: red; }'
         );
         await writeFile(resolve(source, 'reset-normalize.css'), '');
         await writeFile(

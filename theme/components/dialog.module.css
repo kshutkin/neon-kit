@@ -15,7 +15,7 @@
 .dialog {
     composes: panel from '../shared.module.css';
     margin: auto;
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     /* Layout: header / body / footer with body taking remaining space */
@@ -48,7 +48,7 @@
 
 .dialog::backdrop {
     background-color: oklch(
-        from var(--neon-color-ink-primary, var(--_color-ink-primary)) l c h /
+        from var(--neon-color-ink-primary, var(--color-ink-primary)) l c h /
             0.45
     );
     backdrop-filter: blur(2px);
@@ -57,15 +57,15 @@
 .dialog__header {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
-    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
-    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 3);
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+    padding-inline: calc(var(--neon-spacing, var(--spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--spacing)) * 3);
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    text-shadow: var(--neon-text-shadow-embossed, var(--text-shadow-embossed));
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -74,8 +74,8 @@
 }
 
 .dialog__body {
-    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
-    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 4);
+    padding-inline: calc(var(--neon-spacing, var(--spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--spacing)) * 4);
     overflow: auto;
     min-height: 0;
 }
@@ -83,13 +83,13 @@
 .dialog__footer {
     border-top-style: solid;
     border-top-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
-    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
-    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 3);
+    padding-inline: calc(var(--neon-spacing, var(--spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--spacing)) * 3);
     display: flex;
     align-items: center;
     justify-content: flex-end;

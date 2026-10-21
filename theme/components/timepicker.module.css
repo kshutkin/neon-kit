@@ -74,14 +74,14 @@
    reads as a single visual family. */
 .timepicker__field {
     composes: panel from '../shared.module.css';
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     text-shadow: none;
     text-overflow: clip;
@@ -95,23 +95,23 @@
 }
 
 .timepicker__field:focus-within {
-    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+    border-color: var(--neon-color-border-focus, var(--color-border-focus));
 }
 
 .timepicker:has(.timepicker__input:disabled) > .timepicker__field {
     border-color: var(
         --neon-color-border-disabled,
-        var(--_color-border-disabled)
+        var(--color-border-disabled)
     );
     background-color: var(
         --neon-color-surface-disabled,
-        var(--_color-surface-disabled)
+        var(--color-surface-disabled)
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: 0 0 #0000;
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: 0 0 #0000;
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     pointer-events: none;
     cursor: default;
 }
@@ -121,24 +121,24 @@
     > .timepicker__field {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
 /* Invalid — flips the wrapper border, surviving focus. */
 .timepicker:has(.timepicker__input[aria-invalid='true']:not(:disabled))
     > .timepicker__field {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 .timepicker:has(.timepicker__input[aria-invalid='true']:not(:disabled))
     > .timepicker__field:focus-within {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 .timepicker__input {
     &::placeholder {
-        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+        color: var(--neon-color-ink-muted, var(--color-ink-muted));
     }
 
     flex: 1 1 auto;
@@ -189,7 +189,7 @@
     justify-content: center;
     border-inline-start-style: solid;
     border-inline-start-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
 
     appearance: none;
     flex: none;
@@ -213,8 +213,8 @@
 
 .timepicker__popover {
     composes: panel from '../shared.module.css';
-    margin: calc(var(--neon-spacing, var(--_spacing)) * 0);
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    margin: calc(var(--neon-spacing, var(--spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     display: grid;
@@ -287,14 +287,14 @@
    the zone — consumers preselect the user's (or stored) zone and let
    them only *change* it. */
 .timepicker__field-tz {
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     &:hover {
         @media (hover: hover) {
-            color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+            color: var(--neon-color-ink-primary, var(--color-ink-primary));
         }
     }
     &:focus-visible {
-        color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+        color: var(--neon-color-ink-primary, var(--color-ink-primary));
     }
 
     appearance: none;
@@ -357,7 +357,7 @@
     grid-column: 1;
     grid-row: 1;
     min-block-size: 0;
-    border-inline-end: 1px solid var(--neon-color-border, var(--_color-border));
+    border-inline-end: 1px solid var(--neon-color-border, var(--color-border));
     /* Keep nav + day grid stacked at the top of their column; without
        `align-content: start` Chrome stretches the implicit auto rows of
        the day grid to fill the (taller) shared row. */
@@ -397,7 +397,7 @@
         grid-row: 1;
         border-inline-end: 0;
         border-block-end: 1px solid
-            var(--neon-color-border, var(--_color-border));
+            var(--neon-color-border, var(--color-border));
     }
 
     .datepicker__popover.-with-time > .timepicker__panel {

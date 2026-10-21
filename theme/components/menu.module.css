@@ -38,11 +38,11 @@
 
 .menu {
     box-sizing: border-box;
-    font-family: var(--neon-font-sans, var(--_font-sans));
+    font-family: var(--neon-font-sans, var(--font-sans));
     line-height: 1.5;
     composes: panel from '../shared.module.css';
-    margin: calc(var(--neon-spacing, var(--_spacing)) * 0);
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    margin: calc(var(--neon-spacing, var(--spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     /* Grid container so every row's icon / label / end columns align via
@@ -56,8 +56,8 @@
     min-width: calc(var(--neon-spacing, 0.25rem) * 48);
 
     /* Tunable item padding — overridable per-instance. */
-    --_menu-item-padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5);
-    --_menu-item-padding-inline: calc(var(--neon-spacing, 0.25rem) * 3);
+    --menu-item-padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5);
+    --menu-item-padding-inline: calc(var(--neon-spacing, 0.25rem) * 3);
 
     /* Native [popover] elements get UA defaults `margin: auto` and
        `inset: 0` that fight anchor positioning. Reset both so
@@ -134,7 +134,7 @@
     & + & {
         border-top-style: solid;
         border-top-width: 1px;
-        border-color: var(--neon-color-border, var(--_color-border));
+        border-color: var(--neon-color-border, var(--color-border));
     }
 }
 
@@ -147,13 +147,13 @@
     );
     font-weight: var(--neon-font-weight-semibold, 600);
     letter-spacing: var(--neon-tracking-wide, 0.025em);
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     text-transform: uppercase;
     grid-column: 1 / -1;
     padding-block: calc(var(--neon-spacing, 0.25rem) * 1.5);
     padding-inline: var(
         --neon-menu-item-padding-inline,
-        var(--_menu-item-padding-inline)
+        var(--menu-item-padding-inline)
     );
     user-select: none;
 }
@@ -164,7 +164,7 @@
     border-width: 0px;
     border-top-style: solid;
     border-top-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     grid-column: 1 / -1;
     margin-block: calc(var(--neon-spacing, 0.25rem) * 1);
 }
@@ -191,11 +191,11 @@
 
     padding-block: var(
         --neon-menu-item-padding-block,
-        var(--_menu-item-padding-block)
+        var(--menu-item-padding-block)
     );
     padding-inline: var(
         --neon-menu-item-padding-inline,
-        var(--_menu-item-padding-inline)
+        var(--menu-item-padding-inline)
     );
 }
 
@@ -232,7 +232,7 @@
         --neon-line-height,
         var(--neon-text-xs--line-height, calc(1 / 0.75))
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     grid-column: 3;
     grid-row: 1;
     justify-self: end;
@@ -254,7 +254,7 @@
     inline-size: 1em;
     block-size: 1em;
     align-self: center;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
 
     :where(:dir(rtl)) & {
         transform: scaleX(-1);

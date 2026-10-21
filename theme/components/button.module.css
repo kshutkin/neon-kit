@@ -6,85 +6,85 @@
         @media (hover: hover) {
             background-color: var(
                 --neon-color-surface-hover,
-                var(--_color-surface-hover)
+                var(--color-surface-hover)
             );
         }
     }
     &:not(:disabled):not([aria-disabled='true']):active {
         background-color: var(
             --neon-color-surface-active,
-            var(--_color-surface-active)
+            var(--color-surface-active)
         );
-        --_shadow: 0 0 #0000;
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
-        --_inset-shadow: var(
+        --shadow: 0 0 #0000;
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
+        --inset-shadow: var(
             --neon-inset-shadow-pressed,
-            var(--_inset-shadow-pressed)
+            var(--inset-shadow-pressed)
         );
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
     }
 }
 
 .btn.quiet {
     border-color: transparent;
     background-color: transparent;
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: 0 0 #0000;
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    --shadow: 0 0 #0000;
+    --inset-shadow: 0 0 #0000;
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     &:not(:disabled):not([aria-disabled='true']):hover {
         @media (hover: hover) {
             border-style: solid;
             border-width: 1px;
-            border-color: var(--neon-color-border, var(--_color-border));
-            --_shadow: var(
+            border-color: var(--neon-color-border, var(--color-border));
+            --shadow: var(
                 --neon-shadow-drop-subtle,
-                var(--_shadow-drop-subtle)
+                var(--shadow-drop-subtle)
             );
-            box-shadow: var(--_inset-shadow, 0 0 transparent),
-                var(--_shadow, 0 0 transparent);
-            --_inset-shadow: var(
+            box-shadow: var(--inset-shadow, 0 0 transparent),
+                var(--shadow, 0 0 transparent);
+            --inset-shadow: var(
                 --neon-inset-shadow-highlight,
-                var(--_inset-shadow-highlight)
+                var(--inset-shadow-highlight)
             );
-            box-shadow: var(--_inset-shadow, 0 0 transparent),
-                var(--_shadow, 0 0 transparent);
+            box-shadow: var(--inset-shadow, 0 0 transparent),
+                var(--shadow, 0 0 transparent);
             text-shadow: var(
                 --neon-text-shadow-embossed,
-                var(--_text-shadow-embossed)
+                var(--text-shadow-embossed)
             );
         }
     }
     &:not(:disabled):not([aria-disabled='true']):active {
         border-style: solid;
         border-width: 1px;
-        border-color: var(--neon-color-border, var(--_color-border));
+        border-color: var(--neon-color-border, var(--color-border));
         background-color: var(
             --neon-color-surface-active,
-            var(--_color-surface-active)
+            var(--color-surface-active)
         );
-        color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-        --_shadow: 0 0 #0000;
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
-        --_inset-shadow: var(
+        color: var(--neon-color-ink-primary, var(--color-ink-primary));
+        --shadow: 0 0 #0000;
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
+        --inset-shadow: var(
             --neon-inset-shadow-pressed,
-            var(--_inset-shadow-pressed)
+            var(--inset-shadow-pressed)
         );
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
         text-shadow: var(
             --neon-text-shadow-embossed,
-            var(--_text-shadow-embossed)
+            var(--text-shadow-embossed)
         );
     }
 }
 
 .btn.large {
-    padding-inline: calc(var(--neon-spacing, var(--_spacing)) * 5);
-    padding-block: calc(var(--neon-spacing, var(--_spacing)) * 2);
+    padding-inline: calc(var(--neon-spacing, var(--spacing)) * 5);
+    padding-block: calc(var(--neon-spacing, var(--spacing)) * 2);
     font-size: var(--neon-text-lg, 1.125rem);
     line-height: var(
         --neon-line-height,
@@ -101,55 +101,55 @@
     border-width: 1px;
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
     &:focus-visible {
         border-color: var(
             --neon-color-border-focus,
-            var(--_color-border-focus)
+            var(--color-border-focus)
         );
     }
-    background-color: var(--neon-color-primary, var(--_color-primary));
+    background-color: var(--neon-color-primary, var(--color-primary));
     font-weight: var(--neon-font-weight-medium, 500);
-    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
-    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--text-shadow-debossed));
     &:not(:disabled):not([aria-disabled='true']):hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-primary-hover,
-                var(--_color-primary-hover)
+                var(--color-primary-hover)
             );
         }
     }
     &:not(:disabled):not([aria-disabled='true']):active {
         background-color: var(
             --neon-color-primary-active,
-            var(--_color-primary-active)
+            var(--color-primary-active)
         );
-        --_inset-shadow: var(
+        --inset-shadow: var(
             --neon-inset-shadow-highlight-pressed,
-            var(--_inset-shadow-highlight-pressed)
+            var(--inset-shadow-highlight-pressed)
         );
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
     }
     &:disabled {
         border-color: var(
             --neon-color-border-disabled,
-            var(--_color-border-disabled)
+            var(--color-border-disabled)
         );
         background-color: var(
             --neon-color-primary-disabled,
-            var(--_color-primary-disabled)
+            var(--color-primary-disabled)
         );
-        color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+        color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
     }
 }
 

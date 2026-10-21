@@ -15,27 +15,27 @@
    sidesteps the bug entirely. */
 
 :root {
-    --_docs-topbar-height: 4rem;
+    --docs-topbar-height: 4rem;
 }
 
 .docs-topbar {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
-    background-color: var(--neon-color-surface, var(--_color-surface));
+    border-color: var(--neon-color-border, var(--color-border));
+    background-color: var(--neon-color-surface, var(--color-surface));
 
     position: sticky;
     inset-block-start: 0;
     z-index: 3;
     display: flex;
     align-items: center;
-    min-block-size: var(--_docs-topbar-height);
+    min-block-size: var(--docs-topbar-height);
     padding-block: calc(var(--neon-spacing, 0.25rem) * 3);
     padding-inline: 0;
 }
 
 .docs-wordmark {
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
     flex: 0 0 auto;
     inline-size: 18rem;
     padding-inline: calc(var(--neon-spacing, 0.25rem) * 4);
@@ -58,9 +58,9 @@
 
 .docs-aside {
     position: fixed;
-    inset-block-start: var(--_docs-topbar-height);
+    inset-block-start: var(--docs-topbar-height);
     inset-inline-start: 0;
-    block-size: calc(100vh - var(--_docs-topbar-height));
+    block-size: calc(100vh - var(--docs-topbar-height));
     overflow-y: auto;
     z-index: 1;
 }
@@ -68,7 +68,7 @@
 .docs-main {
     /* Match `.docs-aside`'s width (w-72 = 18rem). */
     margin-inline-start: 18rem;
-    min-block-size: calc(100vh - var(--_docs-topbar-height));
+    min-block-size: calc(100vh - var(--docs-topbar-height));
 }
 
 .docs-tabs {

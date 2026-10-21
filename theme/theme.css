@@ -2,12 +2,12 @@
 
 :where(:root) {
     color-scheme: light dark;
-    font-family: var(--neon-font-sans, var(--_font-sans));
+    font-family: var(--neon-font-sans, var(--font-sans));
 }
 
 :where(body) {
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    background-color: var(--neon-color-surface, var(--color-surface));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
 }
 
 :where(a) {
@@ -16,6 +16,6 @@
 }
 :focus-visible {
     outline: 2px solid
-        var(--neon-color-border-focus, var(--_color-border-focus));
+        var(--neon-color-border-focus, var(--color-border-focus));
     outline-offset: 2px;
 }

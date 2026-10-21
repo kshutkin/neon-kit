@@ -7,7 +7,7 @@
 
 .details {
     composes: panel from '../shared.module.css';
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     display: block;
@@ -16,12 +16,12 @@
 }
 
 .details:has(> summary:focus-visible) {
-    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+    border-color: var(--neon-color-border-focus, var(--color-border-focus));
 }
 
 .details > summary {
     font-weight: var(--neon-font-weight-semibold, 600);
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
 
     user-select: none;
 
@@ -45,7 +45,7 @@
     block-size: 0.45em;
     border-block-end: 2px solid currentColor;
     border-inline-end: 2px solid currentColor;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     transform: rotate(-45deg);
     transition: transform 150ms ease;
 }
@@ -57,7 +57,7 @@
 .details[open] > summary {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
@@ -70,14 +70,14 @@
 .details:not([aria-disabled='true']):not([inert]) > summary:focus-visible {
     background-color: var(
         --neon-color-surface-hover,
-        var(--_color-surface-hover)
+        var(--color-surface-hover)
     );
 }
 
 .details:not([aria-disabled='true']):not([inert]) > summary:active {
     background-color: var(
         --neon-color-surface-active,
-        var(--_color-surface-active)
+        var(--color-surface-active)
     );
 }
 
@@ -88,7 +88,7 @@
         var(--neon-text-sm--line-height, calc(1.25 / 0.875))
     );
     font-weight: var(--neon-font-weight-normal, 400);
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
 
     justify-self: end;
     min-inline-size: 0;
@@ -97,7 +97,7 @@
 .details__body {
     border-top-style: solid;
     border-top-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
 
     padding-block: calc(var(--neon-spacing, 0.25rem) * 3);
     padding-inline: calc(var(--neon-spacing, 0.25rem) * 4);
@@ -110,23 +110,23 @@
 .details:is([aria-disabled='true'], [inert]) {
     border-color: var(
         --neon-color-border-disabled,
-        var(--_color-border-disabled)
+        var(--color-border-disabled)
     );
     background-color: var(
         --neon-color-surface-disabled,
-        var(--_color-surface-disabled)
+        var(--color-surface-disabled)
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: 0 0 #0000;
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: 0 0 #0000;
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     pointer-events: none;
     cursor: default;
 }
 
 .details:is([aria-disabled='true'], [inert]) > summary {
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
 
     background: transparent;
 }
@@ -134,6 +134,6 @@
 .details:is([aria-disabled='true'], [inert]) > .details__body {
     border-color: var(
         --neon-color-border-disabled,
-        var(--_color-border-disabled)
+        var(--color-border-disabled)
     );
 }

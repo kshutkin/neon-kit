@@ -31,22 +31,22 @@
     border-radius: calc(infinity * 1px);
     border-style: solid;
     border-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     white-space: nowrap;
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    --_inset-shadow: var(
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     user-select: none;
-    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+    text-shadow: var(--neon-text-shadow-embossed, var(--text-shadow-embossed));
 
     font-size: 0.8125em;
     font-weight: 500;
@@ -67,17 +67,17 @@
 .badge.-primary {
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
-    background-color: var(--neon-color-primary, var(--_color-primary));
-    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
-    --_inset-shadow: var(
+    background-color: var(--neon-color-primary, var(--color-primary));
+    color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
-    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--text-shadow-debossed));
 }
 
 /* Soft-tinted state modifiers — translucent fill from the state color so
@@ -87,27 +87,27 @@
 .badge.-success {
     background-color: var(
         --neon-color-success-soft,
-        var(--_color-success-soft)
+        var(--color-success-soft)
     );
-    border-color: var(--neon-color-success, var(--_color-success));
+    border-color: var(--neon-color-success, var(--color-success));
 }
 
 .badge.-warning {
     background-color: var(
         --neon-color-warning-soft,
-        var(--_color-warning-soft)
+        var(--color-warning-soft)
     );
-    border-color: var(--neon-color-warning, var(--_color-warning));
+    border-color: var(--neon-color-warning, var(--color-warning));
 }
 
 .badge.-error {
-    background-color: var(--neon-color-error-soft, var(--_color-error-soft));
-    border-color: var(--neon-color-error, var(--_color-error));
+    background-color: var(--neon-color-error-soft, var(--color-error-soft));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 .badge.-info {
-    background-color: var(--neon-color-info-soft, var(--_color-info-soft));
-    border-color: var(--neon-color-info, var(--_color-info));
+    background-color: var(--neon-color-info-soft, var(--color-info-soft));
+    border-color: var(--neon-color-info, var(--color-info));
 }
 
 /* A dot — useful as a leading status pip inside a label or on its own. */

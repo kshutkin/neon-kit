@@ -54,14 +54,14 @@
    border. Treats focus-within as the focus ring, like `.combobox.-multi`. */
 .datepicker__field {
     composes: panel from '../shared.module.css';
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     /* Override panel's whitespace/ellipsis defaults — fields hold form
        controls, not a single line of label text. */
@@ -77,23 +77,23 @@
 }
 
 .datepicker__field:focus-within {
-    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+    border-color: var(--neon-color-border-focus, var(--color-border-focus));
 }
 
 .datepicker:has(.datepicker__input:disabled) > .datepicker__field {
     border-color: var(
         --neon-color-border-disabled,
-        var(--_color-border-disabled)
+        var(--color-border-disabled)
     );
     background-color: var(
         --neon-color-surface-disabled,
-        var(--_color-surface-disabled)
+        var(--color-surface-disabled)
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: 0 0 #0000;
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: 0 0 #0000;
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     pointer-events: none;
     cursor: default;
 }
@@ -105,7 +105,7 @@
     > .datepicker__field {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
@@ -113,18 +113,18 @@
    wrapper so the chrome (which is owned by the wrapper) flips. */
 .datepicker:has(.datepicker__input[aria-invalid='true']:not(:disabled))
     > .datepicker__field {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 .datepicker:has(.datepicker__input[aria-invalid='true']:not(:disabled))
     > .datepicker__field:focus-within {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 /* The typed-date <input> — chrome is owned by the wrapper. */
 .datepicker__input {
     &::placeholder {
-        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+        color: var(--neon-color-ink-muted, var(--color-ink-muted));
     }
 
     flex: 1 1 auto;
@@ -177,27 +177,27 @@
     justify-content: center;
     border-inline-start-style: solid;
     border-inline-start-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    border-color: var(--neon-color-border, var(--color-border));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-surface-hover,
-                var(--_color-surface-hover)
+                var(--color-surface-hover)
             );
-            color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+            color: var(--neon-color-ink-primary, var(--color-ink-primary));
         }
     }
     &:focus-visible {
         background-color: var(
             --neon-color-surface-hover,
-            var(--_color-surface-hover)
+            var(--color-surface-hover)
         );
     }
     &:active {
         background-color: var(
             --neon-color-surface-active,
-            var(--_color-surface-active)
+            var(--color-surface-active)
         );
     }
 
@@ -224,8 +224,8 @@
 
 .datepicker__popover {
     composes: panel from '../shared.module.css';
-    margin: calc(var(--neon-spacing, var(--_spacing)) * 0);
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    margin: calc(var(--neon-spacing, var(--spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     display: grid;
@@ -266,10 +266,10 @@
 .datepicker__nav {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -282,31 +282,31 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-surface-hover,
-                var(--_color-surface-hover)
+                var(--color-surface-hover)
             );
-            color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+            color: var(--neon-color-ink-primary, var(--color-ink-primary));
         }
     }
     &:focus-visible {
         background-color: var(
             --neon-color-surface-hover,
-            var(--_color-surface-hover)
+            var(--color-surface-hover)
         );
     }
     &:active {
         background-color: var(
             --neon-color-surface-active,
-            var(--_color-surface-active)
+            var(--color-surface-active)
         );
     }
     &:disabled {
         pointer-events: none;
-        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+        color: var(--neon-color-ink-muted, var(--color-ink-muted));
     }
 
     appearance: none;
@@ -337,26 +337,26 @@
 
 /* The view-switch button — clicking cycles days → months → years. */
 .datepicker__view-switch {
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    text-shadow: var(--neon-text-shadow-embossed, var(--text-shadow-embossed));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-surface-hover,
-                var(--_color-surface-hover)
+                var(--color-surface-hover)
             );
         }
     }
     &:focus-visible {
         background-color: var(
             --neon-color-surface-hover,
-            var(--_color-surface-hover)
+            var(--color-surface-hover)
         );
     }
     &:active {
         background-color: var(
             --neon-color-surface-active,
-            var(--_color-surface-active)
+            var(--color-surface-active)
         );
     }
 
@@ -404,7 +404,7 @@
     );
     font-weight: var(--neon-font-weight-semibold, 600);
     letter-spacing: var(--neon-tracking-wide, 0.025em);
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     text-transform: uppercase;
     text-align: center;
     padding-block: calc(var(--neon-spacing, 0.25rem) * 1);
@@ -418,7 +418,7 @@
    landing styles are baked in. Reuses interactive-row state colours. */
 .datepicker__cell {
     composes: interactive-row from '../shared.module.css';
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
 
     appearance: none;
     border: 0;
@@ -450,14 +450,14 @@
    month reads cleanly while still letting the user click into adjacent
    months without changing views. */
 .datepicker__cell.-muted {
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
 }
 
 /* Today indicator — subtle dotted underline, no surface fill so the
    selection state can layer on top without conflict. */
 .datepicker__cell.-today {
     font-weight: 600;
-    box-shadow: inset 0 -2px 0 0 var(--neon-color-primary, var(--_color-primary));
+    box-shadow: inset 0 -2px 0 0 var(--neon-color-primary, var(--color-primary));
 }
 
 /* Selected cell — fills with primary, mirrors `.checkbox:checked` /
@@ -466,29 +466,29 @@
 .datepicker__cell.-selected {
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
-    background-color: var(--neon-color-primary, var(--_color-primary));
-    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
-    --_inset-shadow: var(
+    background-color: var(--neon-color-primary, var(--color-primary));
+    color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
-    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--text-shadow-debossed));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-primary-hover,
-                var(--_color-primary-hover)
+                var(--color-primary-hover)
             );
         }
     }
     &:active {
         background-color: var(
             --neon-color-primary-active,
-            var(--_color-primary-active)
+            var(--color-primary-active)
         );
     }
     border: 1px solid;
@@ -496,7 +496,7 @@
 
 .datepicker__cell:disabled,
 .datepicker__cell[aria-disabled='true'] {
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
     pointer-events: none;
 }
 
@@ -518,29 +518,29 @@
 .datepicker__cell.-range-end {
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
-    background-color: var(--neon-color-primary, var(--_color-primary));
-    color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
-    --_inset-shadow: var(
+    background-color: var(--neon-color-primary, var(--color-primary));
+    color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
-    text-shadow: var(--neon-text-shadow-debossed, var(--_text-shadow-debossed));
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
+    text-shadow: var(--neon-text-shadow-debossed, var(--text-shadow-debossed));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-primary-hover,
-                var(--_color-primary-hover)
+                var(--color-primary-hover)
             );
         }
     }
     &:active {
         background-color: var(
             --neon-color-primary-active,
-            var(--_color-primary-active)
+            var(--color-primary-active)
         );
     }
     border: 1px solid;
@@ -549,7 +549,7 @@
 .datepicker__cell.-in-range {
     background: color-mix(
         in oklab,
-        var(--neon-color-primary, var(--_color-primary)) 18%,
+        var(--neon-color-primary, var(--color-primary)) 18%,
         transparent
     );
     border-radius: 0;
@@ -573,15 +573,15 @@
 .datepicker.-range-pending .datepicker__cell.-in-range {
     background: color-mix(
         in oklab,
-        var(--neon-color-primary, var(--_color-primary)) 10%,
+        var(--neon-color-primary, var(--color-primary)) 10%,
         transparent
     );
 }
 
 .datepicker.-range-pending .datepicker__cell.-range-end:not(.-range-start) {
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
     background: transparent;
-    border: 1px dashed var(--neon-color-primary, var(--_color-primary));
+    border: 1px dashed var(--neon-color-primary, var(--color-primary));
     box-shadow: none;
     text-shadow: none;
 }

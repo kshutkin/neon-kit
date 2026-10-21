@@ -36,22 +36,22 @@
     border-radius: 0.25rem;
     border-style: solid;
     border-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     white-space: nowrap;
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    --_inset-shadow: var(
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     user-select: none;
-    text-shadow: var(--neon-text-shadow-embossed, var(--_text-shadow-embossed));
+    text-shadow: var(--neon-text-shadow-embossed, var(--text-shadow-embossed));
 
     /* Monospaced + tabular numerals so digits and letters share width. */
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -84,7 +84,7 @@
 /* Optional textual separator between keys (e.g. "+"). Muted, monospaced,
    matched to the kbd font-size so it lines up with the keycaps. */
 .kbd-keys__sep {
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         monospace;
     font-size: 0.8125em;

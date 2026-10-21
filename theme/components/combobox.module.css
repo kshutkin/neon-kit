@@ -69,14 +69,14 @@
    whole control. */
 .combobox__field {
     composes: panel disabled-control focus-ring-swap from '../shared.module.css';
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     /* Reset native button defaults */
     appearance: none;
@@ -108,7 +108,7 @@
 .combobox__field[aria-readonly='true'] {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
@@ -120,9 +120,9 @@
 .combobox__field[aria-invalid='true']:not(:disabled):not(
         [aria-disabled='true']
     ) {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
     &:focus-visible {
-        border-color: var(--neon-color-error, var(--_color-error));
+        border-color: var(--neon-color-error, var(--color-error));
     }
 }
 
@@ -139,7 +139,7 @@
 /* Placeholder twin to `.combobox__value` — same slot, muted color. Hidden
    when the consumer also renders a `.combobox__value`. */
 .combobox__placeholder {
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
     flex: 1 1 auto;
     min-inline-size: 0;
     overflow: hidden;
@@ -180,7 +180,7 @@
     inline-size: 1em;
     block-size: 1em;
     flex: none;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     transition: transform 120ms ease;
 }
 
@@ -217,7 +217,7 @@
 }
 
 .combobox.-multi > .combobox__field:focus-within {
-    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+    border-color: var(--neon-color-border-focus, var(--color-border-focus));
 }
 
 /* Tag list slot — uses the existing `.tag-list` flex/wrap layout so
@@ -236,7 +236,7 @@
    `min-inline-size` floor keeps the caret visible at rest. */
 .combobox__input {
     &::placeholder {
-        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+        color: var(--neon-color-ink-muted, var(--color-ink-muted));
     }
 
     flex: 1 0 6ch;
@@ -263,20 +263,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-surface-hover,
-                var(--_color-surface-hover)
+                var(--color-surface-hover)
             );
-            color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+            color: var(--neon-color-ink-primary, var(--color-ink-primary));
         }
     }
     &:focus-visible {
         background-color: var(
             --neon-color-surface-hover,
-            var(--_color-surface-hover)
+            var(--color-surface-hover)
         );
     }
 
@@ -299,8 +299,8 @@
    "Create new" / "Select all" actions. */
 .combobox__popover {
     composes: panel from '../shared.module.css';
-    margin: calc(var(--neon-spacing, var(--_spacing)) * 0);
-    padding: calc(var(--neon-spacing, var(--_spacing)) * 0);
+    margin: calc(var(--neon-spacing, var(--spacing)) * 0);
+    padding: calc(var(--neon-spacing, var(--spacing)) * 0);
     white-space: normal;
 
     display: grid;
@@ -357,10 +357,10 @@
 .combobox__search {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     padding: calc(var(--neon-spacing, 0.25rem) * 1.5)
         calc(var(--neon-spacing, 0.25rem) * 2);
@@ -395,7 +395,7 @@
         --neon-line-height,
         var(--neon-text-sm--line-height, calc(1.25 / 0.875))
     );
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
     grid-column: 1 / -1;
     padding: calc(var(--neon-spacing, 0.25rem) * 2)
         calc(var(--neon-spacing, 0.25rem) * 3);
@@ -408,10 +408,10 @@
 .combobox__footer {
     border-top-style: solid;
     border-top-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -468,7 +468,7 @@
     grid-column: 3;
     inline-size: 1em;
     block-size: 1em;
-    color: var(--neon-color-primary, var(--_color-primary));
+    color: var(--neon-color-primary, var(--color-primary));
     visibility: hidden;
     flex: none;
 }
@@ -484,7 +484,7 @@
 .combobox__option.-active {
     background-color: var(
         --neon-color-surface-hover,
-        var(--_color-surface-hover)
+        var(--color-surface-hover)
     );
 }
 
@@ -515,7 +515,7 @@
     grid-column: 1;
     inline-size: 1em;
     block-size: 1em;
-    color: var(--neon-color-primary, var(--_color-primary));
+    color: var(--neon-color-primary, var(--color-primary));
 }
 
 .combobox__create > span {

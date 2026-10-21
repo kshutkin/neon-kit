@@ -10,6 +10,7 @@ Add the separate theme-vanilla package with a complete plain CSS bundle,
 selective component groups, public class mappings, composed dependencies,
 and portable asset URLs. Font loading remains document-owned.
 
-Use --neon-* for public custom properties and --_* for internal defaults and
-working values. Remove authored vendor-prefixed declarations and selectors;
-browser compatibility transformations belong to the consumer build pipeline.
+Use --neon-* for public custom properties and unprefixed names such as
+--color-border for internal defaults and working values. Remove authored
+vendor-prefixed declarations and selectors; browser compatibility transformations
+belong to the consumer build pipeline.

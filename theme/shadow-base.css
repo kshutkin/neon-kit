@@ -3,8 +3,8 @@
 /* Internal defaults only. The host inherits the page's color-scheme.
    Fonts are named with a fallback; loading them belongs to the document. */
 :host {
-    font-family: var(--neon-font-sans, var(--_font-sans));
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    font-family: var(--neon-font-sans, var(--font-sans));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
     line-height: 1.5;
 }
 :where(*, ::before, ::after) {
@@ -24,6 +24,6 @@
 }
 :focus-visible {
     outline: 2px solid
-        var(--neon-color-border-focus, var(--_color-border-focus));
+        var(--neon-color-border-focus, var(--color-border-focus));
     outline-offset: 2px;
 }

@@ -2,9 +2,10 @@
 
 Completed 2026-10-10. Steps 5 and 6 remain pending.
 
-Naming follow-up, 2026-10-13: public inputs now use `--neon-*`, internal defaults
-and working values use `--_*`, and authored CSS has no browser prefixes. Palette
-names use `--neon-color-blue` rather than repeating `neon`. The historical step 4
+Naming follow-up, 2026-10-21: public inputs use `--neon-*`, internal defaults
+and working values use unprefixed names such as `--color-border`, and authored
+CSS has no browser prefixes. Palette names use `--neon-color-blue` rather than
+repeating `neon`. The historical step 4
 capture artifacts retain their original property names; the executable palette
 proof maps those names to the current API before comparison. Current checks are
 recorded in [packed-browser results](property-api/summary.json),

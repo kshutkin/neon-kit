@@ -157,12 +157,12 @@ await writeFile(
 await writeFile(
     resolve(app, 'customization.html'),
     `<!doctype html>${link('index')}
-    <div id="wrapper" style="--neon-menu-item-padding-inline: 27px; --neon-menu-item-padding-block: 11px; --neon-tooltip-open-delay: 123ms; --neon-tooltip-close-delay: 456ms; --neon-tooltip-max-inline-size: 213px; --color-primary: hotpink; --primary-hue: 45">
+    <div id="wrapper" style="--neon-menu-item-padding-inline: 27px; --neon-menu-item-padding-block: 11px; --neon-tooltip-open-delay: 123ms; --neon-tooltip-close-delay: 456ms; --neon-tooltip-max-inline-size: 213px;">
       <div class="menu"><button class="menu__item" id="row">Item</button></div>
       <button id="interest" interestfor="tip">Interest</button>
       <div id="tip" class="tooltip" popover>Tip</div>
       <button class="btn cta" id="primary">Primary</button>
-      <span id="token" style="color: var(--neon-color-primary, var(--_color-primary))">Token</span>
+      <span id="token" style="color: var(--neon-color-primary, var(--color-primary))">Token</span>
     </div>`
 );
 const config = {
@@ -389,7 +389,7 @@ try {
                                     .slice(2)
                                     .replace('color-neon-', 'color-');
                                 const publicName = `--neon-${suffix}`;
-                                const privateName = `--_${suffix}`;
+                                const privateName = `--${suffix}`;
                                 if (!root.getPropertyValue(privateName).trim()) {
                                     throw new Error(
                                         `Missing token default ${privateName}`
@@ -563,7 +563,7 @@ try {
                 assert.equal(
                     customValues.primary,
                     customValues.expectedPrimary,
-                    'legacy generic inputs do not collide with public Neon variables'
+                    'component primary matches its public input with the internal fallback'
                 );
                 await customization.evaluate(() =>
                     document.documentElement.style.setProperty(

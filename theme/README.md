@@ -8,7 +8,8 @@ there is no Tailwind requirement and no public HTML class bundle in this package
 - `shared.module.css`: composed surfaces, state treatments, and Neon effects.
 - `tokens.css`: defaults for document and shadow styling roots. Optional public
   overrides use `--neon-*` names, such as `--neon-color-border` and
-  `--neon-primary-hue`; `--_*` names are internal defaults and working values.
+  `--neon-primary-hue`; unprefixed names such as `--color-border` are internal
+  defaults and working values.
 - `shadow-control.css` and `shadow-icon.css`: shadow-only host layout for generated
   form controls and icons.
 - `theme.css`: document token defaults and `color-scheme: light dark` opt-in.
@@ -48,8 +49,8 @@ The page owns font loading. A page with no color-scheme declaration stays light;
 }
 ```
 
-The matching internal defaults are `--_color-border`,
-`--_menu-item-padding-inline`, and `--_tooltip-max-inline-size`. Components read
+The matching internal defaults are `--color-border`,
+`--menu-item-padding-inline`, and `--tooltip-max-inline-size`. Components read
 public inputs with private fallbacks; these private names are not customization
 API. Palette inputs include `--neon-color-blue`, `--neon-color-green`, and
 `--neon-color-pink`.

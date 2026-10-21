@@ -3,17 +3,17 @@
     display: inline-block;
     background-image: linear-gradient(
         to top,
-        var(--neon-color-primary, var(--_color-primary)) 50%,
+        var(--neon-color-primary, var(--color-primary)) 50%,
         transparent 50%
     );
     background-size: calc(100% - 0.5rem) calc(200% - 0.5rem);
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
     text-decoration-line: none;
     &:hover {
         @media (hover: hover) {
             background-size: 100% 200%;
             background-position: 0 100%;
-            color: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+            color: var(--neon-color-ink-inverse, var(--color-ink-inverse));
         }
     }
     @media (prefers-reduced-motion: no-preference) {

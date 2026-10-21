@@ -27,16 +27,16 @@
 
 .input {
     composes: panel disabled-control focus-ring-swap from '../shared.module.css';
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     &::placeholder {
-        color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+        color: var(--neon-color-ink-muted, var(--color-ink-muted));
     }
 
     /* Native control reset — text fields are not inline-block-with-ellipsis. */
@@ -61,7 +61,7 @@
 :is(input, textarea).input:read-only:not(:disabled) {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
@@ -70,9 +70,9 @@
    focus ring re-uses the same border so the invalid affordance survives
    focus. Disabled fields skip the treatment so a locked field doesn't shout. */
 .input[aria-invalid='true']:not(:disabled) {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
     &:focus-visible {
-        border-color: var(--neon-color-error, var(--_color-error));
+        border-color: var(--neon-color-error, var(--color-error));
     }
 }
 
@@ -100,12 +100,12 @@ select.input {
    restyle the control when the default disabled/empty option is chosen. */
 select.input:has(option[value=''][disabled]:checked),
 select.input:required:invalid {
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
 }
 
 /* Reset the dropdown options to primary text so they aren't muted. */
 select.input option {
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
 }
 
 /* File input — strip the OS-rendered button on the inside; consumers can pair
@@ -138,14 +138,14 @@ select.input option {
 */
 .input-group {
     composes: panel from '../shared.module.css';
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-pressed,
-        var(--_inset-shadow-pressed)
+        var(--inset-shadow-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 
     text-shadow: none;
     text-overflow: clip;
@@ -159,7 +159,7 @@ select.input option {
 }
 
 .input-group:focus-within {
-    border-color: var(--neon-color-border-focus, var(--_color-border-focus));
+    border-color: var(--neon-color-border-focus, var(--color-border-focus));
 }
 
 /* Disabled / read-only / invalid surface swaps mirror `.input` directly so a
@@ -167,17 +167,17 @@ select.input option {
 .input-group:has(> .input:disabled) {
     border-color: var(
         --neon-color-border-disabled,
-        var(--_color-border-disabled)
+        var(--color-border-disabled)
     );
     background-color: var(
         --neon-color-surface-disabled,
-        var(--_color-surface-disabled)
+        var(--color-surface-disabled)
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: 0 0 #0000;
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: 0 0 #0000;
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     pointer-events: none;
     cursor: default;
 }
@@ -187,16 +187,16 @@ select.input option {
 .input-group:has(> :is(input, textarea).input:read-only:not(:disabled)) {
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
 }
 
 .input-group:has(> .input[aria-invalid='true']:not(:disabled)) {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 .input-group:has(> .input[aria-invalid='true']:not(:disabled)):focus-within {
-    border-color: var(--neon-color-error, var(--_color-error));
+    border-color: var(--neon-color-error, var(--color-error));
 }
 
 /* The hosted `.input` becomes a transparent editable region — the wrapper
@@ -218,7 +218,7 @@ select.input option {
 .input-affix {
     display: inline-flex;
     align-items: center;
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
 
     align-self: stretch;
     flex: none;
@@ -261,61 +261,61 @@ select.input option {
     &:is(:disabled, [aria-disabled='true']) {
         border-color: var(
             --neon-color-border-disabled,
-            var(--_color-border-disabled)
+            var(--color-border-disabled)
         );
         background-color: var(
             --neon-color-surface-disabled,
-            var(--_color-surface-disabled)
+            var(--color-surface-disabled)
         );
-        color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
-        --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-        --_inset-shadow: 0 0 #0000;
-        box-shadow: var(--_inset-shadow, 0 0 transparent),
-            var(--_shadow, 0 0 transparent);
+        color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
+        --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+        --inset-shadow: 0 0 #0000;
+        box-shadow: var(--inset-shadow, 0 0 transparent),
+            var(--shadow, 0 0 transparent);
         pointer-events: none;
         cursor: default;
     }
     border-style: solid;
     border-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     &:focus-visible {
         border-color: var(
             --neon-color-border-focus,
-            var(--_color-border-focus)
+            var(--color-border-focus)
         );
     }
-    background-color: var(--neon-color-surface, var(--_color-surface));
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
-    --_shadow: var(--neon-shadow-drop-subtle, var(--_shadow-drop-subtle));
-    --_inset-shadow: var(
+    background-color: var(--neon-color-surface, var(--color-surface));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
+    --shadow: var(--neon-shadow-drop-subtle, var(--shadow-drop-subtle));
+    --inset-shadow: var(
         --neon-inset-shadow-highlight,
-        var(--_inset-shadow-highlight)
+        var(--inset-shadow-highlight)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     &:not(*:disabled) {
         &:hover {
             @media (hover: hover) {
                 background-color: var(
                     --neon-color-surface-hover,
-                    var(--_color-surface-hover)
+                    var(--color-surface-hover)
                 );
             }
         }
         &:active {
             background-color: var(
                 --neon-color-surface-active,
-                var(--_color-surface-active)
+                var(--color-surface-active)
             );
-            --_shadow: 0 0 #0000;
-            box-shadow: var(--_inset-shadow, 0 0 transparent),
-                var(--_shadow, 0 0 transparent);
-            --_inset-shadow: var(
+            --shadow: 0 0 #0000;
+            box-shadow: var(--inset-shadow, 0 0 transparent),
+                var(--shadow, 0 0 transparent);
+            --inset-shadow: var(
                 --neon-inset-shadow-pressed,
-                var(--_inset-shadow-pressed)
+                var(--inset-shadow-pressed)
             );
-            box-shadow: var(--_inset-shadow, 0 0 transparent),
-                var(--_shadow, 0 0 transparent);
+            box-shadow: var(--inset-shadow, 0 0 transparent),
+                var(--shadow, 0 0 transparent);
         }
     }
 
@@ -353,38 +353,38 @@ select.input option {
 .radio:checked {
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
-    background-color: var(--neon-color-primary, var(--_color-primary));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-primary, var(--color-primary));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
     &:hover {
         @media (hover: hover) {
             background-color: var(
                 --neon-color-primary-hover,
-                var(--_color-primary-hover)
+                var(--color-primary-hover)
             );
         }
     }
     &:active {
         background-color: var(
             --neon-color-primary-active,
-            var(--_color-primary-active)
+            var(--color-primary-active)
         );
     }
     &:disabled {
         border-color: var(
             --neon-color-border-disabled,
-            var(--_color-border-disabled)
+            var(--color-border-disabled)
         );
         background-color: var(
             --neon-color-primary-disabled,
-            var(--_color-primary-disabled)
+            var(--color-primary-disabled)
         );
     }
 }
@@ -395,7 +395,7 @@ select.input option {
     content: '';
     inline-size: 0.3em;
     block-size: 0.6em;
-    border: solid var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    border: solid var(--neon-color-ink-inverse, var(--color-ink-inverse));
     border-width: 0 0.15em 0.15em 0;
     transform: translateY(-0.05em) rotate(45deg);
 }
@@ -404,23 +404,23 @@ select.input option {
 .checkbox:indeterminate {
     border-color: var(
         --neon-color-border-primary,
-        var(--_color-border-primary)
+        var(--color-border-primary)
     );
-    background-color: var(--neon-color-primary, var(--_color-primary));
-    --_shadow: 0 0 #0000;
-    --_inset-shadow: var(
+    background-color: var(--neon-color-primary, var(--color-primary));
+    --shadow: 0 0 #0000;
+    --inset-shadow: var(
         --neon-inset-shadow-highlight-pressed,
-        var(--_inset-shadow-highlight-pressed)
+        var(--inset-shadow-highlight-pressed)
     );
-    box-shadow: var(--_inset-shadow, 0 0 transparent),
-        var(--_shadow, 0 0 transparent);
+    box-shadow: var(--inset-shadow, 0 0 transparent),
+        var(--shadow, 0 0 transparent);
 }
 
 .checkbox:indeterminate::after {
     content: '';
     inline-size: 0.6em;
     block-size: 0.15em;
-    background: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    background: var(--neon-color-ink-inverse, var(--color-ink-inverse));
     border-radius: 0.05em;
 }
 
@@ -430,7 +430,7 @@ select.input option {
     inline-size: 0.45em;
     block-size: 0.45em;
     border-radius: 9999px;
-    background: var(--neon-color-ink-inverse, var(--_color-ink-inverse));
+    background: var(--neon-color-ink-inverse, var(--color-ink-inverse));
 }
 
 /* Field row — convenience wrapper for "<label> <control> <text>" layouts.
@@ -445,7 +445,7 @@ select.input option {
 }
 
 .field:has(:disabled) {
-    color: var(--neon-color-ink-muted, var(--_color-ink-muted));
+    color: var(--neon-color-ink-muted, var(--color-ink-muted));
     cursor: default;
 }
 
@@ -464,7 +464,7 @@ select.input option {
     );
     font-weight: var(--neon-font-weight-semibold, 600);
     letter-spacing: var(--neon-tracking-wide, 0.025em);
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     text-transform: uppercase;
     user-select: none;
 }
@@ -479,7 +479,7 @@ select.input option {
         --neon-line-height,
         var(--neon-text-xs--line-height, calc(1 / 0.75))
     );
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     user-select: none;
 }
 
@@ -489,7 +489,7 @@ select.input option {
         --neon-line-height,
         var(--neon-text-xs--line-height, calc(1 / 0.75))
     );
-    color: var(--neon-color-error, var(--_color-error));
+    color: var(--neon-color-error, var(--color-error));
     user-select: none;
 }
 
@@ -503,12 +503,12 @@ select.input option {
     border-radius: 0.25rem;
     border-style: solid;
     border-width: 1px;
-    border-color: var(--neon-color-border, var(--_color-border));
+    border-color: var(--neon-color-border, var(--color-border));
     background-color: var(
         --neon-color-surface-secondary,
-        var(--_color-surface-secondary)
+        var(--color-surface-secondary)
     );
-    color: var(--neon-color-ink-primary, var(--_color-ink-primary));
+    color: var(--neon-color-ink-primary, var(--color-ink-primary));
 
     /* Override panel's whitespace/ellipsis defaults — fieldsets contain
        wrapping content, not a single line of label text. */
@@ -531,7 +531,7 @@ select.input option {
     );
     font-weight: var(--neon-font-weight-semibold, 600);
     letter-spacing: var(--neon-tracking-wide, 0.025em);
-    color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));
+    color: var(--neon-color-ink-secondary, var(--color-ink-secondary));
     text-transform: uppercase;
     padding-inline: calc(var(--neon-spacing, 0.25rem) * 1.5);
     margin-inline-start: calc(calc(var(--neon-spacing, 0.25rem) * 1.5) * -1);

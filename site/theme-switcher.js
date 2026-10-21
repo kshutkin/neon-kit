@@ -12,26 +12,26 @@ class ThemeSwitcher extends HTMLElement {
         <button class="btn theme-toggle-btn docs-cursor-pointer docs-text-sm">
           Theme & Colors
         </button>
-        <div class="theme-panel docs-hidden docs-absolute docs-top-full docs-right-0 docs-mt-2 docs-p-6 docs-rounded-lg docs-shadow-lg docs-min-w--5b-280px-5d- docs-max-w--5b-320px-5d- docs-z--5b-1000-5d-" style="background: var(--neon-color-surface, var(--_color-surface)); border: 1px solid var(--neon-color-border, var(--_color-border));">
+        <div class="theme-panel docs-hidden docs-absolute docs-top-full docs-right-0 docs-mt-2 docs-p-6 docs-rounded-lg docs-shadow-lg docs-min-w--5b-280px-5d- docs-max-w--5b-320px-5d- docs-z--5b-1000-5d-" style="background: var(--neon-color-surface, var(--color-surface)); border: 1px solid var(--neon-color-border, var(--color-border));">
           <div class="docs-mb-6">
-            <h3 class="docs-text-base docs-font-semibold docs-mb-4" style="color: var(--neon-color-ink-primary, var(--_color-ink-primary));">Theme</h3>
+            <h3 class="docs-text-base docs-font-semibold docs-mb-4" style="color: var(--neon-color-ink-primary, var(--color-ink-primary));">Theme</h3>
             <button class="btn cta theme-toggle docs-w-full docs-cursor-pointer">
               Theme: Automatic
             </button>
           </div>
 
-          <div class="docs-pt-6" style="border-top: 1px solid var(--neon-color-border, var(--_color-border));">
-            <h3 class="docs-text-base docs-font-semibold docs-mb-4" style="color: var(--neon-color-ink-primary, var(--_color-ink-primary));">Primary Color</h3>
+          <div class="docs-pt-6" style="border-top: 1px solid var(--neon-color-border, var(--color-border));">
+            <h3 class="docs-text-base docs-font-semibold docs-mb-4" style="color: var(--neon-color-ink-primary, var(--color-ink-primary));">Primary Color</h3>
 
             <div class="docs-mb-4">
-              <div class="primary-color-preview docs-w-full docs-h-16 docs-rounded-md docs-mb-3 docs-border-2" style="background: var(--neon-color-primary, var(--_color-primary)); border-color: var(--neon-color-border, var(--_color-border));"></div>
-              <div class="docs-font-mono docs-text-xs docs-text-center docs-mb-4 primary-oklch-display" style="color: var(--neon-color-ink-secondary, var(--_color-ink-secondary));">
+              <div class="primary-color-preview docs-w-full docs-h-16 docs-rounded-md docs-mb-3 docs-border-2" style="background: var(--neon-color-primary, var(--color-primary)); border-color: var(--neon-color-border, var(--color-border));"></div>
+              <div class="docs-font-mono docs-text-xs docs-text-center docs-mb-4 primary-oklch-display" style="color: var(--neon-color-ink-secondary, var(--color-ink-secondary));">
                 oklch(${currentPrimary.l}% ${currentPrimary.c} ${currentPrimary.h})
               </div>
             </div>
 
             <div class="docs-mb-4">
-              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--_color-ink-primary));">
+              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--color-ink-primary));">
                 Lightness: <span class="primary-l-value">${currentPrimary.l}</span>%
               </label>
               <input type="range"
@@ -44,7 +44,7 @@ class ThemeSwitcher extends HTMLElement {
             </div>
 
             <div class="docs-mb-4">
-              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--_color-ink-primary));">
+              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--color-ink-primary));">
                 Chroma: <span class="primary-c-value">${currentPrimary.c}</span>
               </label>
               <input type="range"
@@ -57,7 +57,7 @@ class ThemeSwitcher extends HTMLElement {
             </div>
 
             <div class="docs-mb-4">
-              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--_color-ink-primary));">
+              <label class="docs-block docs-text-sm docs-mb-2" style="color: var(--neon-color-ink-primary, var(--color-ink-primary));">
                 Hue: <span class="primary-h-value">${currentPrimary.h}</span>°
               </label>
               <input type="range"
@@ -127,7 +127,7 @@ class ThemeSwitcher extends HTMLElement {
 
       // Update color preview (using CSS variable so it updates automatically)
       if (colorPreview) {
-        colorPreview.style.background = `var(--neon-color-primary, var(--_color-primary))`;
+        colorPreview.style.background = `var(--neon-color-primary, var(--color-primary))`;
       }
     };
 
@@ -166,7 +166,7 @@ class ThemeSwitcher extends HTMLElement {
       if (oklchDisplay) oklchDisplay.textContent = `oklch(${primary.l}% ${primary.c} ${primary.h})`;
       // Color preview uses CSS variable so it updates automatically
       if (colorPreview) {
-        colorPreview.style.background = `var(--neon-color-primary, var(--_color-primary))`;
+        colorPreview.style.background = `var(--neon-color-primary, var(--color-primary))`;
       }
     }
   }
@@ -197,7 +197,7 @@ class ThemeSwitcher extends HTMLElement {
   #readPrimaryColor() {
     const computed = getComputedStyle(document.documentElement);
     const read = (name, fallback) => {
-      const value = parseFloat(computed.getPropertyValue(name) || computed.getPropertyValue(name.replace("--neon-", "--_")));
+      const value = parseFloat(computed.getPropertyValue(name) || computed.getPropertyValue(name.replace("--neon-", "--")));
       return Number.isFinite(value) ? value : fallback;
     };
     return { l: read("--neon-primary-lightness", 38), c: read("--neon-primary-chroma", 0.2), h: read("--neon-primary-hue", 245) };
